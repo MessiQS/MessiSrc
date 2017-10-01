@@ -15,9 +15,6 @@ export default class Login extends Component {
 
 	constructor(props) {
 		super(props);
-		Storage.multiGet(['accountToken','account']).then( res => {
-			console.log(JSON.stringify(res))
-		})
 	}
 
 	static navigationOptions = {

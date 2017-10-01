@@ -35,7 +35,13 @@ export default class Storage {
     
     static multiGet(argu){
         try{
-            return AsyncStorage.multiGet(argu);
+            return AsyncStorage.multiGet(argu).then( result => {
+                let obj = new Object();
+                result.forEach( res => {
+                    obj[res[0]] = res[1];
+                })
+                return obj;
+            });
         }catch(error){
             return false;
         }
