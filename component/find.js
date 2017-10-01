@@ -22,7 +22,9 @@ LocaleConfig.locales['cn'] = {
     dayNamesShort: ['日','一','二','三','四','五','六']
 };
 LocaleConfig.defaultLocale = 'cn';
+
 export default class Find extends Component {
+
     static navigationOptions = ({navigation}) => ({
         title: '发现'
     });
@@ -59,19 +61,21 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
-                <Calendar
-                    // Specify style for calendar container element. Default = {}
-                    style={styles.calender}
-                    // Specify theme properties to override specific styles for calendar parts. Default = {}
-                    theme={calenderOptiones.Theme}
-                    //current={'2017-06-17'}
-                    markedDates={{[this.state.selected]: {selected: true}}}
-                    markingType={'string'}
-                    onDayPress={this.onDayPress}
-                />
-
-                <Echarts option={option} height={300}/>
-
+                <View style={styles.calendarView} >
+                    <Calendar
+                        // Specify style for calendar container element. Default = {}
+                        style={styles.calender}
+                        // Specify theme properties to override specific styles for calendar parts. Default = {}
+                        theme={calenderOptiones.Theme}
+                        //current={'2017-06-17'}
+                        markedDates={{[this.state.selected]: {selected: true}}}
+                        markingType={'string'}
+                        onDayPress={this.onDayPress}
+                    />
+                </View>
+                <View style={styles.chartsView}>
+                    <Echarts style={styles.charts} option={option}/>
+                </View>        
             </View>
         );
     }
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#fff',        
     },
     instructions: {
         textAlign: 'center',
@@ -111,14 +115,21 @@ const styles = StyleSheet.create({
     },
     welcome:{
         flex: 1,
-
     },
-    calender:{
+    calendarView: {
+        flex: 1,
+    },
+    calender:{    
         paddingTop: 5,
-        width:'78%',
+        width:'100%',
         borderColor: '#eee',
         height: 350,
+    },
+    chartsView: {
         flex: 1,
+    },
+    charts: {
+        height: 300,
     }
 });
 

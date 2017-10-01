@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    Alert,
     StyleSheet,
     Image,
     View,
@@ -14,7 +15,8 @@ import MD5 from 'crypto-js/md5';
 const account = '18361449780';
 export default class ChangePhoneNumberStepOnePage extends React.Component {
     constructor(props) {
-		super(props);
+        super(props);
+        // this.setState()
     }
     
     static navigationOptions = ({ navigation }) => ({
@@ -26,14 +28,14 @@ export default class ChangePhoneNumberStepOnePage extends React.Component {
         headerTintColor: 'white',
     });
 
-    updatePassword(password){
+    updatePassword(password) {
         this.setState({
             password:password
         })
     }
-    next(){
+    next() {
         const { navigate } = this.props.navigation;        
-        const { password } = this.state;
+        const password = this.state;
         if (!AccountCheck.isValidPassword(password)) {
             Alert.alert('请输入6-21位字母与数字')
             return;
@@ -66,7 +68,7 @@ export default class ChangePhoneNumberStepOnePage extends React.Component {
                 </Item>
                 <View style={{height:74}}></View>
                 <Button style={styles.nextStepButtonSytle} 
-                        onPress={next().bind(this)}
+                        onPress={this.next.bind(this)}
                 >
                     <Text style={styles.nextStepTextStyle}>下一步</Text>
                 </Button>
