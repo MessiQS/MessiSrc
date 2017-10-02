@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    Alert,
     StyleSheet,
     Image,
     View,
@@ -10,11 +11,16 @@ import ChangePhoneNumberStepTwoPage from "./changePhoneNumberStepTwoPage";
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';
-//此处账号应该由aysncstorage获取
-const account = '18361449780';
+import Storage from '../../service/storage';
+
 export default class ChangePhoneNumberStepOnePage extends React.Component {
     constructor(props) {
-		super(props);
+        super(props);
+        Storage.getItem('account').then( res=>{
+            this.setState({
+                account:res
+            })
+        })
     }
     
     static navigationOptions = ({ navigation }) => ({
@@ -33,13 +39,13 @@ export default class ChangePhoneNumberStepOnePage extends React.Component {
     }
     next(){
         const { navigate } = this.props.navigation;        
-        const { password } = this.state;
+        const { account,password } = this.state;
         if (!AccountCheck.isValidPassword(password)) {
             Alert.alert('请输入6-21位字母与数字')
             return;
         };
         let secretPassword = MD5(password).toString();
-        http.post({
+        Http.post('api/checkPassword',{
             "account":account,
             "password":secretPassword
         }).then( res => {
@@ -61,12 +67,12 @@ export default class ChangePhoneNumberStepOnePage extends React.Component {
                     <Text style={styles.passwordTextStyle}>密码</Text>
                     <Input style={styles.passwordInputStyle} 
                             placeholder="输入您的旧密码"
-                            onChangeText = {value => updatePassword(value)}
+                            onChangeText = {value => this.updatePassword(value)}
                     ></Input>
                 </Item>
                 <View style={{height:74}}></View>
                 <Button style={styles.nextStepButtonSytle} 
-                        onPress={next().bind(this)}
+                        onPress={this.next.bind(this)}
                 >
                     <Text style={styles.nextStepTextStyle}>下一步</Text>
                 </Button>

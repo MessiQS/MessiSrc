@@ -25,13 +25,14 @@ import {
     Button
 } from 'native-base';
 import AccountInfo from './Account/accountInfo';
+import Storage from '../service/storage';
 
 class MineListItem extends Component {
 
     constructor(props) {
         super(props);
         this.state = props;
-        console.log(props);
+
     }
     
     render() {
@@ -72,6 +73,11 @@ class Mine extends Component {
         this.state = {
             navigation: props.navigation
         }
+        Storage.getItem('account').then( res=>{
+            this.setState({
+                account:res
+            })
+        })
     }
 
     listItemArray = [
@@ -97,7 +103,13 @@ class Mine extends Component {
     avatarClick() {
         
     };
-
+    //退出登录
+    outofLogin(){
+        const { navigate } = this.props.navigation;
+        //将账号和token存到本地存储
+        let setToken = Storage.removeItem('accountToken');
+        setToken.then( res => navigate('Login', { name: 'MainTab' }))
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -106,7 +118,7 @@ class Mine extends Component {
                         <Thumbnail square source={require('../Images/head.png')}
                             style={nativeStyle.thumbnail} />
                         <Text style={styles.phoneNumber}>
-                            18355570987
+                            {this.state.account}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -129,7 +141,10 @@ class Mine extends Component {
                     </List>
                     <View style={styles.button}>
                         <View>
-                            <Button bordered danger style={{ borderColor: '#608fd3' }}>
+                            <Button bordered danger 
+                                style={{ borderColor: '#608fd3' }}
+                                onPress={this.outofLogin.bind(this)}
+                            >
                                 <Text style={styles.outLogin}>退出登录</Text>
                             </Button>
                         </View>

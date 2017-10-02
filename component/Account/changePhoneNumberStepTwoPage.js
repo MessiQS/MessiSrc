@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
 import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
+import Http from '../../service/http';
+import AccountCheck from '../../service/accountCheck';
 
 export default class ChangePhoneNumberStepTwoPage extends React.Component {
 
@@ -22,8 +24,22 @@ export default class ChangePhoneNumberStepTwoPage extends React.Component {
         headerTintColor: 'white',
     });
 
-    render() {
+    updateDate(account){
+        this.setState({
+            account:account
+        })
+    }
+
+    next(){
         const { navigate } = this.props.navigation;        
+        const {account} = this.state;
+        if(AccountCheck.isValidPhoneNumber(account)){
+            navigate('ChangePhoneNumberStepThreePage', { account: account})
+        }else{
+            Alert.alert('请输入正确的账号');
+        }
+    }
+    render() {
         return (
             <Container style={styles.containerStyle}>
             <Content style={styles.contentStyle}>
@@ -32,13 +48,17 @@ export default class ChangePhoneNumberStepTwoPage extends React.Component {
                 </Text>
                 <Item style={styles.item}>
                     <Text style={styles.phoneNumberTextStyle}>+86</Text>
-                    <Input style={styles.phoneNumberInputStyle} placeholder="请输入手机号码"></Input>
+                    <Input 
+                        style={styles.phoneNumberInputStyle} 
+                        placeholder="请输入手机号码"
+                        onChangeText={number => this.updateDate(number)}
+                    ></Input>
                 </Item>
                 <View style={{height:74}}></View>
-                <Button style={styles.nextStepButtonSytle} onPress={() =>
-						navigate('ChangePhoneNumberStepThreePage', { name: 'ChangePhoneNumberStepThreePage' })
-					}>
-                    <Text style={styles.nextStepTextStyle}>下一步</Text>
+                <Button style={styles.nextStepButtonSytle} onPress={this.next.bind(this)}>
+                    <Text style={styles.nextStepTextStyle}>
+                        下一步
+                    </Text>
                 </Button>
             </Content>
         </Container>

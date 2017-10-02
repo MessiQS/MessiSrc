@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import {
+    Alert,
     StyleSheet,
     Image,
     View,
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
 import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
+import AccountCheck from '../../service/accountCheck';
+import Http from '../../service/http';
 
 export default class ChangePhoneNumberStepThreePage extends React.Component {
 
     constructor(props) {
-		super(props);
+        super(props);
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -21,6 +24,23 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
         },
         headerTintColor: 'white',
     });
+
+    getCode() {
+        const { account } = this.props.navigation.state.params;
+        console.log(account)
+        if (!account) {
+            Alert.alert('请输入账号')
+            return;
+        }else if(!AccountCheck.isValidPhoneNumber(account)){
+            Alert.alert('账号格式错误','请输入11位手机号码');
+            return;
+        };
+        Http.post('api/getcode', {
+            account: account
+        }).then( response => {
+             console.log(response)
+        })
+    }
 
     render() {
         return (
@@ -34,7 +54,7 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
                     <Input style={styles.vertificationInputStyle} placeholder="请输入短信验证码"></Input>
                 </Item>
                 <View style={styles.getCodeViewStyle}>
-                    <Button bordered style={styles.getCodeButtonStyle} >
+                    <Button bordered style={styles.getCodeButtonStyle} onPress={this.getCode.bind(this)}>
                         <Text style={styles.getCodeTextStyle}>获取验证码（59）</Text>
                     </Button>
                 </View>
