@@ -116,6 +116,22 @@ export default class Message extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.modelView}>
+                    <ModalDropdown 
+                        style={nativeStyle.noBorederRight} 
+                        defaultValue={"省份"} 
+                        options={['option 1', 'option 2']}
+                        textStyle={nativeStyle.textStyle}
+                        dropdownStyle={nativeStyle.dropdownStyle}
+                    />
+                    <ModalDropdown 
+                        style={nativeStyle.select} 
+                        defaultValue={"年份"} 
+                        options={['option 3', 'option 2']}
+                        textStyle={nativeStyle.textStyle}
+                        dropdownStyle={nativeStyle.dropdownStyleRight}
+                    />
+                </View>
                 <Swiper
                     style={styles.wrapper}
                     showsButtons={false}
@@ -134,22 +150,6 @@ export default class Message extends Component {
                         <Text style={styles.text}>And simple</Text>
                     </View>
                 </Swiper>
-                <View style={styles.modelView}>
-                    <ModalDropdown 
-                        style={nativeStyle.noBorederRight} 
-                        defaultValue={"省份"} 
-                        options={['option 1', 'option 2']}
-                        textStyle={nativeStyle.textStyle}
-                        dropdownStyle={nativeStyle.dropdownStyle}
-                    />
-                    <ModalDropdown 
-                        style={nativeStyle.select} 
-                        defaultValue={"年份"} 
-                        options={['option 3', 'option 2']}
-                        textStyle={nativeStyle.textStyle}
-                        dropdownStyle={nativeStyle.dropdownStyleRight}
-                    />
-                </View>
                 <Container contentContainerStyle={{flex: 1}}
                            style={nativeStyle.container}
                 >
