@@ -8,6 +8,7 @@ class Question extends Realm.Object { }
 Question.schema = {
 
     name: 'Question',
+    primaryKey: 'uid',
     properties: {
 
         uid: 'string',                                           /// 标识 ID        
@@ -37,6 +38,7 @@ class User extends Realm.Object { }
 User.schema = {
 
     name: 'User',
+    primaryKey: 'id',
     properties: {
 
         id: 'string',
@@ -53,15 +55,17 @@ class ExaminationPaper extends Realm.Object { }
 ExaminationPaper.schema = {
 
     name: 'ExaminationPaper',
+    primaryKey: 'id',
     properties: {
 
         id: 'string',
+        title: 'string',                                        /// 名称  "江苏省2013年B类卷"
         year: 'string',                                         /// 年份
         province: 'string',                                     /// 所在省份
         version: 'string',                                      /// 当前版本
         purchased: 'bool',                                      /// 是否已购
-        price: { type: 'float', optional: true },               /// 价格，允许免费
-        questions: { type: 'list', objectType: 'Question' },
+        price: { type: 'float', optional: true, default: 0 },   /// 价格，允许免费
+        questions: { type: 'list', objectType: 'Question' },    /// 试题
     }
 }
 
@@ -71,13 +75,14 @@ class MemoryModel extends Realm.Object { }
 MemoryModel.schema = {
 
     name: 'MemoryModel',
+    primaryKey: 'id',
     properties: {
 
+        id: 'string',
         question: 'Question',                                   /// 题目
         weighting: { type: 'float', default: 0 },               /// 加权分数, 初始化为 0
-        appearedSeveralTime: { type: 'int', default: 0 },     /// 出现次数, 初始化为 0
-        lastAppearTime: { type: 'date', default: 0 },         /// 上一次出现时间，初始化为 0
-
+        appearedSeveralTime: { type: 'int', default: 0 },       /// 出现次数, 初始化为 0
+        lastAppearTime: { type: 'date', default: 0 },           /// 上一次出现时间，初始化为 0
     }
 }
 
@@ -87,14 +92,14 @@ class Schedule extends Reaml.Object { }
 Schedule.schema = {
 
     name: 'Schedule',
+    primaryKey: 'id',
     properties: {
 
         id: 'string',
         date: { type: 'date' },
-        learnTotal:  {type: 'int', default: 0},
-        needLearnTotal: {type: 'int', default: 0},
-        memoryModels: { type: 'list', objectType: 'MemoryModel' },
-        totalQuestions: { type: 'list', objectType: 'Question' }      /// 总提数
+        learnTotal: { type: 'int', default: 0 },                      /// 需要被
+        needLearnTotal: { type: 'int', default: 0 },                  /// 需要被记忆数量 (抗遗忘刷题数量)
+        memoryModels: { type: 'list', objectType: 'MemoryModel' },    /// 记忆模型库
     }
 }
 

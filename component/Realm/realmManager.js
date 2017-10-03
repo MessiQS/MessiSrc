@@ -61,15 +61,26 @@ export default class RealmManager {
         }
     }
 
-    
+
     /// 更新
-    static updateQuestion(question) {
 
+    // 更新试卷
+    static updateExaminationPaper(newExaminationPaper) {
 
+        let oldExaminationPaper = realm.objectForPrimaryKey('id', newExaminationPaper.id);
+
+        try {
+            realm.write(() => {
+                oldExaminationPaper = newExaminationPaper;
+            });
+        } catch (e) {
+             console.log("ExaminationPaper Error on update");
+        }
     }
 
 
     /// 查询数据
+
     // 获取当前用户
     static getCurrentUser() {
 
@@ -88,9 +99,12 @@ export default class RealmManager {
     // 通过id获取指定试卷
     static getExaminationPaper(id) {
 
-        let examinationPaper = realm.objects('ExaminationPaper').filtered('id=' + id + '')[0];
+        let examinationPaper = realm.objectForPrimaryKey('id', id);
 
         return examinationPaper;
     }
+
+
+
 }
 
