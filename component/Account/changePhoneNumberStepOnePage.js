@@ -65,8 +65,10 @@ export default class ChangePhoneNumberStepOnePage extends React.Component {
                 </Text>
                 <Item style={styles.item}>
                     <Text style={styles.passwordTextStyle}>密码</Text>
-                    <Input style={styles.passwordInputStyle} 
+                    <Input secureTextEntry={true}  
+                            style={styles.passwordInputStyle} 
                             placeholder="输入您的旧密码"
+                            maxLength={21}
                             onChangeText = {value => this.updatePassword(value)}
                     ></Input>
                 </Item>

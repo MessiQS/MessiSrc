@@ -99,7 +99,10 @@ class Register extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的电话号码" onChangeText={phone => this.phoneChange(phone)}></Input>
+                    <Input placeholder="请输入您的电话号码"
+                            maxLength={11} 
+                            keyboardType={'numeric'}
+                            onChangeText={phone => this.phoneChange(phone)}></Input>
                 </Item>
                 <Item>
                     <View style={styles.iconViewStyle}>
@@ -108,7 +111,10 @@ class Register extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的密码" onChangeText={passpord => this.passwordtChange(passpord)}></Input>
+                    <Input placeholder="请输入您的密码"
+                            secureTextEntry={true} 
+                            maxLength={21} 
+                            onChangeText={passpord => this.passwordtChange(passpord)}></Input>
                 </Item>
                 <Item>
                     <View style={styles.iconViewStyle}>
@@ -117,7 +123,10 @@ class Register extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入验证码" onChangeText={variCode => this.codeChange(variCode)}></Input>
+                    <Input placeholder="请输入验证码" 
+                            keyboardType={'numeric'} 
+                            maxLength={4} 
+                            onChangeText={variCode => this.codeChange(variCode)}></Input>
                     <Button style={styles.vertificationCodeButton} onPress={this.getCode.bind(this)}>
                         <Text style={styles.vertificationCodeText} >获取验证码</Text>
                     </Button>

@@ -97,6 +97,8 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
                         <Input style={styles.vertificationInputStyle}
                             placeholder="请输入短信验证码"
                             onChangeText={vericode => this.updateData(vericode)}
+                            maxLength={4}
+                            keyboardType={'numeric'}
                         ></Input>
                     </Item>
                     <View style={styles.getCodeViewStyle}>

@@ -92,7 +92,10 @@ class LoginPage extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的电话号码" onChangeText={account => this.phoneChange(account)}></Input>
+                    <Input placeholder="请输入您的电话号码" 
+                            keyboardType={'numeric'} 
+                            maxLength={11} 
+                            onChangeText={account => this.phoneChange(account)}></Input>
                 </Item>
                 <Item style={styles.item}>
                     <View style={styles.iconViewStyle}>
@@ -100,7 +103,10 @@ class LoginPage extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的密码" onChangeText={password => this.passwordtChange(password)}></Input>
+                    <Input placeholder="请输入您的密码" 
+                            secureTextEntry={true}
+                            maxLength={21} 
+                            onChangeText={password => this.passwordtChange(password)}></Input>
                 </Item>
                 <View style={styles.forgotButtonView}>
                     <Button style={styles.forgotButton} onPress={() =>

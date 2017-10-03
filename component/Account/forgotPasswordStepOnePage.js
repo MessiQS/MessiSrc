@@ -44,6 +44,8 @@ export default class ForgotPasswordStepOnePage extends React.Component {
                     <Item style={styles.item}>
                         <Text style={styles.phoneNumberTextStyle}>+86</Text>
                         <Input 
+                            maxLength={11}
+                            keyboardType={'numeric'}
                             style={styles.phoneNumberInputStyle} 
                             placeholder="请输入手机号码" 
                             onChangeText={account => this.accountChange(account)}
