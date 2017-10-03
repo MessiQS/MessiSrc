@@ -50,7 +50,9 @@ export default class ChangePhoneNumberStepTwoPage extends React.Component {
                     <Text style={styles.phoneNumberTextStyle}>+86</Text>
                     <Input 
                         style={styles.phoneNumberInputStyle} 
+                        keyboardType={'numeric'}
                         placeholder="请输入手机号码"
+                        maxLength={11}
                         onChangeText={number => this.updateDate(number)}
                     ></Input>
                 </Item>

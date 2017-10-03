@@ -77,6 +77,7 @@ export default class ForgotPasswordStepThreePage extends React.Component {
                     <Item>
                         <Text style={styles.titleTextStyle}>新密码</Text>
                         <Input
+                            maxLength={21}
                             style={styles.passwordInputStyle}
                             placeholder="请输入新密码"
                             onChangeText={password => this.initPassowrd(password)}
@@ -85,6 +86,7 @@ export default class ForgotPasswordStepThreePage extends React.Component {
                     <Item>
                         <Text style={styles.titleTextStyle}>确认密码</Text>
                         <Input
+                            maxLength={21}
                             style={styles.passwordInputStyle}
                             placeholder="请再次确认新密码"
                             onChangeText={password => this.checkPassowrd(password)}

@@ -51,7 +51,11 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
                 </Text>
                 <Item style={styles.item}>
                     <Text style={styles.vertificationTextStyle}>验证码</Text>
-                    <Input style={styles.vertificationInputStyle} placeholder="请输入短信验证码"></Input>
+                    <Input style={styles.vertificationInputStyle}
+                     placeholder="请输入短信验证码"
+                     maxLength={4}
+                     keyboardType={'numeric'}
+                     ></Input>
                 </Item>
                 <View style={styles.getCodeViewStyle}>
                     <Button bordered style={styles.getCodeButtonStyle} onPress={this.getCode.bind(this)}>

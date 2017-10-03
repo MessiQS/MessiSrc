@@ -69,18 +69,24 @@ class ModifyPasswordPage extends React.Component {
             <Container style={styles.containerStyle}>
                 <Content style={styles.contentStyle}>
                     <Item style={styles.item}>
-                        <Input placeholder="请输入您的旧密码" 
+                        <Input secureTextEntry={true} 
+                            placeholder="请输入您的旧密码" 
+                            maxLength={21}
                             onChangeText={ password => this.changePassword(passwordType[0],password)}
                         ></Input>
                     </Item>
                     <Item style={styles.item}>
-                        <Input placeholder="请输入您的新密码"
+                        <Input secureTextEntry={true} 
+                            placeholder="请输入您的新密码"
+                            maxLength={21}
                             onChangeText={ password => this.changePassword(passwordType[1],password)}
                         ></Input>
                     </Item>
                     <Item style={styles.item}>
-                        <Input placeholder="确认您的新密码"
-                            onChangeText={ password => this.changePassword(passwordType[2],password)}
+                        <Input secureTextEntry={true}
+                             placeholder="确认您的新密码"
+                             maxLength={21}
+                             onChangeText={ password => this.changePassword(passwordType[2],password)}
                         ></Input>
                     </Item>
                     <View style={styles.checkViewStyle}>
