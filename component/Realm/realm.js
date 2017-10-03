@@ -29,6 +29,7 @@ Question.schema = {
         name_of_paper: 'string',
         error_correction: { type: 'string', optional: true },    /// 纠错
         examination_point: { type: 'string', optional: true },   /// 考点
+        kind_of_problem: { type: 'string', optional: true },     /// 题目类型 '历史类' '语义分析'
     }
 }
 

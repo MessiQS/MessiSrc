@@ -68,38 +68,6 @@ export default class Detail extends Component {
 
     }
 
-    // render() {
-    //     return (
-    //         <View style={styles.container}>
-    //             <View style={styles.content}>
-    //                 <ListView>
-    //                     <
-    //                     <Text style={styles.title}>
-    //                         (单选题)
-    //                     </Text>
-    //                     <Text style={styles.question}>
-    //                         {this.state.detail.question}
-    //                     </Text>
-    //                 </ListView>
-    //                 <View style={styles.topAnswer}>
-    //                     <Text style={[styles.answer]}>
-    //                         A.{this.state.detail.option_A}
-    //                     </Text>
-    //                     <Text style={styles.answer}>
-    //                         B.{this.state.detail.option_B}
-    //                     </Text>
-    //                     <Text style={styles.answer}>
-    //                         C.{this.state.detail.option_C}
-    //                     </Text>
-    //                     <Text style={styles.answer}>
-    //                         D.{this.state.detail.option_D}
-    //                     </Text>
-    //                 </View>
-    //             </View>
-    //         </View>
-    //     )
-    // }
-
     render() {
         return (
             <Container>
@@ -158,35 +126,6 @@ export default class Detail extends Component {
         )
     }
 };
-// const textColor = "#0076ff";
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: "#fff"
-//     },
-//     content: {
-//         top: 45,
-//         left: '7%',
-//         width: '86%',
-//     },
-//     title: {
-//         color: textColor,
-//         fontSize: 17,
-//     },
-//     question: {
-//         top: 17,
-//         fontSize: 16,
-//         lineHeight: 20,
-//     },
-//     answer: {
-//         color: textColor,
-//         fontSize: 18,
-//         paddingTop:20,
-//     },
-//     topAnswer: {
-//         top: 40,
-//     }
-// });
 
 var styles = ({
     content: {

@@ -60,7 +60,7 @@ const MainTab = TabNavigator({
 },
     {
         tabBarPosition: 'bottom', // 设置tabbar的位置，iOS默认在底部，安卓默认在顶部。（属性值：'top'，'bottom')
-        swipeEnabled: true, // 是否允许在标签之间进行滑动。
+        swipeEnabled: false, // 是否允许在标签之间进行滑动。
         animationEnabled: false, // 是否在更改标签时显示动画。
         lazy: true, // 是否根据需要懒惰呈现标签，而不是提前制作，意思是在app打开的时候将底部标签栏全部加载，默认false,推荐改成true哦。
         initialRouteName: '', // 设置默认的页面组件
@@ -111,7 +111,10 @@ const TabOptions = (tabBarTitle, normalImage, selectedImage, navTitle) => {
     const headerTitle = navTitle;
     const headerTitleStyle = { color: 'white', alignSelf: 'center', fontSize: 18 };
     // header的style
-    const headerStyle = { backgroundColor: '#1c2733' };
+    const headerStyle = {
+        backgroundColor: '#051425',
+        opacity: 0.9,
+    };
     const tabBarVisible = true;
     const headerLeft = null;
     return { tabBarLabel, tabBarIcon, headerTitle, headerLeft, headerStyle, headerTitleStyle, tabBarVisible };

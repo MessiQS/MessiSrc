@@ -28,9 +28,12 @@ import {
 
 export default class Update extends Component {
     static navigationOptions = ({ navigation }) => ({
-        title: `版本更新`,
-        tabBarVisible:false,
-
+        title: '版本更新',
+        headerStyle: {
+            backgroundColor: '#051425',
+            opacity: 0.9,
+        },
+        headerTintColor: 'white',
     });
     render() {
         return (

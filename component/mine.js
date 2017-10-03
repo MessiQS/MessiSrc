@@ -22,7 +22,8 @@ import {
     ListItem,
     Right,
     Icon,
-    Button
+    Button,
+    Separator
 } from 'native-base';
 import AccountInfo from './Account/accountInfo';
 import Storage from '../service/storage';
@@ -34,22 +35,19 @@ class MineListItem extends Component {
         this.state = props;
 
     }
-    
+
     render() {
         return (
-            <ListItem button onPress={() =>
+            <TouchableOpacity onPress={() =>
                 this.props.navigation.navigate(this.props.item.sref,
                     this.props.item.info
-                )}
-                style={{ borderTopColor: '#dcdcdc', borderTopWidth: this.props.item.tipBorder }}
-            >
-                <Body>
-                    <Text>{this.props.item.name}</Text>
-                </Body>
-                <Right style={{ height: 20 }}>
-                    <Icon name="arrow-forward" />
-                </Right>
-            </ListItem>
+                )}>
+                <View style={styles.cell}>
+                    <View style={styles.cellTitleView}>
+                        <Text>{this.props.item.name}</Text>
+                    </View>  
+                </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -64,7 +62,7 @@ const nativeStyle = {
         backgroundColor: '#fff',
         width: '100%',
         flex: 2
-    }
+    },
 };
 
 class Mine extends Component {
@@ -73,9 +71,9 @@ class Mine extends Component {
         this.state = {
             navigation: props.navigation
         }
-        Storage.getItem('account').then( res=>{
+        Storage.getItem('account').then(res => {
             this.setState({
-                account:res
+                account: res
             })
         })
     }
@@ -101,14 +99,14 @@ class Mine extends Component {
     ];
 
     avatarClick() {
-        
+
     };
     //退出登录
-    outofLogin(){
+    outofLogin() {
         const { navigate } = this.props.navigation;
         //将账号和token存到本地存储
         let setToken = Storage.removeItem('accountToken');
-        setToken.then( res => navigate('Login', { name: 'MainTab' }))
+        setToken.then(res => navigate('Login', { name: 'MainTab' }))
     }
     render() {
         return (
@@ -122,26 +120,25 @@ class Mine extends Component {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <Container contentContainerStyle={{ flex: 1 }}
-                    style={nativeStyle.container}
-                >
-                    <List>
-                        <MineListItem
-                            navigation={this.state.navigation}
-                            item={this.listItemArray[0]}
-                        />
-                        <MineListItem
-                            navigation={this.state.navigation}
-                            item={this.listItemArray[1]}
-                        />
-                        <MineListItem
-                            navigation={this.state.navigation}
-                            item={this.listItemArray[2]}
-                        />
-                    </List>
+                <View style={styles.tableView}>
+                    <View style={styles.separatorView}></View>
+                    <MineListItem
+                        navigation={this.state.navigation}
+                        item={this.listItemArray[0]}
+                    />
+                    <View style={styles.separatorView}></View>
+                    <MineListItem
+                        navigation={this.state.navigation}
+                        item={this.listItemArray[1]}
+                    />
+                    <View style={styles.separatorView}></View>
+                    <MineListItem
+                        navigation={this.state.navigation}
+                        item={this.listItemArray[2]}
+                    />
                     <View style={styles.button}>
                         <View>
-                            <Button bordered danger 
+                            <Button bordered danger
                                 style={{ borderColor: '#608fd3' }}
                                 onPress={this.outofLogin.bind(this)}
                             >
@@ -149,7 +146,7 @@ class Mine extends Component {
                             </Button>
                         </View>
                     </View>
-                </Container>
+                </View>
             </View>
         );
     }
@@ -178,6 +175,26 @@ const styles = StyleSheet.create({
         top: 48,
         fontSize: 14,
         color: '#333'
+    },
+    tableView: {
+        backgroundColor: '#F6F6F6',
+        width: '100%',
+        flex: 2
+    },
+    separatorView: {
+        width: '100%',
+        height: 7,
+    },
+    cell: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        height: 40,
+    },
+    cellTitleView: {
+        marginLeft: 15,
+        height: '100%',
+        justifyContent: 'center',
     }
 });
 

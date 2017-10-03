@@ -49,6 +49,16 @@ export default class Find extends Component {
 		setTimeout(this.callThis.bind(this), 3000)
 	};
 
+	static navigationOptions = ({ navigation }) => ({
+        title: '当前题库',
+        headerStyle: {
+            backgroundColor: '#051425',
+            opacity: 0.9,
+        },
+		headerTintColor: 'white',
+		gesturesEnabled: false
+    });
+
 	callThis() {
 		return this.setState({
 			questions: {
@@ -128,7 +138,7 @@ export default class Find extends Component {
 						style={nativeStyle.container}
 					>
 						<List>
-							<ListItem icon onPress={() => {
+							<ListItem style={{ borderBottomWidth: 0 }} first button={true} icon onPress={() => {
 								console.log(123)
 								this.props.navigation.navigate('Detail', { user: 1 })
 							}
@@ -149,7 +159,7 @@ export default class Find extends Component {
 								</Right>
 							</ListItem>
 						</List>
-						<ListItem icon onPress={() =>
+						<ListItem style={{ borderBottomWidth: 0 }} last button={true} icon onPress={() =>
 							this.props.navigation.navigate('Account', {}
 							)}
 							style={nativeStyle.listItem}
@@ -167,7 +177,6 @@ export default class Find extends Component {
 								<Icon name="arrow-forward" />
 							</Right>
 						</ListItem>
-
 					</Container>
 				</View>
 			</View>

@@ -8,6 +8,17 @@ import {
 import Echarts from 'native-echarts';
 
 export default class Account extends Component {
+
+    static navigationOptions = ({ navigation }) => ({
+        title: '',
+        headerStyle: {
+            backgroundColor: '#051425',
+            opacity: 0.9,
+        },
+        headerTintColor: 'white',
+    });
+
+
     render() {
         const option = {
             series : [

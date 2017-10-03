@@ -28,9 +28,12 @@ import {
 
 export default class Request extends Component {
     static navigationOptions = ({ navigation }) => ({
-        title: `问题反馈`,
-        tabBarVisible:false,
-
+        title: '问题反馈',
+        headerStyle: {
+            backgroundColor: '#051425',
+            opacity: 0.9,
+        },
+        headerTintColor: 'white',
     });
     render() {
         return (
