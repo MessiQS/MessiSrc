@@ -72,6 +72,7 @@ class Mine extends Component {
             navigation: props.navigation
         }
         Storage.getItem('account').then(res => {
+            console.log(res);
             this.setState({
                 account: res
             })

@@ -139,7 +139,6 @@ export default class Find extends Component {
 					>
 						<List>
 							<ListItem style={{ borderBottomWidth: 0 }} first button={true} icon onPress={() => {
-								console.log(123)
 								this.props.navigation.navigate('Detail', { user: 1 })
 							}
 							}

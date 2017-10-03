@@ -9,6 +9,7 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
 import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
+import Storage from '../../service/storage';
 
 export default class ChangePhoneNumberStepThreePage extends React.Component {
 
@@ -27,48 +28,95 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
 
     getCode() {
         const { account } = this.props.navigation.state.params;
-        console.log(account)
         if (!account) {
             Alert.alert('请输入账号')
             return;
-        }else if(!AccountCheck.isValidPhoneNumber(account)){
-            Alert.alert('账号格式错误','请输入11位手机号码');
+        } else if (!AccountCheck.isValidPhoneNumber(account)) {
+            Alert.alert('账号格式错误', '请输入11位手机号码');
             return;
         };
         Http.post('api/getcode', {
             account: account
-        }).then( response => {
-             console.log(response)
+        }).then(response => {
+            this.setState({
+                account: account
+            })
+            console.log(response)
         })
+    }
+    //输入验证码
+    updateData(vericode) {
+        this.setState({
+            vericode: vericode,
+        })
+    }
+
+    updatePhone() {
+        const { account, vericode } = this.state;
+        const navigate = this.state.navigation;
+        //检测验证码
+        Http.post('api/checkcode', {
+            account: account,
+            vericode: vericode
+        }).then(({ type, data }) => {
+            if (type) {
+                //成功则变更密码
+                Storage.getItem('account').then(oldAccount => {
+                    Http.post('api/updatephone', {
+                        oldAccount: oldAccount,
+                        account: account
+                    }).then(({ type, data }) => {
+                        if (type) {
+                            Storage.setItem({
+                                    key:'account',
+                                    value:account
+                                });
+                            Alert.alert('更新账号成功');
+                        } else {
+                            Alert.alert('更新账号失败');
+                        }
+                    })
+                })
+                //失败弹出信息
+            } else {
+                Alert.alert(data);
+            }
+        })
+
     }
 
     render() {
         return (
             <Container style={styles.containerStyle}>
-            <Content style={styles.contentStyle}>
-                <Text style={styles.titleTextSytle}>
-                填写短信验证码完成更换
+                <Content style={styles.contentStyle}>
+                    <Text style={styles.titleTextSytle}>
+                        填写短信验证码完成更换
                 </Text>
-                <Item style={styles.item}>
-                    <Text style={styles.vertificationTextStyle}>验证码</Text>
-                    <Input style={styles.vertificationInputStyle} placeholder="请输入短信验证码"></Input>
-                </Item>
-                <View style={styles.getCodeViewStyle}>
-                    <Button bordered style={styles.getCodeButtonStyle} onPress={this.getCode.bind(this)}>
-                        <Text style={styles.getCodeTextStyle}>获取验证码（59）</Text>
+                    <Item style={styles.item}>
+                        <Text style={styles.vertificationTextStyle}>验证码</Text>
+                        <Input style={styles.vertificationInputStyle}
+                            placeholder="请输入短信验证码"
+                            onChangeText={vericode => this.updateData(vericode)}
+                        ></Input>
+                    </Item>
+                    <View style={styles.getCodeViewStyle}>
+                        <Button bordered style={styles.getCodeButtonStyle} onPress={this.getCode.bind(this)}>
+                            <Text style={styles.getCodeTextStyle}>获取验证码（59）</Text>
+                        </Button>
+                    </View>
+                    <Button style={styles.nextStepButtonSytle}
+                        onPress={this.updatePhone.bind(this)}
+                    >
+                        <Text style={styles.nextStepTextStyle}>完成</Text>
                     </Button>
-                </View>
-                <Button style={styles.nextStepButtonSytle}>
-                    <Text style={styles.nextStepTextStyle}>完成</Text>
-                </Button>
-            </Content>
-        </Container>
+                </Content>
+            </Container>
         );
     }
 }
 
 var styles = ({
-    
+
     containerStyle: {
         flex: 1,
         flexDirection: 'column',
@@ -78,7 +126,7 @@ var styles = ({
     contentStyle: {
         marginTop: 30,
         width: '80%',
-    }, 
+    },
     titleTextSytle: {
         fontSize: 20,
         color: 'black',
@@ -101,7 +149,7 @@ var styles = ({
     getCodeTextStyle: {
         color: '#FFA200',
         fontSize: 7,
-    },   
+    },
     vertificationTextStyle: {
         color: '#FFA200',
         fontSize: 14,
@@ -117,7 +165,7 @@ var styles = ({
         backgroundColor: '#FFA200'
     },
     nextStepTextStyle: {
-        textAlign: 'center', 
-        width: '100%',   
+        textAlign: 'center',
+        width: '100%',
     },
 });
