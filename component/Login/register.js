@@ -136,13 +136,6 @@ class Register extends React.Component {
                 </Item>
                 <View style={{ height: 56 }}></View>
                 <View style={stylesContainer.registerView}>
-                    {/* <Button title="注册"
-                        style={styles.registerButton}
-                        onPress={this._onPressButton.bind(this)}
-                        color="white">
-                        <Text style={styles.registerText}>注册</Text>
-                    </Button> */}
-
                     <TouchableOpacity onPress={this._onPressButton.bind(this)}>
                         <View style={styles.registerButton}>
                             <Text style={styles.registerText}>注册</Text>

@@ -4,7 +4,7 @@
  * @flow
  */
 //题库
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     AppRegistry,
     Text,
@@ -25,7 +25,7 @@ import {
 } from 'native-base';
 import Swiper from 'react-native-swiper';
 import ModalDropdown from 'react-native-modal-dropdown';
-import styles , { nativeStyle } from './messageCss';
+import styles, { nativeStyle } from './messageCss';
 import RepeatItem from './repeatItem';
 
 export default class Message extends Component {
@@ -33,100 +33,112 @@ export default class Message extends Component {
         super(props);
         this.listModel = [
             {
-                name:'刷题',
-                haveRead:100,
-                number:1000,
-                isBuyed:true,
-                key:0,
-                call:this.buyCallback
+                name: '刷题',
+                haveRead: 100,
+                number: 1000,
+                isBuyed: true,
+                key: 0,
+                call: this.buyCallback
             },
-            {name:'刷题1',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:1,
-                call:this.buyCallback
+            {
+                name: '刷题1',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 1,
+                call: this.buyCallback
             },
-            {name:'刷题12',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:2,
-                call:this.buyCallback
+            {
+                name: '刷题12',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 2,
+                call: this.buyCallback
             },
-            {name:'刷题13',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:3,
-                call:this.buyCallback
+            {
+                name: '刷题13',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 3,
+                call: this.buyCallback
             },
-            {name:'刷题14',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:4,
-                call:this.buyCallback
+            {
+                name: '刷题14',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 4,
+                call: this.buyCallback
             },
-            {name:'刷题15',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:5,
-                call:this.buyCallback
+            {
+                name: '刷题15',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 5,
+                call: this.buyCallback
             },
-            {name:'刷题16',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:10,
-                call:this.buyCallback
+            {
+                name: '刷题16',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 10,
+                call: this.buyCallback
             },
-            {name:'刷题1',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:6,
-                call:this.buyCallback
+            {
+                name: '刷题1',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 6,
+                call: this.buyCallback
             },
-            {name:'刷题17',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:7,
-                call:this.buyCallback
+            {
+                name: '刷题17',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 7,
+                call: this.buyCallback
             },
-            {name:'刷题18',
-                haveRead:200,
-                number:1000,
-                isBuyed:false,
-                key:8,
-                call:this.buyCallback
+            {
+                name: '刷题18',
+                haveRead: 200,
+                number: 1000,
+                isBuyed: false,
+                key: 8,
+                call: this.buyCallback(true)
             }
-            ];
+        ];
     };
 
-    buyCallback(havBuyed){
-        if(havBuyed){
+    buyCallback(havBuyed) {
+        if (havBuyed) {
 
-        }else{
+        } else {
 
         }
+        const { navigate } = this.props.navigation;
+        navigate('PayPage', { name: 'PayPage' })
+        console.log('PayPage')
     }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.modelView}>
-                    <ModalDropdown 
-                        style={nativeStyle.noBorederRight} 
-                        defaultValue={"省份"} 
+                    <ModalDropdown
+                        style={nativeStyle.noBorederRight}
+                        defaultValue={"省份"}
                         options={['option 1', 'option 2']}
                         textStyle={nativeStyle.textStyle}
                         dropdownStyle={nativeStyle.dropdownStyle}
                     />
-                    <ModalDropdown 
-                        style={nativeStyle.select} 
-                        defaultValue={"年份"} 
+                    <ModalDropdown
+                        style={nativeStyle.select}
+                        defaultValue={"年份"}
                         options={['option 3', 'option 2']}
                         textStyle={nativeStyle.textStyle}
                         dropdownStyle={nativeStyle.dropdownStyleRight}
@@ -150,11 +162,11 @@ export default class Message extends Component {
                         <Text style={styles.text}>And simple</Text>
                     </View>
                 </Swiper>
-                <Container contentContainerStyle={{flex: 1}}
-                           style={nativeStyle.container}
+                <Container contentContainerStyle={{ flex: 1 }}
+                    style={nativeStyle.container}
                 >
                     <Content>
-                        <RepeatItem model={this.listModel}/>
+                        <RepeatItem model={this.listModel} />
                     </Content>
                 </Container>
             </View>

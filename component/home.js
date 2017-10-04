@@ -105,7 +105,8 @@ export default class Find extends Component {
 					style={styles.wrapper}
 					showsButtons={false}
 					autoplay={true}
-					height={200} showsPagination={false}
+					height={200} 
+					showsPagination={false}
 				>
 					<View style={styles.slide1}>
 						<Text style={styles.text}>Hello Swiper</Text>
@@ -117,7 +118,7 @@ export default class Find extends Component {
 						<Text style={styles.text}>And simple</Text>
 					</View>
 				</Swiper>
-				<View style={styles.content}>
+				{/* <View style={styles.content}>
 					<View style={styles.topcard}>
 						<View style={styles.quesTitle}>
 							<Text style={styles.description}>
@@ -177,7 +178,7 @@ export default class Find extends Component {
 							</Right>
 						</ListItem>
 					</Container>
-				</View>
+				</View> */}
 			</View>
 		);
 	}

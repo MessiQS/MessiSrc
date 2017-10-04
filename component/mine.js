@@ -33,7 +33,6 @@ class MineListItem extends Component {
     constructor(props) {
         super(props);
         this.state = props;
-
     }
 
     render() {
@@ -72,7 +71,6 @@ class Mine extends Component {
             navigation: props.navigation
         }
         Storage.getItem('account').then(res => {
-            console.log(res);
             this.setState({
                 account: res
             })
@@ -113,7 +111,7 @@ class Mine extends Component {
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1, height: 220, alignItems: 'center' }}>
-                    <TouchableOpacity onPress={this.avatarClick}>
+                    <TouchableOpacity onPress={this.avatarClick} >
                         <Thumbnail square source={require('../Images/head.png')}
                             style={nativeStyle.thumbnail} />
                         <Text style={styles.phoneNumber}>
@@ -137,15 +135,21 @@ class Mine extends Component {
                         navigation={this.state.navigation}
                         item={this.listItemArray[2]}
                     />
-                    <View style={styles.button}>
-                        <View>
+                    <View style={styles.buttonView}>
+                        {/* <View>
                             <Button bordered danger
                                 style={{ borderColor: '#608fd3' }}
                                 onPress={this.outofLogin.bind(this)}
                             >
                                 <Text style={styles.outLogin}>退出登录</Text>
                             </Button>
-                        </View>
+                        </View> */}
+
+                        <TouchableOpacity onPress={this.outofLogin.bind(this)} >
+                            <View style={styles.exitButtonStyle}>
+                                <Text style={styles.outLogin}>退出登录</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
     },
-    button: {
+    buttonView: {
         top: 55,
         alignItems: 'center'
     },
@@ -196,6 +200,11 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         height: '100%',
         justifyContent: 'center',
+    },
+    exitButtonStyle: {
+
+        borderColor: '#608fd3',
+        borderWidth: 2,
     }
 });
 

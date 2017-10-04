@@ -39,10 +39,10 @@ class User extends Realm.Object { }
 User.schema = {
 
     name: 'User',
-    primaryKey: 'id',
+    primaryKey: 'userId',
     properties: {
 
-        id: 'string',
+        userId: 'string',
         account: { type: 'string', optional: true },              /// 账号
         avatarURL: { type: 'string' },                            /// 头像
         token: { type: 'string', },

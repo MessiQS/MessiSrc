@@ -44,13 +44,13 @@ export default class Find extends Component {
                 data: ['遗忘曲线', '永久记忆']
             },
             xAxis: {
-                data: ["10-1", "10-2", "10-3", "10-4", "10-5", "10-6", "10-7"]
+                data: ["一", "二", "三", "四", "五", "六", "日"]
             },
             yAxis: {},
             series: [{
                 name: '遗忘曲线',
                 type: 'line',
-                data: [120, 50, 40, 35, 32, 31, 30],
+                data: [5000, 4000, 3000, 2000, 1000, 0],
                 smooth: true
             }, {
                 name: '永久记忆',
@@ -73,9 +73,10 @@ export default class Find extends Component {
                         onDayPress={this.onDayPress}
                     />
                 </View>
-                <View style={styles.chartsView}>
+                {/* <View style={styles.chartsView}> */}
                     <Echarts style={styles.charts} option={option}/>
-                </View>        
+                {/* </View>   */}
+                {/* <Echarts style={styles.charts} option={option}/>       */}
             </View>
         );
     }
@@ -89,11 +90,11 @@ const calenderOptiones={
     Theme : {
         calendarBackground: '#ffffff',
         textSectionTitleColor: '#b6c1cd',
-        selectedDayBackgroundColor: '#00adf5',
+        selectedDayBackgroundColor: '#FFA200',
         selectedDayTextColor: '#ffffff',
         todayTextColor: '#00adf5',
-        dayTextColor: '#2d4150',
-        textDisabledColor: '#d9e1e8',
+        dayTextColor: '#7C86A2',
+        textDisabledColor: '#E1E4E7',
         dotColor: '#00adf5',
         selectedDotColor: '#ffffff',
         arrowColor: '#2d4150',
@@ -117,19 +118,20 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     calendarView: {
-        flex: 1,
+        height: 300,
     },
     calender:{    
         paddingTop: 5,
-        width:'100%',
+        
         borderColor: '#eee',
         height: 350,
     },
     chartsView: {
-        flex: 1,
+        flex: 3,
     },
     charts: {
-        height: 300,
+        flex:3,
+
     }
 });
 
