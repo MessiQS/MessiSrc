@@ -21,19 +21,19 @@ export const styles = {
     icon: {
         opacity: 0.7,
     },
-    vertificationCodeButton: {
+    vertificationCodeView: {
         backgroundColor: '#FFA200',
-        borderRadius: 8,
+        justifyContent: 'center',
         width: 100,
         height: 35,
-        paddingLeft: 0,
-        paddingRight: 0,
+        paddingVertical: 0,
         marginTop: 7,
+        borderRadius: 8,
     },
     vertificationCodeText: {
         fontSize: 14,
-        width: 100,
-        backgroundColor: null,
+        width: '100%',
+        color: 'white',
         textAlign: 'center',
     },
     registerButton: {
@@ -41,13 +41,15 @@ export const styles = {
         backgroundColor: '#FFA200',
         height: 55,
         width: 290,
+        borderRadius: 8,
     },
     registerText: {
-        flex: 1,
-        width: 100,
+        width: '100%',
+        color: 'white',
         fontSize: 20,
-        backgroundColor: null,
         textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     agreeText: {
         width: 100,
