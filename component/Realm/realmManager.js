@@ -78,6 +78,7 @@ export default class RealmManager {
         }
     }
 
+    
 
     /// 查询数据
 
@@ -104,7 +105,16 @@ export default class RealmManager {
         return examinationPaper;
     }
 
+    static getScheduleBySpecialDate(date) {
 
+        let schedule = realm.objects('Schedule').filtered('date=' + date)[0];
 
+        if (schedule.length == 0) {
+
+            console.log("getScheduleBySpecialDate: schedule is empty");
+        }
+
+        return schedule;
+    }
 }
 
