@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     AppRegistry,
     Text,
@@ -17,7 +17,7 @@ import {
     Icon,
     Button
 } from 'native-base';
-import styles , { nativeStyle } from './messageCss';
+import styles, { nativeStyle } from './messageCss';
 
 export default class RepeatItem extends Component {
     constructor(props) {
@@ -44,8 +44,10 @@ export default class RepeatItem extends Component {
                             <Text style={styles.text}>{value.name} {value.haveRead}/{value.number}</Text>
                         </Body>
                         <Right>
-                            <Button bordered danger small style={nativeStyle.button}>
-                            <Text style={styles.buttonText}>购买</Text>
+                            <Button bordered danger small
+                                style={nativeStyle.button}
+                                onPress={() => { value.call(value) }}>
+                                <Text style={styles.buttonText}>购买</Text>
                             </Button>
                             {/* <Text style={styles.tips}>app内购买</Text> */}
                         </Right>

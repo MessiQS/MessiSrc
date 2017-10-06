@@ -38,7 +38,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: true,
                 key: 0,
-                call: this.buyCallback
             },
             {
                 name: '刷题1',
@@ -46,7 +45,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 1,
-                call: this.buyCallback
             },
             {
                 name: '刷题12',
@@ -54,7 +52,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 2,
-                call: this.buyCallback
             },
             {
                 name: '刷题13',
@@ -62,7 +59,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 3,
-                call: this.buyCallback
             },
             {
                 name: '刷题14',
@@ -70,7 +66,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 4,
-                call: this.buyCallback
             },
             {
                 name: '刷题15',
@@ -78,7 +73,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 5,
-                call: this.buyCallback
             },
             {
                 name: '刷题16',
@@ -86,7 +80,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 10,
-                call: this.buyCallback
             },
             {
                 name: '刷题1',
@@ -94,7 +87,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 6,
-                call: this.buyCallback
             },
             {
                 name: '刷题17',
@@ -102,7 +94,6 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 7,
-                call: this.buyCallback
             },
             {
                 name: '刷题18',
@@ -110,9 +101,9 @@ export default class Message extends Component {
                 number: 1000,
                 isBuyed: false,
                 key: 8,
-                call: this.buyCallback(true)
             }
         ];
+        this.listModel.forEach( res => res.call = this.buyCallback.bind(this))
     };
 
     buyCallback(havBuyed) {
@@ -123,7 +114,7 @@ export default class Message extends Component {
         }
         const { navigate } = this.props.navigation;
         navigate('PayPage', { name: 'PayPage' })
-        console.log('PayPage')
+        console.log(havBuyed)
     }
     render() {
         return (
