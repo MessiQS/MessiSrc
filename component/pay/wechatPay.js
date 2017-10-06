@@ -1,17 +1,43 @@
-import * as WeChat from 'react-native-wechat';
+import * as wechat from 'react-native-wechat'
 import { Alert } from 'react-native';
-WeChat.registerApp('sansoApp');
+import Http from '../../service/http';
+import { NetworkInfo } from 'react-native-network-info';
+
+WeChat.registerApp('wx8f1006588bd45d9b');
 
 export default class payService {
     static wechatPay(data) {
+        // const { attach, total_fee } = data;//价格与购买的商品来自于data
+        let total_fee = 1,
+            attach = '2013-安徽';
+        let user_ip;
+        // Get IPv4 IP (Android Only) 
+        NetworkInfo.getIPV4Address(ipv4 => {
+            console.log(ipv4);
+            user_ip = ipv4;
+        });
         WeChat.isWXAppInstalled()
-            .then(isInstalled => {
+            .then(async  isInstalled => {
+                console.log(isInstalled);
                 if (isInstalled) {
+                    const account = await Storage.getItem('account');
+                    //第一步获取账号
+                    const httpRes = await Http.post('api/wechatpay', {
+                        account: account,
+                        user_ip: user_ip,
+                        total_fee: total_fee,
+                        attach: attach
+                    });
+                    if (!httpRes.type) {
+                        Alert.alert(httpRes.data);
+                        return;
+                    };
+                    console.log(httpRes.data);
                     WeChat.once('PayReq.Resp', response => {
                         if (parseInt(response.errCode) === 0) {
-                            toastShort('支付成功');
+                            Alert.alert('支付成功');
                         } else {
-                            toastShort('支付失败');
+                            Alert.alert('支付失败');
                         }
                     });
                     const result = await WeChat.pay(

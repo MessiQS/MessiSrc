@@ -10,7 +10,7 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-
+import payService from './wechatPay';
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
@@ -33,7 +33,9 @@ export default class PayPage extends React.Component {
     componentWillMount = () => {
       
     }
-    
+    wechatPay(){
+        payService.wechatPay();
+    }
 
     render() {
         return (
@@ -59,7 +61,7 @@ export default class PayPage extends React.Component {
                     </View>
                 </TouchableOpacity>
                 <ScrollView></ScrollView>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.wechatPay}>
                     <View style={styles.checkButtonView}>
                         <Text style={styles.checkText}>确认支付</Text>
                     </View>
