@@ -17,7 +17,6 @@ import { Button, Container, List, ListItem, Icon, Right, Left, Body, Switch } fr
 import Swiper from 'react-native-swiper';
 import Echarts from 'native-echarts';
 
-
 const nativeStyle = {
 	container: {
 		backgroundColor: '#fff',
@@ -35,6 +34,7 @@ const nativeStyle = {
 	}
 };
 export default class Find extends Component {
+   
 	constructor() {
 		super();
 		this.state = {
@@ -118,7 +118,7 @@ export default class Find extends Component {
 						<Text style={styles.text}>And simple</Text>
 					</View>
 				</Swiper>
-				{/* <View style={styles.content}>
+				<View style={styles.content}>
 					<View style={styles.topcard}>
 						<View style={styles.quesTitle}>
 							<Text style={styles.description}>
@@ -178,7 +178,7 @@ export default class Find extends Component {
 							</Right>
 						</ListItem>
 					</Container>
-				</View> */}
+				</View>
 			</View>
 		);
 	}
