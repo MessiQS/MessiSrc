@@ -10,8 +10,8 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-// import payService from './wechatPay';
-
+import PayService from './wechatPay';
+const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
@@ -30,12 +30,15 @@ export default class PayPage extends React.Component {
         },
         headerTintColor: 'white',
     });
-
     componentWillMount = () => {
-      
+        //应用注册
+        WeChat.registerApp('wx8f1006588bd45d9b');
+    }
+    share(){
+        PayService.wechatShare();
     }
     wechatPay(){
-        // payService.wechatPay();
+        PayService.wechatPay();
     }
 
     render() {
@@ -56,7 +59,7 @@ export default class PayPage extends React.Component {
                 <TouchableOpacity>
                     <View style={styles.payView}>
                         <Image style={styles.payIcon} source={require('../../Images/wechatPay.png')} ></Image>
-                        <Text style={styles.payTitle}>微信支付</Text>
+                        <Text style={styles.payTitle} onPress={this.share}>微信支付</Text>
                         <ScrollView></ScrollView>
                         <Image style={styles.paySelectIcon} source={require('../../Images/select_icon.png')} ></Image>
                     </View>
