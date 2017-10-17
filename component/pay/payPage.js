@@ -10,8 +10,8 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-import PayService from './wechatPay';
-const WeChat = require('react-native-wechat');
+// import PayService from './wechatPay';
+// const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
@@ -32,13 +32,13 @@ export default class PayPage extends React.Component {
     });
     componentWillMount = () => {
         //应用注册
-        WeChat.registerApp('wx8f1006588bd45d9b');
+        // WeChat.registerApp('wx8f1006588bd45d9b');
     }
     share(){
-        PayService.wechatShare();
+        // PayService.wechatShare();
     }
     wechatPay(){
-        PayService.wechatPay();
+        // PayService.wechatPay();
     }
 
     render() {

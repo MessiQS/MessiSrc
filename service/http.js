@@ -1,6 +1,12 @@
-export default class Http{
+
+import Storage from "./storage";
+import {AlertIOS} from "react-native";
+const webURL = "http://192.168.0.103:8080/";
+
+export default class Http {
+
     static post(api,paramObj){
-        let url = 'http://192.168.0.102:8080/' + api,
+        let url = webURL + api,
             body = ((obj)=>{
                 let keyArray = Object.keys(obj),
                     str = keyArray.map((res,index)=>{
@@ -22,5 +28,23 @@ export default class Http{
                 .then( res => res.json())
                 .catch( err => console.log(err))
 
+    }
+
+    static async getPaper(callback) {
+
+        account = await Storage.getItem("account");
+        token = await Storage.getItem("accountToken");
+
+        let url = webURL+"api/papertype?account=" + account + "&token="+ token;
+
+        fetch(url, {method: "GET"})
+        .then((response) => response.json())
+        .then((responseData) => {
+            console.log(responseData)
+            callback(JSON.parse(responseData));
+        })
+        .catch((error) => {  
+            alert(error)  
+        })
     }
 }

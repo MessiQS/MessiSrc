@@ -31,8 +31,10 @@ class LaunchPage extends React.Component {
                 return Http.post('api/checkToken',{accountToken,account}).then(({ type, data }) => {
                     if(!type){
                         navigate('Login', { name: 'MainTab' })
+                        console.log("login")
                     }else{
                         navigate('MyTab', { name: 'MainTab' })
+                        console.log("MyTab")
                     }
                 })
             }

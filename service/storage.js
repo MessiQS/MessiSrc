@@ -10,7 +10,6 @@ export default class Storage {
         } catch (error) {
             Alert.alert(error)
         }
-
     }
     static setItem({ key, value }) {
         if (!key) {
