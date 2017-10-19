@@ -1,7 +1,7 @@
 
 import Storage from "./storage";
 import {AlertIOS} from "react-native";
-const webURL = "http://192.168.0.103:8080/";
+const webURL = "http://192.168.0.100:8080/";
 
 export default class Http {
 
@@ -40,8 +40,7 @@ export default class Http {
         fetch(url, {method: "GET"})
         .then((response) => response.json())
         .then((responseData) => {
-            console.log(responseData)
-            callback(JSON.parse(responseData));
+            callback(responseData);
         })
         .catch((error) => {  
             alert(error)  

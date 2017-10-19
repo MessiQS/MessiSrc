@@ -25,32 +25,32 @@ export default class MessageTabOne extends React.Component {
     };
 
     componentDidMount() {
-        
+        const that = this
         Http.getPaper(function(data) {
-            this.state.papers = data;
+            console.log(data)
+            that.setState({
+                papers: data.data
+            })
         });
     };
     
     _renderRow = (rowItem, rowId, sectionId) => (
-        <TouchableOpacity key={rowId} onPress={() => { }}>
-            <View
-                style={{
-                    alignItems: 'center', margin: 5, padding: 5,
-                    borderWidth: 0.5, borderColor: DictStyle.colorSet.lineColor
-                }}
-            >
-                <Text style={{ fontSize: DictStyle.fontSet.mSize, color: DictStyle.colorSet.normalFontColor }}>
-                    {rowItem.title}
-                </Text>
-            </View>
-        </TouchableOpacity>
+        <View style={styles.itemViewStyle}>
+            <Text numberOfLines={1} style={styles.itemText}>{this.state.papers[sectionId].data[rowId].value}</Text>
+            <ScrollView></ScrollView>
+            <TouchableOpacity  key={rowId} onPress={() => { }}>
+                <View style={styles.itemButton}>
+                    <Text style={styles.itemButtonText}>购买</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
     );
 
     _renderSection = (section, sectionId) => {
         return (
             <View style={styles.sectionViewStyle}>
-                <Text style={styles.sectionTitleStyle}>{city["SC0000"+sectionId]}</Text>
-                <Text style={styles.detailTitleStyle}>10套真题</Text>
+                <Text style={styles.sectionTitleStyle}>{section}</Text>
+                <Text style={styles.detailTitleStyle}>{this.state.papers[sectionId].data.length}套真题</Text>
                 <ScrollView></ScrollView>
                 <Image style={styles.arrowStyle} source={require('../../Images/arrow_up.png')}></Image>
             </View>
@@ -95,5 +95,32 @@ const styles = ({
         width: 22,
         height: 22,
         marginRight: 22,
+    },
+    itemViewStyle: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        height: 30,
+        backgroundColor: 'white',
+    },
+    itemText: {
+        marginTop: 10,
+        marginLeft: 19,
+        height: '100%',
+        alignItems: 'center',
+    },
+    itemButton: {
+        marginRight: 10,
+        width: 50,
+        height: 25,
+        borderWidth: 1,
+        borderColor: '#FFA200',
+        alignItems: 'center',
+        borderRadius: 4,
+    },
+    itemButtonText: {
+        color: '#FFA200',
+        fontSize: 12,
+        marginVertical: 5,        
     }
 })
