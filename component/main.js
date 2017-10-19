@@ -121,6 +121,7 @@ const TabOptions = (tabBarTitle, normalImage, selectedImage, navTitle) => {
     return { tabBarLabel, tabBarIcon, headerTitle, headerLeft, headerStyle, headerTitleStyle, tabBarVisible };
 };
 const Messi = StackNavigator({
+    
     // 将TabNavigator包裹在StackNavigator里面可以保证跳转页面的时候隐藏tabbar
     LaunchPage: {
         screen: LaunchPage,

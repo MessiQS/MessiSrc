@@ -11,7 +11,6 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	// Button
 } from 'react-native';
 import { Button, Container, List, ListItem, Icon, Right, Left, Body, Switch } from 'native-base';
 import Swiper from 'react-native-swiper';
@@ -268,6 +267,7 @@ const styles = StyleSheet.create({
 		color: '#8f8e94'
 	},
 	wrapper: {
+		marginTop:0,
 		height: 200
 	},		
 	slide1: {
