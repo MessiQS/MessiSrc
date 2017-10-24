@@ -10,9 +10,7 @@ import {
 } from 'react-native';
 import CollapseListView from "./collapseListView"
 import ExpandableList from 'react-native-expandable-section-flatlist';
-import MockData from './mockData';
 import DictStyle from './dictStyle';
-import { province, city } from '../../service/config';
 import Http from "../../service/http";
 
 
@@ -29,7 +27,6 @@ export default class MessageTabOne extends React.Component {
     componentDidMount() {
         const that = this
         Http.getPaper(function(data) {
-            console.log(data)
             that.setState({
                 papers: data.data
             })
@@ -45,7 +42,15 @@ export default class MessageTabOne extends React.Component {
         const that = this
         let { papers } = that.state;
         id = papers[sectionId].data[rowId].id
-        console.log("id" + id)
+        console.log("id:" + id)
+
+        Http.downloadPaper(id)
+        .then((data) => {
+            console.log(data)
+        })
+        .catch((error) => {
+            alert(error)
+        })
     }
 
     _renderRow = (rowItem, rowId, sectionId) => (

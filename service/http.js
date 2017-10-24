@@ -47,7 +47,21 @@ export default class Http {
         })
     }
 
-    static async download() {
+    static async downloadPaper(paperId, callback) {
         
+        account = await Storage.getItem("account");
+        token = await Storage.getItem("accountToken");
+
+        let url = webURL+"api/getpaper?account=" + account + "&token="+ token + "&paperId=" + paperId;
+
+        fetch(url, {method: "GET"})
+        .then((response) => response.json())
+        .then((responseData) => {
+            console.log(responseData)
+            callback(responseData);
+        })
+        .catch((error) => {  
+            alert(error)  
+        })
     }
 }
