@@ -27,6 +27,9 @@ import {
 } from 'native-base';
 import AccountInfo from './Account/accountInfo';
 import Storage from '../service/storage';
+import Pingpay from '../service/pingpp';
+var Pingpp = require('pingpp-react-native');
+Pingpp.setDebugModel(true);  
 
 class MineListItem extends Component {
 
@@ -100,6 +103,24 @@ class Mine extends Component {
     avatarClick() {
 
     };
+    //支付测试
+    async paytest(){
+        // PayService.wechatPay();
+        const response = await Pingpay.createCharge({
+            client_ip:"192.168.0.103",
+            amount:'1',
+            channel:'wx',
+            subject:'ss0001',
+            body:"1234"
+        });
+
+        Pingpp.createPayment({
+            "object": response.data,
+            "urlScheme": "wx8f1006588bd45d9b"
+        }, function(res, error) {
+            console.log(res, error);
+        });
+    }
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
@@ -136,14 +157,13 @@ class Mine extends Component {
                         item={this.listItemArray[2]}
                     />
                     <View style={styles.buttonView}>
-                        {/* <View>
-                            <Button bordered danger
-                                style={{ borderColor: '#608fd3' }}
-                                onPress={this.outofLogin.bind(this)}
+                        <View>
+                            <Button bordered
+                                onPress={this.paytest.bind(this)}
                             >
-                                <Text style={styles.outLogin}>退出登录</Text>
+                                <Text style={styles.outLogin}>支付测试</Text>
                             </Button>
-                        </View> */}
+                        </View>
 
                         <TouchableOpacity onPress={this.outofLogin.bind(this)} >
                             <View style={styles.exitButtonStyle}>

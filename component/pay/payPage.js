@@ -10,7 +10,7 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-// import PayService from './wechatPay';
+import Pingpay from '../../service/pingpp';
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -37,8 +37,16 @@ export default class PayPage extends React.Component {
     share(){
         // PayService.wechatShare();
     }
-    wechatPay(){
+    async wechatPay(){
         // PayService.wechatPay();
+        const response = Pingpay.createCharge({
+            client_ip:"192.168.0.103",
+            amount:'100',
+            channel:'alipay',
+            subject:'ss0001',
+            body:"1234"
+        });
+        console.log(response)
     }
 
     render() {
