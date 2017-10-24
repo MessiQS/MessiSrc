@@ -11,7 +11,7 @@ import {
 import CollapseListView from "./collapseListView"
 import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
-import Http from "../../service/http";
+import MessageService from "../../service/message.service";
 
 
 
@@ -26,7 +26,7 @@ export default class MessageTabOne extends React.Component {
 
     componentDidMount() {
         const that = this
-        Http.getPaper(function(data) {
+        MessageService.getPaper().then(data => {
             that.setState({
                 papers: data.data
             })
@@ -44,8 +44,9 @@ export default class MessageTabOne extends React.Component {
         id = papers[sectionId].data[rowId].id
         console.log("id:" + id)
 
-        Http.downloadPaper(id)
-        .then((data) => {
+        MessageService.downloadPaper({
+            paperId:id
+        }).then((data) => {
             console.log(data)
         })
         .catch((error) => {
