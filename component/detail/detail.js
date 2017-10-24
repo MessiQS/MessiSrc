@@ -9,22 +9,14 @@ import {
     StyleSheet,
     Text,
     View,
-    Image,
-    ListView
+    Image
 } from 'react-native';
 import {
     Container,
-    Header,
-    Title,
     Body,
-    Thumbnail,
     Content,
     List,
-    ListItem,
-    Right,
-    Icon,
-    Button,
-    Left
+    ListItem
 } from 'native-base';
 
 const question = {

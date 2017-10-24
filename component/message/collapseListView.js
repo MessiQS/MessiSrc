@@ -1,12 +1,5 @@
 
-import React, { Component } from 'react';
-import {
-    AppRegistry,
-    Text,
-    View,
-    SectionList,
-    ListItem,
-} from 'react-native';
+import React from 'react';
 import ExpanableList from 'react-native-expandable-section-flatlist';
 
 export default class CollapseListView extends React.PureComponent {

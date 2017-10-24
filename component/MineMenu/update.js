@@ -6,24 +6,10 @@
 
 import React, { Component } from 'react';
 import {
-    StyleSheet,
-    // View,
-    // Text
-} from 'react-native';
-import {
     Container,
     Text,
-    Header,
-    Title,
     Body,
-    View,
-    Thumbnail,
-    Content,
-    List,
-    ListItem,
-    Right,
-    Icon,
-    Button
+    Content
 } from 'native-base';
 
 export default class Update extends Component {

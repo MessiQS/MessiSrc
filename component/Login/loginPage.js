@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     Alert,
     View,
-    TextInput,
-    TouchableOpacity,
-    TouchableHighlight,
-    StyleSheet,
 } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Container, Content, List, ListItem, Right, Left, Body, Switch, Form, Item, Input, Label, Text } from 'native-base';
+import { Button, Item, Input, Label, Text } from 'native-base';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
 import Icon from 'react-native-vector-icons/Ionicons';

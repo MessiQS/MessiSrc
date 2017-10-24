@@ -1,14 +1,5 @@
-import React, { Component } from 'react';
-import {
-    Image,
-    View,
-    TextInput,
-    TouchableOpacity,
-    TouchableHighlight,
-    StyleSheet,
-} from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text, Header, Separator } from 'native-base';
+import React from 'react';
+import { Button, Container, Content, ListItem, Body, Icon, Right, Text, Separator } from 'native-base';
 
 class AccountInfo extends React.Component {
 

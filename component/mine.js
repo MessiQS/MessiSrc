@@ -12,24 +12,18 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {
-    Container,
-    Header,
-    Title,
     Body,
     Thumbnail,
     Content,
-    List,
     ListItem,
     Right,
-    Icon,
-    Button,
-    Separator
+    Button
 } from 'native-base';
 import AccountInfo from './Account/accountInfo';
 import Storage from '../service/storage';
 import Pingpay from '../service/pingpp';
 var Pingpp = require('pingpp-react-native');
-Pingpp.setDebugModel(true);  
+// Pingpp.setDebugModel(true);  
 
 class MineListItem extends Component {
 

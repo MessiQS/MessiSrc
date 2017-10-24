@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     Image,
     Text,
     View,
-    Alert,
     TouchableOpacity,
     ScrollView
 } from 'react-native';
@@ -87,7 +85,7 @@ export default class MessageTabOne extends React.Component {
                 memberKey="data"
                 renderRow={this._renderRow}
                 renderSectionHeaderX={this._renderSection}
-                openOptions={[1, 2,]}
+                openOptions={[]}
             />
         )
     }

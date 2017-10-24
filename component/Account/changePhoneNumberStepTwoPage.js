@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import {
-    StyleSheet,
-    Image,
     View,
 } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
+import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 
-export default class ChangePhoneNumberStepTwoPage extends React.Component {
+export default class ChangePhoneNumberStepTwoPage extends Component {
 
     constructor(props) {
 		super(props);

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
     Alert,
-    StyleSheet,
     View,
 } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
+import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';

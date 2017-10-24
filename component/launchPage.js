@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     View,
 } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
 import Storage from '../service/storage';
 import Http from '../service/http';
 

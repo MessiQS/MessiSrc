@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    Text,
-    View
-} from 'react-native';
-import {
-    Container,
-    Header,
-    Title,
-    Body,
-    Thumbnail,
-    Content,
     List,
     ListItem,
     Right,
-    Icon,
     Button
 } from 'native-base';
 import styles, { nativeStyle } from './messageCss';

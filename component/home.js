@@ -7,12 +7,11 @@
 
 import React, { Component } from 'react';
 import {
-	AppRegistry,
 	StyleSheet,
 	Text,
 	View,
 } from 'react-native';
-import { Button, Container, List, ListItem, Icon, Right, Left, Body, Switch } from 'native-base';
+import { Container, ListItem, Icon, Right, Left, Body } from 'native-base';
 import Swiper from 'react-native-swiper';
 import Echarts from 'native-echarts';
 

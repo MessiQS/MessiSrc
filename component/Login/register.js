@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import {
     Alert,
     View,
-    TextInput,
     TouchableOpacity,
-    TouchableHighlight,
     StyleSheet,
     Button
 } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Container, Content, List, ListItem, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
+import { Item, Input, Text } from 'native-base';
 import stylesContainer, { styles } from './registerCss';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';

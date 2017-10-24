@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {
 	StyleSheet,
-	Image,
 	Text,
 	View,
 	Alert
 } from 'react-native';
 import Button from 'apsl-react-native-button';
-import { TabNavigator, StackNavigator } from "react-navigation";
 import Register from './register';
 import Storage from '../../service/storage';
 

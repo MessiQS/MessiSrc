@@ -6,12 +6,11 @@
 
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     View
 } from 'react-native';
-import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 import Echarts from 'native-echarts';
 
 

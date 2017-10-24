@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import {
-    Alert,
     View,
     Text,
     Image,
-    TextInput,
     TouchableOpacity,
-    TouchableHighlight,
-    StyleSheet,
     ScrollView
 } from 'react-native';
 import Pingpay from '../../service/pingpp';

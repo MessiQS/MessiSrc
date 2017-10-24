@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import {
     Alert,
-    StyleSheet,
-    Image,
     View,
 } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Container, Content, List, ListItem, Icon, Right, Left, Body, Switch, Form, Item, Input, Text } from 'native-base';
+import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import AccountCheck from '../../service/accountCheck';
 export default class ForgotPasswordStepOnePage extends React.Component {
 

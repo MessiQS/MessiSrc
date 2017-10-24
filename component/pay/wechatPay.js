@@ -4,6 +4,7 @@ import Http from '../../service/http';
 import { NetworkInfo } from 'react-native-network-info';
 import Storage from '../../service/storage';
 import MD5 from 'crypto-js/md5';
+
 let getWechatSign = (props) =>{
 	let keyArr = Object.keys(props).sort();
 	let stringA = '';
