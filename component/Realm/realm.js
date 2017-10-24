@@ -26,7 +26,7 @@ Question.schema = {
         recipe: { type: 'string', optional: true },              /// 技巧
         type_of_problem: { type: 'string', optional: true },     /// 类型 '单选题'
         type: 'string',
-        name_of_paper: 'string',
+        name_of_paper: 'string',                                 /// 试卷名称 "2004年国家(A卷)《行测》真题"
         error_correction: { type: 'string', optional: true },    /// 纠错
         examination_point: { type: 'string', optional: true },   /// 考点
         kind_of_problem: { type: 'string', optional: true },     /// 题目类型 '历史类' '语义分析'

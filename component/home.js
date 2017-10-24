@@ -16,22 +16,6 @@ import { Button, Container, List, ListItem, Icon, Right, Left, Body, Switch } fr
 import Swiper from 'react-native-swiper';
 import Echarts from 'native-echarts';
 
-const nativeStyle = {
-	container: {
-		backgroundColor: '#fff',
-		width: '100%',
-	},
-	listItem: {
-		borderTopColor: '#dcdcdc',
-		borderTopWidth: 0,
-		height: 75,
-		top: 10,
-		bottom: 10,
-	},
-	right: {
-		height: 60
-	}
-};
 export default class Find extends Component {
    
 	constructor() {
@@ -137,31 +121,27 @@ export default class Find extends Component {
 					<Container contentContainerStyle={{ flex: 1 }}
 						style={nativeStyle.container}
 					>
-						<List>
-							<ListItem style={{ borderBottomWidth: 0 }} first button={true} icon onPress={() => {
-								this.props.navigation.navigate('Detail', { user: 1 })
-							}
-							}
-								style={nativeStyle.listItem}
-							>
-								<Left>
-									<View style={styles.orange}></View>
-								</Left>
-								<Body>
-									<Text style={styles.bodyText}>新题</Text>
-								</Body>
-								<Right style={nativeStyle.right}>
-									<Text style={styles.haveDone}>
-										{this.state.questions.new}/{this.state.all}
-									</Text>
-									<Icon name="arrow-forward" />
-								</Right>
-							</ListItem>
-						</List>
-						<ListItem style={{ borderBottomWidth: 0 }} last button={true} icon onPress={() =>
+						<View style={styles.separatorLine}></View>
+						<ListItem style={ styles.listItem } last button={true} icon onPress={() => {
+							this.props.navigation.navigate('Detail', { user: 1 })
+						}}>
+							<Left>
+								<View style={styles.orange}></View>
+							</Left>
+							<Body>
+								<Text style={styles.bodyText}>新题</Text>
+							</Body>
+							<Right style={nativeStyle.right}>
+								<Text style={styles.haveDone}>
+									{this.state.questions.new}/{this.state.all}
+								</Text>
+								<Icon name="arrow-forward" />
+							</Right>
+						</ListItem>
+						<View style={styles.separatorLine}></View>
+						<ListItem style={ styles.listItem } last button={true} icon onPress={() =>
 							this.props.navigation.navigate('Account', {}
 							)}
-							style={nativeStyle.listItem}
 						>
 							<Left>
 								<View style={styles.red}></View>
@@ -186,13 +166,12 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		backgroundColor: '#fff',
 	},
 	content: {
-		top: 30,
+		top: 13,
 		alignItems: 'center',
 		width: '100%',
-		flex: 1
+		flex: 2
 	},
 	instructions: {
 		textAlign: 'center',
@@ -201,9 +180,10 @@ const styles = StyleSheet.create({
 	},
 	topcard: {
 		width: '100%',
-		height: 95,
+		height: 114,
 		borderColor: '#fff',
 		flexDirection: 'row',
+		backgroundColor: '#FEFEFE',
 	},
 	quesTitle: {
 		width: '70%',
@@ -248,18 +228,18 @@ const styles = StyleSheet.create({
 		width: 25,
 		height: 25,
 		borderRadius: 13,
-		backgroundColor: '#ffa62b',
-		top: -6
+		backgroundColor: '#5AAFEE',
+		top: 0,
 	},
 	red: {
 		width: 25,
 		height: 25,
 		borderRadius: 13,
-		backgroundColor: '#ff477b',
-		top: -6
+		backgroundColor: '#D0021B',
+		top: 0
 	},
 	bodyText: {
-		height: 30,
+		height: 17,
 		fontSize: 17,
 	},
 	haveDone: {
@@ -292,6 +272,34 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 30,
 		fontWeight: 'bold',
+		alignSelf: 'center',
+	},
+	separatorLine: {
+		height: 13,
+
+	},
+	listItem: {
+		borderBottomWidth: 0
+	},
+	groupTableViewColor: {
+		backgroundColor: "black",
 	}
 });
 
+
+const nativeStyle = {
+	container: {
+		width: '100%',
+	},
+	listItem: {
+		backgroundColor: '#FEFEFE',
+		borderTopColor: '#dcdcdc',
+		borderTopWidth: 0,
+		height: 44,
+		top: 0,
+		bottom: 0,
+	},
+	right: {
+		height: 44
+	}
+};

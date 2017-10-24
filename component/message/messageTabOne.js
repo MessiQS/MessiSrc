@@ -15,6 +15,8 @@ import DictStyle from './dictStyle';
 import { province, city } from '../../service/config';
 import Http from "../../service/http";
 
+
+
 export default class MessageTabOne extends React.Component {
 
     constructor(props) {
@@ -34,11 +36,25 @@ export default class MessageTabOne extends React.Component {
         });
     };
     
+    getKeyByValue(object, value) {
+        return Object.keys(object).find(key => object[key] === value);
+    }
+
+    buy(sectionId, rowId) {
+
+        const that = this
+        let { papers } = that.state;
+        id = papers[sectionId].data[rowId].id
+        console.log("id" + id)
+    }
+
     _renderRow = (rowItem, rowId, sectionId) => (
         <View style={styles.itemViewStyle}>
-            <Text numberOfLines={1} style={styles.itemText}>{this.state.papers[sectionId].data[rowId].value}</Text>
+            <Text numberOfLines={1} style={styles.itemText}>{rowItem.value}</Text>
             <ScrollView></ScrollView>
-            <TouchableOpacity  key={rowId} onPress={() => { }}>
+            <TouchableOpacity key={rowId} onPress={ () => {
+                this.buy(sectionId, rowId);
+            }}>
                 <View style={styles.itemButton}>
                     <Text style={styles.itemButtonText}>购买</Text>
                 </View>

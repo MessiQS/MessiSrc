@@ -46,4 +46,8 @@ export default class Http {
             alert(error)  
         })
     }
+
+    static async download() {
+        
+    }
 }

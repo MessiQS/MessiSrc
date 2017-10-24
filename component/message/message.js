@@ -54,11 +54,12 @@ var styles = ({
         height:2,
     },
     scrollableTabViewStyle: {
-        marginTop: -10
+        marginTop: -10,
+        paddingTop: 50,
     },
     tabBarTextStyle: {
         fontSize: 14,
-        marginTop: 15
-    }
+        marginTop: 15,
+    },
 })
 
