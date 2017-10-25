@@ -30,7 +30,7 @@ export default class MessageTabOne extends React.Component {
             ),
             papers = [];
             this.cacheData = data.data;
-            papers = this.getCurrentPaper([]);
+            papers = this.getCurrentPaper();
             that.setState({
                 papers: papers,
                 arrow_image_list_source:list
@@ -38,24 +38,15 @@ export default class MessageTabOne extends React.Component {
         });
     };
 
-    getCurrentPaper(indexArr){
+    getCurrentPaper(){
         return this.cacheData.map( (res,idx) => {
-            if(indexArr.indexOf(idx) >= 0){
-                res.length = res.length || res.data.length;
-                return res;
-            }else{
-                return {
-                    title:res.title,
-                    data:[],
-                    length:res.data.length
-                }
-            }
+            res.length = res.length || res.data.length;
+            return res;
         })
     };
     headerOnPress(sectionId, isClose){
         const that = this;
-        let papers,
-            list = that.state.arrow_image_list_source;
+        let list = that.state.arrow_image_list_source;
         list[sectionId] = isClose ? require("../../Images/arrow_down.png") : require("../../Images/arrow_up.png");
         if(isClose){
             //关闭
@@ -67,10 +58,8 @@ export default class MessageTabOne extends React.Component {
             //打开
             openCloseCache.push(sectionId);
         };
-        papers = this.getCurrentPaper(openCloseCache);
         that.setState({
             arrow_image_list_source:list,
-            papers:papers,
         })
     }
 
