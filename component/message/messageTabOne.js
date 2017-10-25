@@ -25,10 +25,9 @@ export default class MessageTabOne extends React.Component {
         const that = this
         MessageService.getPaper().then(data => {
             let list = []
-            for (var i=0;i<data.data.length;i++) {
+            data.data.forEach(function(item) {
                 list.push(require('../../Images/arrow_down.png'))
-            }
-            console.log("list:" + list)
+            })
             that.setState({
                 papers: data.data,
                 arrow_image_list_source:list
@@ -96,9 +95,7 @@ export default class MessageTabOne extends React.Component {
                     
                     const that = this
                     let list = that.state.arrow_image_list_source
-                    console.log("list" + list)
                     list[sectionId] = isClose ? require("../../Images/arrow_down.png") : require("../../Images/arrow_up.png")
-                    console.log("list[sectionId]" + list[sectionId])
                     that.setState({
                         arrow_image_list_source:list
                     })
