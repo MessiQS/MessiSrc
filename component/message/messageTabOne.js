@@ -25,12 +25,12 @@ export default class MessageTabOne extends React.Component {
     componentDidMount() {
         const that = this
         MessageService.getPaper().then(data => {
-            let list = [],papers = [];
+            let list = data.data.map(
+                res => require('../../Images/arrow_down.png')
+            ),
+            papers = [];
             this.cacheData = data.data;
-            for (var i=0;i<data.data.length;i++) {
-                list.push(require('../../Images/arrow_down.png'));
-                papers = this.getCurrentPaper([]);
-            }
+            papers = this.getCurrentPaper([]);
             that.setState({
                 papers: papers,
                 arrow_image_list_source:list
