@@ -11,6 +11,7 @@ import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
 import MessageService from "../../service/message.service";
 
+let openCloseCache = [];
 export default class MessageTabOne extends React.Component {
 
     constructor(props) {
@@ -24,17 +25,54 @@ export default class MessageTabOne extends React.Component {
     componentDidMount() {
         const that = this
         MessageService.getPaper().then(data => {
-            let list = []
+            let list = [],papers = [];
+            this.cacheData = data.data;
             for (var i=0;i<data.data.length;i++) {
-                list.push(require('../../Images/arrow_down.png'))
+                list.push(require('../../Images/arrow_down.png'));
+                papers = this.getCurrentPaper([]);
             }
-            console.log("list:" + list)
             that.setState({
-                papers: data.data,
+                papers: papers,
                 arrow_image_list_source:list
             })
         });
     };
+
+    getCurrentPaper(indexArr){
+        return this.cacheData.map( (res,idx) => {
+            if(indexArr.indexOf(idx) >= 0){
+                res.length = res.length || res.data.length;
+                return res;
+            }else{
+                return {
+                    title:res.title,
+                    data:[],
+                    length:res.data.length
+                }
+            }
+        })
+    };
+    headerOnPress(sectionId, isClose){
+        const that = this;
+        let papers,
+            list = that.state.arrow_image_list_source;
+        list[sectionId] = isClose ? require("../../Images/arrow_down.png") : require("../../Images/arrow_up.png");
+        if(isClose){
+            //关闭
+            let thisIndex = openCloseCache.indexOf(sectionId);
+            if(thisIndex >= 0){
+                openCloseCache.splice(thisIndex,1);
+            }
+        }else{
+            //打开
+            openCloseCache.push(sectionId);
+        };
+        papers = this.getCurrentPaper(openCloseCache);
+        that.setState({
+            arrow_image_list_source:list,
+            papers:papers,
+        })
+    }
 
     getKeyByValue(object, value) {
         return Object.keys(object).find(key => object[key] === value);
@@ -75,7 +113,7 @@ export default class MessageTabOne extends React.Component {
         return (
             <View style={styles.sectionViewStyle}>
                 <Text style={styles.sectionTitleStyle}>{section}</Text>
-                <Text style={styles.detailTitleStyle}>{this.state.papers[sectionId].data.length}套真题</Text>
+                <Text style={styles.detailTitleStyle}>{this.state.papers[sectionId].length}套真题</Text>
                 <ScrollView></ScrollView>
                 <Image style={styles.arrowStyle} 
                 source={this.state.arrow_image_list_source[sectionId]} ></Image>
@@ -93,15 +131,7 @@ export default class MessageTabOne extends React.Component {
                 renderSectionHeaderX={this._renderSection}
                 openOptions={[]}
                 headerOnPress={(sectionId, isClose) => {
-                    
-                    const that = this
-                    let list = that.state.arrow_image_list_source
-                    console.log("list" + list)
-                    list[sectionId] = isClose ? require("../../Images/arrow_down.png") : require("../../Images/arrow_up.png")
-                    console.log("list[sectionId]" + list[sectionId])
-                    that.setState({
-                        arrow_image_list_source:list
-                    })
+                    this.headerOnPress(sectionId, isClose)
                 }}
             />
         )
