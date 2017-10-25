@@ -11,26 +11,31 @@ import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
 import MessageService from "../../service/message.service";
 
-
-
 export default class MessageTabOne extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            papers: []
+            papers: [],
+            arrow_image_list_source:[]
         };
     };
 
     componentDidMount() {
         const that = this
         MessageService.getPaper().then(data => {
+            let list = []
+            for (var i=0;i<data.data.length;i++) {
+                list.push(require('../../Images/arrow_down.png'))
+            }
+            console.log("list:" + list)
             that.setState({
-                papers: data.data
+                papers: data.data,
+                arrow_image_list_source:list
             })
         });
     };
-    
+
     getKeyByValue(object, value) {
         return Object.keys(object).find(key => object[key] === value);
     }
@@ -43,7 +48,7 @@ export default class MessageTabOne extends React.Component {
         console.log("id:" + id)
 
         MessageService.downloadPaper({
-            paperId:id
+            paperId: id
         }).then((data) => {
             console.log(data)
         })
@@ -56,7 +61,7 @@ export default class MessageTabOne extends React.Component {
         <View style={styles.itemViewStyle}>
             <Text numberOfLines={1} style={styles.itemText}>{rowItem.value}</Text>
             <ScrollView></ScrollView>
-            <TouchableOpacity key={rowId} onPress={ () => {
+            <TouchableOpacity key={rowId} onPress={() => {
                 this.buy(sectionId, rowId);
             }}>
                 <View style={styles.itemButton}>
@@ -72,7 +77,8 @@ export default class MessageTabOne extends React.Component {
                 <Text style={styles.sectionTitleStyle}>{section}</Text>
                 <Text style={styles.detailTitleStyle}>{this.state.papers[sectionId].data.length}套真题</Text>
                 <ScrollView></ScrollView>
-                <Image style={styles.arrowStyle} source={require('../../Images/arrow_up.png')}></Image>
+                <Image style={styles.arrowStyle} 
+                source={this.state.arrow_image_list_source[sectionId]} ></Image>
             </View>
         );
     };
@@ -86,6 +92,17 @@ export default class MessageTabOne extends React.Component {
                 renderRow={this._renderRow}
                 renderSectionHeaderX={this._renderSection}
                 openOptions={[]}
+                headerOnPress={(sectionId, isClose) => {
+                    
+                    const that = this
+                    let list = that.state.arrow_image_list_source
+                    console.log("list" + list)
+                    list[sectionId] = isClose ? require("../../Images/arrow_down.png") : require("../../Images/arrow_up.png")
+                    console.log("list[sectionId]" + list[sectionId])
+                    that.setState({
+                        arrow_image_list_source:list
+                    })
+                }}
             />
         )
     }
@@ -142,6 +159,6 @@ const styles = ({
     itemButtonText: {
         color: '#FFA200',
         fontSize: 12,
-        marginVertical: 5,        
+        marginVertical: 5,
     }
 })
