@@ -2,18 +2,23 @@
 
 import realm from './realm';
 
+
 export default class RealmManager {
 
-
     /// 创建
-    static createQuestion(question) {
+    static createQuestion(questionPaper) {
 
         try {
             realm.write(() => {
-                 realm.create('Question', question);
+                
+                questionPaper.data.forEach( function(value, index) {
+    
+                    realm.create('QuestionPaper', value);
+                })
+                console.log("QuestionPaper save success")
             });
         } catch (e) {
-             console.log("Question Error on creation");
+            console.log("QuestionPaper Error on creation" + e);
         }
     }
 

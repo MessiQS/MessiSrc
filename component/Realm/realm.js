@@ -3,33 +3,31 @@
 import Realm from 'realm';
 
 /// 试题
-class Question extends Realm.Object { }
+class QuestionPaper extends Realm.Object { }
 
-Question.schema = {
+QuestionPaper.schema = {
 
-    name: 'Question',
-    primaryKey: 'uid',
+    name: 'QuestionPaper',
+    primaryKey: 'id',
     properties: {
 
-        uid: 'string',                                           /// 标识 ID        
+        id: 'string',                                            /// 标识 ID        
         analysis: { type: 'string', optional: true },            /// 解析
         answer: 'string',                                        /// 答案
-        category_of_problem: 'string',                           /// 题目类型: "资料分析"  "常识判断" "言语理解与表达"  "数量关系" "判断推理"
-        expand: { type: 'string', optional: true },              /// 拓展
-        number: 'int',                                           /// 题号
+        category: 'string',                                      /// 题目类型: "资料分析"  "常识判断" "言语理解与表达"  "数量关系" "判断推理"
+        created_at: 'string',                                    /// 创建时间 时间戳
+        updated_at: 'string',                                    /// 更新时间 "yyyy-MM-DD hh-mm-ss"
+        question_number: 'string',                               /// 题号
         option_A: { type: 'string', optional: true },            /// 选项 A
         option_B: { type: 'string', optional: true },            /// 选项 B
         option_C: { type: 'string', optional: true },            /// 选项 C
         option_D: { type: 'string', optional: true },            /// 选项 D
-        paraphrase: { type: 'string', optional: true },          /// 释义
         province: { type: 'string' },                            /// 省份
-        recipe: { type: 'string', optional: true },              /// 技巧
-        type_of_problem: { type: 'string', optional: true },     /// 类型 '单选题'
-        type: 'string',
-        name_of_paper: 'string',                                 /// 试卷名称 "2004年国家(A卷)《行测》真题"
-        error_correction: { type: 'string', optional: true },    /// 纠错
-        examination_point: { type: 'string', optional: true },   /// 考点
-        kind_of_problem: { type: 'string', optional: true },     /// 题目类型 '历史类' '语义分析'
+        question: 'string',                                      /// 题目
+        question_problem: { type: 'string', optional: true },    /// 类型 '单选题'
+        title: 'string',                                         /// 试卷名称 "2004年国家(A卷)《行测》真题"
+        question_point: { type: 'string', optional: true },      /// 考点 '历史类' '语义分析' "对应关系,同一关系"
+        question_material: {type: 'string', optional: true}      /// 材料
     }
 }
 
@@ -46,7 +44,7 @@ User.schema = {
         account: { type: 'string', optional: true },              /// 账号
         avatarURL: { type: 'string' },                            /// 头像
         token: { type: 'string', },
-        examinationPapers: { type: 'list', objectType: 'string' } /// 购买的试卷id
+        examinationPapers: { type: 'list', objectType: "ExaminationPaper" } /// 购买的试卷
     }
 }
 
@@ -66,7 +64,7 @@ ExaminationPaper.schema = {
         version: 'string',                                      /// 当前版本
         purchased: 'bool',                                      /// 是否已购
         price: { type: 'float', optional: true, default: 0 },   /// 价格，允许免费
-        questions: { type: 'list', objectType: 'Question' },    /// 试题
+        questionPapers: { type: 'list', objectType: 'QuestionPaper' },    /// 试题
     }
 }
 
@@ -80,7 +78,7 @@ MemoryModel.schema = {
     properties: {
 
         id: 'string',
-        question: 'Question',                                   /// 题目
+        question: 'QuestionPaper',                                   /// 题目
         weighting: { type: 'float', default: 0 },               /// 加权分数, 初始化为 0
         appearedSeveralTime: { type: 'int', default: 0 },       /// 出现次数, 初始化为 0
         lastAppearTime: { type: 'date', default: 0 },           /// 上一次出现时间，初始化为 0
@@ -88,7 +86,7 @@ MemoryModel.schema = {
 }
 
 /// 进度规划
-class Schedule extends Reaml.Object { }
+class Schedule extends Realm.Object { }
 
 Schedule.schema = {
 
@@ -104,4 +102,4 @@ Schedule.schema = {
     }
 }
 
-export default new Realm({ schema: [Question, User, ExaminationPaper, MemoryModel, Schedule] });
+export default new Realm({ schema: [QuestionPaper, User, ExaminationPaper, MemoryModel, Schedule] });

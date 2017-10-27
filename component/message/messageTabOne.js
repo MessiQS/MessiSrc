@@ -10,6 +10,7 @@ import CollapseListView from "./collapseListView"
 import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
 import MessageService from "../../service/message.service";
+import RealmManager from '../Realm/realmManager';
 
 let openCloseCache = [];
 export default class MessageTabOne extends React.Component {
@@ -72,12 +73,10 @@ export default class MessageTabOne extends React.Component {
         const that = this
         let { papers } = that.state;
         id = papers[sectionId].data[rowId].id
-        console.log("id:" + id)
-
         MessageService.downloadPaper({
             paperId: id
-        }).then((data) => {
-            console.log(data)
+        }).then((json) => {
+            RealmManager.createQuestion(json);
         })
         .catch((error) => {
             alert(error)

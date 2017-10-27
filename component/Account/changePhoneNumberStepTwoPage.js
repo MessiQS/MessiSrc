@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import {
     View,
 } from 'react-native';
@@ -6,7 +6,7 @@ import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 
-export default class ChangePhoneNumberStepTwoPage extends Component {
+export default class ChangePhoneNumberStepTwoPage extends React.Component {
 
     constructor(props) {
 		super(props);
