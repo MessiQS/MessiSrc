@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import {
     Alert,
     View,
@@ -8,7 +8,7 @@ import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import Storage from '../../service/storage';
 
-export default class ChangePhoneNumberStepThreePage extends Component {
+export default class ChangePhoneNumberStepThreePage extends React.Component {
 
     constructor(props) {
         super(props);
