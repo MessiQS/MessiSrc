@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
     Alert,
     View,
+    Button,
+    TextInput,
+    Text
 } from 'react-native';
-import { Button, Container, Content, Input, Item, Text } from 'native-base';
 import ChangePhoneNumberStepTwoPage from "./changePhoneNumberStepTwoPage";
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
@@ -55,28 +57,28 @@ export default class ChangePhoneNumberStepOnePage extends React.Component {
     }
     render() {
         return (
-            <Container style={styles.containerStyle}>
-            <Content style={styles.contentStyle}>
-                <Text style={styles.titleTextSytle}>
-                  输入登录密码验证身份
-                </Text>
-                <Item style={styles.item}>
-                    <Text style={styles.passwordTextStyle}>密码</Text>
-                    <Input secureTextEntry={true}  
-                            style={styles.passwordInputStyle} 
-                            placeholder="输入您的旧密码"
-                            maxLength={21}
-                            onChangeText = {value => this.updatePassword(value)}
-                    ></Input>
-                </Item>
-                <View style={{height:74}}></View>
-                <Button style={styles.nextStepButtonSytle} 
-                        onPress={this.next.bind(this)}
-                >
-                    <Text style={styles.nextStepTextStyle}>下一步</Text>
-                </Button>
-            </Content>
-        </Container>
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
+                    <Text style={styles.titleTextSytle}>
+                    输入登录密码验证身份
+                    </Text>
+                    <View style={styles.item}>
+                        <Text style={styles.passwordTextStyle}>密码</Text>
+                        <TextInput secureTextEntry={true}  
+                                style={styles.passwordInputStyle} 
+                                placeholder="输入您的旧密码"
+                                maxLength={21}
+                                onChangeText = {value => this.updatePassword(value)}
+                        ></TextInput>
+                    </View>
+                    <View style={{height:74}}></View>
+                    <Button style={styles.nextStepButtonSytle} 
+                            onPress={this.next.bind(this)}
+                    >
+                        <Text style={styles.nextStepTextStyle}>下一步</Text>
+                    </Button>
+                </View>
+            </View>
         );
     }
 }

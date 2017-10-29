@@ -6,11 +6,9 @@
 
 import React, { Component } from 'react';
 import {
-    Container,
     Text,
-    Body,
-    Content
-} from 'native-base';
+    View,
+} from 'react-native';
 
 export default class Update extends Component {
     static navigationOptions = ({ navigation }) => ({
@@ -23,13 +21,13 @@ export default class Update extends Component {
     });
     render() {
         return (
-            <Container contentContainerStyle={{flex: 1}}>
-                <Content>
+            <View contentContainerStyle={{flex: 1}}>
+                <View>
                     <Text>
                         版本更新
                     </Text>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }

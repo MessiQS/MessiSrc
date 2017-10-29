@@ -11,7 +11,6 @@ import {
 	Text,
 	View,
 } from 'react-native';
-import { Container, ListItem, Icon, Right, Left, Body } from 'native-base';
 import Swiper from 'react-native-swiper';
 import Echarts from 'native-echarts';
 
@@ -117,45 +116,33 @@ export default class Find extends Component {
 							<Echarts option={option} height={80} />
 						</View>
 					</View>
-					<Container contentContainerStyle={{ flex: 1 }}
+					<View contentContainerStyle={{ flex: 1 }}
 						style={nativeStyle.container}
 					>
 						<View style={styles.separatorLine}></View>
-						<ListItem style={ styles.listItem } last button={true} icon onPress={() => {
-							this.props.navigation.navigate('Detail', { user: 1 })
-						}}>
-							<Left>
 								<View style={styles.orange}></View>
-							</Left>
-							<Body>
+							<View>
 								<Text style={styles.bodyText}>新题</Text>
-							</Body>
-							<Right style={nativeStyle.right}>
+							</View>
+							<View style={nativeStyle.right}>
 								<Text style={styles.haveDone}>
 									{this.state.questions.new}/{this.state.all}
 								</Text>
-								<Icon name="arrow-forward" />
-							</Right>
-						</ListItem>
+								
+							</View>
 						<View style={styles.separatorLine}></View>
-						<ListItem style={ styles.listItem } last button={true} icon onPress={() =>
-							this.props.navigation.navigate('Account', {}
-							)}
-						>
-							<Left>
-								<View style={styles.red}></View>
-							</Left>
-							<Body >
+				
+							<View style={styles.red}></View>
+							<View >
 								<Text style={styles.bodyText}>抗遗忘</Text>
-							</Body>
-							<Right style={nativeStyle.right}>
+							</View>
+							<View style={nativeStyle.right}>
 								<Text style={styles.haveDone}>
 									{this.state.questions.writed}/{this.state.all}
 								</Text>
-								<Icon name="arrow-forward" />
-							</Right>
-						</ListItem>
-					</Container>
+								
+							</View>
+					</View>
 				</View>
 			</View>
 		);

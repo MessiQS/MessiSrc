@@ -9,16 +9,10 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Image,
+    Button,
 } from 'react-native';
-import {
-    Body,
-    Thumbnail,
-    Content,
-    ListItem,
-    Right,
-    Button
-} from 'native-base';
 import AccountInfo from './Account/accountInfo';
 import Storage from '../service/storage';
 import Pingpay from '../service/pingpp';
@@ -127,7 +121,7 @@ class Mine extends Component {
             <View style={styles.container}>
                 <View style={{ flex: 1, height: 220, alignItems: 'center' }}>
                     <TouchableOpacity onPress={this.avatarClick} >
-                        <Thumbnail square source={require('../Images/head.png')}
+                        <Image square source={require('../Images/head.png')}
                             style={nativeStyle.thumbnail} />
                         <Text style={styles.phoneNumber}>
                             {this.state.account}
@@ -152,10 +146,10 @@ class Mine extends Component {
                     />
                     <View style={styles.buttonView}>
                         <View>
-                            <Button bordered
+                            <Button 
+                                title="支付测试"
                                 onPress={this.paytest.bind(this)}
                             >
-                                <Text style={styles.outLogin}>支付测试</Text>
                             </Button>
                         </View>
 

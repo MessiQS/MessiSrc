@@ -5,7 +5,6 @@ import {
 import Storage from '../service/storage';
 import Http from '../service/http';
 
-
 class LaunchPage extends React.Component {
 
     constructor(...props) {

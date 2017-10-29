@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
     Alert,
     View,
+    TextInput,
+    Text,
+    Button,
 } from 'react-native';
-import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import AccountCheck from '../../service/accountCheck';
 export default class ForgotPasswordStepOnePage extends React.Component {
 
@@ -36,9 +38,9 @@ export default class ForgotPasswordStepOnePage extends React.Component {
     render() {
         const { navigate } = this.props.navigation;        
         return (
-            <Container style={styles.containerStyle}>
-                <Content style={styles.contentStyle}>
-                    <Item style={styles.item}>
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
+                    <View style={styles.item}>
                         <Text style={styles.phoneNumberTextStyle}>+86</Text>
                         <Input 
                             maxLength={11}
@@ -47,13 +49,13 @@ export default class ForgotPasswordStepOnePage extends React.Component {
                             placeholder="请输入手机号码" 
                             onChangeText={account => this.accountChange(account)}
                         ></Input>
-                    </Item>
+                    </View>
                     <View style={{height:43}}></View>
                     <Button style={styles.nextStepButtonSytle} onPress={this.nextNaviegate.bind(this)}>
                         <Text style={styles.nextStepTextStyle}>下一步</Text>
                     </Button>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }
