@@ -2,8 +2,10 @@ import React from 'react';
 import {
     Alert,
     View,
+    Button,
+    TextInput,
+    Text
 } from 'react-native';
-import { Button, Item, Input, Label, Text } from 'native-base';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -81,44 +83,46 @@ class LoginPage extends React.Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <Item style={styles.item}>
+                <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-phone-portrait-outline"
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的电话号码" 
+                    <TextInput placeholder="请输入您的电话号码" 
                             keyboardType={'numeric'} 
                             maxLength={11} 
-                            onChangeText={account => this.phoneChange(account)}></Input>
-                </Item>
-                <Item style={styles.item}>
+                            onChangeText={account => this.phoneChange(account)}></TextInput>
+                </View>
+                <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-lock-outline"
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的密码" 
+                    <TextInput placeholder="请输入您的密码" 
                             secureTextEntry={true}
                             maxLength={21} 
-                            onChangeText={password => this.passwordtChange(password)}></Input>
-                </Item>
+                            onChangeText={password => this.passwordtChange(password)}></TextInput>
+                </View>
                 <View style={styles.forgotButtonView}>
-                    <Button style={styles.forgotButton} onPress={() =>
+                    <Button style={styles.forgotButton} 
+                        title="忘记密码"    
+                        onPress={() =>
                         navigate('ForgotPasswordStepOnePage', { name: 'ForgotPasswordStepOnePage' })
                     }>
-                        <Label style={styles.forgotLabel}>忘记密码</Label>
                     </Button>
                 </View>
                 <View style={styles.loginButtonView} >
-                    <Button block style={styles.loginButton} onPress={this.login.bind(this)}>
-                        <Text style={styles.loginLabel}>登录</Text>
+                    <Button block title="登录" 
+                                style={styles.loginButton} 
+                                onPress={this.login.bind(this)}>
                     </Button>
                 </View>
                 <View style={styles.agreeView}>
-                    <Label style={styles.agreeBaseText}>注册即表示同意本
-                    <Label style={styles.agreeButton} >软件协议</Label>
-                    </Label>
+                    <Text style={styles.agreeBaseText}>注册即表示同意本
+                        <Text style={styles.agreeButton} >软件协议</Text>
+                    </Text>
                 </View>
             </View>
         );
@@ -161,7 +165,7 @@ var styles = {
         height: 20,
         backgroundColor: null,
     },
-    forgotLabel: {
+    forgotText: {
         color: '#9B9B9B',
         fontSize: 12,
         textDecorationLine: 'underline',
@@ -178,7 +182,7 @@ var styles = {
         width: 327,
         padding: 0,
     },
-    loginLabel: {
+    loginText: {
         color: 'white',
         textAlign: 'center',
         fontSize: 20,
