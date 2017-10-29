@@ -9,15 +9,10 @@ import {
     StyleSheet,
     Text,
     View,
-    Image
+    Image,
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
-import {
-    Container,
-    Body,
-    Content,
-    List,
-    ListItem
-} from 'native-base';
 
 const question = {
     "year": "2015",
@@ -43,6 +38,7 @@ const question = {
 export default class Detail extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             detail: question
         };
@@ -58,70 +54,88 @@ export default class Detail extends Component {
 
     select(option) {
 
+
     }
 
     render() {
         return (
-            <Container>
-                <Content style={styles.content}>
-                    <ListItem style={{ borderBottomWidth: 0 }}>
-                        <Text style={styles.typeOfProblem}>（{this.state.detail.type_of_problem}）</Text>
-                    </ListItem>
-                    <ListItem style={{ borderBottomWidth: 0 }}>
-                        <Text style={styles.questionText}>{this.state.detail.question}</Text>
-                    </ListItem>
-                </Content>
+            <View style={ {flexDirection:'column', height:"100%"}}>
+                <View style={styles.topContent}>
+                    <ScrollView style={styles.content}>
+                        <View style={{ borderBottomWidth: 0 }}>
+                            <Text style={styles.typeOfProblem}>（{this.state.detail.type_of_problem}）</Text>
+                        </View>
+                        <View style={{ borderBottomWidth: 0 }}>
+                            <Text style={styles.questionText}>{this.state.detail.question}</Text>
+                        </View>
+                    </ScrollView>
+                </View>
                 <View style={styles.separatorLine}></View>
-                <Content style={styles.content}>
-                    <List>
-                        <ListItem last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
-								this.select('A')
-					        }>
-                            <Image
-                                style={styles.icon}
-                                source={require('../../Images/Option_A.png')}
-                            />
-                            <Body>
-                                <Text>{this.state.detail.option_A}</Text>
-                            </Body>
-                        </ListItem>
-                        <ListItem last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
-								this.select('B')
-					        }>
-                            <Image
-                                style={styles.icon}
-                                source={require('../../Images/Option_B.png')}
-                            />
-                            <Text>{this.state.detail.option_B}</Text>
-                        </ListItem>
-                        <ListItem last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
-								this.select('C')
-					        }>
-                            <Image
-                                style={styles.icon}
-                                source={require('../../Images/Option_C.png')}
-                            />
-                            <Text>{this.state.detail.option_C}</Text>
-                        </ListItem>
-                        <ListItem last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
-								this.select('D')
-					        }>
-                            <Image
-                                style={styles.icon}
-                                source={require('../../Images/Option_D.png')}
-                            />
-                            <Text>{this.state.detail.option_D}</Text>
-                        </ListItem>
-                    </List>
-                </Content>
-            </Container>
+                <View style={styles.bottomContent}>
+                    <ScrollView style={styles.content}>
+                        <TouchableOpacity>
+                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                                    this.select('A')
+                                }>
+                                <Image
+                                    style={styles.icon}
+                                    source={require('../../Images/Option_A.png')}
+                                />
+                                <View>
+                                    <Text>{this.state.detail.option_A}</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                                    this.select('B')
+                                }>
+                                <Image
+                                    style={styles.icon}
+                                    source={require('../../Images/Option_B.png')}
+                                />
+                                <Text>{this.state.detail.option_B}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                                    this.select('C')
+                                }>
+                                <Image
+                                    style={styles.icon}
+                                    source={require('../../Images/Option_C.png')}
+                                />
+                                <Text>{this.state.detail.option_C}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                                    this.select('D')
+                                }>
+                                <Image
+                                    style={styles.icon}
+                                    source={require('../../Images/Option_D.png')}
+                                />
+                                <Text>{this.state.detail.option_D}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+            </View>
         )
     }
 };
 
-var styles = ({
+var styles = StyleSheet.create ({
+    topContent: {
+        flex: 1,
+    },
     content: {
         backgroundColor: 'white',
+        flex: 1,
+    },
+    bottomContent: {
+        flex: 1,
     },
     typeOfProblem: {
         color: '#0076FF',
