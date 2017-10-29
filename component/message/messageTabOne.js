@@ -10,7 +10,7 @@ import CollapseListView from "./collapseListView"
 import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
 import MessageService from "../../service/message.service";
-import RealmManager from '../Realm/realmManager';
+// import RealmManager from '../Realm/realmManager';
 
 let openCloseCache = [];
 export default class MessageTabOne extends React.Component {

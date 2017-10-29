@@ -13,33 +13,33 @@ import {
     Image
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
-import Home from './home';
-import Mine from './mine';
-import Find from './find';
-import Message from './message/message';//选题
-import Account from './MineMenu/account';
-import Update from './MineMenu/update';
-import Request from './MineMenu/request';
-import Detail from './detail/detail';
-import Register from './Login/register';
-import Login from './Login/login';
-import LoginPage from './Login/loginPage';
-import AccountInfo from './Account/accountInfo';
-import ModifyPasswordPage from './Account/modifyPasswordPage';
-import ChangePhoneNumberStepOnePage from './Account/changePhoneNumberStepOnePage';
-import ChangePhoneNumberStepTwoPage from  './Account/changePhoneNumberStepTwoPage';
-import ChangePhoneNumberStepThreePage from './Account/changePhoneNumberStepThreePage';
-import ForgotPasswordStepOnePage from './Account/forgotPasswordStepOnePage';
-import ForgotPasswordStepTwoPage from './Account/forgotPasswordStepTwoPage';
-import ForgotPasswordStepThreePage from './Account/forgotPasswordStepThreePage';
-import PayPage from './pay/payPage'
-import LaunchPage from './launchPage';
+import Home from './modules/home/home';
+import Mine from './component/mine';
+import Find from './component/find';
+import Message from './component/message/message';//选题
+import Account from './component/MineMenu/account';
+import Update from './component/MineMenu/update';
+import Request from './component/MineMenu/request';
+import Detail from './component/detail/detail';
+import Register from './component/Login/register';
+import Login from './component/Login/login';
+import LoginPage from './component/Login/loginPage';
+import AccountInfo from './component/Account/accountInfo';
+import ModifyPasswordPage from './component/Account/modifyPasswordPage';
+import ChangePhoneNumberStepOnePage from './component/Account/changePhoneNumberStepOnePage';
+import ChangePhoneNumberStepTwoPage from  './component/Account/changePhoneNumberStepTwoPage';
+import ChangePhoneNumberStepThreePage from './component/Account/changePhoneNumberStepThreePage';
+import ForgotPasswordStepOnePage from './component/Account/forgotPasswordStepOnePage';
+import ForgotPasswordStepTwoPage from './component/Account/forgotPasswordStepTwoPage';
+import ForgotPasswordStepThreePage from './component/Account/forgotPasswordStepThreePage';
+import PayPage from './component/pay/payPage'
+import LaunchPage from './component/launchPage';
 
-let bookIcon = require('../Images/book.png');
-let questionIcon = require('../Images/question.png');
-let chartIcon = require('../Images/chart.png');
-let mineIcon = require('../Images/mine.png');
-let headImage = require('../Images/head.png');
+let bookIcon = require('./Images/book.png');
+let questionIcon = require('./Images/question.png');
+let chartIcon = require('./Images/chart.png');
+let mineIcon = require('./Images/mine.png');
+let headImage = require('./Images/head.png');
 
 const MainTab = TabNavigator({
     home: {
