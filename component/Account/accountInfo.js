@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, Container, Content, ListItem, Body, Icon, Right, Text, Separator } from 'native-base';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    TouchableOpacity,
+    ScrollView,
+    Button
+} from 'react-native';
 
 class AccountInfo extends React.Component {
 
@@ -22,37 +30,30 @@ class AccountInfo extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <Container>
-                <Content>
-                <ListItem itemHeader first style={styles.listStyle}>
-                <Body>
+            <View>
+                <View>
                     <Text style={styles.headerText}>12412412</Text>
-                    </Body>
-                </ListItem>
-                <ListItem last style={styles.listStyle} button={true} onPress={() =>
-								navigate('ModifyPasswordPage', { name: 'ModifyPasswordPage' })
-					      }>
-                    <Body>
+                </View>
+                <View style={styles.listStyle} button={true} onPress={() =>
+                                navigate('ModifyPasswordPage', { name: 'ModifyPasswordPage' })
+                        }>
+                    <View>
                         <Text style={styles.listTextStyle}>修改密码</Text>
-                    </Body>
-                    <Right>
-                      <Icon name="arrow-forward" />
-                    </Right>
-                </ListItem>
-                <Separator style={{height:5}}>
-                </Separator>
-                <ListItem last style={styles.listStyle} button={true} onPress={() =>
-								navigate('ChangePhoneNumberStepOnePage', { name: 'ChangePhoneNumberStepOnePage' })
-					      }>
-                    <Body>
+                    </View>
+                    <View>
+                    </View>
+                </View>
+                <View style={{height:5}}></View>
+                <View style={styles.listStyle} button={true} onPress={() =>
+                                navigate('ChangePhoneNumberStepOnePage', { name: 'ChangePhoneNumberStepOnePage' })
+                        }>
+                    <View>
                         <Text style={styles.listTextStyle}>更换手机号</Text>
-                    </Body>                    
-                    <Right>
-                     <Icon name="arrow-forward" />
-                    </Right>
-                </ListItem>
-                </Content>
-            </Container>
+                    </View>                    
+                    <View>
+                    </View>
+                </View>
+            </View>
         );
     }
 }

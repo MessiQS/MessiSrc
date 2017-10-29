@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
     Alert,
     View,
+    TextInput,
+    Text,
+    Button,
 } from 'react-native';
-import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';
@@ -70,32 +72,32 @@ export default class ForgotPasswordStepThreePage extends React.Component {
     }
     render() {
         return (
-            <Container style={styles.containerStyle}>
-                <Content style={styles.contentStyle}>
-                    <Item>
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
+                    <View>
                         <Text style={styles.titleTextStyle}>新密码</Text>
-                        <Input
+                        <TextInput
                             maxLength={21}
                             style={styles.passwordInputStyle}
                             placeholder="请输入新密码"
                             onChangeText={password => this.initPassowrd(password)}
-                        ></Input>
-                    </Item>
-                    <Item>
+                        ></TextInput>
+                    </View>
+                    <View>
                         <Text style={styles.titleTextStyle}>确认密码</Text>
-                        <Input
+                        <TextInput
                             maxLength={21}
                             style={styles.passwordInputStyle}
                             placeholder="请再次确认新密码"
                             onChangeText={password => this.checkPassowrd(password)}
-                        ></Input>
-                    </Item>
+                        ></TextInput>
+                    </View>
                     <View style={{ height: 38 }}></View>
                     <Button style={styles.doneButtonStyle} onPress={this.updatePassword.bind(this)}>
                         <Text style={styles.doneTextStyle}>完成</Text>
                     </Button>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }

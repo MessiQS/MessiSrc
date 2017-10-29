@@ -1,8 +1,10 @@
 import React from 'react';
 import {
     View,
+    Button,
+    TextInput,
+    Text,
 } from 'react-native';
-import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 
@@ -38,29 +40,29 @@ export default class ChangePhoneNumberStepTwoPage extends React.Component {
     }
     render() {
         return (
-            <Container style={styles.containerStyle}>
-            <Content style={styles.contentStyle}>
-                <Text style={styles.titleTextSytle}>
-                输入新的手机号码
-                </Text>
-                <Item style={styles.item}>
-                    <Text style={styles.phoneNumberTextStyle}>+86</Text>
-                    <Input 
-                        style={styles.phoneNumberInputStyle} 
-                        keyboardType={'numeric'}
-                        placeholder="请输入手机号码"
-                        maxLength={11}
-                        onChangeText={number => this.updateDate(number)}
-                    ></Input>
-                </Item>
-                <View style={{height:74}}></View>
-                <Button style={styles.nextStepButtonSytle} onPress={this.next.bind(this)}>
-                    <Text style={styles.nextStepTextStyle}>
-                        下一步
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
+                    <Text style={styles.titleTextSytle}>
+                        输入新的手机号码
                     </Text>
-                </Button>
-            </Content>
-        </Container>
+                    <View style={styles.item}>
+                        <Text style={styles.phoneNumberTextStyle}>+86</Text>
+                        <Input 
+                            style={styles.phoneNumberInputStyle} 
+                            keyboardType={'numeric'}
+                            placeholder="请输入手机号码"
+                            maxLength={11}
+                            onChangeText={number => this.updateDate(number)}
+                        ></Input>
+                    </View>
+                    <View style={{height:74}}></View>
+                    <Button style={styles.nextStepButtonSytle} onPress={this.next.bind(this)}>
+                        <Text style={styles.nextStepTextStyle}>
+                            下一步
+                        </Text>
+                    </Button>
+                </View>
+            </View>
         );
     }
 }

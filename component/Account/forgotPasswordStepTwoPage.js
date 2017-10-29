@@ -2,8 +2,10 @@ import { Component } from 'react';
 import {
     Alert,
     View,
+    TextInput,
+    Text,
+    Button,
 } from 'react-native';
-import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import Http from '../../service/http';
 
 export default class ChangePhoneNumberStepTwoPage extends Component {
@@ -68,22 +70,22 @@ export default class ChangePhoneNumberStepTwoPage extends Component {
 
     render() {
         return (
-            <Container style={styles.containerStyle}>
-                <Content style={styles.contentStyle}>
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
                     <Text style={styles.titleTextSytle}>
                         填写短信验证码
                     </Text>
-                    <Item style={styles.item}>
+                    <View style={styles.item}>
                         <Text style={styles.vertificationTextStyle}>验证码</Text>
-                        <Input
+                        <TextInput
                             keyboardType={'numeric'}
                             maxLength={4}
                             style={styles.vertificationInputStyle}
                             placeholder="请输入短信验证码"
                             onChangeText={vericode => this.changVericode(vericode)}
                         >
-                        </Input>
-                    </Item>
+                        </TextInput>
+                    </View>
                     <View style={styles.getCodeViewStyle}>
                         <Button bordered style={styles.getCodeButtonStyle} >
                             <Text style={styles.getCodeTextStyle} onPress={this.getCode.bind(this)}>获取验证码（59）</Text>
@@ -92,8 +94,8 @@ export default class ChangePhoneNumberStepTwoPage extends Component {
                     <Button style={styles.nextStepButtonSytle} onPress={this.nextNaviegate.bind(this)}>
                         <Text style={styles.nextStepTextStyle}>下一步</Text>
                     </Button>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }

@@ -6,11 +6,9 @@
 
 import React, { Component } from 'react';
 import {
-    Container,
+    View, 
     Text,
-    View,
-    Content
-} from 'native-base';
+} from "react-native";
 
 export default class Request extends Component {
     static navigationOptions = ({ navigation }) => ({
@@ -23,13 +21,13 @@ export default class Request extends Component {
     });
     render() {
         return (
-            <Container contentContainerStyle={{flex: 1}}>
-                <Content>
+            <View contentContainerStyle={{flex: 1}}>
+                <View>
                     <Text>
                         问题反馈
                     </Text>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }

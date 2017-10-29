@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Alert
+    Alert,
+    Button,
+    TextInput,
+    Text
 } from 'react-native';
-import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
@@ -65,36 +67,36 @@ class ModifyPasswordPage extends React.Component {
     }
     render() {
         return (
-            <Container style={styles.containerStyle}>
-                <Content style={styles.contentStyle}>
-                    <Item style={styles.item}>
-                        <Input secureTextEntry={true} 
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
+                    <View style={styles.item}>
+                        <TextInput secureTextEntry={true} 
                             placeholder="请输入您的旧密码" 
                             maxLength={21}
                             onChangeText={ password => this.changePassword(passwordType[0],password)}
-                        ></Input>
-                    </Item>
-                    <Item style={styles.item}>
-                        <Input secureTextEntry={true} 
+                        ></TextInput>
+                    </View>
+                    <View style={styles.item}>
+                        <TextInput secureTextEntry={true} 
                             placeholder="请输入您的新密码"
                             maxLength={21}
                             onChangeText={ password => this.changePassword(passwordType[1],password)}
-                        ></Input>
-                    </Item>
-                    <Item style={styles.item}>
-                        <Input secureTextEntry={true}
+                        ></TextInput>
+                    </View>
+                    <View style={styles.item}>
+                        <TextInput secureTextEntry={true}
                              placeholder="确认您的新密码"
                              maxLength={21}
                              onChangeText={ password => this.changePassword(passwordType[2],password)}
-                        ></Input>
-                    </Item>
+                        ></TextInput>
+                    </View>
                     <View style={styles.checkViewStyle}>
                         <Button style={styles.checkButtonStyle} onPress={this.updatePawword.bind(this)}>
                             <Text style={styles.checkTextStyle}>确认修改</Text>
                         </Button>
                     </View>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }

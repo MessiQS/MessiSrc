@@ -4,9 +4,10 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    Button
+    Button,
+    TextInput,
+    Text
 } from 'react-native';
-import { Item, Input, Text } from 'native-base';
 import stylesContainer, { styles } from './registerCss';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
@@ -90,47 +91,47 @@ class Register extends React.Component {
     render() {
         return (
             <View style={stylesContainer.container}>
-                <Item>
+                <View>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-phone-portrait-outline"
                             size={23}
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的电话号码"
+                    <TextInput placeholder="请输入您的电话号码"
                         maxLength={11}
                         keyboardType={'numeric'}
-                        onChangeText={phone => this.phoneChange(phone)}></Input>
-                </Item>
-                <Item>
+                        onChangeText={phone => this.phoneChange(phone)}></TextInput>
+                </View>
+                <View>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-lock-outline"
                             size={23}
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入您的密码"
+                    <TextInput placeholder="请输入您的密码"
                         secureTextEntry={true}
                         maxLength={21}
-                        onChangeText={passpord => this.passwordtChange(passpord)}></Input>
-                </Item>
-                <Item>
+                        onChangeText={passpord => this.passwordtChange(passpord)}></TextInput>
+                </View>
+                <View>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-filing-outline"
                             size={24}
                             style={styles.icon}
                         />
                     </View>
-                    <Input placeholder="请输入验证码"
+                    <TextInput placeholder="请输入验证码"
                         keyboardType={'numeric'}
                         maxLength={4}
-                        onChangeText={variCode => this.codeChange(variCode)}></Input>
+                        onChangeText={variCode => this.codeChange(variCode)}></TextInput>
                     <TouchableOpacity onPress={this.getCode.bind(this)}>
                         <View style={styles.vertificationCodeView}>
                             <Text style={styles.vertificationCodeText}>获取验证码</Text>
                         </View>
                     </TouchableOpacity>
-                </Item>
+                </View>
                 <View style={{ height: 56 }}></View>
                 <View style={stylesContainer.registerView}>
                     <TouchableOpacity onPress={this._onPressButton.bind(this)}>

@@ -2,8 +2,10 @@ import React from 'react';
 import {
     Alert,
     View,
+    Button,
+    TextInput,
+    Text
 } from 'react-native';
-import { Button, Container, Content, Item, Input, Text } from 'native-base';
 import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import Storage from '../../service/storage';
@@ -84,20 +86,20 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
 
     render() {
         return (
-            <Container style={styles.containerStyle}>
-                <Content style={styles.contentStyle}>
+            <View style={styles.containerStyle}>
+                <View style={styles.contentStyle}>
                     <Text style={styles.titleTextSytle}>
                         填写短信验证码完成更换
-                </Text>
-                    <Item style={styles.item}>
+                    </Text>
+                    <View style={styles.item}>
                         <Text style={styles.vertificationTextStyle}>验证码</Text>
-                        <Input style={styles.vertificationInputStyle}
+                        <TextInput style={styles.vertificationInputStyle}
                             placeholder="请输入短信验证码"
                             onChangeText={vericode => this.updateData(vericode)}
                             maxLength={4}
                             keyboardType={'numeric'}
-                        ></Input>
-                    </Item>
+                        ></TextInput>
+                    </View>
                     <View style={styles.getCodeViewStyle}>
                         <Button bordered style={styles.getCodeButtonStyle} onPress={this.getCode.bind(this)}>
                             <Text style={styles.getCodeTextStyle}>获取验证码（59）</Text>
@@ -108,8 +110,8 @@ export default class ChangePhoneNumberStepThreePage extends React.Component {
                     >
                         <Text style={styles.nextStepTextStyle}>完成</Text>
                     </Button>
-                </Content>
-            </Container>
+                </View>
+            </View>
         );
     }
 }
