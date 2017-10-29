@@ -132,40 +132,6 @@ export const styles = StyleSheet.create({
 		height: 13,
 
 	},
-	listItem: {
-        marginTop:14,
-        flexDirection:"row",
-        // justifyContent:'flex-start',
-        height:44,
-        backgroundColor:"#fff",
-    },
-    Left:{
-		borderRadius: 13,
-        flex:1,
-        justifyContent:'center',
-        left:20
-    },
-    Right:{
-        flex:2,
-        flexDirection:"row",
-        justifyContent:'flex-end',
-    },
-    rightContent:{
-        justifyContent:'center',
-    },
-    rightText:{
-        color:"#8f8e94"
-    },
-    orange: {
-        backgroundColor: '#5AAFEE',
-        height:26,
-        width:26,
-        borderRadius:15
-    },
-    listItemText:{
-        justifyContent:'center',
-        flex:3
-    },
 	groupTableViewColor: {
 		backgroundColor: "black",
 	}

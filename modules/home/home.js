@@ -14,7 +14,11 @@ import {
 import Swiper from 'react-native-swiper';
 import Echarts from 'native-echarts';
 import { nativeStyle, styles } from './homeCss';
+import Item from './listItem';
 
+const itemArr = [{
+	title:'新题'
+}];
 export default class Find extends Component {
 
 	constructor() {
@@ -122,34 +126,7 @@ export default class Find extends Component {
 					</View>
 				</View>
 				<View style={styles.intoQuestion}>
-					<View style={styles.listItem}>
-						<View style={styles.Left}>
-							<View style={styles.orange}>
-							</View>
-						</View>
-						<View style={styles.listItemText}>
-							<Text >新题</Text>
-						</View>
-						<View style={styles.Right}>
-							<View style={styles.rightContent}>
-								<Text style={styles.rightText}>131231</Text>
-							</View>
-						</View>
-					</View>
-					<View style={styles.listItem}>
-						<View style={styles.Left}>
-							<View style={styles.orange}>
-							</View>
-						</View>
-						<View style={styles.listItemText}>
-							<Text >新题</Text>
-						</View>
-						<View style={styles.Right}>
-							<View style={styles.rightContent}>
-								<Text style={styles.rightText}>131231</Text>
-							</View>
-						</View>
-					</View>
+					<Item item={itemArr[0]}/>
 				</View>
 			</View>
 		);
