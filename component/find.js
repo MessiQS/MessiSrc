@@ -33,6 +33,9 @@ export default class Find extends Component {
         this.state = {};
         this.onDayPress = this.onDayPress.bind(this);
     }
+    componentWillMount(){
+
+    }
     render() {
         const option = {
             title: {
@@ -49,12 +52,12 @@ export default class Find extends Component {
             series: [{
                 name: '遗忘曲线',
                 type: 'line',
-                data: [5000, 4000, 3000, 2000, 1000, 0],
+                data: [100, 70, 60, 50, 30, 20 ,10],
                 smooth: true
             }, {
                 name: '永久记忆',
                 type: 'line',
-                data: [20, 20, 20, 20, 20, 20, 20]
+                data: [40, 40, 40, 40, 40, 40, 40]
             }]
         };
 
@@ -72,10 +75,9 @@ export default class Find extends Component {
                         onDayPress={this.onDayPress}
                     />
                 </View>
-                {/* <View style={styles.chartsView}> */}
-                    <Echarts style={styles.charts} option={option}/>
-                {/* </View>   */}
-                {/* <Echarts style={styles.charts} option={option}/>       */}
+                <View style={styles.chartsView}>
+                    <Echarts option={option} height={250}/>
+                </View>
             </View>
         );
     }
@@ -105,7 +107,7 @@ const calenderOptiones={
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        width:'100%',
         backgroundColor: '#fff',        
     },
     instructions: {
@@ -117,20 +119,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     calendarView: {
-        height: 300,
+        flex:5,
+        // height: 300,
     },
     calender:{    
         paddingTop: 5,
-        
+        width:'100%',
         borderColor: '#eee',
-        height: 350,
     },
     chartsView: {
-        flex: 3,
-    },
-    charts: {
-        flex:3,
-
+        flex: 4,
     }
 });
 
