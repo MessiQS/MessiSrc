@@ -1,24 +1,24 @@
 import {
 	StyleSheet,
 } from 'react-native';
-export const nativeStyle = {
-	container: {
-        width: '100%',
-        backgroundColor:"#000",
-        height:200
-	},
-	listItem: {
-		backgroundColor: '#FEFEFE',
-		borderTopColor: '#dcdcdc',
-		borderTopWidth: 0,
-		height: 44,
-		top: 0,
-		bottom: 0,
-	},
-	right: {
-		height: 44
-	}
-};
+// export const nativeStyle = {
+// 	container: {
+//         width: '100%',
+//         backgroundColor:"#000",
+//         height:200
+// 	},
+// 	listItem: {
+// 		backgroundColor: '#FEFEFE',
+// 		borderTopColor: '#dcdcdc',
+// 		borderTopWidth: 0,
+// 		height: 44,
+// 		top: 0,
+// 		bottom: 0,
+// 	},
+// 	right: {
+// 		height: 44
+// 	}
+// };
 
 export const styles = StyleSheet.create({
 	container: {
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         flex:20,
     },
     detail:{
-        flex:13,
+        flex:11,
         backgroundColor:"#f5f5f5",
         flexDirection:"row",
         paddingTop:13,
@@ -50,12 +50,24 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         paddingTop:7
     },
-    percent: {
+    percentDiv:{
         marginTop:16,
-		height: 26,
-		width: '79%',
+        height: 26,
+        flexDirection:"row",
+        flex:1
+    },
+    percent: {
+        flex:8,
+        height:26,
 		backgroundColor: '#f6f7f8',
 		borderRadius: 13,
+    },
+    percentNumber: {
+		flex: 2,
+        color: '#8394a5',
+        fontSize:12,
+        paddingTop:7,
+        left:"15%",
 	},
 	nowPercent: {
 		width: '60%',
@@ -63,18 +75,13 @@ export const styles = StyleSheet.create({
 		borderRadius: 13,
 		height: 26,
 	},
-	percentNumber: {
-		width: "15%",
-		left: '87%',
-		color: '#8394a5',
-	},
 	circleChart: {
         flex: 3,
         backgroundColor:"red"
 	},
     intoQuestion:{
         flex:23,
-        backgroundColor:"#fff"
+        backgroundColor:"#f5f5f5"
     },
 	content: {
 		top: 13,
@@ -93,13 +100,6 @@ export const styles = StyleSheet.create({
 		fontSize: 14,
 		top: 0,
 		fontWeight: 'bold',
-	},
-	orange: {
-		width: 25,
-		height: 25,
-		borderRadius: 13,
-		backgroundColor: '#5AAFEE',
-		top: 0,
 	},
 	red: {
 		width: 25,
@@ -133,8 +133,39 @@ export const styles = StyleSheet.create({
 
 	},
 	listItem: {
-		borderBottomWidth: 0
-	},
+        marginTop:14,
+        flexDirection:"row",
+        // justifyContent:'flex-start',
+        height:44,
+        backgroundColor:"#fff",
+    },
+    Left:{
+		borderRadius: 13,
+        flex:1,
+        justifyContent:'center',
+        left:20
+    },
+    Right:{
+        flex:2,
+        flexDirection:"row",
+        justifyContent:'flex-end',
+    },
+    rightContent:{
+        justifyContent:'center',
+    },
+    rightText:{
+        color:"#8f8e94"
+    },
+    orange: {
+        backgroundColor: '#5AAFEE',
+        height:26,
+        width:26,
+        borderRadius:15
+    },
+    listItemText:{
+        justifyContent:'center',
+        flex:3
+    },
 	groupTableViewColor: {
 		backgroundColor: "black",
 	}

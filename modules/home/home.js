@@ -108,19 +108,48 @@ export default class Find extends Component {
 						<Text style={styles.description}>
 							言语表达与理解 {this.state.questions.writed + this.state.questions.deepmind}/{this.state.all}
 						</Text>
-						<View style={styles.percent}>
-							<View
-								style={[styles.nowPercent, { width: this.state.percent }]}>
+						<View style={styles.percentDiv}>
+							<View style={styles.percent}>
+								<View
+									style={[styles.nowPercent, { width: this.state.percent }]}>
+								</View>
 							</View>
+							<Text style={styles.percentNumber}>{parseInt(this.state.percent)}%</Text>
 						</View>
-						<Text style={styles.percentNumber}>{parseInt(this.state.percent)}%</Text>
 					</View>
 					<View style={styles.circleChart}>
 						<Echarts option={option} height={80} />
 					</View>
 				</View>
 				<View style={styles.intoQuestion}>
-
+					<View style={styles.listItem}>
+						<View style={styles.Left}>
+							<View style={styles.orange}>
+							</View>
+						</View>
+						<View style={styles.listItemText}>
+							<Text >新题</Text>
+						</View>
+						<View style={styles.Right}>
+							<View style={styles.rightContent}>
+								<Text style={styles.rightText}>131231</Text>
+							</View>
+						</View>
+					</View>
+					<View style={styles.listItem}>
+						<View style={styles.Left}>
+							<View style={styles.orange}>
+							</View>
+						</View>
+						<View style={styles.listItemText}>
+							<Text >新题</Text>
+						</View>
+						<View style={styles.Right}>
+							<View style={styles.rightContent}>
+								<Text style={styles.rightText}>131231</Text>
+							</View>
+						</View>
+					</View>
 				</View>
 			</View>
 		);
