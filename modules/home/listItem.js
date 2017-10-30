@@ -4,27 +4,35 @@ import {
     View,
 } from 'react-native';
 import { StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
+
 export default class Item extends Component {
     constructor(props){
         super(props);
-        console.log(this.props.item);
+        this.state =  Object.assign(this.props.item);
     }
     componentWillUnmount(){
+        
+    }
+    componentDidMount(){
 
     }
     render() {
         return (
             <View style={styles.listItem}>
                 <View style={styles.Left}>
-                    <View style={styles.orange}>
+                    <View style={[styles.orange,{backgroundColor:this.state.bgcolor}]}>
                     </View>
                 </View>
                 <View style={styles.listItemText}>
-                    <Text>1</Text>
+                    <Text>{this.state.title}</Text>
                 </View>
                 <View style={styles.Right}>
                     <View style={styles.rightContent}>
-                        <Text style={styles.rightText}>131231</Text>
+                        <Text style={styles.rightText}>{this.state.completed}/{this.state.length}</Text>
+                    </View>
+                    <View style={styles.rightContent}>
+                        <Icon name="chevron-thin-right" size={16} style={styles.icon} />
                     </View>
                 </View>
             </View>
@@ -47,21 +55,26 @@ const styles = StyleSheet.create({
     },
     Right: {
         flex: 2,
-        flexDirection: "row",
         justifyContent: 'flex-end',
+        flexDirection: "row",
     },
     rightContent: {
         justifyContent: 'center',
+        marginRight:10
     },
     rightText: {
-        color: "#8f8e94"
+        color: "#8f8e94",
+    },
+    icon:{
+        color: "#8f8e94",
+        justifyContent: 'center',
     },
     listItemText: {
         justifyContent: 'center',
         flex: 3
     },
     orange: {
-        backgroundColor: '#5AAFEE',
+        // backgroundColor: '#5AAFEE',
         height: 26,
         width: 26,
         borderRadius: 15

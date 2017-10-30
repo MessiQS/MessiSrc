@@ -17,7 +17,16 @@ import { nativeStyle, styles } from './homeCss';
 import Item from './listItem';
 
 const itemArr = [{
-	title:'新题'
+	title:'新题',
+	completed:1100,
+	length:3300,
+	bgcolor:"#5AAFEE"
+},
+{
+	title:'抗遗忘',
+	completed:1100,
+	length:3300,
+	bgcolor:"#D0021b"
 }];
 export default class Find extends Component {
 
@@ -127,6 +136,7 @@ export default class Find extends Component {
 				</View>
 				<View style={styles.intoQuestion}>
 					<Item item={itemArr[0]}/>
+					<Item item={itemArr[1]}/>
 				</View>
 			</View>
 		);
