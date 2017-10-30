@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    TouchableHighlight,
     Text,
     View,
 } from 'react-native';
@@ -10,6 +11,7 @@ export default class Item extends Component {
     constructor(props){
         super(props);
         this.state =  Object.assign(this.props.item);
+        console.log(this.state)
     }
     componentWillUnmount(){
         
@@ -17,31 +19,38 @@ export default class Item extends Component {
     componentDidMount(){
 
     }
+    navigate(){
+        this.state.navigation.navigate('Detail',{a:1})
+    }
+    // onPress={() => {
+        // this.props.navigation.navigate('Detail', { user: 1 })
+    // }}
     render() {
         return (
-            <View style={styles.listItem}>
-                <View style={styles.Left}>
-                    <View style={[styles.orange,{backgroundColor:this.state.bgcolor}]}>
+            <TouchableHighlight style={{marginTop:14}} onPress={() => {this.navigate(111)}}>
+                <View style={styles.listItem}>
+                    <View style={styles.Left}>
+                        <View style={[styles.orange,{backgroundColor:this.state.bgcolor}]}>
+                        </View>
+                    </View>
+                    <View style={styles.listItemText}>
+                        <Text>{this.state.title}</Text>
+                    </View>
+                    <View style={styles.Right}>
+                        <View style={styles.rightContent}>
+                            <Text style={styles.rightText}>{this.state.completed}/{this.state.length}</Text>
+                        </View>
+                        <View style={styles.rightContent}>
+                            <Icon name="chevron-thin-right" size={16} style={styles.icon} />
+                        </View>
                     </View>
                 </View>
-                <View style={styles.listItemText}>
-                    <Text>{this.state.title}</Text>
-                </View>
-                <View style={styles.Right}>
-                    <View style={styles.rightContent}>
-                        <Text style={styles.rightText}>{this.state.completed}/{this.state.length}</Text>
-                    </View>
-                    <View style={styles.rightContent}>
-                        <Icon name="chevron-thin-right" size={16} style={styles.icon} />
-                    </View>
-                </View>
-            </View>
+            </TouchableHighlight>
         )
     }
 }
 const styles = StyleSheet.create({
     listItem: {
-        marginTop: 14,
         flexDirection: "row",
         // justifyContent:'flex-start',
         height: 44,

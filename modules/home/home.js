@@ -16,22 +16,11 @@ import Echarts from 'native-echarts';
 import { nativeStyle, styles } from './homeCss';
 import Item from './listItem';
 
-const itemArr = [{
-	title:'新题',
-	completed:1100,
-	length:3300,
-	bgcolor:"#5AAFEE"
-},
-{
-	title:'抗遗忘',
-	completed:1100,
-	length:3300,
-	bgcolor:"#D0021b"
-}];
+let itemArr = [];
 export default class Find extends Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			questions: {
 				new: 1500,
@@ -41,6 +30,20 @@ export default class Find extends Component {
 			percent: (1500 + 1000) / 2800 * 100 + '%',
 			all: 1500 + 1000 + 300,
 		};
+		itemArr = [{
+			title:'新题',
+			completed:1100,
+			length:3300,
+			bgcolor:"#5AAFEE",
+			navigation:this.props.navigation
+		},
+		{
+			title:'抗遗忘',
+			completed:1100,
+			length:3300,
+			bgcolor:"#D0021b",
+			navigation:this.props.navigation
+		}];
 		setTimeout(this.callThis.bind(this), 3000)
 	};
 
