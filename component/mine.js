@@ -17,7 +17,6 @@ import AccountInfo from './Account/accountInfo';
 import Storage from '../service/storage';
 import Pingpay from '../service/pingpp';
 var Pingpp = require('pingpp-react-native');
-// Pingpp.setDebugModel(true);  
 
 class MineListItem extends Component {
 
@@ -152,7 +151,6 @@ class Mine extends Component {
                             >
                             </Button>
                         </View>
-
                         <TouchableOpacity onPress={this.outofLogin.bind(this)} >
                             <View style={styles.exitButtonStyle}>
                                 <Text style={styles.outLogin}>退出登录</Text>

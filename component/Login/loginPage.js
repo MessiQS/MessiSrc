@@ -4,6 +4,7 @@ import {
     View,
     Button,
     TextInput,
+    TouchableOpacity,
     Text
 } from 'react-native';
 import Http from '../../service/http';
@@ -94,6 +95,7 @@ class LoginPage extends React.Component {
                             maxLength={11} 
                             onChangeText={account => this.phoneChange(account)}></TextInput>
                 </View>
+                <View style={{height:0.5, backgroundColor: "#051425"}}></View>
                 <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-lock-outline"
@@ -105,19 +107,21 @@ class LoginPage extends React.Component {
                             maxLength={21} 
                             onChangeText={password => this.passwordtChange(password)}></TextInput>
                 </View>
+                <View style={{height:0.5, backgroundColor: "#051425"}}></View>
                 <View style={styles.forgotButtonView}>
-                    <Button style={styles.forgotButton} 
-                        title="忘记密码"    
+                    <TouchableOpacity style={styles.forgotButton}    
                         onPress={() =>
                         navigate('ForgotPasswordStepOnePage', { name: 'ForgotPasswordStepOnePage' })
                     }>
-                    </Button>
+                        <Text style={styles.forgotText}>忘记密码</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.loginButtonView} >
-                    <Button block title="登录" 
-                                style={styles.loginButton} 
-                                onPress={this.login.bind(this)}>
-                    </Button>
+                    <TouchableOpacity
+                            style={styles.loginButton} 
+                            onPress={this.login.bind(this)}>
+                            <Text style={styles.loginText}>登录</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.agreeView}>
                     <Text style={styles.agreeBaseText}>注册即表示同意本
@@ -142,6 +146,7 @@ var styles = {
     item: {
         marginTop: 20,
         marginBottom: 20,
+        flexDirection: 'row',
     },
     iconViewStyle: {
         marginRight: 5,
@@ -177,6 +182,10 @@ var styles = {
         flex: 3,
     },
     loginButton: {
+        flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
         backgroundColor: '#FFA200',
         height: 60,
         width: 327,

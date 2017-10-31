@@ -120,6 +120,7 @@ export default class Find extends Component {
 						style={nativeStyle.container}
 					>
 						<View style={styles.separatorLine}></View>
+						<View>
 								<View style={styles.orange}></View>
 							<View>
 								<Text style={styles.bodyText}>新题</Text>
@@ -130,8 +131,9 @@ export default class Find extends Component {
 								</Text>
 								
 							</View>
+						</View>
 						<View style={styles.separatorLine}></View>
-				
+						<View styles={styles.item}>
 							<View style={styles.red}></View>
 							<View >
 								<Text style={styles.bodyText}>抗遗忘</Text>
@@ -142,6 +144,7 @@ export default class Find extends Component {
 								</Text>
 								
 							</View>
+						</View>
 					</View>
 				</View>
 			</View>
@@ -209,6 +212,12 @@ const styles = StyleSheet.create({
 		width: "15%",
 		left: '87%',
 		color: '#8394a5',
+	},
+	item: {
+		flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
 	},
 	orange: {
 		width: 25,
