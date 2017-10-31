@@ -1,7 +1,7 @@
 
 import Storage from "./storage";
 import { AlertIOS } from "react-native";
-const webURL = "http://samso.cn/";
+const webURL = "http://123.207.34.230/";
 
 export default class Http {
 
