@@ -10,7 +10,7 @@ import {
     Text,
     View
 } from 'react-native';
-import MessageTabOne from './messageTabOne.js'
+import ListOfTopics from './ListOfTopics.js'
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
@@ -40,7 +40,7 @@ export default class Message extends Component {
                 style={styles.scrollableTabViewStyle}
                 tabBarTextStyle={styles.tabBarTextStyle}
                 tabBarPosition={"overlayTop"}>
-                <MessageTabOne tabLabel="历年真题" />
+                <ListOfTopics tabLabel="历年真题" />
                 <View tabLabel="专项练习" />
                 <View tabLabel="申论" />
             </ScrollableTabView>

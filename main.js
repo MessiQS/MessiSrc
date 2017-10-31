@@ -16,7 +16,7 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 import Home from './modules/home/home';
 import Mine from './modules/mine/mine';
 import Find from './modules/find/find';
-import Message from './component/message/message';//选题
+import Message from './modules/message/message';//选题
 import Account from './component/MineMenu/account';
 import Update from './component/MineMenu/update';
 import Request from './component/MineMenu/request';

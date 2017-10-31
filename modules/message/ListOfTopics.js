@@ -13,7 +13,7 @@ import MessageService from "../../service/message.service";
 // import RealmManager from '../Realm/realmManager';
 
 let openCloseCache = [];
-export default class MessageTabOne extends React.Component {
+export default class ListOfTopics extends React.Component {
 
     constructor(props) {
         super(props);
