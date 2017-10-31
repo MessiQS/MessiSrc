@@ -145,5 +145,3 @@ export default class Find extends Component {
 		);
 	}
 }
-
-

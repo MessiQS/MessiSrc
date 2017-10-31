@@ -13,9 +13,9 @@ import {
     Image,
     Button,
 } from 'react-native';
-import AccountInfo from './Account/accountInfo';
-import Storage from '../service/storage';
-import Pingpay from '../service/pingpp';
+import AccountInfo from '../../component/Account/accountInfo';
+import Storage from '../../service/storage';
+import Pingpay from '../../service/pingpp';
 var Pingpp = require('pingpp-react-native');
 
 class MineListItem extends Component {
@@ -120,7 +120,7 @@ class Mine extends Component {
             <View style={styles.container}>
                 <View style={{ flex: 1, height: 220, alignItems: 'center' }}>
                     <TouchableOpacity onPress={this.avatarClick} >
-                        <Image square source={require('../Images/head.png')}
+                        <Image square source={require('../../Images/head.png')}
                             style={nativeStyle.thumbnail} />
                         <Text style={styles.phoneNumber}>
                             {this.state.account}

@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
 import Home from './modules/home/home';
-import Mine from './component/mine';
-import Find from './component/find';
+import Mine from './modules/mine/mine';
+import Find from './modules/find/find';
 import Message from './component/message/message';//选题
 import Account from './component/MineMenu/account';
 import Update from './component/MineMenu/update';

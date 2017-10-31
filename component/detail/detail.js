@@ -62,10 +62,10 @@ export default class Detail extends Component {
             <View style={ {flexDirection:'column', height:"100%"}}>
                 <View style={styles.topContent}>
                     <ScrollView style={styles.content}>
-                        <View style={{ borderBottomWidth: 0 }}>
+                        <View style={styles.typeOfProblemView}>
                             <Text style={styles.typeOfProblem}>（{this.state.detail.type_of_problem}）</Text>
                         </View>
-                        <View style={{ borderBottomWidth: 0 }}>
+                        <View style={styles.questionView}>
                             <Text style={styles.questionText}>{this.state.detail.question}</Text>
                         </View>
                     </ScrollView>
@@ -74,7 +74,7 @@ export default class Detail extends Component {
                 <View style={styles.bottomContent}>
                     <ScrollView style={styles.content}>
                         <TouchableOpacity>
-                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                            <View style={styles.answerItem} button={true} onPress={() =>
                                     this.select('A')
                                 }>
                                 <Image
@@ -87,7 +87,7 @@ export default class Detail extends Component {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                            <View style={styles.answerItem} button={true} onPress={() =>
                                     this.select('B')
                                 }>
                                 <Image
@@ -98,7 +98,7 @@ export default class Detail extends Component {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                            <View style={styles.answerItem} button={true} onPress={() =>
                                     this.select('C')
                                 }>
                                 <Image
@@ -109,7 +109,7 @@ export default class Detail extends Component {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View last style={{ borderBottomWidth: 0 }} button={true} onPress={() =>
+                            <View style={styles.answerItem} button={true} onPress={() =>
                                     this.select('D')
                                 }>
                                 <Image
@@ -137,9 +137,17 @@ var styles = StyleSheet.create ({
     bottomContent: {
         flex: 1,
     },
+    typeOfProblemView: {
+        height: 30,
+        top: 10,
+    },
     typeOfProblem: {
         color: '#0076FF',
         fontSize: 17,
+    },
+    questionView: {
+        marginRight: 15,
+        marginLeft: 15,
     },
     questionText: {
         color: 'black',
@@ -155,6 +163,12 @@ var styles = StyleSheet.create ({
         marginRight: 10,
         width: 23,
         height: 23,
+    },
+    answerItem: {
+        height: 40,
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
     }
 })
 

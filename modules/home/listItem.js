@@ -11,14 +11,13 @@ export default class Item extends Component {
     constructor(props){
         super(props);
         this.state =  Object.assign(this.props.item);
-        console.log(this.state)
     }
-    componentWillUnmount(){
+    // componentWillUnmount(){
         
-    }
-    componentDidMount(){
+    // }
+    // componentDidMount(){
 
-    }
+    // }
     navigate(){
         this.state.navigation.navigate('Detail',{a:1})
     }
