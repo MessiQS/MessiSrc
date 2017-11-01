@@ -29,6 +29,7 @@ export const styles = {
         paddingVertical: 0,
         marginTop: 7,
         borderRadius: 8,
+        marginRight:0,
     },
     vertificationCodeText: {
         fontSize: 14,
@@ -42,6 +43,21 @@ export const styles = {
         height: 55,
         width: 290,
         borderRadius: 8,
+    },
+    item: {
+        flexDirection: 'row',
+        marginTop: 0,
+        marginBottom: 0,
+        height: 50,
+    },
+    bottomLine: {
+        height:1,
+        backgroundColor: "#D8D8D8",
+    },
+    bottomLineVertification: {
+        height:1,
+        backgroundColor: "#D8D8D8",
+        width: "60%",
     },
     registerText: {
         width: '100%',

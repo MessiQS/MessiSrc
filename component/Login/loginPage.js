@@ -95,7 +95,7 @@ class LoginPage extends React.Component {
                             maxLength={11} 
                             onChangeText={account => this.phoneChange(account)}></TextInput>
                 </View>
-                <View style={{height:0.5, backgroundColor: "#051425"}}></View>
+                <View style={styles.bottomLine}></View>
                 <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-lock-outline"
@@ -107,7 +107,7 @@ class LoginPage extends React.Component {
                             maxLength={21} 
                             onChangeText={password => this.passwordtChange(password)}></TextInput>
                 </View>
-                <View style={{height:0.5, backgroundColor: "#051425"}}></View>
+                <View style={styles.bottomLine}></View>
                 <View style={styles.forgotButtonView}>
                     <TouchableOpacity style={styles.forgotButton}    
                         onPress={() =>
@@ -174,6 +174,10 @@ var styles = {
         color: '#9B9B9B',
         fontSize: 12,
         textDecorationLine: 'underline',
+    },
+    bottomLine: {
+        height:1,
+        backgroundColor: "#D8D8D8",
     },
     loginButtonView: {
         flexDirection: 'row',

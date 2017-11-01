@@ -6,7 +6,8 @@ import {
     StyleSheet,
     Button,
     TextInput,
-    Text
+    Text,
+    ScrollView,
 } from 'react-native';
 import stylesContainer, { styles } from './registerCss';
 import Http from '../../service/http';
@@ -91,7 +92,7 @@ class Register extends React.Component {
     render() {
         return (
             <View style={stylesContainer.container}>
-                <View>
+                <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-phone-portrait-outline"
                             size={23}
@@ -103,7 +104,8 @@ class Register extends React.Component {
                         keyboardType={'numeric'}
                         onChangeText={phone => this.phoneChange(phone)}></TextInput>
                 </View>
-                <View>
+                <View style={styles.bottomLine}></View>
+                <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-lock-outline"
                             size={23}
@@ -115,7 +117,8 @@ class Register extends React.Component {
                         maxLength={21}
                         onChangeText={passpord => this.passwordtChange(passpord)}></TextInput>
                 </View>
-                <View>
+                <View style={styles.bottomLine}></View>
+                <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
                         <Icon name="ios-filing-outline"
                             size={24}
@@ -126,12 +129,14 @@ class Register extends React.Component {
                         keyboardType={'numeric'}
                         maxLength={4}
                         onChangeText={variCode => this.codeChange(variCode)}></TextInput>
+                    <ScrollView></ScrollView>
                     <TouchableOpacity onPress={this.getCode.bind(this)}>
                         <View style={styles.vertificationCodeView}>
                             <Text style={styles.vertificationCodeText}>获取验证码</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
+                <View style={styles.bottomLineVertification}></View>
                 <View style={{ height: 56 }}></View>
                 <View style={stylesContainer.registerView}>
                     <TouchableOpacity onPress={this._onPressButton.bind(this)}>

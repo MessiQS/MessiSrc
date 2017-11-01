@@ -139,13 +139,15 @@ var styles = StyleSheet.create ({
     },
     typeOfProblemView: {
         height: 30,
-        top: 10,
+        top: 20,
+        left: 10,
     },
     typeOfProblem: {
         color: '#0076FF',
         fontSize: 17,
     },
     questionView: {
+        marginTop: 20,
         marginRight: 15,
         marginLeft: 15,
     },
