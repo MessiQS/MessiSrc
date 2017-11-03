@@ -8,7 +8,7 @@ import {
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 
-export default class ChangePhoneNumberStepTwoPage extends React.Component {
+export default class CPStepTwo extends React.Component {
 
     constructor(props) {
 		super(props);

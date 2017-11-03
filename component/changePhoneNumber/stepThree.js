@@ -10,7 +10,7 @@ import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import Storage from '../../service/storage';
 
-export default class ChangePhoneNumberStepThreePage extends React.Component {
+export default class CPStepThree extends React.Component {
 
     constructor(props) {
         super(props);
