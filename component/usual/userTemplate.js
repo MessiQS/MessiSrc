@@ -28,6 +28,34 @@ export default class UserTemplate extends Component {
             )
         }
     }
+    isHaveVaricode(){
+        const { varicode } = this.data;
+        const codeStyle = {
+            top:55,
+            position:'absolute',
+            right:0,
+            borderWidth:1,
+            borderColor:'#ffa200',
+            borderRadius:3,
+            paddingLeft:5,
+            backgroundColor:'#fff',
+            paddingRight:5
+        },textStyle = {
+            fontSize:12,
+            lineHeight:22,
+            color:'#ffa200'
+        }
+        if(varicode){
+            return (
+                    <SamsoButton 
+                        onPress={varicode.onPress}
+                        title={varicode.title}
+                        style={codeStyle}
+                        textStyle={textStyle}
+                    ></SamsoButton>
+                ) 
+        }
+    }
     render() {
         const { input,button } = this.data;
         return (
@@ -42,6 +70,7 @@ export default class UserTemplate extends Component {
                         maxLength={21}
                         onChangeText={value => input.onChangeText(value)}
                     ></TextInput>
+                    {this.isHaveVaricode()}
                 </View>
                 <SamsoButton
                     onPress={button.onPress}
@@ -57,7 +86,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft:"14.28%",
         paddingRight:"14.28%",
-        paddingTop:36
+        paddingTop:36,
+        backgroundColor:'#fff'
     },
     title:{
         fontSize:18,

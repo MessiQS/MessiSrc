@@ -5,6 +5,7 @@ import {
 import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import Storage from '../../service/storage';
+import UserTemplate from '../usual/userTemplate';
 
 export default class CPStepThree extends React.Component {
 
@@ -98,6 +99,10 @@ export default class CPStepThree extends React.Component {
             button: {
                 title: "完成",
                 onPress: this.updatePhone.bind(this)
+            },
+            varicode:{
+                title:'获取验证码',
+                onPress:this.getCode.bind(this)
             }
         }
         return (

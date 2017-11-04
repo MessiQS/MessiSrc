@@ -55,9 +55,9 @@ class Mine extends Component {
             tipBorder: 1
         },
         {
-            sref: 'Update',
+            sref: 'CPStepThree',
             name: '版本更新',
-            info: { user: 'Lucy' },
+            info: { account: 15895537043 },
             tipBorder: 0
         }, {
             sref: 'Request',

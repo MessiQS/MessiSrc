@@ -16,7 +16,7 @@ export default class SamsoButton extends Component {
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[styles.initView, this.props.style]}>
                 <View style={styles.initStyle}>
-                    <Text style={styles.btnLoginText}>{this.props.title}</Text>
+                    <Text style={[styles.textStyle,this.props.textStyle]}>{this.props.title}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -28,12 +28,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     initStyle: {
-        borderRadius: 5,
         justifyContent:'center',
         flexDirection: 'row',
     },
-    btnLoginText:{
-        borderRadius: 5,
+    textStyle:{
         lineHeight:44,
         fontSize:20,
         color:'#fff'
