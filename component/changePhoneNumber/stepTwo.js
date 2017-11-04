@@ -1,12 +1,10 @@
 import React from 'react';
-import {
-    View,
-    Button,
-    TextInput,
-    Text,
-} from 'react-native';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
+import UserTemplate from '../usual/userTemplate';
+import {
+    Alert,
+} from 'react-native';
 
 export default class CPStepTwo extends React.Component {
 
@@ -33,76 +31,33 @@ export default class CPStepTwo extends React.Component {
         const { navigate } = this.props.navigation;        
         const {account} = this.state;
         if(AccountCheck.isValidPhoneNumber(account)){
-            navigate('ChangePhoneNumberStepThreePage', { account: account})
+            navigate('CPStepThree', { account: account})
         }else{
             Alert.alert('请输入正确的账号');
         }
     }
     render() {
+        const inputPasswors = {
+            title:{
+                content:'输入新的手机号'
+            },
+            text:{
+                content:'+86',
+                style:{
+                    color:'#FFA200'
+                }
+            },
+            input:{
+                onChangeText:this.updateDate.bind(this),
+                placeholder:"请输入手机号码"                
+            },
+            button:{
+                title:"下一步",
+                onPress:this.next.bind(this)
+            }
+        }
         return (
-            <View style={styles.containerStyle}>
-                <View style={styles.contentStyle}>
-                    <Text style={styles.titleTextSytle}>
-                        输入新的手机号码
-                    </Text>
-                    <View style={styles.item}>
-                        <Text style={styles.phoneNumberTextStyle}>+86</Text>
-                        <Input 
-                            style={styles.phoneNumberInputStyle} 
-                            keyboardType={'numeric'}
-                            placeholder="请输入手机号码"
-                            maxLength={11}
-                            onChangeText={number => this.updateDate(number)}
-                        ></Input>
-                    </View>
-                    <View style={{height:74}}></View>
-                    <Button style={styles.nextStepButtonSytle} onPress={this.next.bind(this)}>
-                        <Text style={styles.nextStepTextStyle}>
-                            下一步
-                        </Text>
-                    </Button>
-                </View>
-            </View>
+            <UserTemplate data = {inputPasswors} />
         );
     }
 }
-
-var styles = ({
-    
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentStyle: {
-        width: '80%',
-        marginTop: 30,
-    }, 
-    titleTextSytle: {
-        fontSize: 20,
-        color: 'black',
-    },
-    item: {
-        marginTop: 30,
-        height: 32,
-    },
-    phoneNumberTextStyle: {
-        color: '#FFA200',
-        fontSize: 14,
-    },
-    phoneNumberInputStyle: {
-        fontSize: 14,
-        height: 29,
-        marginLeft: 16,
-    },
-    nextStepButtonSytle: {
-        width: '100%',
-        height: 44,
-        backgroundColor: '#FFA200'
-    },
-    nextStepTextStyle: {
-        textAlign: 'center', 
-        width: '100%',   
-    },
-});

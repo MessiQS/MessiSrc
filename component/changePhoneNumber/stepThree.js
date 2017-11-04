@@ -1,10 +1,6 @@
 import React from 'react';
 import {
     Alert,
-    View,
-    Button,
-    TextInput,
-    Text
 } from 'react-native';
 import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
@@ -67,9 +63,9 @@ export default class CPStepThree extends React.Component {
                     }).then(({ type, data }) => {
                         if (type) {
                             Storage.setItem({
-                                    key:'account',
-                                    value:account
-                                });
+                                key: 'account',
+                                value: account
+                            });
                             Alert.alert('更新账号成功');
                         } else {
                             Alert.alert('更新账号失败');
@@ -85,88 +81,27 @@ export default class CPStepThree extends React.Component {
     }
 
     render() {
+        const inputPasswors = {
+            title: {
+                content: '填写短信验证码完成更换'
+            },
+            text: {
+                content: '验证码',
+                style: {
+                    color: '#FFA200'
+                }
+            },
+            input: {
+                onChangeText: this.updateData.bind(this),
+                placeholder: "请输入短信验证码"
+            },
+            button: {
+                title: "完成",
+                onPress: this.updatePhone.bind(this)
+            }
+        }
         return (
-            <View style={styles.containerStyle}>
-                <View style={styles.contentStyle}>
-                    <Text style={styles.titleTextSytle}>
-                        填写短信验证码完成更换
-                    </Text>
-                    <View style={styles.item}>
-                        <Text style={styles.vertificationTextStyle}>验证码</Text>
-                        <TextInput style={styles.vertificationInputStyle}
-                            placeholder="请输入短信验证码"
-                            onChangeText={vericode => this.updateData(vericode)}
-                            maxLength={4}
-                            keyboardType={'numeric'}
-                        ></TextInput>
-                    </View>
-                    <View style={styles.getCodeViewStyle}>
-                        <Button bordered style={styles.getCodeButtonStyle} onPress={this.getCode.bind(this)}>
-                            <Text style={styles.getCodeTextStyle}>获取验证码（59）</Text>
-                        </Button>
-                    </View>
-                    <Button style={styles.nextStepButtonSytle}
-                        onPress={this.updatePhone.bind(this)}
-                    >
-                        <Text style={styles.nextStepTextStyle}>完成</Text>
-                    </Button>
-                </View>
-            </View>
+            <UserTemplate data={inputPasswors} />
         );
     }
 }
-
-var styles = ({
-
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentStyle: {
-        marginTop: 30,
-        width: '80%',
-    },
-    titleTextSytle: {
-        fontSize: 20,
-        color: 'black',
-    },
-    item: {
-        marginTop: 30,
-        height: 32,
-    },
-    getCodeViewStyle: {
-        flexDirection: 'row-reverse',
-        height: 74,
-        width: '100%',
-    },
-    getCodeButtonStyle: {
-        marginTop: 9,
-        marginRight: 0,
-        borderColor: '#FFA200',
-        height: 21,
-    },
-    getCodeTextStyle: {
-        color: '#FFA200',
-        fontSize: 7,
-    },
-    vertificationTextStyle: {
-        color: '#FFA200',
-        fontSize: 14,
-    },
-    vertificationInputStyle: {
-        fontSize: 14,
-        height: 29,
-        marginLeft: 16,
-    },
-    nextStepButtonSytle: {
-        width: '100%',
-        height: 44,
-        backgroundColor: '#FFA200'
-    },
-    nextStepTextStyle: {
-        textAlign: 'center',
-        width: '100%',
-    },
-});

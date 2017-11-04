@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import {
     Alert,
-    View,
-    Button,
-    TextInput,
-    Text
 } from 'react-native';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
@@ -64,73 +60,17 @@ export default class CPStepOne extends React.Component {
                 content:'密码'
             },
             input:{
-                onChangeText:this.updatePassword.bind(this)
+                onChangeText:this.updatePassword.bind(this),
+                placeholder:"请输入密码",
+                secureTextEntry:true
+            },
+            button:{
+                title:"下一步",
+                onPress:this.next.bind(this)
             }
         }
         return (
             <UserTemplate data = {inputPasswors} />
-            // <View style={styles.containerStyle}>
-            //     <View style={styles.contentStyle}>
-            //         <Text style={styles.titleTextSytle}>
-            //         输入登录密码验证身份
-            //         </Text>
-            //         <View style={styles.item}>
-            //             <Text style={styles.passwordTextStyle}>密码</Text>
-            //             <TextInput secureTextEntry={true}  
-            //                     style={styles.passwordInputStyle} 
-            //                     placeholder="输入您的旧密码"
-            //                     maxLength={21}
-            //                     onChangeText = {value => this.updatePassword(value)}
-            //             ></TextInput>
-            //         </View>
-            //         <View style={{height:74}}></View>
-            //         {/* <Button style={styles.nextStepButtonSytle} 
-            //                 onPress={this.next.bind(this)}
-            //         >
-            //             <Text style={styles.nextStepTextStyle}>下一步</Text>
-            //         </Button> */}
-            //     </View>
-            // </View>
         );
     }
 }
-
-var styles = ({
-    
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentStyle: {
-        width: '80%',
-        marginTop: 30,
-    }, 
-    titleTextSytle: {
-        fontSize: 20,
-        color: 'black',
-    },
-    item: {
-        marginTop: 30,
-        height: 32,
-    },
-    passwordTextStyle: {
-        color: '#9B9B9B',
-        fontSize: 14,
-    },
-    passwordInputStyle: {
-        fontSize: 14,
-        height: 29,
-        marginLeft: 16,
-    },
-    nextStepButtonSytle: {
-        width: '100%',
-        height: 44,
-        backgroundColor: '#FFA200'
-    },
-    nextStepTextStyle: {
-        textAlign: 'center', 
-        width: '100%',   
-    },
-});

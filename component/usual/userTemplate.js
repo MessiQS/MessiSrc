@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import {
     Alert,
     View,
-    Button,
     TextInput,
     Text,
     StyleSheet
 } from 'react-native';
-
+import SamsoButton from './button';
 export default class UserTemplate extends Component {
     constructor(props) {
         super(props);
-        this.state = props.data;
+        this.data = this.props.data;
     }
     isHaveTitle() {
-        const { title } = this.state;
+        const { title } = this.data;
         if (title) {
             return (
                 <Text style={styles.title}>{title.content}</Text>
@@ -22,7 +21,7 @@ export default class UserTemplate extends Component {
         }
     }
     isHaveText() {
-        const { text } = this.state;
+        const { text } = this.data;
         if (text) {
             return (
                 <Text style={[styles.text, text.style]}>{text.content}</Text>
@@ -30,20 +29,24 @@ export default class UserTemplate extends Component {
         }
     }
     render() {
-        const { input } = this.state;
-        console.log(input)
+        const { input,button } = this.data;
         return (
             <View style={styles.container}>
                 {this.isHaveTitle()}
                 <View style={styles.input}>
                     {this.isHaveText()}
-                    <TextInput secureTextEntry={true}
+                    <TextInput 
+                        secureTextEntry={input.secureTextEntry}
                         style={styles.passwordInputStyle}
-                        placeholder="输入您的旧密码"
+                        placeholder={input.placeholder}
                         maxLength={21}
                         onChangeText={value => input.onChangeText(value)}
                     ></TextInput>
                 </View>
+                <SamsoButton
+                    onPress={button.onPress}
+                    title={button.title}
+                ></SamsoButton>
             </View>
         )
     }
@@ -67,6 +70,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:1,
         paddingBottom:7,
         borderBottomColor:'#dcdcdc',
+        marginBottom:70
     },
     text:{
         fontSize:14,
