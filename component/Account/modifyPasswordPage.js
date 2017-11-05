@@ -91,8 +91,8 @@ class ModifyPasswordPage extends React.Component {
                         ></TextInput>
                     </View>
                     <View style={styles.checkViewStyle}>
-                        <Button style={styles.checkButtonStyle} onPress={this.updatePawword.bind(this)}>
-                            <Text style={styles.checkTextStyle}>确认修改</Text>
+                        <Button style={styles.checkButtonStyle} onPress={this.updatePawword.bind(this)} title="确认修改">
+                            {/* <Text style={styles.checkTextStyle}></Text> */}
                         </Button>
                     </View>
                 </View>
@@ -101,8 +101,7 @@ class ModifyPasswordPage extends React.Component {
     }
 }
 
-var styles =({
-
+var styles =StyleSheet.create({
     containerStyle: {
         flex: 1,
         flexDirection: 'column',
