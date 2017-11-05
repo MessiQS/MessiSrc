@@ -46,7 +46,7 @@ export const styles = {
     },
     item: {
         flexDirection: 'row',
-        marginTop: 0,
+        marginTop: 15,
         marginBottom: 0,
         height: 50,
     },
