@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import RealmManager from "../Realm/realmManager";
 import Option from "./option";
+import OptionForm from "./optionForm";
 
 
 export default class Detail extends Component {
@@ -50,7 +51,12 @@ export default class Detail extends Component {
 
     _select(option) {
 
-        console.log(option)
+        const that = this
+
+        that.props.navigation.setParams({ 
+            header: null 
+        });
+        
     }
 
     render() {
@@ -68,24 +74,10 @@ export default class Detail extends Component {
                 </View>
                 <View style={styles.separatorLine}></View>
                 <View style={styles.bottomContent}>
-                    <ScrollView style={styles.content}>
-                        <Option option_Text={this.state.detail.option_A} 
-                            select={this._select}
-                            iconURLSource={require('../../Images/Option_A.png')}
-                        ></Option>
-                        <Option option_Text={this.state.detail.option_B} 
-                            select={this._select}
-                            iconURLSource={require('../../Images/Option_B.png')}
-                        ></Option>
-                        <Option option_Text={this.state.detail.option_C} 
-                            select={this._select}
-                            iconURLSource={require('../../Images/Option_C.png')}
-                        ></Option>
-                        <Option option_Text={this.state.detail.option_D} 
-                                select={this._select}
-                                iconURLSource={require('../../Images/Option_D.png')}
-                            ></Option>
-                    </ScrollView>
+                    <OptionForm 
+                        detail={this.state.detail}
+                        select={this._select}
+                    />
                 </View>
             </View>
         )
@@ -98,11 +90,6 @@ var styles = StyleSheet.create({
     },
     bottomContent: {
         flex: 1,
-    },
-    content: {
-        backgroundColor: 'white',
-        flex: 1,
-        width: "100%"
     },
     typeOfProblemView: {
         height: 30,
@@ -127,25 +114,10 @@ var styles = StyleSheet.create({
         backgroundColor: '#979797',
         opacity: 0.7,
     },
-    icon: {
-        marginRight: 10,
-        width: 23,
-        height: 23,
-    },
-    answerItem: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        padding: 10,
-    },
-    detailOptionView: {
+    content: {
+        backgroundColor: 'white',
         flex: 1,
-        paddingTop:2,
-    },
-    detailOptionText: {
-        lineHeight: 24,
-        color: "#0076FF",
-        fontSize: 18,
+        width: "100%"
     }
 })
 

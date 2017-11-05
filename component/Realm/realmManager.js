@@ -124,7 +124,6 @@ export default class RealmManager {
     static getRandomPaper() {
 
         let exams = realm.objects('QuestionPaper');
-        console.log("exams: " + exams)
         if (exams.length == 0) {
 
             console.log("QuestionPaper: schedule is empty");
