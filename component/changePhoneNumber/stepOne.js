@@ -62,7 +62,8 @@ export default class CPStepOne extends React.Component {
             input:{
                 onChangeText:this.updatePassword.bind(this),
                 placeholder:"请输入密码",
-                secureTextEntry:true
+                secureTextEntry:true,
+                maxLength:21
             },
             button:{
                 title:"下一步",

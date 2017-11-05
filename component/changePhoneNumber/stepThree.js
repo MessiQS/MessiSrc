@@ -94,7 +94,8 @@ export default class CPStepThree extends React.Component {
             },
             input: {
                 onChangeText: this.updateData.bind(this),
-                placeholder: "请输入短信验证码"
+                placeholder: "请输入短信验证码",
+                maxLength:4
             },
             button: {
                 title: "完成",

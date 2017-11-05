@@ -7,7 +7,7 @@ import {
     Button,
 } from 'react-native';
 import AccountCheck from '../../service/accountCheck';
-export default class ForgotPasswordStepOnePage extends React.Component {
+export default class FPStepOne extends React.Component {
 
     constructor(props) {
 		super(props);
@@ -36,26 +36,26 @@ export default class ForgotPasswordStepOnePage extends React.Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation;        
+        const inputPasswors = {
+            title:{
+                content:'输入登录密码验证身份'
+            },
+            text:{
+                content:'密码'
+            },
+            input:{
+                onChangeText:this.updatePassword.bind(this),
+                placeholder:"请输入密码",
+                secureTextEntry:true,
+                maxLength:21
+            },
+            button:{
+                title:"下一步",
+                onPress:this.next.bind(this)
+            }
+        }
         return (
-            <View style={styles.containerStyle}>
-                <View style={styles.contentStyle}>
-                    <View style={styles.item}>
-                        <Text style={styles.phoneNumberTextStyle}>+86</Text>
-                        <Input 
-                            maxLength={11}
-                            keyboardType={'numeric'}
-                            style={styles.phoneNumberInputStyle} 
-                            placeholder="请输入手机号码" 
-                            onChangeText={account => this.accountChange(account)}
-                        ></Input>
-                    </View>
-                    <View style={{height:43}}></View>
-                    <Button style={styles.nextStepButtonSytle} onPress={this.nextNaviegate.bind(this)}>
-                        <Text style={styles.nextStepTextStyle}>下一步</Text>
-                    </Button>
-                </View>
-            </View>
+            <UserTemplate data = {inputPasswors} />
         );
     }
 }

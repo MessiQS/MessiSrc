@@ -26,12 +26,14 @@ import Login from './component/Login/login';
 import LoginPage from './component/Login/loginPage';
 import AccountInfo from './component/Account/accountInfo';
 import ModifyPasswordPage from './component/Account/modifyPasswordPage';
+//cps changePhoneNumber
 import CPStepOne from './component/changePhoneNumber/stepOne';
 import CPStepTwo from  './component/changePhoneNumber/stepTwo';
 import CPStepThree from './component/changePhoneNumber/stepThree';
-import ForgotPasswordStepOnePage from './component/Account/forgotPasswordStepOnePage';
-import ForgotPasswordStepTwoPage from './component/Account/forgotPasswordStepTwoPage';
-import ForgotPasswordStepThreePage from './component/Account/forgotPasswordStepThreePage';
+//fps forgotPassword
+import FPStepOne from './component/forgetPassword/stepOne';
+import FPStepTwo from './component/forgetPassword/stepTwo';
+import FPStepThree from './component/forgetPassword/stepThree';
 import PayPage from './component/pay/payPage'
 import LaunchPage from './component/launchPage';
 
@@ -166,14 +168,14 @@ const Messi = StackNavigator({
     CPStepThree: {
         screen: CPStepThree,
     },
-    ForgotPasswordStepOnePage: {
-        screen: ForgotPasswordStepOnePage,
+    FPStepOne: {
+        screen: FPStepOne,
     },
-    ForgotPasswordStepTwoPage: {
-        screen: ForgotPasswordStepTwoPage,
+    FPStepTwo: {
+        screen: FPStepTwo,
     },
-    ForgotPasswordStepThreePage: {
-        screen: ForgotPasswordStepThreePage,
+    FPStepThree: {
+        screen: FPStepThree,
     },
     PayPage: {
         screen: PayPage,

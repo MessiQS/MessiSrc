@@ -5,7 +5,12 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
+import loginItem from './loginItem';
 
+//登录注册的item
+export const LoginItem = loginItem;
+
+//mine里面的item
 export class MineListItem extends Component {
 
     constructor(props) {

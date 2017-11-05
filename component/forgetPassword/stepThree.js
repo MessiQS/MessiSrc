@@ -10,7 +10,7 @@ import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';
 
-export default class ForgotPasswordStepThreePage extends React.Component {
+export default class FPStepThree extends React.Component {
 
     constructor(props) {
         super(props);

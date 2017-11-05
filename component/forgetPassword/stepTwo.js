@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Http from '../../service/http';
 
-export default class ChangePhoneNumberStepTwoPage extends Component {
+export default class FPStepTwo extends Component {
 
     constructor(props) {
         super(props);

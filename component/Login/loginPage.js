@@ -12,12 +12,13 @@ import MD5 from 'crypto-js/md5';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
-
+import { LoginItem } from '../usual/item';
+import  SamsoButton  from '../usual/button';
 
 class LoginPage extends React.Component {
 
-    constructor(...props) {
-        super();
+    constructor(props) {
+        super(props);
         this.state = this.state || {};
     }
 
@@ -65,12 +66,12 @@ class LoginPage extends React.Component {
             if (type) {
                 //将账号和token存到本地存储
                 let setToken = Storage.multiSet([
-                                                ['accountToken',token],
-                                                ['account',account]
-                                            ]);
-                setToken.then( res => {
-                    navigate('MyTab',{})
-                },err => {
+                    ['accountToken', token],
+                    ['account', account]
+                ]);
+                setToken.then(res => {
+                    navigate('MyTab', {})
+                }, err => {
                     Alert('登录错误，请重试')
                 })
             } else {
@@ -82,47 +83,41 @@ class LoginPage extends React.Component {
 
     render() {
         const { navigate } = this.props.navigation;
+        const inputObjectArraty = [{
+            placeholder: '请输入您的电话号码',
+            keyboardType: 'numeric',
+            onChangeText: account => this.phoneChange(account),
+            iconName:"ios-phone-portrait-outline",
+            maxLength:11,
+            key:'loginPage0'
+        },{
+            placeholder: '请输入您的密码',
+            secureTextEntry:true,
+            iconName:"ios-lock-outline",
+            onChangeText:password => this.passwordtChange(password),
+            key:'loginPage1'
+        }]
         return (
             <View style={styles.container}>
-                <View style={styles.item}>
-                    <View style={styles.iconViewStyle}>
-                        <Icon name="ios-phone-portrait-outline"
-                            style={styles.icon}
-                        />
-                    </View>
-                    <TextInput placeholder="请输入您的电话号码" 
-                            keyboardType={'numeric'} 
-                            maxLength={11} 
-                            onChangeText={account => this.phoneChange(account)}></TextInput>
+                {inputObjectArraty.map( res => {
+                    return <LoginItem key={res.key} data={res}></LoginItem>
+                })}
+                
+                <View style={styles.forgotButton}    
+                    >
+                    <Text onPress={() =>
+                                navigate('FPStepOne', 
+                                    { name: 'FPStepOne' }
+                                )} 
+                        style={styles.forgotText}>忘记密码</Text>
                 </View>
-                <View style={styles.bottomLine}></View>
-                <View style={styles.item}>
-                    <View style={styles.iconViewStyle}>
-                        <Icon name="ios-lock-outline"
-                            style={styles.icon}
-                        />
-                    </View>
-                    <TextInput placeholder="请输入您的密码" 
-                            secureTextEntry={true}
-                            maxLength={21} 
-                            onChangeText={password => this.passwordtChange(password)}></TextInput>
-                </View>
-                <View style={styles.bottomLine}></View>
-                <View style={styles.forgotButtonView}>
-                    <TouchableOpacity style={styles.forgotButton}    
-                        onPress={() =>
-                        navigate('ForgotPasswordStepOnePage', { name: 'ForgotPasswordStepOnePage' })
-                    }>
-                        <Text style={styles.forgotText}>忘记密码</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.loginButtonView} >
-                    <TouchableOpacity onPress={this.login.bind(this)}>
-                        <View style={styles.loginButton}>
-                            <Text style={styles.loginText}>登录</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+
+                <SamsoButton
+                    style={styles.enter}
+                    onPress={this.login.bind(this)}
+                    title = '登录'
+                ></SamsoButton>
+
                 <View style={styles.agreeView}>
                     <Text style={styles.agreeBaseText}>注册即表示同意本
                         <Text style={styles.agreeButton} >软件协议</Text>
@@ -140,64 +135,20 @@ var styles = {
         flex: 1,
         paddingHorizontal: 48,
     },
-    form: {
-        flex: 2,
-    },
-    item: {
-        marginTop: 20,
-        height:50,
-        flexDirection: 'row',
-    },
-    iconViewStyle: {
-        marginRight: 5,
-        marginLeft: 10,
-        width: 23,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    icon: {
-        fontSize: 23,
-        opacity: 0.7,
-    },
-    forgotButtonView: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        flex: 1,
-    },
     forgotButton: {
+        marginTop:15,
         height: 20,
         backgroundColor: null,
+        flexDirection:'row',
+        justifyContent:'flex-end'
     },
     forgotText: {
         color: '#9B9B9B',
         fontSize: 12,
         textDecorationLine: 'underline',
     },
-    bottomLine: {
-        height:1,
-        backgroundColor: "#D8D8D8",
-    },
-    loginButtonView: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 3,
-    },
-    loginButton: {
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-        backgroundColor: '#FFA200',
-        height: 55,
-        width: 290,
-        borderRadius: 8,
-    },
-    loginText: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 20,
+    enter:{
+        marginTop:56,
     },
     agreeView: {
         bottom: 10,
