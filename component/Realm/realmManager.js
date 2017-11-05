@@ -6,13 +6,12 @@ import realm from './realm';
 export default class RealmManager {
 
     /// 创建
-    static createQuestion(questionPaper) {
+    static createQuestion(json) {
 
         try {
             realm.write(() => {
-                
-                questionPaper.data.forEach( function(value, index) {
-    
+                json.data.forEach( function(value, index) {
+
                     realm.create('QuestionPaper', value);
                 })
                 console.log("QuestionPaper save success")
@@ -120,6 +119,17 @@ export default class RealmManager {
         }
 
         return schedule;
+    }
+
+    static getRandomPaper() {
+
+        let exams = realm.objects('QuestionPaper');
+        console.log("exams: " + exams)
+        if (exams.length == 0) {
+
+            console.log("QuestionPaper: schedule is empty");
+        }
+        return exams
     }
 }
 

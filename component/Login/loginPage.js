@@ -117,10 +117,10 @@ class LoginPage extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.loginButtonView} >
-                    <TouchableOpacity
-                            style={styles.loginButton} 
-                            onPress={this.login.bind(this)}>
+                    <TouchableOpacity onPress={this.login.bind(this)}>
+                        <View style={styles.loginButton}>
                             <Text style={styles.loginText}>登录</Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.agreeView}>
@@ -145,7 +145,7 @@ var styles = {
     },
     item: {
         marginTop: 20,
-        marginBottom: 20,
+        height:50,
         flexDirection: 'row',
     },
     iconViewStyle: {
@@ -186,14 +186,13 @@ var styles = {
         flex: 3,
     },
     loginButton: {
-        flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
         backgroundColor: '#FFA200',
-        height: 60,
-        width: 327,
-        padding: 0,
+        height: 55,
+        width: 290,
+        borderRadius: 8,
     },
     loginText: {
         color: 'white',
