@@ -48,7 +48,7 @@ export default class Detail extends Component {
         headerTintColor: 'white',
     });
 
-    select(option) {
+    _select(option) {
 
         console.log(option)
     }
@@ -69,58 +69,22 @@ export default class Detail extends Component {
                 <View style={styles.separatorLine}></View>
                 <View style={styles.bottomContent}>
                     <ScrollView style={styles.content}>
-                        <TouchableOpacity onPress={() =>
-                            this.select('A')
-                        }>
-                            <View style={styles.answerItem} >
-                                <Image
-                                    style={styles.icon}
-                                    source={require('../../Images/Option_A.png')}
-                                />
-                                <View style={styles.detailOptionView}>
-                                    <Text style={styles.detailOptionText}>{this.state.detail.option_A}</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() =>
-                            this.select('B')
-                        }>
-                            <View style={styles.answerItem} >
-                                <Image
-                                    style={styles.icon}
-                                    source={require('../../Images/Option_B.png')}
-                                />
-                                <View style={styles.detailOptionView}>
-                                    <Text style={styles.detailOptionText}>{this.state.detail.option_B}</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() =>
-                            this.select('C')
-                        }>
-                            <View style={styles.answerItem} >
-                                <Image
-                                    style={styles.icon}
-                                    source={require('../../Images/Option_C.png')}
-                                />
-                                <View style={styles.detailOptionView}>
-                                    <Text style={styles.detailOptionText}>{this.state.detail.option_C}</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() =>
-                            this.select('D')
-                        }>
-                            <View style={styles.answerItem}>
-                                <Image
-                                    style={styles.icon}
-                                    source={require('../../Images/Option_D.png')}
-                                />
-                                <View style={styles.detailOptionView}>
-                                    <Text style={styles.detailOptionText}>{this.state.detail.option_D}</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
+                        <Option option_Text={this.state.detail.option_A} 
+                            select={this._select}
+                            iconURLSource={require('../../Images/Option_A.png')}
+                        ></Option>
+                        <Option option_Text={this.state.detail.option_B} 
+                            select={this._select}
+                            iconURLSource={require('../../Images/Option_B.png')}
+                        ></Option>
+                        <Option option_Text={this.state.detail.option_C} 
+                            select={this._select}
+                            iconURLSource={require('../../Images/Option_C.png')}
+                        ></Option>
+                        <Option option_Text={this.state.detail.option_D} 
+                                select={this._select}
+                                iconURLSource={require('../../Images/Option_D.png')}
+                            ></Option>
                     </ScrollView>
                 </View>
             </View>
