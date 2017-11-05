@@ -26,9 +26,9 @@ import Login from './component/Login/login';
 import LoginPage from './component/Login/loginPage';
 import AccountInfo from './component/Account/accountInfo';
 import ModifyPasswordPage from './component/Account/modifyPasswordPage';
-import ChangePhoneNumberStepOnePage from './component/Account/changePhoneNumberStepOnePage';
-import ChangePhoneNumberStepTwoPage from  './component/Account/changePhoneNumberStepTwoPage';
-import ChangePhoneNumberStepThreePage from './component/Account/changePhoneNumberStepThreePage';
+import CPStepOne from './component/changePhoneNumber/stepOne';
+import CPStepTwo from  './component/changePhoneNumber/stepTwo';
+import CPStepThree from './component/changePhoneNumber/stepThree';
 import ForgotPasswordStepOnePage from './component/Account/forgotPasswordStepOnePage';
 import ForgotPasswordStepTwoPage from './component/Account/forgotPasswordStepTwoPage';
 import ForgotPasswordStepThreePage from './component/Account/forgotPasswordStepThreePage';
@@ -157,14 +157,14 @@ const Messi = StackNavigator({
     ModifyPasswordPage: {
         screen: ModifyPasswordPage,
     },
-    ChangePhoneNumberStepOnePage: {
-        screen: ChangePhoneNumberStepOnePage,
+    CPStepOne: {
+        screen: CPStepOne,
     },
-    ChangePhoneNumberStepTwoPage: {
-        screen: ChangePhoneNumberStepTwoPage,
+    CPStepTwo: {
+        screen: CPStepTwo,
     },
-    ChangePhoneNumberStepThreePage: {
-        screen: ChangePhoneNumberStepThreePage,
+    CPStepThree: {
+        screen: CPStepThree,
     },
     ForgotPasswordStepOnePage: {
         screen: ForgotPasswordStepOnePage,
