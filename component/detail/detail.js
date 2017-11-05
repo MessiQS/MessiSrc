@@ -14,20 +14,30 @@ import {
     ScrollView
 } from 'react-native';
 import RealmManager from "../Realm/realmManager";
+import Option from "./option";
+
 
 export default class Detail extends Component {
 
     componentDidMount() {
 
-        
+
     }
 
     constructor(props) {
         super(props);
         let questions = RealmManager.getRandomPaper();
+        let random = this.getRandomInt(0, questions.length)
+
         this.state = {
-            detail : questions[10]
+            detail: questions[random]
         }
+    }
+
+    getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -40,12 +50,12 @@ export default class Detail extends Component {
 
     select(option) {
 
-
+        console.log(option)
     }
 
     render() {
         return (
-            <View style={ {flexDirection:'column', height:"100%"}}>
+            <View style={{ flexDirection: 'column', height: "100%" }}>
                 <View style={styles.topContent}>
                     <ScrollView style={styles.content}>
                         <View style={styles.typeOfProblemView}>
@@ -59,50 +69,56 @@ export default class Detail extends Component {
                 <View style={styles.separatorLine}></View>
                 <View style={styles.bottomContent}>
                     <ScrollView style={styles.content}>
-                        <TouchableOpacity>
-                            <View style={styles.answerItem} button={true} onPress={() =>
-                                    this.select('A')
-                                }>
+                        <TouchableOpacity onPress={() =>
+                            this.select('A')
+                        }>
+                            <View style={styles.answerItem} >
                                 <Image
                                     style={styles.icon}
                                     source={require('../../Images/Option_A.png')}
                                 />
-                                <View>
-                                    <Text>{this.state.detail.option_A}</Text>
+                                <View style={styles.detailOptionView}>
+                                    <Text style={styles.detailOptionText}>{this.state.detail.option_A}</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.answerItem} button={true} onPress={() =>
-                                    this.select('B')
-                                }>
+                        <TouchableOpacity onPress={() =>
+                            this.select('B')
+                        }>
+                            <View style={styles.answerItem} >
                                 <Image
                                     style={styles.icon}
                                     source={require('../../Images/Option_B.png')}
                                 />
-                                <Text>{this.state.detail.option_B}</Text>
+                                <View style={styles.detailOptionView}>
+                                    <Text style={styles.detailOptionText}>{this.state.detail.option_B}</Text>
+                                </View>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.answerItem} button={true} onPress={() =>
-                                    this.select('C')
-                                }>
+                        <TouchableOpacity onPress={() =>
+                            this.select('C')
+                        }>
+                            <View style={styles.answerItem} >
                                 <Image
                                     style={styles.icon}
                                     source={require('../../Images/Option_C.png')}
                                 />
-                                <Text>{this.state.detail.option_C}</Text>
+                                <View style={styles.detailOptionView}>
+                                    <Text style={styles.detailOptionText}>{this.state.detail.option_C}</Text>
+                                </View>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.answerItem} button={true} onPress={() =>
-                                    this.select('D')
-                                }>
+                        <TouchableOpacity onPress={() =>
+                            this.select('D')
+                        }>
+                            <View style={styles.answerItem}>
                                 <Image
                                     style={styles.icon}
                                     source={require('../../Images/Option_D.png')}
                                 />
-                                <Text>{this.state.detail.option_D}</Text>
+                                <View style={styles.detailOptionView}>
+                                    <Text style={styles.detailOptionText}>{this.state.detail.option_D}</Text>
+                                </View>
                             </View>
                         </TouchableOpacity>
                     </ScrollView>
@@ -112,16 +128,17 @@ export default class Detail extends Component {
     }
 };
 
-var styles = StyleSheet.create ({
+var styles = StyleSheet.create({
     topContent: {
+        flex: 1,
+    },
+    bottomContent: {
         flex: 1,
     },
     content: {
         backgroundColor: 'white',
         flex: 1,
-    },
-    bottomContent: {
-        flex: 1,
+        width: "100%"
     },
     typeOfProblemView: {
         height: 30,
@@ -147,16 +164,24 @@ var styles = StyleSheet.create ({
         opacity: 0.7,
     },
     icon: {
-        marginLeft: 10,
         marginRight: 10,
         width: 23,
         height: 23,
     },
     answerItem: {
-        height: 40,
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        padding: 10,
+    },
+    detailOptionView: {
+        flex: 1,
+        paddingTop:2,
+    },
+    detailOptionText: {
+        lineHeight: 24,
+        color: "#0076FF",
+        fontSize: 18,
     }
 })
 
