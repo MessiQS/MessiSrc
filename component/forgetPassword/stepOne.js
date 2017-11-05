@@ -7,6 +7,9 @@ import {
     Button,
 } from 'react-native';
 import AccountCheck from '../../service/accountCheck';
+import UserTemplate from '../usual/userTemplate';
+
+
 export default class FPStepOne extends React.Component {
 
     constructor(props) {
@@ -32,26 +35,28 @@ export default class FPStepOne extends React.Component {
             return;
         }
         const { navigate } = this.props.navigation;        
-        navigate('ForgotPasswordStepTwoPage', { account: this.account })
+        navigate('FPStepTwo', { account: this.account })
     }
 
     render() {
         const inputPasswors = {
             title:{
-                content:'输入登录密码验证身份'
+                content:'请输入手机号码验证身份'
             },
             text:{
-                content:'密码'
+                content:'+86',
+                style:{
+                    color:'#FFA200'
+                }
             },
             input:{
-                onChangeText:this.updatePassword.bind(this),
-                placeholder:"请输入密码",
-                secureTextEntry:true,
-                maxLength:21
+                onChangeText:this.accountChange.bind(this),
+                placeholder:"请输入手机号码",
+                maxLength:11
             },
             button:{
                 title:"下一步",
-                onPress:this.next.bind(this)
+                onPress:this.nextNaviegate.bind(this)
             }
         }
         return (
@@ -59,39 +64,3 @@ export default class FPStepOne extends React.Component {
         );
     }
 }
-
-var styles = ({
-    
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentStyle: {
-        width: '80%',
-        marginTop: 57,
-    }, 
-    item: {
-        marginTop: 0,
-        height: 32,
-    },
-    phoneNumberTextStyle: {
-        color: '#FFA200',
-        fontSize: 14,
-    },
-    phoneNumberInputStyle: {
-        fontSize: 14,
-        height: 29,
-        marginLeft: 16,
-    },
-    nextStepButtonSytle: {
-        width: '100%',
-        height: 44,
-        backgroundColor: '#FFA200'
-    },
-    nextStepTextStyle: {
-        textAlign: 'center', 
-        width: '100%',   
-    },
-});

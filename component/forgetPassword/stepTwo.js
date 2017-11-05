@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import {
     Alert,
     View,
@@ -7,6 +7,7 @@ import {
     Button,
 } from 'react-native';
 import Http from '../../service/http';
+import UserTemplate from '../usual/userTemplate';
 
 export default class FPStepTwo extends Component {
 
@@ -58,7 +59,7 @@ export default class FPStepTwo extends Component {
             vericode: this.vericode
         }).then(response => {
             if (response.type) {
-                navigate('ForgotPasswordStepThreePage', {
+                navigate('FPStepThree', {
                     account: account,
                     vericode: this.vericode
                 })
@@ -69,88 +70,32 @@ export default class FPStepTwo extends Component {
     }
 
     render() {
+        const inputPasswors = {
+            title:{
+                content:'请填写短信验证码'
+            },
+            text:{
+                content:'验证码',
+                style:{
+                    color:'#FFA200'
+                }
+            },
+            input:{
+                onChangeText:this.changVericode.bind(this),
+                placeholder:"请输入验证码",
+                maxLength:11
+            },
+            button:{
+                title:"下一步",
+                onPress:this.nextNaviegate.bind(this)
+            },
+            varicode:{
+                title:'获取验证码',
+                onPress:this.getCode.bind(this)
+            }
+        }
         return (
-            <View style={styles.containerStyle}>
-                <View style={styles.contentStyle}>
-                    <Text style={styles.titleTextSytle}>
-                        填写短信验证码
-                    </Text>
-                    <View style={styles.item}>
-                        <Text style={styles.vertificationTextStyle}>验证码</Text>
-                        <TextInput
-                            keyboardType={'numeric'}
-                            maxLength={4}
-                            style={styles.vertificationInputStyle}
-                            placeholder="请输入短信验证码"
-                            onChangeText={vericode => this.changVericode(vericode)}
-                        >
-                        </TextInput>
-                    </View>
-                    <View style={styles.getCodeViewStyle}>
-                        <Button bordered style={styles.getCodeButtonStyle} >
-                            <Text style={styles.getCodeTextStyle} onPress={this.getCode.bind(this)}>获取验证码（59）</Text>
-                        </Button>
-                    </View>
-                    <Button style={styles.nextStepButtonSytle} onPress={this.nextNaviegate.bind(this)}>
-                        <Text style={styles.nextStepTextStyle}>下一步</Text>
-                    </Button>
-                </View>
-            </View>
+            <UserTemplate data = {inputPasswors} />
         );
     }
 }
-
-var styles = ({
-
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentStyle: {
-        marginTop: 30,
-        width: '80%',
-    },
-    titleTextSytle: {
-        fontSize: 20,
-        color: 'black',
-    },
-    item: {
-        marginTop: 30,
-        height: 32,
-    },
-    getCodeViewStyle: {
-        flexDirection: 'row-reverse',
-        height: 74,
-        width: '100%',
-    },
-    getCodeButtonStyle: {
-        marginTop: 9,
-        marginRight: 0,
-        borderColor: '#FFA200',
-        height: 21,
-    },
-    getCodeTextStyle: {
-        color: '#FFA200',
-        fontSize: 7,
-    },
-    vertificationTextStyle: {
-        color: '#FFA200',
-        fontSize: 14,
-    },
-    vertificationInputStyle: {
-        fontSize: 14,
-        height: 29,
-        marginLeft: 16,
-    },
-    nextStepButtonSytle: {
-        width: '100%',
-        height: 44,
-        backgroundColor: '#FFA200'
-    },
-    nextStepTextStyle: {
-        textAlign: 'center',
-        width: '100%',
-    },
-});

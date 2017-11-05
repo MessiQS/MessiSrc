@@ -20,8 +20,13 @@ export default class UserTemplate extends Component {
             )
         }
     }
-    isHaveText() {
-        const { text } = this.data;
+    isHaveText(initText) {
+        let text;
+        if(initText){
+             text = initText;
+        }else{
+            text  = this.data.text;
+        };
         if (text) {
             return (
                 <Text style={[styles.text, text.style]}>{text.content}</Text>
@@ -59,24 +64,37 @@ export default class UserTemplate extends Component {
             )
         }
     }
-    render() {
+    inputRender(input){
+        const { text } = this.data;
+        if(Array.isArray(input)){
+            var inputArr = input.map( (res,index) => {
 
-        let { input, button } = this.data;
+                res = Object.assign({
+                    placeholder: '请输入',
+                    maxLength: 21,
+                    onChangeText: () => console.log('input change has no function')
+                }, res)
+                res.key = 'repeatInput' + index;
 
-        input = Object.assign({
-            placeholder: '请输入',
-            maxLength: 21,
-            onChangeText: () => console.log('input change has no function')
-        }, input);
-        button = Object.assign({
-            title: '确认',
-            onPress: () => console.log('button is emptty')
-        }, button)
-        return (
-            <View style={styles.container}>
-                {this.isHaveTitle()}
+                return(
+                    <View style={styles.input}  key = {res.key}>
+                        {this.isHaveText(text[index])}     
+                        <TextInput
+                            secureTextEntry={res.secureTextEntry}
+                            style={styles.passwordInputStyle}
+                            placeholder={res.placeholder}
+                            maxLength={res.maxLength}
+                            onChangeText={value => res.onChangeText(value)}
+                        ></TextInput>
+                    </View>
+                )
+            })
+            console.log(inputArr)
+            return inputArr;
+        }else{
+            return(
                 <View style={styles.input}>
-                    {this.isHaveText()}
+                    {this.isHaveText()}     
                     <TextInput
                         secureTextEntry={input.secureTextEntry}
                         style={styles.passwordInputStyle}
@@ -84,6 +102,32 @@ export default class UserTemplate extends Component {
                         maxLength={input.maxLength}
                         onChangeText={value => input.onChangeText(value)}
                     ></TextInput>
+                </View>
+            )
+        }
+
+    }
+    render() {
+
+        let { input, button } = this.data;
+
+        if(!Array.isArray(input)){
+            input = Object.assign({
+                placeholder: '请输入',
+                maxLength: 21,
+                onChangeText: () => console.log('input change has no function')
+            }, input);
+        };
+
+        button = Object.assign({
+            title: '确认',
+            onPress: () => console.log('button is emptty')
+        }, button)
+        return (
+            <View style={styles.container}>
+                {this.isHaveTitle()}
+                <View style={styles.form}>
+                    {this.inputRender(input)}
                     {this.isHaveVaricode()}
                 </View>
                 <SamsoButton
@@ -107,14 +151,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#000",
     },
-    input: {
+    form: {
         marginTop: 20,
-        // flex:1,
-        flexDirection: 'row',
-        borderBottomWidth: 1,
-        paddingBottom: 7,
-        borderBottomColor: '#dcdcdc',
         marginBottom: 70
+    },
+    input:{
+        flexDirection: 'row',
+        paddingTop:7,
+        borderBottomColor: '#dcdcdc',
+        paddingBottom: 7,
+        borderBottomWidth: 1,
     },
     text: {
         fontSize: 14,

@@ -9,11 +9,16 @@ import {
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';
+import UserTemplate from '../usual/userTemplate';
 
 export default class FPStepThree extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            password:undefined,
+            repeatPassword:undefined
+        }
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -71,65 +76,45 @@ export default class FPStepThree extends React.Component {
         })
     }
     render() {
+        const inputPasswors = {
+            // title:{
+            //     content:'请填写短信验证码'
+            // },
+            text:[
+                {
+                    content:'新密码',
+                    style:{
+                        color:'#FFA200'
+                    }
+                },
+                {
+                    content:'确认密码',
+                    style:{
+                        color:'#FFA200'
+                    } 
+                }
+            ],
+            input:[
+                {
+                    onChangeText:this.initPassowrd.bind(this),
+                    placeholder:"请输入密码",
+                    maxLength:11,
+                    secureTextEntry:true,
+                },
+                {
+                    onChangeText:this.checkPassowrd.bind(this),
+                    placeholder:"请再次输入密码",
+                    maxLength:11,
+                    secureTextEntry:true,
+                }
+            ],
+            button:{
+                title:"完成",
+                onPress:this.updatePassword.bind(this)
+            }
+        }
         return (
-            <View style={styles.containerStyle}>
-                <View style={styles.contentStyle}>
-                    <View>
-                        <Text style={styles.titleTextStyle}>新密码</Text>
-                        <TextInput
-                            maxLength={21}
-                            style={styles.passwordInputStyle}
-                            placeholder="请输入新密码"
-                            onChangeText={password => this.initPassowrd(password)}
-                        ></TextInput>
-                    </View>
-                    <View>
-                        <Text style={styles.titleTextStyle}>确认密码</Text>
-                        <TextInput
-                            maxLength={21}
-                            style={styles.passwordInputStyle}
-                            placeholder="请再次确认新密码"
-                            onChangeText={password => this.checkPassowrd(password)}
-                        ></TextInput>
-                    </View>
-                    <View style={{ height: 38 }}></View>
-                    <Button style={styles.doneButtonStyle} onPress={this.updatePassword.bind(this)}>
-                        <Text style={styles.doneTextStyle}>完成</Text>
-                    </Button>
-                </View>
-            </View>
+            <UserTemplate data = {inputPasswors} />
         );
     }
 }
-
-var styles = ({
-
-    containerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contentStyle: {
-        marginTop: 30,
-        width: '80%',
-    },
-    titleTextStyle: {
-        color: '#FFA200',
-        width: 68,
-        fontSize: 14,
-    },
-    passwordInputStyle: {
-        fontSize: 14,
-    },
-    doneButtonStyle: {
-        backgroundColor: '#FFA200',
-        width: '100%',
-        height: 44,
-    },
-    doneTextStyle: {
-        textAlign: 'center',
-        width: '100%',
-        fontSize: 16,
-    },
-})
