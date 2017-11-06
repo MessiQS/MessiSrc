@@ -24,7 +24,7 @@ QuestionPaper.schema = {
         option_D: { type: 'string', optional: true },            /// 选项 D
         province: { type: 'string' },                            /// 省份
         question: 'string',                                      /// 题目
-        subject: { type: 'string', optional: true },             /// 类型 '单选题'
+        type: { type: 'string', optional: true },                /// 类型 '单选题'
         title: 'string',                                         /// 试卷名称 "2004年国家(A卷)《行测》真题"
         question_point: { type: 'string', optional: true },      /// 考点 '历史类' '语义分析' "对应关系,同一关系"
         question_material: {type: 'string', optional: true}      /// 材料
