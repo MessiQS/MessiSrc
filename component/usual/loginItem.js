@@ -14,6 +14,18 @@ export default class LoginItem extends Component {
         this.data = this.props.data;
     }
 
+    renderIcon(iconName){
+        if(iconName){
+            return(
+                <View style={styles.iconViewStyle}>
+                    <Icon 
+                        name={iconName}
+                        style={styles.icon}
+                    />
+                </View>
+            )
+        }
+    }
     render() {
         let { data } = this;
 
@@ -26,12 +38,7 @@ export default class LoginItem extends Component {
         }, data);
         return (
             <View style={styles.item}>
-                <View style={styles.iconViewStyle}>
-                    <Icon 
-                        name={data.iconName}
-                        style={styles.icon}
-                    />
-                </View>
+                {this.renderIcon(data.iconName)}
                 <TextInput
                     secureTextEntry={data.secureTextEntry}
                     placeholder={data.placeholder}

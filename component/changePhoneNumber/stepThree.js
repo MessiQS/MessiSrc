@@ -49,7 +49,7 @@ export default class CPStepThree extends React.Component {
 
     updatePhone() {
         const { account, vericode } = this.state;
-        const navigate = this.state.navigation;
+        const { navigate } = this.props.navigation;
         //检测验证码
         Http.post('api/checkcode', {
             account: account,
@@ -67,9 +67,23 @@ export default class CPStepThree extends React.Component {
                                 key: 'account',
                                 value: account
                             });
-                            Alert.alert('更新账号成功');
+                            Alert.alert('提示', '更新账号成功', [
+                                {
+                                    text: '确定',
+                                    onPress: async () => {
+                                        navigate('mine', { account: account })
+                                    }
+                                }
+                            ]);
                         } else {
-                            Alert.alert('更新账号失败');
+                            Alert.alert('提示', '更新账号失败', [
+                                {
+                                    text: '确定',
+                                    onPress: async () => {
+                                        navigate('mine', { account: account })
+                                    }
+                                }
+                            ])
                         }
                     })
                 })
@@ -95,15 +109,15 @@ export default class CPStepThree extends React.Component {
             input: {
                 onChangeText: this.updateData.bind(this),
                 placeholder: "请输入短信验证码",
-                maxLength:4
+                maxLength: 4
             },
             button: {
                 title: "完成",
                 onPress: this.updatePhone.bind(this)
             },
-            varicode:{
-                title:'获取验证码',
-                onPress:this.getCode.bind(this)
+            varicode: {
+                title: '获取验证码',
+                onPress: this.getCode.bind(this)
             }
         }
         return (

@@ -89,7 +89,6 @@ export default class UserTemplate extends Component {
                     </View>
                 )
             })
-            console.log(inputArr)
             return inputArr;
         }else{
             return(
