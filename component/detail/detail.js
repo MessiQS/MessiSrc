@@ -11,12 +11,12 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Button
 } from 'react-native';
 import RealmManager from "../Realm/realmManager";
-import Option from "./option";
 import OptionForm from "./optionForm";
-
+import Analysis from "./analysis";
 
 export default class Detail extends Component {
 
@@ -31,7 +31,8 @@ export default class Detail extends Component {
         let random = this.getRandomInt(0, questions.length)
 
         this.state = {
-            detail: questions[random]
+            detail: questions[random],
+            isSelected: false,
         }
     }
 
@@ -46,6 +47,9 @@ export default class Detail extends Component {
             backgroundColor: '#051425',
             opacity: 0.9,
         },
+        header: ({ state, setParams }) => {
+            right: <Button title="下一题" />,
+        },
         headerTintColor: 'white',
     });
 
@@ -53,10 +57,20 @@ export default class Detail extends Component {
 
         const that = this
 
-        that.props.navigation.setParams({ 
-            header: null 
-        });
-        
+        that.setState({
+            isSelected: true,
+        })
+    }
+
+    _renderAnalysis() {
+
+        if (this.state.isSelected) {
+            return (
+                <Analysis analysis={this.state.detail.analysis}/>
+            );
+        } else {
+            return null;
+        }
     }
 
     render() {
@@ -73,12 +87,13 @@ export default class Detail extends Component {
                     </ScrollView>
                 </View>
                 <View style={styles.separatorLine}></View>
-                <View style={styles.bottomContent}>
+                <ScrollView style={styles.bottomContent}>
                     <OptionForm 
                         detail={this.state.detail}
-                        select={this._select}
+                        select={this._select.bind(this)}
                     />
-                </View>
+                    { this._renderAnalysis() }
+                </ScrollView>
             </View>
         )
     }
@@ -90,6 +105,7 @@ var styles = StyleSheet.create({
     },
     bottomContent: {
         flex: 1,
+        backgroundColor: 'white',
     },
     typeOfProblemView: {
         height: 30,

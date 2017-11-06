@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    ScrollView,
     StyleSheet,
 } from 'react-native';
 
@@ -12,6 +11,7 @@ export default class OptionForm extends React.Component {
 
     static propTypes = {
         detail: PropTypes.object,
+        select: PropTypes.func,
     }
 
     constructor(props) {
@@ -27,7 +27,7 @@ export default class OptionForm extends React.Component {
 
         const that = this
         let answerTitle
-
+        
         if (option == that.props.detail.answer) {
             answerTitle = "回答正确！"
         } else {
@@ -37,13 +37,14 @@ export default class OptionForm extends React.Component {
             isDisable:true,
             answerTitle:answerTitle,
         })
+        this.props.select(option)
     }
 
     render() {
         const { detail } = this.props;
 
         return(
-            <ScrollView style={styles.content}>
+            <View style={styles.content}>
                 <View style={styles.answerTitleView}>
                     <Text style={styles.answerTitleText}>{this.state.answerTitle}</Text>
                 </View>
@@ -79,7 +80,7 @@ export default class OptionForm extends React.Component {
                         isDisable={this.state.isDisable}
                         answer={detail.answer}
                 ></Option>
-            </ScrollView>
+            </View>
         );
     }
 }
