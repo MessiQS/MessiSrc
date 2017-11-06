@@ -100,7 +100,7 @@ class LoginPage extends React.Component {
         return (
             <View style={styles.container}>
                 {inputObjectArraty.map( res => {
-                    return <LoginItem key={res.key} data={res}></LoginItem>
+                    return (<LoginItem key={res.key} data={res}></LoginItem>)
                 })}
                 
                 <View style={styles.forgotButton}    

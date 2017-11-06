@@ -10,10 +10,12 @@ import {
 import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
+import { LoginItem } from '../usual/item';
+import  SamsoButton  from '../usual/button';
+import Storage from '../../service/storage';
 
 const passwordType = ['oldPassword','newPassword','checkPassword'];
 //从本地取出账号
-const count = '123123';
 const strArr = {
     oldPassword:'原始密码',
     newPassword:'新密码',
@@ -23,7 +25,10 @@ const strArr = {
 class ModifyPasswordPage extends React.Component {
 
 	constructor(props) {
-		super(props);
+        super(props);
+        this.state = {
+
+        }
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -36,15 +41,14 @@ class ModifyPasswordPage extends React.Component {
     });
 
     changePassword(key,value){
-        console.log(key,value)
         this[key] = value;
     };
 
-    updatePawword(){
+    async updatePawword(){
         let isValid = true;
         if(this[passwordType[1]] !== this[passwordType[2]]){
             isValid = false;
-            Alert,alert('两次密码不相同','请输入相同的密码');
+            Alert,alert('错误','确认两次输入相同');
             return;
         }
         passwordType.some( res => {
@@ -55,46 +59,66 @@ class ModifyPasswordPage extends React.Component {
             }
         });
         if(isValid){
+            const account = await Storage.getItem('account');
+            const { navigate } = this.props.navigation;
+            
             Http.post('api/updatepassword', {
                 account: account,
-                oldPassword:this[passwordType[0]],
-                password: this[passwordType[1]]
+                oldPassword:password = MD5(this[passwordType[0]]).toString(),
+                password: MD5(this[passwordType[1]]).toString()
             }).then(res => {
-                console.log(res)
-                //成功后跳转，失败后提示
+                if(res.type){
+                    Alert.alert('提示', '修改密码成功', [
+                        {
+                            text: '确定',
+                            onPress: async () => {
+                                navigate('mine', { account: account })
+                            }
+                        }
+                    ]);
+                }else{
+                    Alert.alert('提示', '修改密码失败', [
+                        {
+                            text: '确定',
+                            onPress: async () => {
+                                navigate('mine', { account: account })
+                            }
+                        }
+                    ])
+                }
             })
         }
     }
     render() {
+        const inputObjectArraty = [{
+            secureTextEntry:true,
+            placeholder: '请输入您的旧密码',
+            onChangeText: (password) => this.changePassword(passwordType[0],password),
+            key:'mp0'
+        },{
+            placeholder: '请输入您的新密码',
+            secureTextEntry:true,
+            onChangeText:(password) => this.changePassword(passwordType[1],password),
+            key:'mp1'
+        },{
+            placeholder: '确认您的新密码',
+            secureTextEntry:true,
+            onChangeText:(password) => this.changePassword(passwordType[2],password),
+            key:'mp2'
+        }]
         return (
             <View style={styles.containerStyle}>
                 <View style={styles.contentStyle}>
-                    <View style={styles.item}>
-                        <TextInput secureTextEntry={true} 
-                            placeholder="请输入您的旧密码" 
-                            maxLength={21}
-                            onChangeText={ password => this.changePassword(passwordType[0],password)}
-                        ></TextInput>
-                    </View>
-                    <View style={styles.item}>
-                        <TextInput secureTextEntry={true} 
-                            placeholder="请输入您的新密码"
-                            maxLength={21}
-                            onChangeText={ password => this.changePassword(passwordType[1],password)}
-                        ></TextInput>
-                    </View>
-                    <View style={styles.item}>
-                        <TextInput secureTextEntry={true}
-                             placeholder="确认您的新密码"
-                             maxLength={21}
-                             onChangeText={ password => this.changePassword(passwordType[2],password)}
-                        ></TextInput>
-                    </View>
-                    <View style={styles.checkViewStyle}>
-                        <Button style={styles.checkButtonStyle} onPress={this.updatePawword.bind(this)} title="确认修改">
-                            {/* <Text style={styles.checkTextStyle}></Text> */}
-                        </Button>
-                    </View>
+                    {inputObjectArraty.map( res => {
+                        return (
+                            <LoginItem key={res.key} data={res}></LoginItem>
+                        )
+                    })}
+                    <SamsoButton
+                        style={styles.checkViewStyle}
+                        onPress={this.updatePawword.bind(this)}
+                        title = '确认修改'
+                    ></SamsoButton>
                 </View>
             </View>
         );
@@ -105,7 +129,6 @@ var styles =StyleSheet.create({
     containerStyle: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',        
         alignItems: 'center',
     },
     contentStyle: {
@@ -119,8 +142,8 @@ var styles =StyleSheet.create({
         
     },
     checkViewStyle: {
+        marginTop:20,
         width: '100%',
-        height: 100,
     },
     checkButtonStyle: {
         marginTop: 49,
