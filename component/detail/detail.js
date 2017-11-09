@@ -47,9 +47,7 @@ export default class Detail extends Component {
             backgroundColor: '#051425',
             opacity: 0.9,
         },
-        header: ({ state, setParams }) => {
-            right: <Button title="下一题" />,
-        },
+        
         headerTintColor: 'white',
     });
 
@@ -66,11 +64,18 @@ export default class Detail extends Component {
 
         if (this.state.isSelected) {
             return (
-                <Analysis analysis={this.state.detail.analysis}/>
+                <Analysis analysis={this._filterTag(this.state.detail.analysis)}/>
             );
         } else {
             return null;
         }
+    }
+
+    _filterTag(str) {
+
+        let filterStr = str.replace(/<\/br>/g, "\n").replace(/<br\/>/g, "\n")
+
+        return filterStr
     }
 
     render() {
@@ -82,7 +87,7 @@ export default class Detail extends Component {
                             <Text style={styles.typeOfProblem}>（{this.state.detail.subject}）</Text>
                         </View>
                         <View style={styles.questionView}>
-                            <Text style={styles.questionText}>{this.state.detail.question}</Text>
+                            <Text style={styles.questionText}>{this._filterTag(this.state.detail.question)}</Text>
                         </View>
                     </ScrollView>
                 </View>

@@ -40,6 +40,13 @@ export default class OptionForm extends React.Component {
         this.props.select(option)
     }
 
+    _filterTag(str) {
+        
+        let filterStr = str.replace(/<\/br>/g, "\n").replace(/<br\/>/g, "\n")
+
+        return filterStr
+    }
+
     render() {
         const { detail } = this.props;
 
@@ -48,7 +55,7 @@ export default class OptionForm extends React.Component {
                 <View style={styles.answerTitleView}>
                     <Text style={styles.answerTitleText}>{this.state.answerTitle}</Text>
                 </View>
-                <Option option_Text={detail.option_A} 
+                <Option option_Text={this._filterTag(detail.option_A)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_A.png')}
                         selectedURLSource={require('../../Images/Option_A_Selected.png')}
@@ -56,7 +63,7 @@ export default class OptionForm extends React.Component {
                         isDisable={this.state.isDisable}
                         answer={detail.answer}
                 ></Option>
-                <Option option_Text={detail.option_B} 
+                <Option option_Text={this._filterTag(detail.option_B)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_B.png')}
                         selectedURLSource={require('../../Images/Option_B_Selected.png')}
@@ -64,7 +71,7 @@ export default class OptionForm extends React.Component {
                         isDisable={this.state.isDisable}
                         answer={detail.answer}
                 ></Option>
-                <Option option_Text={detail.option_C} 
+                <Option option_Text={this._filterTag(detail.option_C)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_C.png')}
                         selectedURLSource={require('../../Images/Option_C_Selected.png')}
@@ -72,7 +79,7 @@ export default class OptionForm extends React.Component {
                         isDisable={this.state.isDisable}
                         answer={detail.answer}
                 ></Option>
-                <Option option_Text={detail.option_D} 
+                <Option option_Text={this._filterTag(detail.option_D)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_D.png')}
                         selectedURLSource={require('../../Images/Option_D_Selected.png')}
