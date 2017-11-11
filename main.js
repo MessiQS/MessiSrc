@@ -13,6 +13,7 @@ import {
     Image
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
+
 import Home from './modules/home/home';
 import Mine from './modules/mine/mine';
 import Find from './modules/find/find';

@@ -12,13 +12,14 @@ export default class OptionForm extends React.Component {
     static propTypes = {
         detail: PropTypes.object,
         select: PropTypes.func,
+        isSelected: PropTypes.bool,
+        selectedOption: PropTypes.string,
     }
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isDisable: false,
             answerTitle: null,
         }
     }
@@ -34,7 +35,6 @@ export default class OptionForm extends React.Component {
             answerTitle = "回答错误！"
         }
         that.setState({
-            isDisable:true,
             answerTitle:answerTitle,
         })
         this.props.select(option)
@@ -42,51 +42,75 @@ export default class OptionForm extends React.Component {
 
     _filterTag(str) {
         
-        let filterStr = str.replace(/<\/br>/g, "\n").replace(/<br\/>/g, "\n")
-
+        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
+        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
+        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
+        
         return filterStr
     }
 
+    _isSelected(option) {
+        if (this.props.selectedOption == option) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    _showTitle() {
+        if (this.props.isSelected == true) {
+            return(
+                <View style={styles.answerTitleView}>
+                   <Text style={styles.answerTitleText}>{this.state.answerTitle}</Text>
+                </View>
+            )
+        } else {
+            return null
+        }
+    }
+
     render() {
-        const { detail } = this.props;
+        const { detail, selectedOption } = this.props;
 
         return(
             <View style={styles.content}>
-                <View style={styles.answerTitleView}>
-                    <Text style={styles.answerTitleText}>{this.state.answerTitle}</Text>
-                </View>
+                
                 <Option option_Text={this._filterTag(detail.option_A)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_A.png')}
                         selectedURLSource={require('../../Images/Option_A_Selected.png')}
                         selection={"A"}
-                        isDisable={this.state.isDisable}
+                        isSelected={this._isSelected("A")}
                         answer={detail.answer}
-                ></Option>
+                        selectedOption={selectedOption}
+                />
                 <Option option_Text={this._filterTag(detail.option_B)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_B.png')}
                         selectedURLSource={require('../../Images/Option_B_Selected.png')}
                         selection={"B"}
-                        isDisable={this.state.isDisable}
+                        isSelected={this._isSelected("B")}
                         answer={detail.answer}
-                ></Option>
+                        selectedOption={selectedOption}
+                />
                 <Option option_Text={this._filterTag(detail.option_C)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_C.png')}
                         selectedURLSource={require('../../Images/Option_C_Selected.png')}
                         selection={"C"}
-                        isDisable={this.state.isDisable}
+                        isSelected={this._isSelected("C")}
                         answer={detail.answer}
-                ></Option>
+                        selectedOption={selectedOption}
+                />
                 <Option option_Text={this._filterTag(detail.option_D)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_D.png')}
                         selectedURLSource={require('../../Images/Option_D_Selected.png')}
                         selection={"D"}
-                        isDisable={this.state.isDisable}
+                        isSelected={this._isSelected("D")}
                         answer={detail.answer}
-                ></Option>
+                        selectedOption={selectedOption}
+                />
             </View>
         );
     }

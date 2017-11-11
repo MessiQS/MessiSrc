@@ -12,29 +12,21 @@ export default class Option extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            selected: false,
-        }
     }
 
     _select(option) {
         const that = this
-        if (that.props.select) {
-            this.setState({
-                selected: true
-            })
-            that.props.select(option);
-        }
+        that.props.select(option);
     }
 
     _afterSelectText() {
 
         const that = this
 
-        if (that.state.selected && that.props.selection == that.props.answer) {
+        if (that.props.isSelected && that.props.selection == that.props.answer) {
             return {color: "#FFA200"}
         }
-        if (that.state.selected && that.props.selection != that.props.answer) {
+        if (that.props.isSelected && that.props.selection != that.props.answer) {
             return {color: "#FFA200", textDecorationLine:'line-through'}
         }
 
@@ -45,10 +37,42 @@ export default class Option extends React.Component {
 
         const that = this
         
-        if (that.state.selected && that.props.selection == that.props.answer) {
+        if (that.props.isSelected && that.props.selection == that.props.answer) {
             return styles.background
         }
         return null
+    }
+
+    _renderOptionView() {
+
+        const { option_Text, select, iconURLSource, selection, isSelected, selectedURLSource } = this.props
+        if (isSelected == true) {
+            return (
+                <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
+                <Image
+                    style={styles.icon}
+                    source={isSelected ? selectedURLSource : iconURLSource}
+                />
+                <View style={styles.detailOptionView}>
+                    <Text style={[styles.detailOptionText, this._afterSelectText()]}>{option_Text}</Text>
+                </View>
+            </View>
+            );
+            
+        } else {
+
+            return (
+                <View style={[styles.answerItem]} >
+                <Image
+                    style={styles.icon}
+                    source={iconURLSource}
+                />
+                <View style={styles.detailOptionView}>
+                    <Text style={styles.detailOptionText}>{option_Text}</Text>
+                </View>
+            </View>
+            );
+        }
     }
 
     static propTypes = {
@@ -57,25 +81,18 @@ export default class Option extends React.Component {
         iconURLSource: PropTypes.number,
         selectedURLSource: PropTypes.number,
         selection: PropTypes.string,
-        isDisable: PropTypes.bool,
-        answer: PropTypes.string
+        isSelected: PropTypes.bool,
+        answer: PropTypes.string,
+        selectedOption: PropTypes.string,
     }
 
     render() {
-        const { option_Text, select, iconURLSource, selection, isDisable, selectedURLSource } = this.props
+        const { option_Text, select, iconURLSource, selection, isSelected, selectedURLSource } = this.props
         return (
-            <TouchableOpacity disabled={isDisable} onPress={() =>
+            <TouchableOpacity disabled={isSelected} onPress={() =>
                 this._select(selection)
             }>
-                <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
-                    <Image
-                        style={styles.icon}
-                        source={this.state.selected ? selectedURLSource : iconURLSource}
-                    />
-                    <View style={styles.detailOptionView}>
-                        <Text style={[styles.detailOptionText, this._afterSelectText()]}>{option_Text}</Text>
-                    </View>
-                </View>
+                { this._renderOptionView() }
             </TouchableOpacity>
         );
     }

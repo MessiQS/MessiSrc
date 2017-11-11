@@ -44,7 +44,7 @@ var styles = StyleSheet.create ({
     titleText: {
         marginTop:6,
         fontSize:15,
-        color:"#FF9600"
+        color:"#FF9600",
     },
     analysis: {
         marginTop:35,
@@ -52,5 +52,6 @@ var styles = StyleSheet.create ({
         marginLeft: 44,
         marginBottom: 44,
         fontSize:16,
+        lineHeight: 20,
     }
 })

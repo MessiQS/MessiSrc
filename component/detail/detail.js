@@ -21,8 +21,7 @@ import Analysis from "./analysis";
 export default class Detail extends Component {
 
     componentDidMount() {
-
-
+        this.props.navigation.setParams({ handleNextQuestion: this.nextQuestion.bind(this) });
     }
 
     constructor(props) {
@@ -33,6 +32,7 @@ export default class Detail extends Component {
         this.state = {
             detail: questions[random],
             isSelected: false,
+            selectedOption: "",
         }
     }
 
@@ -42,14 +42,21 @@ export default class Detail extends Component {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        headerStyle: {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        headerStyle = {
             backgroundColor: '#051425',
             opacity: 0.9,
-        },
-        
-        headerTintColor: 'white',
-    });
+        }
+        let headerTintColor= 'white'
+        let headerRight =  (
+            <Button title={"下一题"} 
+            style={styles.rightButtonStyle}
+            color="white" 
+            onPress={params.handleNextQuestion}
+            />
+        )
+    };
 
     _select(option) {
 
@@ -57,6 +64,7 @@ export default class Detail extends Component {
 
         that.setState({
             isSelected: true,
+            selectedOption:option,
         })
     }
 
@@ -73,9 +81,23 @@ export default class Detail extends Component {
 
     _filterTag(str) {
 
-        let filterStr = str.replace(/<\/br>/g, "\n").replace(/<br\/>/g, "\n")
+        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
 
         return filterStr
+    }
+
+    nextQuestion() {
+
+        const that = this
+
+        let questions = RealmManager.getRandomPaper();
+        let random = that.getRandomInt(0, questions.length)
+
+        that.setState({
+            detail: questions[random],
+            isSelected: false,
+            selectedOption: ""
+        })
     }
 
     render() {
@@ -96,6 +118,8 @@ export default class Detail extends Component {
                     <OptionForm 
                         detail={this.state.detail}
                         select={this._select.bind(this)}
+                        isSelected={this.state.isSelected}
+                        selectedOption={this.state.selectedOption}
                     />
                     { this._renderAnalysis() }
                 </ScrollView>
@@ -129,6 +153,7 @@ var styles = StyleSheet.create({
     questionText: {
         color: 'black',
         fontSize: 16,
+        lineHeight: 20,
     },
     separatorLine: {
         height: 1,
@@ -139,6 +164,9 @@ var styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
         width: "100%"
+    },
+    rightButtonStyle: {
+        
     }
 })
 
