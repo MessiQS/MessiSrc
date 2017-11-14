@@ -66,8 +66,6 @@ export default class Detail extends Component {
             isSelected: true,
             selectedOption: option,
         })
-
-
     }
 
     _renderAnalysis() {
