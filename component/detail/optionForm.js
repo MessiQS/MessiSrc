@@ -65,22 +65,24 @@ export default class OptionForm extends React.Component {
                 </View>
             )
         } else {
-            return null
+            return( 
+                <View style={styles.answerTitleView}></View>
+            )
         }
     }
 
     render() {
-        const { detail, selectedOption } = this.props;
+        const { detail, selectedOption, isSelected } = this.props;
 
         return(
             <View style={styles.content}>
-                
+                { this._showTitle() }
                 <Option option_Text={this._filterTag(detail.option_A)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_A.png')}
                         selectedURLSource={require('../../Images/Option_A_Selected.png')}
                         selection={"A"}
-                        isSelected={this._isSelected("A")}
+                        isSelected={isSelected}
                         answer={detail.answer}
                         selectedOption={selectedOption}
                 />
@@ -89,7 +91,7 @@ export default class OptionForm extends React.Component {
                         iconURLSource={require('../../Images/Option_B.png')}
                         selectedURLSource={require('../../Images/Option_B_Selected.png')}
                         selection={"B"}
-                        isSelected={this._isSelected("B")}
+                        isSelected={isSelected}
                         answer={detail.answer}
                         selectedOption={selectedOption}
                 />
@@ -98,7 +100,7 @@ export default class OptionForm extends React.Component {
                         iconURLSource={require('../../Images/Option_C.png')}
                         selectedURLSource={require('../../Images/Option_C_Selected.png')}
                         selection={"C"}
-                        isSelected={this._isSelected("C")}
+                        isSelected={isSelected}
                         answer={detail.answer}
                         selectedOption={selectedOption}
                 />
@@ -107,7 +109,7 @@ export default class OptionForm extends React.Component {
                         iconURLSource={require('../../Images/Option_D.png')}
                         selectedURLSource={require('../../Images/Option_D_Selected.png')}
                         selection={"D"}
-                        isSelected={this._isSelected("D")}
+                        isSelected={isSelected}
                         answer={detail.answer}
                         selectedOption={selectedOption}
                 />

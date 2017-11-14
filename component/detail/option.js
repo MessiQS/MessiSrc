@@ -45,8 +45,8 @@ export default class Option extends React.Component {
 
     _renderOptionView() {
 
-        const { option_Text, select, iconURLSource, selection, isSelected, selectedURLSource } = this.props
-        if (isSelected == true) {
+        const { option_Text, select, iconURLSource, selection, isSelected, selectedURLSource, selectedOption } = this.props
+        if (selection == selectedOption) {
             return (
                 <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
                 <Image

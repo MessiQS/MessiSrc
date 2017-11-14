@@ -17,6 +17,7 @@ import {
 import RealmManager from "../Realm/realmManager";
 import OptionForm from "./optionForm";
 import Analysis from "./analysis";
+import key from "../../service/path"
 
 export default class Detail extends Component {
 
@@ -42,21 +43,20 @@ export default class Detail extends Component {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state;
-        headerStyle = {
+    static navigationOptions = ({ navigation }) => ({
+        headerStyle: {
             backgroundColor: '#051425',
             opacity: 0.9,
-        }
-        let headerTintColor= 'white'
-        let headerRight =  (
-            <Button title={"下一题"} 
-            style={styles.rightButtonStyle}
-            color="white" 
-            onPress={params.handleNextQuestion}
-            />
+        },
+        headerTintColor: 'white',
+        headerRight: (
+            <TouchableOpacity onPress={ navigation.state.params.handleNextQuestion }>
+                 <View style={styles.rightButtonStyle}>
+                    <Text style={styles.rightText}>下一题</Text>
+                 </View>
+            </TouchableOpacity>
         )
-    };
+    });
 
     _select(option) {
 
@@ -64,8 +64,10 @@ export default class Detail extends Component {
 
         that.setState({
             isSelected: true,
-            selectedOption:option,
+            selectedOption: option,
         })
+
+
     }
 
     _renderAnalysis() {
@@ -82,8 +84,54 @@ export default class Detail extends Component {
     _filterTag(str) {
 
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
+        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
+        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
 
         return filterStr
+    }
+
+    _renderQuestion(str) {
+
+        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
+        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
+        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
+
+        var re = /.\/(.*)files/g;
+        var results = re.exec(filterStr);
+        var img="";
+        if(results) {
+            img = results[0].replace("./", "")
+            console.log("filterStr " + filterStr)            
+            filterStr = filterStr.replace(img, key[img])
+            console.log("filterStr " + filterStr)
+        }
+
+        var re2 = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
+
+        let splits = filterStr.split(re2)
+
+        return (
+            <View style={styles.questionView}>
+                {
+                    splits.map ((content, index) => {
+                        console.log(content)
+
+                        console.log(content.search(/.\/(.*)png/g))
+                        if (content.search(/.\/(.*)png/g) >= 0) {
+                            const url = content.replace("./", "http://www.samso.cn/images/")
+                            console.log("url:" + url)
+                            return (
+                                <Image key={index} style={styles.questionImage} resizeMode={'cover'}  source={{uri: url}} />
+                            )
+                        } else {
+                            return (
+                                <Text key={index} style={styles.questionText}>{ content }</Text>
+                            )
+                        }
+                    })
+                }
+            </View>
+        )
     }
 
     nextQuestion() {
@@ -108,9 +156,7 @@ export default class Detail extends Component {
                         <View style={styles.typeOfProblemView}>
                             <Text style={styles.typeOfProblem}>（{this.state.detail.subject}）</Text>
                         </View>
-                        <View style={styles.questionView}>
-                            <Text style={styles.questionText}>{this._filterTag(this.state.detail.question)}</Text>
-                        </View>
+                        { this._renderQuestion(this.state.detail.question) }
                     </ScrollView>
                 </View>
                 <View style={styles.separatorLine}></View>
@@ -155,6 +201,11 @@ var styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 20,
     },
+    questionImage: {  
+        flex:1, 
+        width: null,
+        height: null,
+    },
     separatorLine: {
         height: 1,
         backgroundColor: '#979797',
@@ -166,7 +217,15 @@ var styles = StyleSheet.create({
         width: "100%"
     },
     rightButtonStyle: {
-        
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 44,
+        width: 80,
+    },
+    rightText: {
+        color: "#FFA200",
+        fontSize: 16,
     }
 })
 

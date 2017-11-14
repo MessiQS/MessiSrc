@@ -17,12 +17,20 @@ export default class Analysis extends React.Component {
         analysis: PropTypes.string,
     }
 
+    _renderAnalysisFormated() {
+        const { analysis } = this.props;
+        
+        return (
+            <Text style={styles.analysis}>{analysis}</Text>            
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.separotar}></View>
                 <Text style={styles.titleText}>查看本题解析</Text>
-                <Text style={styles.analysis}>{this.props.analysis}</Text>
+                { this._renderAnalysisFormated() }
             </View>
         )
     }
