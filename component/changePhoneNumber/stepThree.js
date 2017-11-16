@@ -103,7 +103,7 @@ export default class CPStepThree extends React.Component {
             text: {
                 content: '验证码',
                 style: {
-                    color: '#FFA200'
+                    color: '#FF5B29'
                 }
             },
             input: {

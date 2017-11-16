@@ -46,7 +46,7 @@ export default class FPStepOne extends React.Component {
             text:{
                 content:'+86',
                 style:{
-                    color:'#FFA200'
+                    color:'#FF5B29'
                 }
             },
             input:{

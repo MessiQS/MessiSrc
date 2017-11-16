@@ -84,13 +84,13 @@ export default class FPStepThree extends React.Component {
                 {
                     content:'新密码',
                     style:{
-                        color:'#FFA200'
+                        color:'#FF5B29'
                     }
                 },
                 {
                     content:'确认密码',
                     style:{
-                        color:'#FFA200'
+                        color:'#FF5B29'
                     } 
                 }
             ],

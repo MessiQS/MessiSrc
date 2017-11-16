@@ -24,7 +24,7 @@ export default class SamsoButton extends Component {
 }
 const styles = StyleSheet.create({
     initView: {
-        backgroundColor: '#FFA200',
+        backgroundColor: '#FF5B29',
         borderRadius: 5,
     },
     initStyle: {

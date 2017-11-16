@@ -44,7 +44,7 @@ export default class CPStepTwo extends React.Component {
             text:{
                 content:'+86',
                 style:{
-                    color:'#FFA200'
+                    color:'#FF5B29'
                 }
             },
             input:{

@@ -57,7 +57,10 @@ export default class CPStepOne extends React.Component {
                 content:'输入登录密码验证身份'
             },
             text:{
-                content:'密码'
+                content:'密码',
+                style:{
+                    color:"#172434"
+                }
             },
             input:{
                 onChangeText:this.updatePassword.bind(this),

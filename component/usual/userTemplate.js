@@ -41,7 +41,7 @@ export default class UserTemplate extends Component {
                 position: 'absolute',
                 right: 0,
                 borderWidth: 1,
-                borderColor: '#ffa200',
+                borderColor: '#FF5B29',
                 borderRadius: 3,
                 paddingLeft: 5,
                 backgroundColor: '#fff',
@@ -50,7 +50,7 @@ export default class UserTemplate extends Component {
             text: {
                 fontSize: 12,
                 lineHeight: 22,
-                color: '#ffa200'
+                color: '#FF5B29'
             }
         }
         if (varicode) {

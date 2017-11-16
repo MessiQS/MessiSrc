@@ -77,7 +77,7 @@ export default class FPStepTwo extends Component {
             text:{
                 content:'验证码',
                 style:{
-                    color:'#FFA200'
+                    color:'#FF5B29'
                 }
             },
             input:{
