@@ -78,7 +78,7 @@ MemoryModel.schema = {
     properties: {
 
         id: 'string',
-        question: 'QuestionPaper',                                   /// 题目
+        question: 'QuestionPaper',                              /// 题目
         weighting: { type: 'float', default: 0 },               /// 加权分数, 初始化为 0
         appearedSeveralTime: { type: 'int', default: 0 },       /// 出现次数, 初始化为 0
         lastAppearTime: { type: 'date', default: 0 },           /// 上一次出现时间，初始化为 0

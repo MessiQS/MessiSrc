@@ -76,8 +76,16 @@ export default class ListOfTopics extends React.Component {
         MessageService.downloadPaper({
             paperId: id
         }).then((json) => {
-            console.log(json)
-            RealmManager.createQuestion(json);
+
+            RealmManager.createQuestion(json)
+            .then((data) => {
+                
+                console.log(data)
+                RealmManager.createMemoryModels(data)
+
+            }).catch((error) => {
+                console.log(error)
+            })
         })
         .catch((error) => {
             alert(error)

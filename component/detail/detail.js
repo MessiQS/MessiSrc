@@ -66,6 +66,10 @@ export default class Detail extends Component {
             isSelected: true,
             selectedOption: option,
         })
+
+        
+
+
     }
 
     _renderAnalysis() {
@@ -112,14 +116,10 @@ export default class Detail extends Component {
             <View style={styles.questionView}>
                 {
                     splits.map ((content, index) => {
-                        console.log(content)
-
-                        console.log(content.search(/.\/(.*)png/g))
-                        if (content.search(/.\/(.*)png/g) >= 0) {
+                        if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                             const url = content.replace("./", "http://www.samso.cn/images/")
-                            console.log("url:" + url)
                             return (
-                                <Image key={index} style={styles.questionImage} resizeMode={'cover'}  source={{uri: url}} />
+                                <Image key={index} style={styles.questionImage} resizeMode={'contain'}  source={{uri: url}} />
                             )
                         } else {
                             return (
@@ -200,9 +200,8 @@ var styles = StyleSheet.create({
         lineHeight: 20,
     },
     questionImage: {  
-        flex:1, 
-        width: null,
-        height: null,
+        width: '100%',
+        height: '100%',
     },
     separatorLine: {
         height: 1,

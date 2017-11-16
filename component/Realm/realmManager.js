@@ -2,23 +2,25 @@
 
 import realm from './realm';
 
-
 export default class RealmManager {
 
-    /// 创建
     static createQuestion(json) {
-
-        try {
-            realm.write(() => {
-                json.data.forEach( function(value, index) {
-
-                    realm.create('QuestionPaper', value);
-                })
-                console.log("QuestionPaper save success")
-            });
-        } catch (e) {
-            console.log("QuestionPaper Error on creation" + e);
-        }
+        return new Promise((resolve, reject) =>{
+            try {
+                realm.write(() => {
+                    let questions = []
+                    json.data.forEach( function(value, index) {
+                        let question = realm.create('QuestionPaper', value);
+                        questions.push(question)
+                    })
+                    console.log("QuestionPaper save success")                    
+                    resolve(questions)
+                });
+            } catch (e) {
+                reject(e);
+                console.log("QuestionPaper Error on creation" + e);        
+            }
+        })
     }
 
     static createExaminationPaper(examinationPaper) {
@@ -43,12 +45,19 @@ export default class RealmManager {
         }
     }
 
-    static createMemoryModel(memoryModel) {
+    static createMemoryModels(papers) {
 
         try {
             realm.write(() => {
-                 realm.create('MemoryModel', memoryModel);
-            });
+                papers.forEach(function(value, index) {
+                    realm.create('MemoryModel', {
+                        id: uuidv4(),
+                        question: value,
+                    })
+                })
+                console.log("MemoryModel save success")
+            })
+
         } catch (e) {
              console.log("MemoryModel Error on creation");
         }
@@ -129,6 +138,13 @@ export default class RealmManager {
             console.log("QuestionPaper: schedule is empty");
         }
         return exams
+    }
+
+    uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
     }
 }
 
