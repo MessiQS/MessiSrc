@@ -19,21 +19,6 @@ import Pingpay from '../../service/pingpp';
 import { MineListItem } from '../../component/usual/item'
 var Pingpp = require('pingpp-react-native');
 
-
-const nativeStyle = {
-    thumbnail: {
-        width: 90,
-        height: 90,
-        top: 30,
-        borderRadius: 45
-    },
-    container: {
-        backgroundColor: '#fff',
-        width: '100%',
-        flex: 2
-    },
-};
-
 class Mine extends Component {
     constructor(props) {
         super(props);
@@ -71,20 +56,20 @@ class Mine extends Component {
 
     };
     //支付测试
-    async paytest(){
+    async paytest() {
         // PayService.wechatPay();
         const response = await Pingpay.createCharge({
-            client_ip:"192.168.0.103",
-            amount:'1',
-            channel:'wx',
-            subject:'ss0001',
-            body:"1234"
+            client_ip: "192.168.0.103",
+            amount: '1',
+            channel: 'wx',
+            subject: 'ss0001',
+            body: "1234"
         });
 
         Pingpp.createPayment({
             "object": response.data,
             "urlScheme": "wx8f1006588bd45d9b"
-        }, function(res, error) {
+        }, function (res, error) {
             console.log(res, error);
         });
     }
@@ -98,12 +83,12 @@ class Mine extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, height: 220, alignItems: 'center' }}>
+                <View style={styles.head}>
                     <TouchableOpacity onPress={this.avatarClick} >
-                        <Image square source={require('../../Images/head.png')}
-                            style={nativeStyle.thumbnail} />
+                        <Image source={require('../../Images/head.png')}
+                            style={styles.thumbnail} />
                         <Text style={styles.phoneNumber}>
-                            {this.state.account}
+                            +86 {this.state.account}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -122,19 +107,17 @@ class Mine extends Component {
                     />
                     <View style={styles.buttonView}>
                         <View>
-                            <Button 
+                            <Button
                                 title="支付测试"
                                 onPress={this.paytest.bind(this)}
                             >
                             </Button>
                         </View>
-                        <TouchableOpacity onPress={this.outofLogin.bind(this)} >
-                            <View style={styles.exitButtonStyle}>
-                                <Text style={styles.outLogin}>退出登录</Text>
-                            </View>
-                        </TouchableOpacity>
                     </View>
                 </View>
+                <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
+                    <Text style={styles.outLogin}>退出登录</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -145,12 +128,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#fff',
     },
-    header: {
-        width: 200,
-        height: 200,
+    head: {
+        flex: 5,
+        alignItems: 'center',
+        backgroundColor:"red",
+        width:'100%'
     },
     buttonView: {
         top: 55,
@@ -160,22 +144,27 @@ const styles = StyleSheet.create({
         color: '#608fd3'
     },
     phoneNumber: {
-        top: 48,
-        fontSize: 14,
-        color: '#333'
+        marginTop:3,
+        fontSize: 18,
+        color: '#000',
+    },
+    thumbnail: {
+        width: 110,
+        height: 110,
+        marginTop: 35,
+        borderRadius: 55
     },
     tableView: {
         backgroundColor: '#F6F6F6',
         width: '100%',
-        flex: 2
+        flex: 9
     },
     separatorView: {
         width: '100%',
         height: 7,
     },
     exitButtonStyle: {
-        borderColor: '#608fd3',
-        borderWidth: 2,
+        flex: 1
     }
 });
 
