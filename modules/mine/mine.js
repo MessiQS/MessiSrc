@@ -16,6 +16,7 @@ import {
 import AccountInfo from '../../component/Account/accountInfo';
 import Storage from '../../service/storage';
 import Pingpay from '../../service/pingpp';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../component/usual/item'
 var Pingpp = require('pingpp-react-native');
 
@@ -27,7 +28,12 @@ class Mine extends Component {
         }
         Storage.getItem('account').then(res => {
             this.setState({
-                account: res
+                account: (() => {
+                    let result = res.split('');
+                    result.splice(3, 0, ' ');
+                    result.splice(8, 0, ' ')
+                    return result.join('');
+                })()
             })
         })
     }
@@ -37,17 +43,29 @@ class Mine extends Component {
             sref: 'AccountInfo',
             name: '账号信息',
             info: { name: 'AccountInfo' },
+            leftIcon:{
+                type:'SimpleLineIcons',
+                name:'user'
+            },
             tipBorder: 1
         },
         {
             sref: 'CPStepThree',
             name: '版本更新',
             info: { account: 15895537043 },
+            leftIcon:{
+                type:'SimpleLineIcons',
+                name:'settings'
+            },
             tipBorder: 0
         }, {
             sref: 'Request',
             name: '问题反馈',
             info: { user: 'Lucy' },
+            leftIcon:{
+                type:'SimpleLineIcons',
+                name:'user-follow'
+            },
             tipBorder: 0
         }
     ];
@@ -84,15 +102,18 @@ class Mine extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.head}>
-                    <TouchableOpacity onPress={this.avatarClick} >
-                        <Image source={require('../../Images/head.png')}
-                            style={styles.thumbnail} />
-                        <Text style={styles.phoneNumber}>
-                            +86 {this.state.account}
-                        </Text>
-                    </TouchableOpacity>
+                    <Image source={require('../../Images/head.png')}
+                        style={styles.thumbnail} />
+                    <Text style={styles.phoneNumber}>
+                        +86 {this.state.account}
+                    </Text>
                 </View>
                 <View style={styles.tableView}>
+                    <View>
+                        <Text style={styles.itemTitle}>
+                            个人中心
+                        </Text>
+                    </View>
                     <MineListItem
                         navigation={this.state.navigation}
                         item={this.listItemArray[0]}
@@ -116,6 +137,7 @@ class Mine extends Component {
                     </View>
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
+                    <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>
                     <Text style={styles.outLogin}>退出登录</Text>
                 </TouchableOpacity>
             </View>
@@ -133,38 +155,50 @@ const styles = StyleSheet.create({
     head: {
         flex: 5,
         alignItems: 'center',
-        backgroundColor:"red",
-        width:'100%'
+        width: '100%'
     },
     buttonView: {
         top: 55,
         alignItems: 'center'
     },
     outLogin: {
-        color: '#608fd3'
+        lineHeight:35,
+        color:"#fff",
+        paddingLeft:5
+    },
+    outLoginIcon:{
+        paddingTop:3,
+        lineHeight:32,
+        color:"#fff",
     },
     phoneNumber: {
-        marginTop:3,
-        fontSize: 18,
+        marginTop: 3,
+        fontSize: 24,
         color: '#000',
     },
     thumbnail: {
         width: 110,
         height: 110,
-        marginTop: 35,
+        marginTop: 25,
         borderRadius: 55
     },
     tableView: {
-        backgroundColor: '#F6F6F6',
+        // backgroundColor: '#F6F6F6',
         width: '100%',
         flex: 9
     },
-    separatorView: {
-        width: '100%',
-        height: 7,
-    },
     exitButtonStyle: {
-        flex: 1
+        flex: 1,
+        backgroundColor:"#FF5B29",
+        flexDirection:"row",
+        justifyContent:"center"
+    },
+    itemTitle:{
+        backgroundColor:"#EEF1F6",
+        fontSize:14,
+        lineHeight:32,
+        // height:32,
+        paddingLeft:15,
     }
 });
 
