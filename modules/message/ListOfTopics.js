@@ -82,6 +82,11 @@ export default class ListOfTopics extends React.Component {
                 
                 console.log(data)
                 RealmManager.createMemoryModels(data)
+                .then((memoryModels) => {
+                    console.log(memoryModels)
+                }).catch((error) => {
+                    console.log("createMemoryModels error " + error )
+                })
 
             }).catch((error) => {
                 console.log(error)

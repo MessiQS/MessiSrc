@@ -7,6 +7,9 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
+import key from "../../service/path"
+const Dimensions = require('Dimensions');
+const window = Dimensions.get('window');
 
 export default class Option extends React.Component {
 
@@ -43,9 +46,28 @@ export default class Option extends React.Component {
         return null
     }
 
-    _renderOptionView() {
+    _renderOptionView(str) {
+        
+        const { iconURLSource, selection, isSelected, selectedURLSource, selectedOption } = this.props
 
-        const { option_Text, select, iconURLSource, selection, isSelected, selectedURLSource, selectedOption } = this.props
+
+        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
+        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
+        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
+
+        let re = /.\/(.*)files/g;
+        let results = re.exec(filterStr);
+        let img="";
+        if(results) {
+            img = results[0].replace("./", "")
+            console.log("filterStr " + filterStr)            
+            filterStr = filterStr.replace(img, key[img])
+            console.log("filterStr " + filterStr)
+        }
+
+        let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
+        let splits = filterStr.split(imageTagRegex)
+
         if (selection == selectedOption) {
             return (
                 <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
@@ -53,8 +75,26 @@ export default class Option extends React.Component {
                     style={styles.icon}
                     source={isSelected ? selectedURLSource : iconURLSource}
                 />
+               
                 <View style={styles.detailOptionView}>
-                    <Text style={[styles.detailOptionText, this._afterSelectText()]}>{option_Text}</Text>
+                    {
+                        splits.map ((content, index) => {
+                            if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                                const url = content.replace("./", "http://www.samso.cn/images/")
+                                let expr = /_(.*)x(.*)_/;
+                                let size = url.match(expr)
+                                let scale = window.width / size[1]
+                                let height = size[2] * scale                       
+                                return (
+                                    <Image key={index} style={[styles.optionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
+                                )
+                            } else {
+                                return (
+                                    <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
+                                )
+                            }
+                        })
+                    }
                 </View>
             </View>
             );
@@ -68,7 +108,24 @@ export default class Option extends React.Component {
                     source={iconURLSource}
                 />
                 <View style={styles.detailOptionView}>
-                    <Text style={styles.detailOptionText}>{option_Text}</Text>
+                    {
+                        splits.map ((content, index) => {
+                            if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                                const url = content.replace("./", "http://www.samso.cn/images/")
+                                let expr = /_(.*)x(.*)_/;
+                                let size = url.match(expr)
+                                let scale = (window.width - 80) / size[1]
+                                let height = size[2] * scale
+                                return (
+                                    <Image key={index} style={[styles.optionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
+                                )
+                            } else {
+                                return (
+                                    <Text key={index} style={styles.detailOptionText}>{content}</Text>
+                                )
+                            }
+                        })
+                    }
                 </View>
             </View>
             );
@@ -87,12 +144,12 @@ export default class Option extends React.Component {
     }
 
     render() {
-        const { option_Text, select, iconURLSource, selection, isSelected, selectedURLSource } = this.props
+        const { option_Text, selection, isSelected } = this.props
         return (
             <TouchableOpacity disabled={isSelected} onPress={() =>
                 this._select(selection)
             }>
-                { this._renderOptionView() }
+                { this._renderOptionView(option_Text) }
             </TouchableOpacity>
         );
     }
@@ -121,5 +178,9 @@ var styles = StyleSheet.create({
     },
     background: {
         backgroundColor: "#D8D8D8"
-    }
+    },
+    optionImage: {  
+        width: '100%',
+        height: '100%',
+    },
 })

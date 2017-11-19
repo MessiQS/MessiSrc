@@ -18,6 +18,8 @@ import RealmManager from "../Realm/realmManager";
 import OptionForm from "./optionForm";
 import Analysis from "./analysis";
 import key from "../../service/path"
+const Dimensions = require('Dimensions');
+const window = Dimensions.get('window');
 
 export default class Detail extends Component {
 
@@ -66,10 +68,7 @@ export default class Detail extends Component {
             isSelected: true,
             selectedOption: option,
         })
-
         
-
-
     }
 
     _renderAnalysis() {
@@ -88,7 +87,8 @@ export default class Detail extends Component {
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-
+        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span>/g, "")
+        
         return filterStr
     }
 
@@ -97,7 +97,8 @@ export default class Detail extends Component {
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-
+        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span> /g, "")
+        
         var re = /.\/(.*)files/g;
         var results = re.exec(filterStr);
         var img="";
@@ -118,12 +119,16 @@ export default class Detail extends Component {
                     splits.map ((content, index) => {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                             const url = content.replace("./", "http://www.samso.cn/images/")
+                            let expr = /_(.*)x(.*)_/;
+                            let size = url.match(expr)
+                            let scale = (window.width - 30) / size[1]
+                            let height = size[2] * scale
                             return (
-                                <Image key={index} style={styles.questionImage} resizeMode={'contain'}  source={{uri: url}} />
+                                <Image key={index} style={[styles.questionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
                             )
                         } else {
                             return (
-                                <Text key={index} style={styles.questionText}>{ content }</Text>
+                                <Text key={index} style={styles.questionText}>{content}</Text>
                             )
                         }
                     })
@@ -154,7 +159,7 @@ export default class Detail extends Component {
                         <View style={styles.typeOfProblemView}>
                             <Text style={styles.typeOfProblem}>（{this.state.detail.subject}）</Text>
                         </View>
-                        { this._renderQuestion(this.state.detail.question) }
+                        {this._renderQuestion(this.state.detail.question)}
                     </ScrollView>
                 </View>
                 <View style={styles.separatorLine}></View>
@@ -165,7 +170,7 @@ export default class Detail extends Component {
                         isSelected={this.state.isSelected}
                         selectedOption={this.state.selectedOption}
                     />
-                    { this._renderAnalysis() }
+                    {this._renderAnalysis()}
                 </ScrollView>
             </View>
         )
@@ -193,6 +198,7 @@ var styles = StyleSheet.create({
         marginTop: 20,
         marginRight: 15,
         marginLeft: 15,
+
     },
     questionText: {
         color: 'black',
