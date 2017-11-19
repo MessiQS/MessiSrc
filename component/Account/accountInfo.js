@@ -8,7 +8,7 @@ import {
     ScrollView,
     Button
 } from 'react-native';
-import { MineListItem } from '../usual/item'
+import { PureItem } from '../usual/item'
 
 class AccountInfo extends React.Component {
     constructor(props){
@@ -49,11 +49,11 @@ class AccountInfo extends React.Component {
                 <View>
                     <Text style={styles.headerText}>12412412</Text>
                 </View>
-                <MineListItem
+                <PureItem
                         navigation={this.state.navigation}
                         item={this.listItemArray[0]}
                     />
-                <MineListItem
+                <PureItem
                     navigation={this.state.navigation}
                     item={this.listItemArray[1]}
                 />
