@@ -8,15 +8,34 @@ import {
     ScrollView,
     Button
 } from 'react-native';
+import Storage from '../../service/storage';
 import { PureItem } from '../usual/item'
+
+
+const rightIcon = {
+    type: 'SimpleLineIcons',
+    name: 'arrow-right',
+    iconStyle:{
+        fontSize:10
+    }
+}
 
 class AccountInfo extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            navigation: props.navigation
-        }
-        console.log(props.navigation)
+            navigation: props.navigation,
+            account:''
+        };
+        Storage.getItem('account').then(res => {
+            console.log(res)
+            let result = res.split('');
+            result.splice(3, 0, ' ');
+            result.splice(8, 0, ' ');
+            this.setState({
+                account: result.join('')
+            })
+        })
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -33,13 +52,15 @@ class AccountInfo extends React.Component {
             sref: 'ModifyPasswordPage',
             name: '修改密码',
             info: { name: 'ModifyPasswordPage' },
-            tipBorder: 1
+            tipBorder: 1,
+            rightIcon
         },
         {
             sref: 'CPStepOne',
             name: '更换手机号',
             info: { user: 'CPStepOne' },
-            tipBorder: 0
+            tipBorder: 0,
+            rightIcon
         }
     ];
     render() {
@@ -47,7 +68,9 @@ class AccountInfo extends React.Component {
         return (
             <View>
                 <View>
-                    <Text style={styles.headerText}>12412412</Text>
+                    <Text style={styles.headerText}>
+                        +86 { this.state.account }
+                    </Text>
                 </View>
                 <PureItem
                         navigation={this.state.navigation}
@@ -64,10 +87,11 @@ class AccountInfo extends React.Component {
 
 var styles = ({
     headerText: {
-        color: '#FFA200',
-        fontSize: 25,
+        marginTop:7,
+        color: '#FF5B29',
+        fontSize: 24,
         textAlign: 'center', 
-        lineHeight:49,
+        lineHeight:45,
         backgroundColor:"#fff",
     },
     listStyle: {

@@ -122,9 +122,11 @@ class Mine extends Component {
                         </Text>
                     </View>
                     {
-                        this.listItemArray.map(retult => (<MineListItem
+                        this.listItemArray.map(result => (
+                        <MineListItem
                             navigation={this.state.navigation}
-                            item={retult}
+                            item={result}
+                            key ={result.name}
                         />))
                     }
                     <View style={styles.buttonView}>

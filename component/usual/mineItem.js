@@ -60,9 +60,6 @@ export default class MineListItem extends Component {
     }
 }
 const styles = StyleSheet.create({
-    cell: {
-
-    },
     cellTitleView: {
         // justifyContent: 'center',
         flexDirection: 'row',
