@@ -70,33 +70,6 @@ export default class Find extends Component {
 	}
 
 	render() {
-		const option = {
-			tooltip: {
-				axisPointer: {
-					type: ('line' | 'cross' | 'shadow' | 'none'),
-				}
-			},
-			series: [
-
-				{
-					labelLine: {
-						normal: {
-							show: false
-						}
-					},
-					itemStyle: {
-						normal: {
-							color: function (params) {
-								var colorArray = ['#ff477b', '#f69b2c', '#2d7faf'];
-								return colorArray[params.dataIndex];
-							}
-						}
-					},
-					type: 'pie',
-					data: [this.state.questions.writed, this.state.questions.new, this.state.questions.deepmind]
-				}
-			]
-		};
 		return (
 			<View style={styles.container}>
 				<View style={styles.banner}>
@@ -133,9 +106,9 @@ export default class Find extends Component {
 							<Text style={styles.percentNumber}>{parseInt(this.state.percent)}%</Text>
 						</View>
 					</View>
-					<View style={styles.circleChart}>
+					{/* <View style={styles.circleChart}>
 						<Echarts option={option} height={80} />
-					</View>
+					</View> */}
 				</View>
 				<View style={styles.intoQuestion}>
 					<Item item={itemArr[0]}/>
