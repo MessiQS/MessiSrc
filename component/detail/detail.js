@@ -26,7 +26,7 @@ export default class Detail extends Component {
 
     componentDidMount() {
         this.props.navigation.setParams({handleNextQuestion: this.nextQuestion.bind(this)});
-        // this.props.navigation.state.params.kind
+        this.props.navigation.setParams({headerRight: null});                
     }
 
     constructor(props) {
@@ -54,6 +54,7 @@ export default class Detail extends Component {
             isSelected: false,
             selectedOption: ""
         })
+        that.props.navigation.setParams({headerRight: null});                        
     }
 
     getRandomInt(min, max) {
@@ -68,13 +69,7 @@ export default class Detail extends Component {
             opacity: 0.9,
         },
         headerTintColor: 'white',
-        headerRight: (
-            <TouchableOpacity onPress={ navigation.state.params.handleNextQuestion }>
-                 <View style={styles.rightButtonStyle}>
-                    <Text style={styles.rightText}>下一题</Text>
-                 </View>
-            </TouchableOpacity>
-        )
+        headerRight: navigation.state.params.headerRight
     });
 
     _select(option) {
@@ -88,12 +83,17 @@ export default class Detail extends Component {
             that.memoryModel.appearedSeveralTime += 1
             that.memoryModel.lastBySelectedTime = Date.parse(new Date())
         });
-        
         that.setState({
             isSelected: true,
             selectedOption: option,
         })
-        
+        const headerRight = (
+            <TouchableOpacity onPress={ that.nextQuestion.bind(that) }>
+                    <View style={styles.rightButtonStyle}>
+                    <Text style={styles.rightText}>下一题</Text>
+                    </View>
+            </TouchableOpacity>)
+        that.props.navigation.setParams({headerRight: headerRight});        
     }
 
     _renderAnalysis() {
