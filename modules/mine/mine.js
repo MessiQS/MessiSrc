@@ -20,6 +20,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../component/usual/item'
 var Pingpp = require('pingpp-react-native');
 
+const createLeftIcon = (name) => {
+    return {
+        type: 'SimpleLineIcons',
+        name
+    }
+}
+const rightIcon = {
+    type: 'SimpleLineIcons',
+    name: 'arrow-right',
+    iconStyle:{
+        fontSize:10
+    }
+}
 class Mine extends Component {
     constructor(props) {
         super(props);
@@ -43,29 +56,23 @@ class Mine extends Component {
             sref: 'AccountInfo',
             name: '账号信息',
             info: { name: 'AccountInfo' },
-            leftIcon:{
-                type:'SimpleLineIcons',
-                name:'user'
-            },
+            leftIcon:createLeftIcon('user'),
+            rightIcon,
             tipBorder: 1
         },
         {
             sref: 'CPStepThree',
             name: '版本更新',
             info: { account: 15895537043 },
-            leftIcon:{
-                type:'SimpleLineIcons',
-                name:'settings'
-            },
+            leftIcon:createLeftIcon('settings'),
+            rightIcon,
             tipBorder: 0
         }, {
             sref: 'Request',
             name: '问题反馈',
             info: { user: 'Lucy' },
-            leftIcon:{
-                type:'SimpleLineIcons',
-                name:'user-follow'
-            },
+            leftIcon:createLeftIcon('user-follow'),
+            rightIcon,
             tipBorder: 0
         }
     ];
@@ -114,18 +121,14 @@ class Mine extends Component {
                             个人中心
                         </Text>
                     </View>
-                    <MineListItem
-                        navigation={this.state.navigation}
-                        item={this.listItemArray[0]}
-                    />
-                    <MineListItem
-                        navigation={this.state.navigation}
-                        item={this.listItemArray[1]}
-                    />
-                    <MineListItem
-                        navigation={this.state.navigation}
-                        item={this.listItemArray[2]}
-                    />
+                    {
+                        this.listItemArray.map(result => (
+                        <MineListItem
+                            navigation={this.state.navigation}
+                            item={result}
+                            key ={result.name}
+                        />))
+                    }
                     <View style={styles.buttonView}>
                         <View>
                             <Button
@@ -162,14 +165,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     outLogin: {
-        lineHeight:35,
-        color:"#fff",
-        paddingLeft:5
+        lineHeight: 35,
+        color: "#fff",
+        paddingLeft: 5
     },
-    outLoginIcon:{
-        paddingTop:3,
-        lineHeight:32,
-        color:"#fff",
+    outLoginIcon: {
+        paddingTop: 3,
+        lineHeight: 32,
+        color: "#fff",
     },
     phoneNumber: {
         marginTop: 3,
@@ -189,16 +192,16 @@ const styles = StyleSheet.create({
     },
     exitButtonStyle: {
         flex: 1,
-        backgroundColor:"#FF5B29",
-        flexDirection:"row",
-        justifyContent:"center"
+        backgroundColor: "#FF5B29",
+        flexDirection: "row",
+        justifyContent: "center"
     },
-    itemTitle:{
-        backgroundColor:"#EEF1F6",
-        fontSize:14,
-        lineHeight:32,
+    itemTitle: {
+        backgroundColor: "#EEF1F6",
+        fontSize: 14,
+        lineHeight: 32,
         // height:32,
-        paddingLeft:15,
+        paddingLeft: 15,
     }
 });
 

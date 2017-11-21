@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Echarts from 'native-echarts';
-
+import { newPaper ,pieOption} from './chartOptions';
 
 LocaleConfig.locales['cn'] = {
     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
@@ -37,46 +37,23 @@ export default class Find extends Component {
 
     }
     render() {
-        const option = {
-            title: {
-                text: ''
-            },
-            tooltip: {},
-            legend: {
-                data: ['遗忘曲线', '永久记忆']
-            },
-            xAxis: {
-                data: ["一", "二", "三", "四", "五", "六", "日"]
-            },
-            yAxis: {},
-            series: [{
-                name: '遗忘曲线',
-                type: 'line',
-                data: [100, 70, 60, 50, 30, 20, 10],
-                smooth: true
-            }, {
-                name: '永久记忆',
-                type: 'line',
-                data: [40, 40, 40, 40, 40, 40, 40]
-            }]
-        };
-
+        const newPaperOption = newPaper.option;
         return (
             <View style={styles.container}>
-                <View style={styles.calendarView} >
-                    <Calendar
-                        // Specify style for calendar container element. Default = {}
-                        style={styles.calender}
-                        // Specify theme properties to override specific styles for calendar parts. Default = {}
-                        theme={calenderOptiones.Theme}
-                        //current={'2017-06-17'}
-                        markedDates={{ [this.state.selected]: { selected: true } }}
-                        markingType={'string'}
-                        onDayPress={this.onDayPress}
-                    />
+                <View style={styles.title}>
+                    <View style={styles.text}>
+                        <Text style={styles.h2}>2017年北京省考</Text>
+                        <Text style={styles.p}>历年真题</Text>
+                    </View>
+                    <View style={styles.circleChart}>
+						<Echarts option={pieOption.option} height={80} />
+					</View>
                 </View>
                 <View style={styles.chartsView}>
-                    <Echarts option={option} height={250} />
+                    <Echarts option={newPaperOption} height={220} />
+                </View>
+                <View style={styles.chartsView}>
+                    <Echarts option={newPaperOption} height={250} />
                 </View>
             </View>
         );
@@ -118,6 +95,16 @@ const styles = StyleSheet.create({
     welcome: {
         flex: 1,
     },
+    title: {
+        flex: 2,
+        flexDirection:"row",
+    },
+    text:{
+        flex: 7,
+    },
+    circleChart:{
+        flex: 3,
+    },
     calendarView: {
         flex: 5,
         // height: 300,
@@ -128,7 +115,19 @@ const styles = StyleSheet.create({
         borderColor: '#eee',
     },
     chartsView: {
-        flex: 4,
+        flex: 5,
     }
 });
 
+//                <View style={styles.calendarView} >
+//                     <Calendar
+//                         // Specify style for calendar container element. Default = {}
+//                         style={styles.calender}
+//                         // Specify theme properties to override specific styles for calendar parts. Default = {}
+//                         theme={calenderOptiones.Theme}
+//                         //current={'2017-06-17'}
+//                         markedDates={{ [this.state.selected]: { selected: true } }}
+//                         markingType={'string'}
+//                         onDayPress={this.onDayPress}
+//                     />
+//                 </View>
