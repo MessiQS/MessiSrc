@@ -81,12 +81,19 @@ export default class Option extends React.Component {
                         splits.map ((content, index) => {
                             if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                                 const url = content.replace("./", "http://www.samso.cn/images/")
-                                let expr = /_(.*)x(.*)_/;
+                                let expr = /\/(.*)_(.*)x(.*)_/;
                                 let size = url.match(expr)
-                                let scale = window.width / size[1]
-                                let height = size[2] * scale                       
+                                const scale = 0.3
+                                let width = size[2] * scale
+                                let height = size[3] * scale
+
+                                if (size[1].search("formula")) {
+                                    width = size[2] * (23 / size[3])                                    
+                                    height = 23
+                                }
+                                
                                 return (
-                                    <Image key={index} style={[styles.optionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
+                                    <Image key={index} style={[styles.optionImage, {width: width, height: height}]} resizeMode={'contain'}  source={{uri: url}} />
                                 )
                             } else {
                                 return (
@@ -103,31 +110,40 @@ export default class Option extends React.Component {
 
             return (
                 <View style={[styles.answerItem]} >
-                <Image
-                    style={styles.icon}
-                    source={iconURLSource}
-                />
-                <View style={styles.detailOptionView}>
-                    {
-                        splits.map ((content, index) => {
-                            if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                const url = content.replace("./", "http://www.samso.cn/images/")
-                                let expr = /_(.*)x(.*)_/;
-                                let size = url.match(expr)
-                                let scale = (window.width - 80) / size[1]
-                                let height = size[2] * scale
-                                return (
-                                    <Image key={index} style={[styles.optionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
-                                )
-                            } else {
-                                return (
-                                    <Text key={index} style={styles.detailOptionText}>{content}</Text>
-                                )
-                            }
-                        })
-                    }
+                    <Image
+                        style={styles.icon}
+                        source={iconURLSource}
+                    />
+                    <View style={styles.detailOptionView}>
+                        {
+                            splits.map ((content, index) => {
+                                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                                    const url = content.replace("./", "http://www.samso.cn/images/")
+                                    let expr = /\/(.*)_(.*)x(.*)_/;
+                                    let size = url.match(expr)
+                                    console.log(size)
+                                    console.log(window.width)
+                                    const scale = 0.3
+                                    let width = size[2] * scale
+                                    let height = size[3] * scale
+
+                                    if (size[1].search("formula")) {
+                                        width = size[2] * (23 / size[3])                                    
+                                        height = 23
+                                    }
+                                    
+                                    return (
+                                        <Image key={index} style={[styles.optionImage, {width: width, height: height}]} resizeMode={'contain'}  source={{uri: url}} />
+                                    )
+                                } else {
+                                    return (
+                                        <Text key={index} style={styles.detailOptionText}>{content}</Text>
+                                    )
+                                }
+                            })
+                        }
+                    </View>
                 </View>
-            </View>
             );
         }
     }
@@ -157,30 +173,31 @@ export default class Option extends React.Component {
 
 var styles = StyleSheet.create({
     icon: {
-        marginRight: 10,
+        margin: 10,
         width: 23,
         height: 23,
     },
     answerItem: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 10,
     },
     detailOptionView: {
         flex: 1,
-        paddingTop:2,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
     detailOptionText: {
+        marginTop: 12,
         lineHeight: 20,
-        color: "#0076FF",
-        fontSize: 18,
+        fontSize: 18, 
     },
     background: {
         backgroundColor: "#D8D8D8"
     },
     optionImage: {  
-        width: '100%',
-        height: '100%',
+        marginTop: 10,
     },
 })

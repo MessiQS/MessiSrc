@@ -8,22 +8,16 @@ import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
 export default class Item extends Component {
+
     constructor(props){
         super(props);
         this.state =  Object.assign(this.props.item);
     }
-    // componentWillUnmount(){
-        
-    // }
-    // componentDidMount(){
 
-    // }
-    navigate(){
-        this.state.navigation.navigate('Detail',{a:1})
+    navigate(param){
+        this.state.navigation.navigate('Detail', {kind:param})
     }
-    // onPress={() => {
-        // this.props.navigation.navigate('Detail', { user: 1 })
-    // }}
+
     render() {
         return (
             <TouchableHighlight style={{marginTop:14}} onPress={() => {this.navigate(111)}}>

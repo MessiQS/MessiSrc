@@ -14,7 +14,8 @@ import {
     ScrollView,
     Button
 } from 'react-native';
-import RealmManager from "../Realm/realmManager";
+import realmManager from "../Realm/realmManager";
+import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
 import Analysis from "./analysis";
 import key from "../../service/path"
@@ -24,19 +25,35 @@ const window = Dimensions.get('window');
 export default class Detail extends Component {
 
     componentDidMount() {
-        this.props.navigation.setParams({ handleNextQuestion: this.nextQuestion.bind(this) });
+        this.props.navigation.setParams({handleNextQuestion: this.nextQuestion.bind(this)});
+        // this.props.navigation.state.params.kind
     }
 
     constructor(props) {
         super(props);
-        let questions = RealmManager.getRandomPaper();
-        let random = this.getRandomInt(0, questions.length)
+
+        this.memoryModel = realmManager.getMemoryModels()
+                            .filtered("weighting < 7")
+                            .sorted('lastBySelectedTime', false)[0]
 
         this.state = {
-            detail: questions[random],
+            detail: this.memoryModel,
             isSelected: false,
             selectedOption: "",
         }
+    }
+
+    nextQuestion() {
+        
+        const that = this
+        that.memoryModel = realmManager.getMemoryModels()
+                            .filtered("weighting < 7")
+                            .sorted('lastBySelectedTime', false)[0]
+        that.setState({
+            detail: that.memoryModel,
+            isSelected: false,
+            selectedOption: ""
+        })
     }
 
     getRandomInt(min, max) {
@@ -64,6 +81,14 @@ export default class Detail extends Component {
 
         const that = this
 
+        let score = 7 - that.memoryModel.appearedSeveralTime
+        score = Math.max(1, score)
+        realm.write(() => {
+            that.memoryModel.weighting = that.memoryModel.weighting + score
+            that.memoryModel.appearedSeveralTime += 1
+            that.memoryModel.lastBySelectedTime = Date.parse(new Date())
+        });
+        
         that.setState({
             isSelected: true,
             selectedOption: option,
@@ -75,7 +100,7 @@ export default class Detail extends Component {
 
         if (this.state.isSelected) {
             return (
-                <Analysis analysis={this._filterTag(this.state.detail.analysis)}/>
+                <Analysis analysis={this._filterTag(this.state.detail.questionPaper.analysis)}/>
             );
         } else {
             return null;
@@ -87,30 +112,25 @@ export default class Detail extends Component {
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span>/g, "")
+        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span> /g, "")
+        filterStr = filterStr.replace(/<span style=\"color: #46a546;\"> ( 不定项选择 ) <\/span> /g, "")
         
         return filterStr
     }
 
     _renderQuestion(str) {
 
-        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
-        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
-        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span> /g, "")
+        let filterStr = this._filterTag(str)
         
         var re = /.\/(.*)files/g;
         var results = re.exec(filterStr);
         var img="";
         if(results) {
-            img = results[0].replace("./", "")
-            console.log("filterStr " + filterStr)            
+            img = results[0].replace("./", "")     
             filterStr = filterStr.replace(img, key[img])
-            console.log("filterStr " + filterStr)
         }
 
         var re2 = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
-
         let splits = filterStr.split(re2)
 
         return (
@@ -121,7 +141,7 @@ export default class Detail extends Component {
                             const url = content.replace("./", "http://www.samso.cn/images/")
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
-                            let scale = (window.width - 30) / size[1]
+                            let scale = (window.width - 60) / size[1]
                             let height = size[2] * scale
                             return (
                                 <Image key={index} style={[styles.questionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
@@ -137,35 +157,21 @@ export default class Detail extends Component {
         )
     }
 
-    nextQuestion() {
-
-        const that = this
-
-        let questions = RealmManager.getRandomPaper();
-        let random = that.getRandomInt(0, questions.length)
-
-        that.setState({
-            detail: questions[random],
-            isSelected: false,
-            selectedOption: ""
-        })
-    }
-
     render() {
         return (
             <View style={{ flexDirection: 'column', height: "100%" }}>
                 <View style={styles.topContent}>
                     <ScrollView style={styles.content}>
                         <View style={styles.typeOfProblemView}>
-                            <Text style={styles.typeOfProblem}>（{this.state.detail.subject}）</Text>
+                            <Text style={styles.typeOfProblem}>（{this.state.detail.questionPaper.subject}）</Text>
                         </View>
-                        {this._renderQuestion(this.state.detail.question)}
+                        {this._renderQuestion(this.state.detail.questionPaper.question)}
                     </ScrollView>
                 </View>
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
                     <OptionForm 
-                        detail={this.state.detail}
+                        detail={this.state.detail.questionPaper}
                         select={this._select.bind(this)}
                         isSelected={this.state.isSelected}
                         selectedOption={this.state.selectedOption}

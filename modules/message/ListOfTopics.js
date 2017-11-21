@@ -10,7 +10,7 @@ import CollapseListView from "./collapseListView"
 import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
 import MessageService from "../../service/message.service";
-import RealmManager from '../../component/Realm/realmManager';
+import realmManager from '../../component/Realm/realmManager';
 
 let openCloseCache = [];
 export default class ListOfTopics extends React.Component {
@@ -45,6 +45,7 @@ export default class ListOfTopics extends React.Component {
             return res;
         })
     };
+    
     headerOnPress(sectionId, isClose){
         const that = this;
         let list = that.state.arrow_image_list_source;
@@ -77,11 +78,9 @@ export default class ListOfTopics extends React.Component {
             paperId: id
         }).then((json) => {
 
-            RealmManager.createQuestion(json)
+            realmManager.createQuestion(json)
             .then((data) => {
-                
-                console.log(data)
-                RealmManager.createMemoryModels(data)
+                realmManager.createMemoryModels(data)
                 .then((memoryModels) => {
                     console.log(memoryModels)
                 }).catch((error) => {

@@ -2,9 +2,9 @@
 
 import realm from './realm';
 
-export default class RealmManager {
+class RealmManager {
 
-    static createQuestion(json) {
+    createQuestion(json) {
         return new Promise((resolve, reject) =>{
             try {
                 realm.write(() => {
@@ -17,13 +17,13 @@ export default class RealmManager {
                     resolve(questions)
                 });
             } catch (e) {
-                reject(e);
-                console.log("QuestionPaper Error on creation" + e);        
+                console.log("QuestionPaper Error on creation" + e);  
+                reject(e);                
             }
         })
     }
 
-    static createExaminationPaper(examinationPaper) {
+    createExaminationPaper(examinationPaper) {
 
         try {
             realm.write(() => {
@@ -34,7 +34,7 @@ export default class RealmManager {
         }
     }
 
-    static createUser(user) {
+    createUser(user) {
 
         try {
             realm.write(() => {
@@ -45,19 +45,18 @@ export default class RealmManager {
         }
     }
 
-    static createMemoryModels(papers) {
+    createMemoryModels(papers) {
 
+        const that = this
         let promise = new Promise((resolve, reject) =>{    
             try {
                 realm.write(() => {
                     let array = []
                     papers.forEach(function(value, index) {
                         
-                        console.log("value" + value)
-
                         let memoryModel = realm.create('MemoryModel', {
-                            id: RealmManager.uuidv4(),
-                            question: value,
+                            id: that.uuidv4(),
+                            questionPaper: value,
                         })
                         array.push(memoryModel)
                     })
@@ -74,7 +73,7 @@ export default class RealmManager {
         return promise
     }
 
-    static createSchedule(schedule) {
+    createSchedule(schedule) {
 
         try {
             realm.write(() => {
@@ -89,7 +88,7 @@ export default class RealmManager {
     /// 更新
 
     // 更新试卷
-    static updateExaminationPaper(newExaminationPaper) {
+    updateExaminationPaper(newExaminationPaper) {
 
         let oldExaminationPaper = realm.objectForPrimaryKey('id', newExaminationPaper.id);
 
@@ -107,7 +106,7 @@ export default class RealmManager {
     /// 查询数据
 
     // 获取当前用户
-    static getCurrentUser() {
+    getCurrentUser() {
 
         let users = realm.objects('User');
 
@@ -122,36 +121,48 @@ export default class RealmManager {
     }
 
     // 通过id获取指定试卷
-    static getExaminationPaper(id) {
+    getExaminationPaper(id) {
 
         let examinationPaper = realm.objectForPrimaryKey('id', id);
 
         return examinationPaper;
     }
 
-    static getScheduleBySpecialDate(date) {
+    getScheduleBySpecialDate(date) {
 
         let schedule = realm.objects('Schedule').filtered('date=' + date)[0];
 
         if (schedule.length == 0) {
 
             console.log("getScheduleBySpecialDate: schedule is empty");
+            return null            
         }
 
         return schedule;
     }
 
-    static getRandomPaper() {
+    getRandomPaper() {
 
         let exams = realm.objects('QuestionPaper');
         if (exams.length == 0) {
 
             console.log("QuestionPaper: schedule is empty");
+            return null
         }
         return exams
     }
 
-    static uuidv4() {
+    getMemoryModels() {
+        
+        let models = realm.objects('MemoryModel').filtered('weighting < 7')
+        if  (models.length == 0) {
+            console.log("Memory Models is empty")
+            return null
+        }
+        return models
+    }
+
+    uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
           return v.toString(16);
@@ -159,3 +170,4 @@ export default class RealmManager {
     }
 }
 
+module.exports = new RealmManager()
