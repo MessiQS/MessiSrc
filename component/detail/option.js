@@ -50,7 +50,6 @@ export default class Option extends React.Component {
         
         const { iconURLSource, selection, isSelected, selectedURLSource, selectedOption } = this.props
 
-
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
@@ -59,10 +58,8 @@ export default class Option extends React.Component {
         let results = re.exec(filterStr);
         let img="";
         if(results) {
-            img = results[0].replace("./", "")
-            console.log("filterStr " + filterStr)            
+            img = results[0].replace("./", "")     
             filterStr = filterStr.replace(img, key[img])
-            console.log("filterStr " + filterStr)
         }
 
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;

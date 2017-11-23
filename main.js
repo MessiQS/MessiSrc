@@ -22,6 +22,7 @@ import Account from './component/MineMenu/account';
 import Update from './component/MineMenu/update';
 import Request from './component/MineMenu/request';
 import Detail from './component/detail/detail';
+import TopicsDeail from "./modules/message/topics_detail"
 import Register from './component/Login/register';
 import Login from './component/Login/login';
 import LoginPage from './component/Login/loginPage';
@@ -113,11 +114,15 @@ const TabOptions = (tabBarTitle, normalImage, selectedImage, navTitle) => {
         )
     });
     const headerTitle = navTitle;
-    const headerTitleStyle = { color: 'white', alignSelf: 'center', fontSize: 18 };
+    const headerTitleStyle = { color: 'black', alignSelf: 'center', fontSize: 20 };
     // header的style
     const headerStyle = {
-        backgroundColor: '#051425',
-        opacity: 0.9,
+        backgroundColor: '#FFF',
+        opacity: 1,
+        borderBottomWidth: 0,
+        shadowOpacity: 0.2,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1}
     };
     const tabBarVisible = true;
     const headerLeft = null;
@@ -180,6 +185,9 @@ const Messi = StackNavigator({
     },
     PayPage: {
         screen: PayPage,
+    },
+    TopicsDeail: {
+        screen: TopicsDeail
     }
 })
 

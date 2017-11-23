@@ -106,9 +106,6 @@ export default class Find extends Component {
 							<Text style={styles.percentNumber}>{parseInt(this.state.percent)}%</Text>
 						</View>
 					</View>
-					{/* <View style={styles.circleChart}>
-						<Echarts option={option} height={80} />
-					</View> */}
 				</View>
 				<View style={styles.intoQuestion}>
 					<Item item={itemArr[0]}/>

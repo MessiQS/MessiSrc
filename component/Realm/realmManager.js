@@ -154,7 +154,7 @@ class RealmManager {
 
     getMemoryModels() {
         
-        let models = realm.objects('MemoryModel').filtered('weighting < 7')
+        let models = realm.objects('MemoryModel')
         if  (models.length == 0) {
             console.log("Memory Models is empty")
             return null

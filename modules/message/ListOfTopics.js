@@ -4,15 +4,15 @@ import {
     Text,
     View,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    FlatList
 } from 'react-native';
 import CollapseListView from "./collapseListView"
-import ExpandableList from 'react-native-expandable-section-flatlist';
 import DictStyle from './dictStyle';
 import MessageService from "../../service/message.service";
 import realmManager from '../../component/Realm/realmManager';
+import PropTypes from 'prop-types';
 
-let openCloseCache = [];
 export default class ListOfTopics extends React.Component {
 
     constructor(props) {
@@ -26,18 +26,18 @@ export default class ListOfTopics extends React.Component {
     componentDidMount() {
         const that = this
         MessageService.getPaper().then(data => {
-            let list = data.data.map(
-                res => require('../../Images/arrow_down.png')
-            ),
             papers = [];
-            this.cacheData = data.data;
-            papers = this.getCurrentPaper();
+            that.cacheData = data.data;
+            papers = that.getCurrentPaper();
             that.setState({
-                papers: papers,
-                arrow_image_list_source:list
+                papers: papers
             })
         });
     };
+
+    static propTypes = {
+        select_province: PropTypes.func,
+    }
 
     getCurrentPaper(){
         return this.cacheData.map( (res,idx) => {
@@ -45,25 +45,6 @@ export default class ListOfTopics extends React.Component {
             return res;
         })
     };
-    
-    headerOnPress(sectionId, isClose){
-        const that = this;
-        let list = that.state.arrow_image_list_source;
-        list[sectionId] = isClose ? require("../../Images/arrow_down.png") : require("../../Images/arrow_up.png");
-        if(isClose){
-            //关闭
-            let thisIndex = openCloseCache.indexOf(sectionId);
-            if(thisIndex >= 0){
-                openCloseCache.splice(thisIndex,1);
-            }
-        }else{
-            //打开
-            openCloseCache.push(sectionId);
-        };
-        that.setState({
-            arrow_image_list_source:list,
-        })
-    }
 
     getKeyByValue(object, value) {
         return Object.keys(object).find(key => object[key] === value);
@@ -82,7 +63,8 @@ export default class ListOfTopics extends React.Component {
             .then((data) => {
                 realmManager.createMemoryModels(data)
                 .then((memoryModels) => {
-                    console.log(memoryModels)
+
+
                 }).catch((error) => {
                     console.log("createMemoryModels error " + error )
                 })
@@ -96,44 +78,31 @@ export default class ListOfTopics extends React.Component {
         })
     }
 
-    _renderRow = (rowItem, rowId, sectionId) => (
-        <View style={styles.itemViewStyle}>
-            <Text numberOfLines={1} style={styles.itemText}>{rowItem.value}</Text>
-            <ScrollView></ScrollView>
-            <TouchableOpacity key={rowId} onPress={() => {
-                this.buy(sectionId, rowId);
-            }}>
-                <View style={styles.itemButton}>
-                    <Text style={styles.itemButtonText}>购买</Text>
+    _select_province(item) {
+        const that = this
+        that.props.select_province(item);
+    }
+    
+    _renderItemView = (item) => {
+        return (
+            <TouchableOpacity onPress={() =>
+                        this._select_province(item)
+                    } >
+                <View style={styles.sectionViewStyle}>
+                    <Text style={styles.sectionTitleStyle}>{item.item.title}</Text>
+                    <Text style={styles.detailTitleStyle}>{item.item.length}套真题</Text>
+                    <Image style={styles.arrowStyle} source={require('../../Images/arrow_right.png')} ></Image>
                 </View>
             </TouchableOpacity>
-        </View>
-    );
-
-    _renderSection = (section, sectionId) => {
-        return (
-            <View style={styles.sectionViewStyle}>
-                <Text style={styles.sectionTitleStyle}>{section}</Text>
-                <Text style={styles.detailTitleStyle}>{this.state.papers[sectionId].length}套真题</Text>
-                <ScrollView></ScrollView>
-                <Image style={styles.arrowStyle} 
-                source={this.state.arrow_image_list_source[sectionId]} ></Image>
-            </View>
         );
-    };
+    }
 
     render() {
         return (
-            <ExpandableList
-                dataSource={this.state.papers}
-                headerKey="title"
-                memberKey="data"
-                renderRow={this._renderRow}
-                renderSectionHeaderX={this._renderSection}
-                openOptions={[]}
-                headerOnPress={(sectionId, isClose) => {
-                    this.headerOnPress(sectionId, isClose)
-                }}
+            <FlatList
+                data={this.state.papers}               
+                renderItem={(item)=>this._renderItemView(item)}
+                keyExtractor={(item, index) => index}
             />
         )
     }
@@ -141,7 +110,7 @@ export default class ListOfTopics extends React.Component {
 
 const styles = ({
     sectionViewStyle: {
-        marginVertical: 5,
+        marginTop: 4,
         height: 36,
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -155,14 +124,16 @@ const styles = ({
         fontSize: 14,
     },
     detailTitleStyle: {
-        marginLeft: 18,
+        position: 'absolute',
+        left: 100,
         color: '#9B9B9B',
         fontSize: 12,
     },
     arrowStyle: {
-        width: 22,
-        height: 22,
-        marginRight: 22,
+        position: 'absolute',
+        width: 4,
+        height: 7,
+        right: 22,
     },
     itemViewStyle: {
         flexDirection: 'row',
