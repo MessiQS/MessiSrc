@@ -40,12 +40,32 @@ export const newPaper = {
                 name: '搜索引擎',
                 type: 'line',
                 stack: '总量',
-                areaStyle: {
+                itemStyle: {
                     normal: {
-                        color: "#fff"
+                        color: '#1495EB',
+                        lineStyle:{
+                            color: '#1495EB'
+                        }
                     }
                 },
-                areaStyle: { normal: {} },
+                smooth:true,
+                areaStyle: {
+                    normal:{
+                        color:{
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: '#1495EB' // 0% 处的颜色
+                            }, {
+                                offset: 1, color: '#ffffff' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        }
+                    }
+                },
                 data: [0, 15, 40, 30, 80, 50, 100]
             }
         ]
@@ -58,7 +78,7 @@ export const pieOption = {
     option :{
         tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b}: {c} ({d}%)"
+            formatter: ""
         },
         legend: {
             orient: 'vertical',

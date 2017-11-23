@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
+    ScrollView,
     Text,
     View
 } from 'react-native';
@@ -36,33 +37,49 @@ export default class Find extends Component {
         const newPaperOption = newPaper.option;
         return (
             <View style={styles.container}>
-                <View style={styles.title}>
-                    <View style={styles.titleContent}>
-                        <View style={styles.text}>
-                            <Text style={styles.h2}>2017年北京省考</Text>
-                            <Text style={styles.p}>历年真题</Text>
-                        </View>
-                        <View style={styles.circleChart}> 
-                            <Echarts option={pieOption.option} height={90} />
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.calendarView}>
-                    <View style={styles.chartTitle}>
-                        <View style={styles.chartTitleLeft}>
-                            <Text style={styles.h4}>过去6日刷题亮统计</Text>
-                            <Text style={styles.psmall}>历年真题</Text>
-                        </View>
-                        <View style={styles.chartTitleRight}>
-                            <Text style={styles.h4}>本月共进行6次</Text>
-                            <Text style={styles.psmall}>最后刷题日：今日</Text>
+                <ScrollView>
+                    <View style={styles.title}>
+                        <View style={styles.titleContent}>
+                            <View style={styles.text}>
+                                <Text style={styles.h2}>2017年北京省考</Text>
+                                <Text style={styles.p}>历年真题</Text>
+                            </View>
+                            <View style={styles.circleChart}> 
+                                <Echarts option={pieOption.option} height={90} />
+                            </View>
                         </View>
                     </View>
-                    <Echarts style={styles.chart} option={newPaperOption} height={clientWidth*0.6} />
-                </View>
-                <View style={styles.chartsView}>
-                    <Echarts option={newPaperOption} height={250} />
-                </View>
+                
+                    <View style={styles.calendarView}>
+                        <View style={styles.chartTitle}>
+                            <View style={styles.chartTitleLeft}>
+                                <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                                <Text style={styles.psmall}>平均值:318</Text>
+                            </View>
+                            <View style={styles.chartTitleRight}>
+                                <Text style={styles.h4}>本月共进行6次</Text>
+                                <Text style={styles.psmall}>最后刷题日：今日</Text>
+                            </View>
+                        </View>
+                        <Echarts option={newPaperOption} height={clientWidth*0.7} />
+                    </View>
+                    <View style={styles.calendarView}>
+                        <View style={styles.chartTitle}>
+                            <View style={styles.chartTitleLeft}>
+                                <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                                <Text style={styles.psmall}>平均值:318</Text>
+                            </View>
+                            <View style={styles.chartTitleRight}>
+                                <Text style={styles.h4}>本月共进行6次</Text>
+                                <Text style={styles.psmall}>最后刷题日：今日</Text>
+                            </View>
+                        </View>
+                        <Echarts option={newPaperOption} height={clientWidth*0.7} />
+                    </View>
+                    {/* <View style={styles.chartsView}>
+                        <Echarts option={newPaperOption} height={250} />
+                    </View> */}
+                </ScrollView>
             </View>
         );
     }
@@ -119,8 +136,8 @@ const styles = {
     calendarView: {
         // flex: 5,
         paddingTop:20,
-        backgroundColor:'green',
-        height: clientWidth*0.8,
+        backgroundColor:'#F1F4FB',
+        height: clientWidth*0.78,
         position:'relative'
     },
     chartTitle:{
@@ -142,9 +159,6 @@ const styles = {
         flex: 9,
         paddingTop:20,
         backgroundColor:"#fff"
-    },
-    chart:{
-        // marginTop:200,
     },
     h4:{
         fontSize:14,
