@@ -108,7 +108,7 @@ var styles = ({
         backgroundColor: 'white'
     },  
     listTitle: {
-        marginTop: 11,
+        marginTop: 10,
         fontSize: 12,
         color: "#9B9B9B",
         marginLeft: 15,
@@ -129,7 +129,6 @@ var styles = ({
         justifyContent: 'space-between',
     },
     itemText: {
-        // marginTop: 15,
         marginLeft: 15,
         width: "80%",
         fontSize: 13,
@@ -139,6 +138,7 @@ var styles = ({
         justifyContent: "center",
         borderColor: "#FF5B29",
         borderWidth: 1,
+        borderRadius: 3,
         marginRight: 10,
         width: 50,
         height: 25,
