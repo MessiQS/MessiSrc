@@ -22,10 +22,6 @@ const clientWidth = 375;
 const chartArray = [1,2]
 export default class Find extends Component {
 
-    static navigationOptions = ({ navigation }) => ({
-        title: '发现'
-    });
-
     constructor(props) {
         super(props);
         this.state = {};
@@ -60,28 +56,33 @@ export default class Find extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={header.header}>
+                    <Text style={header.text}>
+                        刷题统计
+                    </Text>
+                    <View style = {header.icon}>
+                        <Icon name={'magnifier'} size={22} />
+                    </View>
+                    <View style = {header.icon}>
+                        <Icon name={'options'} size={22} />
+                    </View>
+                </View>
                 <ScrollView>
-                    <View style={styles.title}>
-                        <View style={styles.titleContent}>
-                            <View style={styles.text}>
-                                <Text style={styles.h2}>2017年北京省考</Text>
-                                <Text style={styles.p}>历年真题</Text>
-                            </View>
-                            <View style={styles.circleChart}>
-                                <Echarts option={pieOption.option} height={90} />
-                            </View>
-                            <View style={styles.titleIcon}>
-                                <Icon  name={'arrow-right'} size={14} ></Icon >
-                            </View>
+
+                    <View style={styles.titleContent}>
+                        <View style={styles.text}>
+                            <Text style={styles.h2}>2017年北京省考</Text>
+                            <Text style={styles.p}>历年真题</Text>
+                        </View>
+                        <View style={styles.circleChart}>
+                            <Echarts option={pieOption.option} height={clientWidth * 0.253} />
+                        </View>
+                        <View style={styles.titleIcon}>
+                            <Icon  name={'arrow-right'} size={14} ></Icon >
                         </View>
                     </View>
 
                     {this.getChatDom()}
-
-                    
-                    {/* <View style={styles.chartsView}>
-                        <Echarts option={newPaperOption} height={250} />
-                    </View> */}
                 </ScrollView>
             </View>
         );
@@ -92,25 +93,42 @@ export default class Find extends Component {
         });
     }
 }
-
+const header =  {
+    header:{
+        height:66,
+        paddingTop:30,
+        marginBottom:5,
+        paddingLeft:15,
+        flexDirection: "row",
+        backgroundColor: '#FFF',
+        shadowOpacity: 0.1,
+        shadowColor: '#333',
+        shadowOffset: {width: 0, height: 1}
+    },
+    text:{
+        fontSize:30,
+        flex:7
+    },
+    icon:{
+        flex:1,
+    }
+}
 const styles = {
     container: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f5f5',
     },
     instructions: {
         textAlign: 'center',
         color: '#333333',
         marginBottom: 5,
     },
-    title: {
-        paddingBottom: 5,
-        backgroundColor: "#F1F4FB",
-        height: clientWidth * 0.253,
-    },
     titleContent: {
         flexDirection: "row",
+        backgroundColor: "#F1F4FB",
+        height: clientWidth * 0.253,
+        marginBottom: 5,
     },
     text: {
         flex: 6,
@@ -170,15 +188,6 @@ const styles = {
         fontSize: 14,
         color: "#8E9091"
     },
-    calender: {
-        paddingTop: 5,
-        width: '100%',
-        borderColor: '#eee',
-    },
-    chartsView: {
-        height: 300,
-        backgroundColor: 'black'
-    }
 }
 
 //                <View style={styles.calendarView} >

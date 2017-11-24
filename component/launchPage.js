@@ -31,7 +31,7 @@ class LaunchPage extends React.Component {
                         navigate('Login', { name: 'MainTab' })
                         console.log("login")
                     }else{
-                        navigate('MyTab', { name: 'MainTab' })
+                        navigate('home', { name: 'MainTab' })
                         console.log("MyTab")
                     }
                 })

@@ -137,8 +137,16 @@ const Messi = StackNavigator({
     Login:{
 		screen: Login,
     },
-    MyTab: {
-        screen: MainTab,
+    // MyTab: {
+    //     screen: MainTab,
+    // },
+    home:{
+        screen: Find,
+        navigationOptions:{
+            header: null,
+            headerTintColor: 'white',
+            gesturesEnabled: false,
+        }
     },
     // 将需要跳转的页面注册在这里，全局才可以跳转
     Account: {
