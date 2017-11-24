@@ -7,6 +7,8 @@ import {
     FlatList,
     Vibration
 } from 'react-native';
+import MessageService from "../../service/message.service"
+import realmManager from "../../component/Realm/realmManager"
 
 export default class TopicsDeail extends React.Component {
 
@@ -56,6 +58,27 @@ export default class TopicsDeail extends React.Component {
 
     _buy(item) {
         console.log(item)
+        MessageService.downloadPaper({
+            paperId: item.id
+        }).then((json) => {
+
+            realmManager.createQuestion(json)
+            .then((data) => {
+                realmManager.createMemoryModels(data)
+                .then((memoryModels) => {
+
+
+                }).catch((error) => {
+                    console.log("createMemoryModels error " + error )
+                })
+
+            }).catch((error) => {
+                console.log(error)
+            })
+        })
+        .catch((error) => {
+            alert(error)
+        })
     }
 
     _renderHeader() {
