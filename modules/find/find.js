@@ -13,12 +13,13 @@ import {
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Echarts from 'native-echarts';
-import { newPaper ,pieOption} from './chartOptions';
+import { newPaper, pieOption } from './chartOptions';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 
 
 const clientWidth = 375;
-
+const chartArray = [1,2]
 export default class Find extends Component {
 
     static navigationOptions = ({ navigation }) => ({
@@ -33,8 +34,30 @@ export default class Find extends Component {
     componentWillMount() {
 
     }
-    render() {
+    getChatDom(){
         const newPaperOption = newPaper.option;
+        return chartArray.map(res => {
+            return (
+                <View style={styles.calendarView} key ={res}>
+                    <View style={styles.chartTitle}>
+                        <View style={styles.chartTitleLeft}>
+                            <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                            <Text style={styles.psmall}>平均值:318</Text>
+                        </View>
+                        <View style={styles.chartTitleRight}>
+                            <Text style={styles.h4}>本月共进行6次</Text>
+                            <Text style={styles.psmall}>最后刷题日：今日</Text>
+                        </View>
+                        <View style={[styles.titleIcon,{paddingTop:15,flex:2}]}>
+                            <Icon  name={'arrow-right'} size={14} ></Icon >
+                        </View>
+                    </View>
+                    <Echarts option={newPaperOption} height={clientWidth * 0.7} />
+                </View>
+            )
+        })
+    }
+    render() {
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -44,38 +67,18 @@ export default class Find extends Component {
                                 <Text style={styles.h2}>2017年北京省考</Text>
                                 <Text style={styles.p}>历年真题</Text>
                             </View>
-                            <View style={styles.circleChart}> 
+                            <View style={styles.circleChart}>
                                 <Echarts option={pieOption.option} height={90} />
                             </View>
-                        </View>
-                    </View>
-                
-                    <View style={styles.calendarView}>
-                        <View style={styles.chartTitle}>
-                            <View style={styles.chartTitleLeft}>
-                                <Text style={styles.h4}>过去6日刷题亮统计</Text>
-                                <Text style={styles.psmall}>平均值:318</Text>
-                            </View>
-                            <View style={styles.chartTitleRight}>
-                                <Text style={styles.h4}>本月共进行6次</Text>
-                                <Text style={styles.psmall}>最后刷题日：今日</Text>
+                            <View style={styles.titleIcon}>
+                                <Icon  name={'arrow-right'} size={14} ></Icon >
                             </View>
                         </View>
-                        <Echarts option={newPaperOption} height={clientWidth*0.7} />
                     </View>
-                    <View style={styles.calendarView}>
-                        <View style={styles.chartTitle}>
-                            <View style={styles.chartTitleLeft}>
-                                <Text style={styles.h4}>过去6日刷题亮统计</Text>
-                                <Text style={styles.psmall}>平均值:318</Text>
-                            </View>
-                            <View style={styles.chartTitleRight}>
-                                <Text style={styles.h4}>本月共进行6次</Text>
-                                <Text style={styles.psmall}>最后刷题日：今日</Text>
-                            </View>
-                        </View>
-                        <Echarts option={newPaperOption} height={clientWidth*0.7} />
-                    </View>
+
+                    {this.getChatDom()}
+
+                    
                     {/* <View style={styles.chartsView}>
                         <Echarts option={newPaperOption} height={250} />
                     </View> */}
@@ -101,73 +104,71 @@ const styles = {
         color: '#333333',
         marginBottom: 5,
     },
-    welcome: {
-        flex: 1,
-    },
     title: {
-        paddingBottom:5,
-        backgroundColor:"#F1F4FB",
-        height:clientWidth*0.253,
+        paddingBottom: 5,
+        backgroundColor: "#F1F4FB",
+        height: clientWidth * 0.253,
     },
-    titleContent:{
-        flexDirection:"row",
-        // paddingBottom:10,
-        // paddingRight:20,
+    titleContent: {
+        flexDirection: "row",
     },
-    text:{
+    text: {
         flex: 6,
-        paddingTop:20,
-        paddingLeft:15,
-        backgroundColor:"#fff"
+        paddingTop: 20,
+        paddingLeft: 15,
+        backgroundColor: "#fff"
     },
-    h2:{
-        fontSize:24,
-        lineHeight:30
+    h2: {
+        fontSize: 24,
+        lineHeight: 30
     },
-    p:{
-        marginTop:5,
-        fontSize:14,
-        lineHeight:20,
-        color:"#8E9091"
+    p: {
+        marginTop: 5,
+        fontSize: 14,
+        lineHeight: 20,
+        color: "#8E9091"
     },
-    circleChart:{
+    circleChart: {
         flex: 4,
+    },
+    titleIcon:{
+        flex: 1,
+        backgroundColor:"#FFF",
+        justifyContent:'center'
     },
     calendarView: {
         // flex: 5,
-        paddingTop:20,
-        backgroundColor:'#F1F4FB',
-        height: clientWidth*0.78,
-        position:'relative'
+        paddingTop: 20,
+        backgroundColor: '#F1F4FB',
+        height: clientWidth * 0.78,
+        position: 'relative'
     },
-    chartTitle:{
-        flexDirection:"row",
-        position:"absolute",
-        width:'100%',
-        height:55,   
-        left:0,
-        top:0,
-        zIndex:100     
+    chartTitle: {
+        flexDirection: "row",
+        position: "absolute",
+        width: '100%',
+        height: 55,
+        left: 0,
+        top: 0,
+        zIndex: 100
     },
-    chartTitleLeft:{
+    chartTitleLeft: {
         flex: 11,
-        paddingTop:20,
-        paddingLeft:15,
-        backgroundColor:"#fff"
+        paddingTop: 20,
+        paddingLeft: 15,
+        backgroundColor: "#fff"
     },
-    chartTitleRight:{
+    chartTitleRight: {
         flex: 9,
-        paddingTop:20,
-        backgroundColor:"#fff"
+        paddingTop: 20,
+        backgroundColor: "#fff"
     },
-    h4:{
-        fontSize:14,
-        lineHeight:16,
+    h4: {
+        fontSize: 16,
     },
-    psmall:{
-        fontSize:14,
-        lineHeight:16,
-        color:"#8E9091"
+    psmall: {
+        fontSize: 14,
+        color: "#8E9091"
     },
     calender: {
         paddingTop: 5,
@@ -175,8 +176,8 @@ const styles = {
         borderColor: '#eee',
     },
     chartsView: {
-        height:300,
-        backgroundColor:'black'        
+        height: 300,
+        backgroundColor: 'black'
     }
 }
 
