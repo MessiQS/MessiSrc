@@ -4,7 +4,8 @@ import {
     Text,
     View,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    Vibration
 } from 'react-native';
 
 export default class TopicsDeail extends React.Component {
@@ -37,11 +38,24 @@ export default class TopicsDeail extends React.Component {
     
     constructor(props) {
         super(props)
-        console.log(this.props.navigation.state.params.section.item.data)
+        const array = this.props.navigation.state.params.section.item.data
+        array.sort(function(a, b) {
+            if (a.value > b.value) {
+                return -1;
+              }
+              if (a.value < b.value) {
+                return 1;
+              }
+              // a 必须等于 b
+              return 0;
+        })
         this.state = {
-            data:this.props.navigation.state.params.section.item.data
+            data:array
         }
+    }
 
+    _buy(item) {
+        console.log(item)
     }
 
     _renderHeader() {
@@ -57,6 +71,13 @@ export default class TopicsDeail extends React.Component {
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText}>{item.value}</Text>
+                <TouchableOpacity onPress={() =>
+                    this._buy(item)
+                }>
+                    <View style={styles.buyView}>
+                        <Text style={styles.buyText}>购买</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -103,11 +124,27 @@ var styles = ({
     itemView: {
         backgroundColor: "white",
         height: 41,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     itemText: {
-        marginTop: 15,
+        // marginTop: 15,
         marginLeft: 15,
-        marginRight: 60,
+        width: "80%",
         fontSize: 13,
+    },
+    buyView: {
+        alignItems: 'center',
+        justifyContent: "center",
+        borderColor: "#FF5B29",
+        borderWidth: 1,
+        marginRight: 10,
+        width: 50,
+        height: 25,
+    },
+    buyText: {
+        color: "#FF5B29",
+        fontSize: 12,
     }
 })
