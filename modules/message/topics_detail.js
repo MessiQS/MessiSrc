@@ -161,7 +161,7 @@ var styles = ({
         justifyContent: "center",
         borderColor: "#FF5B29",
         borderWidth: 1,
-        borderRadius: 3,
+        borderRadius: 4,
         marginRight: 10,
         width: 50,
         height: 25,
