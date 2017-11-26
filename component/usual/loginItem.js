@@ -51,8 +51,8 @@ export default class LoginItem extends Component {
 }
 const styles = StyleSheet.create({
     item: {
-        marginTop: 20,
-        paddingBottom: 20,
+        marginTop: 35,
+        paddingBottom: 5,
         flexDirection: 'row',
         borderBottomWidth :1,
         borderBottomColor:'#dcdcdc'

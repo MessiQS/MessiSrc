@@ -5,6 +5,7 @@ import {
 	View,
 	Alert,
 	TouchableOpacity,
+	ImageBackground,
 	Image
 } from 'react-native';
 import Button from 'apsl-react-native-button';
@@ -37,7 +38,7 @@ export default class Login extends Component {
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
-				<Image source={require('../../Images/login_background.png')} style={styles.backgroundImage} >
+				<ImageBackground source={require('../../Images/login_background.png')} style={styles.backgroundImage} >
 					{this._renderHeader()}
 					<View style={styles.buttonContainer}>
 						<Button style={[styles.loginButtonStyle, styles.buttonStyle]} onPress={() =>
@@ -58,7 +59,7 @@ export default class Login extends Component {
 						<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
 						</TouchableOpacity>
 					</View>
-				</Image>
+				</ImageBackground>
 			</View>
 		);
 	}
@@ -67,7 +68,6 @@ export default class Login extends Component {
 var styles = StyleSheet.create({
 	backgroundImage: {
 		flex: 1,
-		resizeMode: 'cover', // or 'stretch'
 	},
 	container: {
 		flex: 1,
