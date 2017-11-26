@@ -5,6 +5,7 @@ import {
     Button,
     TextInput,
     TouchableOpacity,
+    Image,
     Text
 } from 'react-native';
 import Http from '../../service/http';
@@ -22,14 +23,33 @@ class LoginPage extends React.Component {
         this.state = this.state || {};
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: '登录',
-        headerStyle: {
-            backgroundColor: '#051425',
-            opacity: 0.9,
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        title: '登录',        
+        headerTitleStyle: {
+            color: 'black', 
+            alignSelf: 'center',
+            fontSize: 20 
         },
-        headerTintColor: 'white',
+		headerStyle: {
+			backgroundColor: '#FFF',
+            opacity: 1,
+            borderBottomWidth: 0,
+            shadowOpacity: 0.2,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 1}
+		},
+		headerTintColor: 'black',
+        gesturesEnabled: true,
+        headerLeft: (
+            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
+                <View style={styles.headerLeftView}>
+                    <Image source={require('../../Images/back_arrow.png')}/>
+                </View>
+            </TouchableOpacity>
+        ),
+        headerRight: navigation.state.params.headerRight
     });
+
     phoneChange(account) {
         this.setState({
             account: account
@@ -134,6 +154,14 @@ var styles = {
         paddingTop: 69,
         flex: 1,
         paddingHorizontal: 48,
+        backgroundColor: "white"
+    },
+    headerLeftView: {
+        left: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 44,
+        height: 44,
     },
     forgotButton: {
         marginTop:15,
@@ -167,7 +195,7 @@ var styles = {
     },
     agreeButton: {
         fontSize: 14,
-        color: "#ffa200"
+        color: "#FF5B29"
     }
 };
 

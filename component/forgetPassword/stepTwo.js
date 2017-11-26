@@ -15,13 +15,31 @@ export default class FPStepTwo extends Component {
         super(props);
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: '忘记密码',
-        headerStyle: {
-            backgroundColor: '#051425',
-            opacity: 0.9,
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        title: "忘记密码",        
+        headerTitleStyle: {
+            color: 'black', 
+            alignSelf: 'center',
+            fontSize: 20 
         },
-        headerTintColor: 'white',
+		headerStyle: {
+			backgroundColor: '#FFF',
+            opacity: 1,
+            borderBottomWidth: 0,
+            shadowOpacity: 0.2,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 1}
+		},
+		headerTintColor: 'black',
+        gesturesEnabled: true,
+        headerLeft: (
+            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
+                <View style={styles.headerLeftView}>
+                    <Image source={require('../../Images/back_arrow.png')}/>
+                </View>
+            </TouchableOpacity>
+        ),
+        headerRight: navigation.state.params.headerRight
     });
 
     getCode() {
@@ -99,3 +117,13 @@ export default class FPStepTwo extends Component {
         );
     }
 }
+
+var styles = ({
+    headerLeftView: {
+        left: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 44,
+        height: 44,
+    },
+})

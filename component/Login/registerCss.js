@@ -3,6 +3,13 @@ import {
 } from 'react-native';
 
 export const styles = {
+    headerLeftView: {
+        left: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 44,
+        height: 44,
+    },
     form: {
         flex: 1,
     },
@@ -22,7 +29,7 @@ export const styles = {
         opacity: 0.7,
     },
     vertificationCodeView: {
-        backgroundColor: '#FFA200',
+        backgroundColor: '#FF5B29',
         justifyContent: 'center',
         width: 100,
         height: 35,
@@ -39,7 +46,7 @@ export const styles = {
     },
     registerButton: {
         justifyContent: 'center',
-        backgroundColor: '#FFA200',
+        backgroundColor: '#FF5B29',
         height: 55,
         width: 290,
         borderRadius: 8,
@@ -79,7 +86,7 @@ export const styles = {
     },
     agreeButton:{
         fontSize:14,
-        color:"#ffa200"
+        color:"#FF5B29"
     }
 };
 export default stylesContainer = StyleSheet.create({

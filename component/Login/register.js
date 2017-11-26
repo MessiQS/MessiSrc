@@ -7,6 +7,7 @@ import {
     Button,
     TextInput,
     Text,
+    Image,
     ScrollView,
 } from 'react-native';
 import stylesContainer, { styles } from './registerCss';
@@ -16,6 +17,33 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MD5 from 'crypto-js/md5';
 
 class Register extends React.Component {
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        title: '注册',        
+        headerTitleStyle: {
+            color: 'black', 
+            alignSelf: 'center',
+            fontSize: 20 
+        },
+		headerStyle: {
+			backgroundColor: '#FFF',
+            opacity: 1,
+            borderBottomWidth: 0,
+            shadowOpacity: 0.2,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 1}
+		},
+		headerTintColor: 'black',
+        gesturesEnabled: true,
+        headerLeft: (
+            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
+                <View style={styles.headerLeftView}>
+                    <Image source={require('../../Images/back_arrow.png')}/>
+                </View>
+            </TouchableOpacity>
+        ),
+        headerRight: navigation.state.params.headerRight
+    });
+
     constructor(...props) {
         super();
         this.state = this.state || {};
@@ -80,14 +108,7 @@ class Register extends React.Component {
             console.log(response)
         })
     }
-    static navigationOptions = ({ navigation }) => ({
-        title: '注册',
-        headerStyle: {
-            backgroundColor: '#051425',
-            opacity: 0.9,
-        },
-        headerTintColor: 'white',
-    });
+    
 
     render() {
         return (
