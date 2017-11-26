@@ -79,6 +79,7 @@ const TabOptions = ({ title }) => {
                 </View>
             </TouchableOpacity>
         ),
+        headerRight: navigation.state.params.headerRight        
     })
 }
 const Messi = StackNavigator({
@@ -132,6 +133,9 @@ const Messi = StackNavigator({
     },
     LoginPage: {
         screen: LoginPage,
+        navigationOptions: TabOptions({
+            title: '登录'
+        })
     },
     AccountInfo: {
         screen: AccountInfo,
