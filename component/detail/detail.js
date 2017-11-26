@@ -25,11 +25,11 @@ const window = Dimensions.get('window');
 export default class Detail extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: "navigation.state.params.section.item.title",        
+        title: navigation.state.params.headerTitle,        
         headerTitleStyle: {
             color: 'black', 
             alignSelf: 'center',
-            fontSize: 20 
+            fontSize: 18 
         },
 		headerStyle: {
 			backgroundColor: '#FFF',
@@ -44,15 +44,19 @@ export default class Detail extends Component {
         headerLeft: (
             <TouchableOpacity onPress={ () => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image source={require('../../Images/back_arrow.png')}/>
+                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
                 </View>
             </TouchableOpacity>
         ),
         headerRight: navigation.state.params.headerRight
     });
-    componentDidMount() {
+
+    componentWillMount() {
         this.props.navigation.setParams({handleNextQuestion: this.nextQuestion.bind(this)});
-        this.props.navigation.setParams({headerRight: null});                
+        this.props.navigation.setParams({headerRight: null});
+        this.props.navigation.setParams({headerTitle:this.state.detail.questionPaper.title})   
+        
+        console.log(this.state.detail.questionPaper)
     }
 
     constructor(props) {
@@ -68,6 +72,7 @@ export default class Detail extends Component {
             isSelected: false,
             selectedOption: "",
         }
+
     }
 
     nextQuestion() {
@@ -180,8 +185,9 @@ export default class Detail extends Component {
             <View style={{ flexDirection: 'column', height: "100%" }}>
                 <View style={styles.topContent}>
                     <ScrollView style={styles.content}>
-                        <View style={styles.typeOfProblemView}>
-                            <Text style={styles.typeOfProblem}>（{this.state.detail.questionPaper.subject}）</Text>
+                        <View style={styles.categoryView}>
+                            <View style={styles.categoryLine} />
+                            <Text style={styles.category}>{this.state.detail.questionPaper.category}</Text>
                         </View>
                         {this._renderQuestion(this.state.detail.questionPaper.question)}
                     </ScrollView>
@@ -216,20 +222,26 @@ var styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    typeOfProblemView: {
+    categoryView: {
+        flexDirection: "row",
+        alignItems: 'center',
         height: 30,
         top: 20,
         left: 10,
     },
-    typeOfProblem: {
-        color: '#0076FF',
-        fontSize: 17,
+    categoryLine: {
+        width: 1,
+        height: 20,
+        backgroundColor: "black"
+    },
+    category: {
+        color: '#172434',
+        fontSize: 14,
     },
     questionView: {
         marginTop: 20,
         marginRight: 15,
         marginLeft: 15,
-
     },
     questionText: {
         color: 'black',
