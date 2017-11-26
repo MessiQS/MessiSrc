@@ -24,6 +24,32 @@ const window = Dimensions.get('window');
 
 export default class Detail extends Component {
 
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        title: "navigation.state.params.section.item.title",        
+        headerTitleStyle: {
+            color: 'black', 
+            alignSelf: 'center',
+            fontSize: 20 
+        },
+		headerStyle: {
+			backgroundColor: '#FFF',
+            opacity: 1,
+            borderBottomWidth: 0,
+            shadowOpacity: 0.2,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 1}
+		},
+		headerTintColor: 'black',
+        gesturesEnabled: true,
+        headerLeft: (
+            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
+                <View style={styles.headerLeftView}>
+                    <Image source={require('../../Images/back_arrow.png')}/>
+                </View>
+            </TouchableOpacity>
+        ),
+        headerRight: navigation.state.params.headerRight
+    });
     componentDidMount() {
         this.props.navigation.setParams({handleNextQuestion: this.nextQuestion.bind(this)});
         this.props.navigation.setParams({headerRight: null});                
@@ -31,11 +57,12 @@ export default class Detail extends Component {
 
     constructor(props) {
         super(props);
-
         this.memoryModel = realmManager.getMemoryModels()
                             .filtered("weighting < 7")
                             .sorted('lastBySelectedTime', false)[0]
-
+                            
+        console.log(this.memoryModel)
+                            
         this.state = {
             detail: this.memoryModel,
             isSelected: false,
@@ -62,15 +89,6 @@ export default class Detail extends Component {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
-
-    static navigationOptions = ({ navigation }) => ({
-        headerStyle: {
-            backgroundColor: '#051425',
-            opacity: 0.9,
-        },
-        headerTintColor: 'white',
-        headerRight: navigation.state.params.headerRight
-    });
 
     _select(option) {
 
@@ -184,6 +202,13 @@ export default class Detail extends Component {
 };
 
 var styles = StyleSheet.create({
+    headerLeftView: {
+        left: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 44,
+        height: 44,
+    },
     topContent: {
         flex: 1,
     },

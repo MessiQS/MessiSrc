@@ -3,7 +3,9 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Alert
+	Alert,
+	TouchableOpacity,
+	Image
 } from 'react-native';
 import Button from 'apsl-react-native-button';
 import Register from './register';
@@ -21,41 +23,82 @@ export default class Login extends Component {
 		gesturesEnabled: false,
 	};
 
+	_renderHeader() {
+		return (
+			<View style={styles.headerView}>
+				<Text style={styles.year}>2017</Text>
+				<Text style={styles.appName}>刷题APP</Text>
+				<Image style={styles.logo} source={require('../../Images/logo.png')} />				
+			</View>
+		)
+	}
+
 	render() {
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
-				<View style={styles.buttonContainer}>
-					<Button style={[styles.loginButtonStyle, styles.buttonStyle]} onPress={() =>
-						navigate('LoginPage', { name: 'LoginPage' })
-					}>
-						<View style={styles.nestedViewStyle}>
-							<Text style={styles.nestedTextStyle}>登录</Text>
-						</View>
-					</Button>
-					<Button style={[styles.registerButtonStyle, styles.buttonStyle]} onPress={() =>
-						navigate('Register', { name: 'Register' })
-					}>
-						<View style={styles.nestedViewStyle}>
-							<Text style={styles.nestedTextStyle}>注册</Text>
-						</View>
-					</Button>
-				</View>
+				<Image source={require('../../Images/login_background.png')} style={styles.backgroundImage} >
+					{this._renderHeader()}
+					<View style={styles.buttonContainer}>
+						<Button style={[styles.loginButtonStyle, styles.buttonStyle]} onPress={() =>
+							navigate('LoginPage', { name: 'LoginPage' })
+						}>
+							<View style={styles.nestedViewStyle}>
+								<Text style={styles.nestedTextStyle}>登录</Text>
+							</View>
+						</Button>
+						<Button style={[styles.registerButtonStyle, styles.buttonStyle]} onPress={() =>
+							navigate('Register', { name: 'Register' })
+						}>
+							<View style={styles.nestedViewStyle}>
+								<Text style={styles.nestedTextStyle}>注册</Text>
+							</View>
+						</Button>
+						<TouchableOpacity>
+						<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
+						</TouchableOpacity>
+					</View>
+				</Image>
 			</View>
 		);
 	}
 }
 
 var styles = StyleSheet.create({
+	backgroundImage: {
+		flex: 1,
+		resizeMode: 'cover', // or 'stretch'
+	},
 	container: {
 		flex: 1,
 		// remove width and height to override fixed static size
 		width: null,
 		height: null,
-		// background:URL('../../Images/background.png'),
+	},
+	headerView: {
+		flex: 3,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		overflow: 'hidden',
+	},
+	year: {
+		color: "white",
+		fontSize: 20,
+		backgroundColor: 'rgba(0,0,0,0)',
+		marginTop: 140
+	},
+	appName: {
+		color: "white",
+		fontSize: 32,
+		backgroundColor: 'rgba(0,0,0,0)',
+		marginTop: 17
+	},
+	logo: {
+		marginTop: 12
 	},
 	buttonContainer: {
-		flex: 1,
+		flex: 2,
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -63,20 +106,23 @@ var styles = StyleSheet.create({
 		height: 92,
 		marginRight: 24,
 		marginLeft: 24,
-		marginTop: 400,
+		marginTop: 50,
 		overflow: 'hidden',
 	},
 	buttonStyle: {
-		marginTop: 16,
+		
 		borderRadius: 4,
 		height: 60,
+		borderWidth: 2,
 	},
 	loginButtonStyle: {
+		marginTop: 85,
 		borderColor: 'white',
 	},
 	registerButtonStyle: {
-		backgroundColor: '#FFA200',
-		borderColor: '#FFA200',
+		marginTop: 16,
+		backgroundColor: '#FF5B29',
+		borderColor: '#FF5B29',
 	},
 	nestedViewStyle: {
 
@@ -86,6 +132,9 @@ var styles = StyleSheet.create({
 		color: 'white',
 		backgroundColor: 'rgba(0,0,0,0)',
 	},
+	skip: {
+		
+	}
 });
 
 

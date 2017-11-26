@@ -50,34 +50,6 @@ export default class ListOfTopics extends React.Component {
         return Object.keys(object).find(key => object[key] === value);
     }
 
-    buy(sectionId, rowId) {
-
-        const that = this
-        let { papers } = that.state;
-        id = papers[sectionId].data[rowId].id
-        MessageService.downloadPaper({
-            paperId: id
-        }).then((json) => {
-
-            realmManager.createQuestion(json)
-            .then((data) => {
-                realmManager.createMemoryModels(data)
-                .then((memoryModels) => {
-
-
-                }).catch((error) => {
-                    console.log("createMemoryModels error " + error )
-                })
-
-            }).catch((error) => {
-                console.log(error)
-            })
-        })
-        .catch((error) => {
-            alert(error)
-        })
-    }
-
     _select_province(item) {
         const that = this
         that.props.select_province(item);
