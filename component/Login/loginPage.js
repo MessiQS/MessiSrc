@@ -90,7 +90,7 @@ class LoginPage extends React.Component {
                     ['account', account]
                 ]);
                 setToken.then(res => {
-                    navigate('MyTab', {})
+                    navigate('Home', {})
                 }, err => {
                     Alert('登录错误，请重试')
                 })
