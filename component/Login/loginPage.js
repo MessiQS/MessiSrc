@@ -23,32 +23,6 @@ class LoginPage extends React.Component {
         this.state = this.state || {};
     }
 
-    static navigationOptions = ({ navigation, screenProps }) => ({
-        title: '登录',        
-        headerTitleStyle: {
-            color: 'black', 
-            alignSelf: 'center',
-            fontSize: 20 
-        },
-		headerStyle: {
-			backgroundColor: '#FFF',
-            opacity: 1,
-            borderBottomWidth: 0,
-            shadowOpacity: 0.2,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1}
-		},
-		headerTintColor: 'black',
-        gesturesEnabled: true,
-        headerLeft: (
-            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
-                <View style={styles.headerLeftView}>
-                    <Image source={require('../../Images/back_arrow.png')}/>
-                </View>
-            </TouchableOpacity>
-        ),
-        headerRight: navigation.state.params.headerRight
-    });
 
     phoneChange(account) {
         this.setState({
