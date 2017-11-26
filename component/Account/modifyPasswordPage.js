@@ -147,7 +147,7 @@ var styles =StyleSheet.create({
     },
     checkButtonStyle: {
         marginTop: 49,
-        backgroundColor: '#FFA200'
+        backgroundColor: '#FF5B29'
     },
     checkTextStyle: {
         textAlign: 'center', 

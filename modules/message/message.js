@@ -30,7 +30,7 @@ export default class Message extends Component {
         const that = this
         return (
             <ScrollableTabView 
-                tabBarActiveTextColor={'#ffa200'}
+                tabBarActiveTextColor={'#FF5B29'}
                 tabBarBackgroundColor={'#fff'}
                 tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
                 style={styles.scrollableTabViewStyle}
@@ -47,7 +47,7 @@ export default class Message extends Component {
 
 var styles = ({
     tabBarUnderlineStyle: {
-        backgroundColor: '#ffa200',
+        backgroundColor: '#FF5B29',
         height:2,
     },
     scrollableTabViewStyle: {

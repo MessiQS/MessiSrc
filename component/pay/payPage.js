@@ -103,7 +103,7 @@ var styles = ({
         width: '100%',
         marginTop: 11,
         fontSize: 34,
-        color: '#FFA200',
+        color: '#FF5B29',
         textAlign: 'center',
     },
     payIcon: {
@@ -128,7 +128,7 @@ var styles = ({
         marginRight: 26,
     },
     checkButtonView: {
-        backgroundColor: '#FFA200',
+        backgroundColor: '#FF5B29',
         width: '100%',
         height: 45,
         flexDirection: 'row',

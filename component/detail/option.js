@@ -27,10 +27,10 @@ export default class Option extends React.Component {
         const that = this
 
         if (that.props.isSelected && that.props.selection == that.props.answer) {
-            return {color: "#FFA200"}
+            return {color: "#FF5B29"}
         }
         if (that.props.isSelected && that.props.selection != that.props.answer) {
-            return {color: "#FFA200", textDecorationLine:'line-through'}
+            return {color: "#FF5B29", textDecorationLine:'line-through'}
         }
 
         return null
@@ -190,6 +190,7 @@ var styles = StyleSheet.create({
         marginTop: 12,
         lineHeight: 20,
         fontSize: 18, 
+        color: "#172434",
     },
     background: {
         backgroundColor: "#D8D8D8"

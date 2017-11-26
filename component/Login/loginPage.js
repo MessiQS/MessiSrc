@@ -43,7 +43,7 @@ class LoginPage extends React.Component {
         headerLeft: (
             <TouchableOpacity onPress={ () => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image source={require('../../Images/back_arrow.png')}/>
+                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
                 </View>
             </TouchableOpacity>
         ),
@@ -186,7 +186,7 @@ var styles = {
     agreeText: {
         width: 100,
         height: 50,
-        color: '#FFA200',
+        color: '#FF5B29',
     },
     agreeBaseText: {
         width: '100%',

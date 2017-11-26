@@ -226,25 +226,27 @@ var styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: 'center',
         height: 30,
-        top: 20,
+        top: 13,
         left: 10,
     },
     categoryLine: {
-        width: 1,
-        height: 20,
-        backgroundColor: "black"
+        width: 2,
+        height: 15.5,
+        marginLeft: 29,
+        marginRight: 4,
+        backgroundColor: "#172434"
     },
     category: {
         color: '#172434',
         fontSize: 14,
     },
     questionView: {
-        marginTop: 20,
-        marginRight: 15,
-        marginLeft: 15,
+        marginTop: 17,
+        marginRight: 20,
+        marginLeft: 20,
     },
     questionText: {
-        color: 'black',
+        color: '#172434',
         fontSize: 16,
         lineHeight: 20,
     },
@@ -270,7 +272,7 @@ var styles = StyleSheet.create({
         width: 80,
     },
     rightText: {
-        color: "#FFA200",
+        color: "#FF5B29",
         fontSize: 16,
     }
 })

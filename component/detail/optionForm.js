@@ -127,7 +127,7 @@ var styles = StyleSheet.create({
         paddingTop: 8,
     },
     answerTitleText: {
-        color:"#FFA200",
+        color:"#FF5B29",
         fontSize: 13,
     },
     content: {

@@ -52,7 +52,8 @@ var styles = StyleSheet.create ({
     titleText: {
         marginTop:6,
         fontSize:15,
-        color:"#FF9600",
+        color:"#172434",
+        lineHeight:20,
     },
     analysis: {
         marginTop:35,
