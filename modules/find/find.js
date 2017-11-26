@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     ScrollView,
+    TouchableOpacity,
     Text,
     View
 } from 'react-native';
@@ -19,22 +20,34 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 
 const clientWidth = 375;
-const chartArray = [1,2]
+const chartArray = [1, 2]
 export default class Find extends Component {
 
     constructor(props) {
         super(props);
         this.state = {};
-        this.onDayPress = this.onDayPress.bind(this);
     }
     componentWillMount() {
 
     }
-    getChatDom(){
+    routeToMine() {
+        const { navigate } = this.props.navigation;
+        navigate('Mine', {})
+    }
+    routeToPayPage(){
+        const { navigate } = this.props.navigation;
+        navigate('Message', {})
+        
+    }
+    routeToDetail(){
+        const { navigate } = this.props.navigation;
+        navigate('Detail', {})
+    }
+    getChatDom() {
         const newPaperOption = newPaper.option;
         return chartArray.map(res => {
             return (
-                <View style={styles.calendarView} key ={res}>
+                <TouchableOpacity onPress ={this.routeToDetail.bind(this)} style={styles.calendarView} key={res}>
                     <View style={styles.chartTitle}>
                         <View style={styles.chartTitleLeft}>
                             <Text style={styles.h4}>过去6日刷题亮统计</Text>
@@ -44,12 +57,12 @@ export default class Find extends Component {
                             <Text style={styles.h4}>本月共进行6次</Text>
                             <Text style={styles.psmall}>最后刷题日：今日</Text>
                         </View>
-                        <View style={[styles.titleIcon,{paddingTop:15,flex:2}]}>
-                            <Icon  name={'arrow-right'} size={14} ></Icon >
+                        <View style={[styles.titleIcon, { paddingTop: 15, flex: 2 }]}>
+                            <Icon name={'arrow-right'} size={14} ></Icon >
                         </View>
                     </View>
                     <Echarts option={newPaperOption} height={clientWidth * 0.7} />
-                </View>
+                </TouchableOpacity>
             )
         })
     }
@@ -60,16 +73,16 @@ export default class Find extends Component {
                     <Text style={header.text}>
                         刷题统计
                     </Text>
-                    <View style = {header.icon}>
+                    <View style={header.icon}>
                         <Icon name={'magnifier'} size={22} />
                     </View>
-                    <View style = {header.icon}>
+                    <TouchableOpacity onPress={this.routeToMine.bind(this)} style={header.icon}>
                         <Icon name={'options'} size={22} />
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <ScrollView>
 
-                    <View style={styles.titleContent}>
+                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} style={styles.titleContent}>
                         <View style={styles.text}>
                             <Text style={styles.h2}>2017年北京省考</Text>
                             <Text style={styles.p}>历年真题</Text>
@@ -78,39 +91,34 @@ export default class Find extends Component {
                             <Echarts option={pieOption.option} height={clientWidth * 0.253} />
                         </View>
                         <View style={styles.titleIcon}>
-                            <Icon  name={'arrow-right'} size={14} ></Icon >
+                            <Icon name={'arrow-right'} size={14} ></Icon >
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                     {this.getChatDom()}
                 </ScrollView>
             </View>
         );
     }
-    onDayPress(day) {
-        this.setState({
-            selected: day.dateString
-        });
-    }
 }
-const header =  {
-    header:{
-        height:66,
-        paddingTop:30,
-        marginBottom:5,
-        paddingLeft:15,
+const header = {
+    header: {
+        height: 66,
+        paddingTop: 30,
+        marginBottom: 5,
+        paddingLeft: 15,
         flexDirection: "row",
         backgroundColor: '#FFF',
         shadowOpacity: 0.1,
         shadowColor: '#333',
-        shadowOffset: {width: 0, height: 1}
+        shadowOffset: { width: 0, height: 1 }
     },
-    text:{
-        fontSize:30,
-        flex:7
+    text: {
+        fontSize: 30,
+        flex: 7
     },
-    icon:{
-        flex:1,
+    icon: {
+        flex: 1,
     }
 }
 const styles = {
@@ -149,10 +157,10 @@ const styles = {
     circleChart: {
         flex: 4,
     },
-    titleIcon:{
+    titleIcon: {
         flex: 1,
-        backgroundColor:"#FFF",
-        justifyContent:'center'
+        backgroundColor: "#FFF",
+        justifyContent: 'center'
     },
     calendarView: {
         // flex: 5,
@@ -189,41 +197,3 @@ const styles = {
         color: "#8E9091"
     },
 }
-
-//                <View style={styles.calendarView} >
-//                     <Calendar
-//                         // Specify style for calendar container element. Default = {}
-//                         style={styles.calender}
-//                         // Specify theme properties to override specific styles for calendar parts. Default = {}
-//                         theme={calenderOptiones.Theme}
-//                         //current={'2017-06-17'}
-//                         markedDates={{ [this.state.selected]: { selected: true } }}
-//                         markingType={'string'}
-//                         onDayPress={this.onDayPress}
-//                     />
-//                 </View>
-
-// const calenderOptiones = {
-//     Theme: {
-//         calendarBackground: '#ffffff',
-//         textSectionTitleColor: '#b6c1cd',
-//         selectedDayBackgroundColor: '#FFA200',
-//         selectedDayTextColor: '#ffffff',
-//         todayTextColor: '#00adf5',
-//         dayTextColor: '#7C86A2',
-//         textDisabledColor: '#E1E4E7',
-//         dotColor: '#00adf5',
-//         selectedDotColor: '#ffffff',
-//         arrowColor: '#2d4150',
-//         monthTextColor: '#2d4150'
-//     },
-//     selected: '2017-06-17'
-// };
-
-// LocaleConfig.locales['cn'] = {
-//     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-//     monthNamesShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-//     dayNames: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-//     dayNamesShort: ['日', '一', '二', '三', '四', '五', '六']
-// };
-// LocaleConfig.defaultLocale = 'cn';
