@@ -23,15 +23,7 @@ const clientWidth = 375;
 const chartArray = [1, 2];
 const header = {
     header: {
-        // height: 66,
-        // paddingTop: 30,
-        // marginBottom: 5,
-        // paddingLeft: 15,
         flexDirection: "row",
-        // backgroundColor: '#FFF',
-        // shadowOpacity: 0.1,
-        // shadowColor: '#333',
-        // shadowOffset: { width: 0, height: 1 }
     },
     text: {
         fontSize: 30,
@@ -52,6 +44,7 @@ export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         headerStyle: {
+            borderBottomWidth:0,
             backgroundColor: '#FFF',
             shadowOpacity: 0.1,
             shadowColor: '#333',
@@ -185,16 +178,18 @@ const styles = {
     },
     calendarView: {
         // flex: 5,
-        paddingTop: 20,
         backgroundColor: '#F1F4FB',
         height: clientWidth * 0.78,
-        position: 'relative'
+        position: 'relative',
+        paddingTop:20,
+        backgroundColor:'#fff'
     },
     chartTitle: {
         flexDirection: "row",
         position: "absolute",
         width: '100%',
         height: 55,
+        backgroundColor:"#fff",
         left: 0,
         top: 0,
         zIndex: 100
@@ -203,12 +198,10 @@ const styles = {
         flex: 11,
         paddingTop: 20,
         paddingLeft: 15,
-        backgroundColor: "#fff"
     },
     chartTitleRight: {
         flex: 9,
         paddingTop: 20,
-        backgroundColor: "#fff"
     },
     h4: {
         fontSize: 16,
