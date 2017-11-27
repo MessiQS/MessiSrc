@@ -10,7 +10,6 @@ import {
     ScrollView,
     TouchableOpacity,
     Text,
-    Image,
     View
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -24,17 +23,7 @@ const clientWidth = 375;
 const chartArray = [1, 2];
 const header = {
     header: {
-        // height: 66,
-        // paddingTop: 30,
-        // marginBottom: 5,
-        // paddingLeft: 15,
         flexDirection: "row",
-        justifyContent: 'center',
-        alignItems: 'center',
-        // backgroundColor: '#FFF',
-        // shadowOpacity: 0.1,
-        // shadowColor: '#333',
-        // shadowOffset: { width: 0, height: 1 }
     },
     text: {
         fontSize: 30,
@@ -44,14 +33,6 @@ const header = {
     icon: {
         marginRight: 20
         // flex: 1,
-    },
-    magnifier: {
-        width:18,
-        height:17,
-    },
-    more: {
-        width:20, 
-        height:4
     }
 }
 export default class Find extends Component {
@@ -63,6 +44,7 @@ export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         headerStyle: {
+            borderBottomWidth:0,
             backgroundColor: '#FFF',
             shadowOpacity: 0.1,
             shadowColor: '#333',
@@ -79,10 +61,10 @@ export default class Find extends Component {
         headerRight: (
             <View style={header.header}>
                 <View style={header.icon}>
-                    <Image style={header.magnifier} source={require('../../Images/magnifier.png')} />
+                    <Icon name={'magnifier'} size={22} />
                 </View>
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Image style={header.more} source={require('../../Images/more.png')} />
+                    <Icon name={'options'} size={22} />
                 </TouchableOpacity>
             </View>)
     })
@@ -196,16 +178,18 @@ const styles = {
     },
     calendarView: {
         // flex: 5,
-        paddingTop: 20,
         backgroundColor: '#F1F4FB',
         height: clientWidth * 0.78,
-        position: 'relative'
+        position: 'relative',
+        paddingTop:20,
+        backgroundColor:'#fff'
     },
     chartTitle: {
         flexDirection: "row",
         position: "absolute",
         width: '100%',
         height: 55,
+        backgroundColor:"#fff",
         left: 0,
         top: 0,
         zIndex: 100
@@ -214,12 +198,10 @@ const styles = {
         flex: 11,
         paddingTop: 20,
         paddingLeft: 15,
-        backgroundColor: "#fff"
     },
     chartTitleRight: {
         flex: 9,
         paddingTop: 20,
-        backgroundColor: "#fff"
     },
     h4: {
         fontSize: 16,
