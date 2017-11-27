@@ -44,7 +44,7 @@ export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         headerStyle: {
-            borderBottomWidth:0,
+            borderBottomWidth: 0,
             backgroundColor: '#FFF',
             shadowOpacity: 0.1,
             shadowColor: '#333',
@@ -71,9 +71,9 @@ export default class Find extends Component {
 
     componentWillMount() {
         this.props.navigation.setParams({
-                setting: this.routeToMine.bind(this)
+            setting: this.routeToMine.bind(this)
         });
-        
+
     }
     routeToMine() {
         const { navigate } = this.props.navigation;
@@ -181,33 +181,35 @@ const styles = {
         backgroundColor: '#F1F4FB',
         height: clientWidth * 0.78,
         position: 'relative',
-        paddingTop:20,
-        backgroundColor:'#fff'
+        paddingTop: 20,
+        backgroundColor: '#fff',
+        marginBottom: 8
     },
     chartTitle: {
         flexDirection: "row",
         position: "absolute",
         width: '100%',
         height: 55,
-        backgroundColor:"#fff",
+        backgroundColor: "#fff",
         left: 0,
         top: 0,
         zIndex: 100
     },
     chartTitleLeft: {
-        flex: 11,
+        flex: 13,
         paddingTop: 20,
         paddingLeft: 15,
     },
     chartTitleRight: {
-        flex: 9,
+        flex: 7,
         paddingTop: 20,
     },
     h4: {
-        fontSize: 16,
+        fontSize: 13,
+        fontWeight: "400"
     },
     psmall: {
-        fontSize: 14,
+        fontSize: 11,
         color: "#8E9091"
     },
 }

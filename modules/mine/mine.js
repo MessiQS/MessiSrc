@@ -155,23 +155,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#fff',
     },
-    head: {
-        flex: 5,
-        alignItems: 'center',
-        width: '100%'
-    },
     buttonView: {
         top: 55,
         alignItems: 'center'
     },
     outLogin: {
-        lineHeight: 35,
+        lineHeight: 45,
         color: "#fff",
         paddingLeft: 5
     },
     outLoginIcon: {
         paddingTop: 3,
-        lineHeight: 32,
+        lineHeight: 42,
         color: "#fff",
     },
     phoneNumber: {
@@ -185,10 +180,15 @@ const styles = StyleSheet.create({
         marginTop: 25,
         borderRadius: 55
     },
+    head: {
+        flex: 4,
+        alignItems: 'center',
+        width: '100%'
+    },
     tableView: {
         // backgroundColor: '#F6F6F6',
         width: '100%',
-        flex: 9
+        flex: 8
     },
     exitButtonStyle: {
         flex: 1,
@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#EEF1F6",
         fontSize: 14,
         lineHeight: 32,
-        // height:32,
         paddingLeft: 15,
     }
 });
