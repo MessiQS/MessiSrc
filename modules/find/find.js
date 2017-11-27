@@ -10,6 +10,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Text,
+    Image,
     View
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -28,6 +29,8 @@ const header = {
         // marginBottom: 5,
         // paddingLeft: 15,
         flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center',
         // backgroundColor: '#FFF',
         // shadowOpacity: 0.1,
         // shadowColor: '#333',
@@ -41,6 +44,14 @@ const header = {
     icon: {
         marginRight: 20
         // flex: 1,
+    },
+    magnifier: {
+        width:18,
+        height:17,
+    },
+    more: {
+        width:20, 
+        height:4
     }
 }
 export default class Find extends Component {
@@ -68,10 +79,10 @@ export default class Find extends Component {
         headerRight: (
             <View style={header.header}>
                 <View style={header.icon}>
-                    <Icon name={'magnifier'} size={22} />
+                    <Image style={header.magnifier} source={require('../../Images/magnifier.png')} />
                 </View>
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Icon name={'options'} size={22} />
+                    <Image style={header.more} source={require('../../Images/more.png')} />
                 </TouchableOpacity>
             </View>)
     })
