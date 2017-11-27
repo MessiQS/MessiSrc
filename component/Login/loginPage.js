@@ -20,9 +20,8 @@ class LoginPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = this.state || {};
+        this.state = {};
     }
-
 
     phoneChange(account) {
         this.setState({
@@ -123,7 +122,6 @@ class LoginPage extends React.Component {
 }
 
 var styles = {
-
     container: {
         paddingTop: 69,
         flex: 1,

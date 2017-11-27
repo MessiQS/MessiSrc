@@ -20,26 +20,78 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 
 const clientWidth = 375;
-const chartArray = [1, 2]
+const chartArray = [1, 2];
+const header = {
+    header: {
+        // height: 66,
+        // paddingTop: 30,
+        // marginBottom: 5,
+        // paddingLeft: 15,
+        flexDirection: "row",
+        // backgroundColor: '#FFF',
+        // shadowOpacity: 0.1,
+        // shadowColor: '#333',
+        // shadowOffset: { width: 0, height: 1 }
+    },
+    text: {
+        fontSize: 30,
+        paddingLeft: 15,
+        flex: 7
+    },
+    icon: {
+        marginRight: 20
+        // flex: 1,
+    }
+}
 export default class Find extends Component {
 
     constructor(props) {
         super(props);
         this.state = {};
     }
-    componentWillMount() {
 
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        headerStyle: {
+            backgroundColor: '#FFF',
+            shadowOpacity: 0.1,
+            shadowColor: '#333',
+            shadowOffset: { width: 0, height: 1 }
+        },
+        headerTintColor: 'white',
+        headerLeft: (
+            <View style={header.header}>
+                <Text style={header.text}>
+                    刷题统计
+                </Text>
+            </View>
+        ),
+        headerRight: (
+            <View style={header.header}>
+                <View style={header.icon}>
+                    <Icon name={'magnifier'} size={22} />
+                </View>
+                <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
+                    <Icon name={'options'} size={22} />
+                </TouchableOpacity>
+            </View>)
+    })
+
+    componentWillMount() {
+        this.props.navigation.setParams({
+                setting: this.routeToMine.bind(this)
+        });
+        
     }
     routeToMine() {
         const { navigate } = this.props.navigation;
         navigate('Mine', {})
     }
-    routeToPayPage(){
+    routeToPayPage() {
         const { navigate } = this.props.navigation;
         navigate('Message', {})
-        
+
     }
-    routeToDetail(){
+    routeToDetail() {
         const { navigate } = this.props.navigation;
         navigate('Detail', {})
     }
@@ -47,8 +99,8 @@ export default class Find extends Component {
         const newPaperOption = newPaper.option;
         return chartArray.map(res => {
             return (
-                <TouchableOpacity onPress ={this.routeToDetail.bind(this)} style={styles.calendarView} key={res}>
-                    <View style={styles.chartTitle}>
+                <View style={styles.calendarView} key={res}>
+                    <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                         <View style={styles.chartTitleLeft}>
                             <Text style={styles.h4}>过去6日刷题亮统计</Text>
                             <Text style={styles.psmall}>平均值:318</Text>
@@ -60,16 +112,16 @@ export default class Find extends Component {
                         <View style={[styles.titleIcon, { paddingTop: 15, flex: 2 }]}>
                             <Icon name={'arrow-right'} size={14} ></Icon >
                         </View>
-                    </View>
+                    </TouchableOpacity>
                     <Echarts option={newPaperOption} height={clientWidth * 0.7} />
-                </TouchableOpacity>
+                </View>
             )
         })
     }
     render() {
         return (
             <View style={styles.container}>
-                <View style={header.header}>
+                {/* <View style={header.header}>
                     <Text style={header.text}>
                         刷题统计
                     </Text>
@@ -79,7 +131,7 @@ export default class Find extends Component {
                     <TouchableOpacity onPress={this.routeToMine.bind(this)} style={header.icon}>
                         <Icon name={'options'} size={22} />
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 <ScrollView>
 
                     <TouchableOpacity onPress={this.routeToPayPage.bind(this)} style={styles.titleContent}>
@@ -101,26 +153,7 @@ export default class Find extends Component {
         );
     }
 }
-const header = {
-    header: {
-        height: 66,
-        paddingTop: 30,
-        marginBottom: 5,
-        paddingLeft: 15,
-        flexDirection: "row",
-        backgroundColor: '#FFF',
-        shadowOpacity: 0.1,
-        shadowColor: '#333',
-        shadowOffset: { width: 0, height: 1 }
-    },
-    text: {
-        fontSize: 30,
-        flex: 7
-    },
-    icon: {
-        flex: 1,
-    }
-}
+
 const styles = {
     container: {
         flex: 1,

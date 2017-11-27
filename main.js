@@ -79,7 +79,7 @@ const TabOptions = ({ title }) => {
                 </View>
             </TouchableOpacity>
         ),
-        headerRight: navigation.state.params.headerRight        
+        headerRight: navigation.state.params.headerRight,
     })
 }
 const Messi = StackNavigator({
@@ -95,12 +95,7 @@ const Messi = StackNavigator({
     //     screen: MainTab,
     // },
     Home: {
-        screen: Find,
-        navigationOptions: {
-            header: null,
-            headerTintColor: 'white',
-            gesturesEnabled: false,
-        }
+        screen: Find
     },
     Mine: {
         screen: Mine,
@@ -117,7 +112,8 @@ const Messi = StackNavigator({
         screen: Message,
         navigationOptions: TabOptions({
             title: '题库选择'
-        })
+        }),
+        mood:"modal",        
     },
     Request: {
         screen: Request,
