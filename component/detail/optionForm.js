@@ -58,15 +58,18 @@ export default class OptionForm extends React.Component {
     }
 
     _showTitle() {
-        if (this.props.isSelected == true) {
+        console.log("this.props.detail.answer", this.props.detail.answer, "this.props.selectedOption", this.props.selectedOption)
+        /// 选择正确
+        if (this.props.isSelected && this.props.selectedOption === this.props.detail.answer) {
             return(
-                <View style={styles.answerTitleView}>
-                   <Text style={styles.answerTitleText}>{this.state.answerTitle}</Text>
-                </View>
+                 <Text style={[styles.answerTitleText, {color:"#8FDA3C"}]}>{this.state.answerTitle}</Text>
             )
-        } else {
-            return( 
-                <View style={styles.answerTitleView}></View>
+        }
+
+        /// 选择错误
+        if (this.props.isSelected && this.props.selectedOption !== this.props.detail.answer) {
+            return(
+                <Text style={[styles.answerTitleText, {color:"#FF5B29"}]}>{this.state.answerTitle}</Text>
             )
         }
     }
@@ -76,11 +79,14 @@ export default class OptionForm extends React.Component {
 
         return(
             <View style={styles.content}>
-                { this._showTitle() }
+                <View style={styles.answerTitleView}>
+                    { this._showTitle() }
+                </View>
                 <Option option_Text={this._filterTag(detail.option_A)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_A.png')}
-                        selectedURLSource={require('../../Images/Option_A_Selected.png')}
+                        selectedRightURLSource={require('../../Images/Option_A_Selected_Right.png')}
+                        selectedErrorURLSource={require('../../Images/Option_A_Selected_Error.png')}
                         selection={"A"}
                         isSelected={isSelected}
                         answer={detail.answer}
@@ -89,7 +95,8 @@ export default class OptionForm extends React.Component {
                 <Option option_Text={this._filterTag(detail.option_B)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_B.png')}
-                        selectedURLSource={require('../../Images/Option_B_Selected.png')}
+                        selectedRightURLSource={require('../../Images/Option_B_Selected_Right.png')}
+                        selectedErrorURLSource={require('../../Images/Option_B_Selected_Error.png')}
                         selection={"B"}
                         isSelected={isSelected}
                         answer={detail.answer}
@@ -98,7 +105,8 @@ export default class OptionForm extends React.Component {
                 <Option option_Text={this._filterTag(detail.option_C)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_C.png')}
-                        selectedURLSource={require('../../Images/Option_C_Selected.png')}
+                        selectedRightURLSource={require('../../Images/Option_C_Selected_Right.png')}
+                        selectedErrorURLSource={require('../../Images/Option_C_Selected_Error.png')}
                         selection={"C"}
                         isSelected={isSelected}
                         answer={detail.answer}
@@ -107,7 +115,8 @@ export default class OptionForm extends React.Component {
                 <Option option_Text={this._filterTag(detail.option_D)} 
                         select={this._select.bind(this)}
                         iconURLSource={require('../../Images/Option_D.png')}
-                        selectedURLSource={require('../../Images/Option_D_Selected.png')}
+                        selectedRightURLSource={require('../../Images/Option_D_Selected_Right.png')}
+                        selectedErrorURLSource={require('../../Images/Option_D_Selected_Error.png')}
                         selection={"D"}
                         isSelected={isSelected}
                         answer={detail.answer}
@@ -127,7 +136,6 @@ var styles = StyleSheet.create({
         paddingTop: 8,
     },
     answerTitleText: {
-        color:"#FF5B29",
         fontSize: 13,
     },
     content: {

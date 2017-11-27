@@ -72,7 +72,6 @@ export default class Detail extends Component {
             isSelected: false,
             selectedOption: "",
         }
-
     }
 
     nextQuestion() {
@@ -123,7 +122,7 @@ export default class Detail extends Component {
 
         if (this.state.isSelected) {
             return (
-                <Analysis analysis={this._filterTag(this.state.detail.questionPaper.analysis)}/>
+                <Analysis detail={this.state.detail.questionPaper} />
             );
         } else {
             return null;
