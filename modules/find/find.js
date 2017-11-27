@@ -121,19 +121,7 @@ export default class Find extends Component {
     render() {
         return (
             <View style={styles.container}>
-                {/* <View style={header.header}>
-                    <Text style={header.text}>
-                        刷题统计
-                    </Text>
-                    <View style={header.icon}>
-                        <Icon name={'magnifier'} size={22} />
-                    </View>
-                    <TouchableOpacity onPress={this.routeToMine.bind(this)} style={header.icon}>
-                        <Icon name={'options'} size={22} />
-                    </TouchableOpacity>
-                </View> */}
                 <ScrollView>
-
                     <TouchableOpacity onPress={this.routeToPayPage.bind(this)} style={styles.titleContent}>
                         <View style={styles.text}>
                             <Text style={styles.h2}>2017年北京省考</Text>
