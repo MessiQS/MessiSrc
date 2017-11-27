@@ -10,6 +10,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Text,
+    Image,
     View
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -24,6 +25,8 @@ const chartArray = [1, 2];
 const header = {
     header: {
         flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     text: {
         fontSize: 30,
@@ -33,6 +36,14 @@ const header = {
     icon: {
         marginRight: 20
         // flex: 1,
+    },
+    magnifier: {
+        width:18,
+        height:17,
+    },
+    more: {
+        width:20, 
+        height:4
     }
 }
 export default class Find extends Component {
@@ -44,7 +55,7 @@ export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         headerStyle: {
-            borderBottomWidth:0,
+            borderBottomWidth: 0,
             backgroundColor: '#FFF',
             shadowOpacity: 0.1,
             shadowColor: '#333',
@@ -61,19 +72,19 @@ export default class Find extends Component {
         headerRight: (
             <View style={header.header}>
                 <View style={header.icon}>
-                    <Icon name={'magnifier'} size={22} />
+                    <Image style={header.magnifier} source={require('../../Images/magnifier.png')} />
                 </View>
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Icon name={'options'} size={22} />
+                    <Image style={header.more} source={require('../../Images/more.png')} />
                 </TouchableOpacity>
             </View>)
     })
 
     componentWillMount() {
         this.props.navigation.setParams({
-                setting: this.routeToMine.bind(this)
+            setting: this.routeToMine.bind(this)
         });
-        
+
     }
     routeToMine() {
         const { navigate } = this.props.navigation;
@@ -181,15 +192,15 @@ const styles = {
         backgroundColor: '#F1F4FB',
         height: clientWidth * 0.78,
         position: 'relative',
-        paddingTop:20,
-        backgroundColor:'#fff'
+        paddingTop: 20,
+        backgroundColor: '#fff'
     },
     chartTitle: {
         flexDirection: "row",
         position: "absolute",
         width: '100%',
         height: 55,
-        backgroundColor:"#fff",
+        backgroundColor: "#fff",
         left: 0,
         top: 0,
         zIndex: 100
