@@ -13,6 +13,18 @@ const window = Dimensions.get('window');
 
 export default class Option extends React.Component {
 
+    static propTypes = {
+        option_Text: PropTypes.string,
+        select: PropTypes.func,
+        iconURLSource: PropTypes.number,
+        selectedRightURLSource: PropTypes.number,
+        selectedErrorURLSource: PropTypes.number,        
+        selection: PropTypes.string,
+        isSelected: PropTypes.bool,
+        answer: PropTypes.string,
+        selectedOption: PropTypes.string,
+    }
+
     constructor(props) {
         super(props);
     }
@@ -26,11 +38,34 @@ export default class Option extends React.Component {
 
         const that = this
 
+        ///  选择正确
         if (that.props.isSelected && that.props.selection == that.props.answer) {
-            return {color: "#FFA200"}
+            return {color: "#8FDA3C"}
         }
+
+        /// 选择错误
         if (that.props.isSelected && that.props.selection != that.props.answer) {
-            return {color: "#FFA200", textDecorationLine:'line-through'}
+            return {color: "#FF5B29"}
+        }
+
+        return null
+    }
+
+    _selectIcon() {
+        const that = this
+        
+        if (that.props.isSelected == false) {
+            return this.iconURLSource
+        }
+
+        ///  选择正确
+        if (that.props.isSelected && that.props.selection == that.props.answer) {
+            return this.props.selectedRightURLSource
+        }
+
+        /// 选择错误
+        if (that.props.isSelected && that.props.selection != that.props.answer) {
+            return this.props.selectedErrorURLSource
         }
 
         return null
@@ -48,7 +83,7 @@ export default class Option extends React.Component {
 
     _renderOptionView(str) {
         
-        const { iconURLSource, selection, isSelected, selectedURLSource, selectedOption } = this.props
+        const { iconURLSource, selection, isSelected, selectedOption } = this.props
 
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
@@ -70,9 +105,8 @@ export default class Option extends React.Component {
                 <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
                 <Image
                     style={styles.icon}
-                    source={isSelected ? selectedURLSource : iconURLSource}
+                    source={this._selectIcon()}
                 />
-               
                 <View style={styles.detailOptionView}>
                     {
                         splits.map ((content, index) => {
@@ -118,8 +152,6 @@ export default class Option extends React.Component {
                                     const url = content.replace("./", "http://www.samso.cn/images/")
                                     let expr = /\/(.*)_(.*)x(.*)_/;
                                     let size = url.match(expr)
-                                    console.log(size)
-                                    console.log(window.width)
                                     const scale = 0.3
                                     let width = size[2] * scale
                                     let height = size[3] * scale
@@ -143,17 +175,6 @@ export default class Option extends React.Component {
                 </View>
             );
         }
-    }
-
-    static propTypes = {
-        option_Text: PropTypes.string,
-        select: PropTypes.func,
-        iconURLSource: PropTypes.number,
-        selectedURLSource: PropTypes.number,
-        selection: PropTypes.string,
-        isSelected: PropTypes.bool,
-        answer: PropTypes.string,
-        selectedOption: PropTypes.string,
     }
 
     render() {
@@ -190,6 +211,7 @@ var styles = StyleSheet.create({
         marginTop: 12,
         lineHeight: 20,
         fontSize: 18, 
+        color: "#172434",
     },
     background: {
         backgroundColor: "#D8D8D8"

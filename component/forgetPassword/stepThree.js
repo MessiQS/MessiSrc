@@ -20,7 +20,7 @@ export default class FPStepThree extends React.Component {
             repeatPassword:undefined
         }
     }
-    
+
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: "忘记密码",        
         headerTitleStyle: {
@@ -41,7 +41,7 @@ export default class FPStepThree extends React.Component {
         headerLeft: (
             <TouchableOpacity onPress={ () => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image source={require('../../Images/back_arrow.png')}/>
+                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
                 </View>
             </TouchableOpacity>
         ),

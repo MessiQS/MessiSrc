@@ -77,7 +77,7 @@ export const styles = {
     agreeText: {
         width: 100,
         height: 50,
-        color: '#FFA200',
+        color: '#FF5B29',
     },
     agreeBaseText: {
         width:'100%',        

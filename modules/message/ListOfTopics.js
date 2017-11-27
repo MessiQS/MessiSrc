@@ -126,12 +126,12 @@ const styles = ({
         width: 50,
         height: 25,
         borderWidth: 1,
-        borderColor: '#FFA200',
+        borderColor: '#FF5B29',
         alignItems: 'center',
         borderRadius: 4,
     },
     itemButtonText: {
-        color: '#FFA200',
+        color: '#FF5B29',
         fontSize: 12,
         marginVertical: 5,
     }
