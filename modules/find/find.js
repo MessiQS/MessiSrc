@@ -10,6 +10,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Text,
+    Image,
     View
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -24,6 +25,8 @@ const chartArray = [1, 2];
 const header = {
     header: {
         flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     text: {
         fontSize: 30,
@@ -33,6 +36,14 @@ const header = {
     icon: {
         marginRight: 20
         // flex: 1,
+    },
+    magnifier: {
+        width:18,
+        height:17,
+    },
+    more: {
+        width:20, 
+        height:4
     }
 }
 export default class Find extends Component {
@@ -61,10 +72,10 @@ export default class Find extends Component {
         headerRight: (
             <View style={header.header}>
                 <View style={header.icon}>
-                    <Icon name={'magnifier'} size={22} />
+                    <Image style={header.magnifier} source={require('../../Images/magnifier.png')} />
                 </View>
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Icon name={'options'} size={22} />
+                    <Image style={header.more} source={require('../../Images/more.png')} />
                 </TouchableOpacity>
             </View>)
     })
@@ -182,8 +193,7 @@ const styles = {
         height: clientWidth * 0.78,
         position: 'relative',
         paddingTop: 20,
-        backgroundColor: '#fff',
-        marginBottom: 8
+        backgroundColor: '#fff'
     },
     chartTitle: {
         flexDirection: "row",
@@ -196,20 +206,19 @@ const styles = {
         zIndex: 100
     },
     chartTitleLeft: {
-        flex: 13,
+        flex: 11,
         paddingTop: 20,
         paddingLeft: 15,
     },
     chartTitleRight: {
-        flex: 7,
+        flex: 9,
         paddingTop: 20,
     },
     h4: {
-        fontSize: 13,
-        fontWeight: "400"
+        fontSize: 16,
     },
     psmall: {
-        fontSize: 11,
+        fontSize: 14,
         color: "#8E9091"
     },
 }
