@@ -29,7 +29,7 @@ const header = {
         alignItems: 'center',
     },
     text: {
-        fontSize: 30,
+        fontSize: 24,
         paddingLeft: 15,
         flex: 7
     },
