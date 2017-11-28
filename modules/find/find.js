@@ -34,7 +34,9 @@ const header = {
         flex: 7
     },
     icon: {
-        marginRight: 20
+        marginRight: 20,
+        paddingTop: 8,
+        paddingBottom: 8,
         // flex: 1,
     },
     magnifier: {
@@ -43,7 +45,6 @@ const header = {
     },
     more: {
         width:20, 
-        height:4
     }
 }
 export default class Find extends Component {
@@ -193,7 +194,8 @@ const styles = {
         height: clientWidth * 0.78,
         position: 'relative',
         paddingTop: 20,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        marginBottom:8
     },
     chartTitle: {
         flexDirection: "row",
