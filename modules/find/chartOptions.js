@@ -83,13 +83,12 @@ export const pieOption = {
         legend: {
             orient: 'vertical',
             x: 'left',
-            // data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
         },
         series: [
             {
                 name:'访问来源',
                 type:'pie',
-                radius: ['50%', '70%'],
+                radius: '55%',
                 avoidLabelOverlap: false,
                 label: {
                     normal: {
@@ -107,6 +106,13 @@ export const pieOption = {
                 labelLine: {
                     normal: {
                         show: false
+                    }
+                },
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
                     }
                 },
                 data:[

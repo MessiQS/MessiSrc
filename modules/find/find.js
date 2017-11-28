@@ -206,19 +206,20 @@ const styles = {
         zIndex: 100
     },
     chartTitleLeft: {
-        flex: 11,
+        flex: 13,
         paddingTop: 20,
         paddingLeft: 15,
     },
     chartTitleRight: {
-        flex: 9,
+        flex: 7,
         paddingTop: 20,
     },
     h4: {
-        fontSize: 16,
+        fontSize: 13,
+        fontWeight:"400"
     },
     psmall: {
-        fontSize: 14,
+        fontSize: 11,
         color: "#8E9091"
     },
 }
