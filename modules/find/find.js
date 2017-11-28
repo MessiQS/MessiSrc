@@ -15,10 +15,8 @@ import {
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Echarts from 'native-echarts';
-import { newPaper, pieOption } from './chartOptions';
+import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-
-
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -38,12 +36,12 @@ const header = {
         // flex: 1,
     },
     magnifier: {
-        width:18,
-        height:17,
+        width: 18,
+        height: 17,
     },
     more: {
-        width:20, 
-        height:4
+        width: 20,
+        height: 4
     }
 }
 export default class Find extends Component {
@@ -84,62 +82,83 @@ export default class Find extends Component {
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
         });
-
     }
+
     routeToMine() {
         const { navigate } = this.props.navigation;
         navigate('Mine', {})
     }
+
     routeToPayPage() {
         const { navigate } = this.props.navigation;
         navigate('Message', {})
 
     }
+
     routeToDetail() {
         const { navigate } = this.props.navigation;
         navigate('Detail', {})
     }
-    getChatDom() {
+
+    _renderGetChatNewPaper() {
         const newPaperOption = newPaper.option;
-        return chartArray.map(res => {
-            return (
-                <View style={styles.calendarView} key={res}>
-                    <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
-                        <View style={styles.chartTitleLeft}>
-                            <Text style={styles.h4}>过去6日刷题亮统计</Text>
-                            <Text style={styles.psmall}>平均值:318</Text>
-                        </View>
-                        <View style={styles.chartTitleRight}>
-                            <Text style={styles.h4}>本月共进行6次</Text>
-                            <Text style={styles.psmall}>最后刷题日：今日</Text>
-                        </View>
-                        <View style={[styles.titleIcon, { paddingTop: 15, flex: 2 }]}>
-                            <Icon name={'arrow-right'} size={14} ></Icon >
-                        </View>
-                    </TouchableOpacity>
-                    <Echarts option={newPaperOption} height={clientWidth * 0.7} />
-                </View>
-            )
-        })
+        return (
+            <View style={styles.calendarView}>
+                <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
+                    <View style={styles.chartTitleLeft}>
+                        <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                        <Text style={styles.psmall}>平均值:318</Text>
+                    </View>
+                    <View style={styles.chartTitleRight}>
+                        <Text style={styles.h4}>本月共进行6次</Text>
+                        <Text style={styles.psmall}>最后刷题日：今日</Text>
+                    </View>
+                    <Image style={[styles.arrow, {height: 74}]} source={require("../../Images/find_arrow_right.png")} />
+                </TouchableOpacity>
+                <Echarts option={newPaperOption} height={clientWidth * 0.7} />
+            </View>
+        )
     }
+
+    _renderGetChatRemember() {
+        const newPaperOption = rememberPaper.option;
+        return (
+            <View style={[styles.calendarView, {marginTop:4}]}>
+                <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
+                    <View style={styles.chartTitleLeft}>
+                        <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                        <Text style={styles.psmall}>平均值:318</Text>
+                    </View>
+                    <View style={styles.chartTitleRight}>
+                        <Text style={styles.h4}>本月共进行6次</Text>
+                        <Text style={styles.psmall}>最后刷题日：今日</Text>
+                    </View>
+                    <Image style={[styles.arrow, {height: 74}]} source={require("../../Images/find_arrow_right.png")} />
+                </TouchableOpacity>
+                <Echarts option={newPaperOption} height={clientWidth * 0.7} />
+            </View>
+        )
+    }
+    
     render() {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} style={styles.titleContent}>
-                        <View style={styles.text}>
-                            <Text style={styles.h2}>2017年北京省考</Text>
-                            <Text style={styles.p}>历年真题</Text>
-                        </View>
-                        <View style={styles.circleChart}>
-                            <Echarts option={pieOption.option} height={clientWidth * 0.253} />
-                        </View>
-                        <View style={styles.titleIcon}>
-                            <Icon name={'arrow-right'} size={14} ></Icon >
+                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
+                        <View style={styles.titleContent}>
+                            <View style={styles.text}>
+                                <Text style={styles.h2}>2017年北京省考</Text>
+                                <Text style={styles.p}>历年真题</Text>
+                            </View>
+                            <View style={styles.circleChart}>
+                                <Echarts option={pieOption.option} height={75} />
+                            </View>
+                            <Image style={styles.arrow} source={require("../../Images/find_arrow_right.png")} />
                         </View>
                     </TouchableOpacity>
 
-                    {this.getChatDom()}
+                    {this._renderGetChatNewPaper()}
+                    {this._renderGetChatRemember()}
                 </ScrollView>
             </View>
         );
@@ -160,8 +179,15 @@ const styles = {
     titleContent: {
         flexDirection: "row",
         backgroundColor: "#F1F4FB",
-        height: clientWidth * 0.253,
+        height: 96,
         marginBottom: 5,
+    },
+    arrow: {
+        position: 'absolute',
+        resizeMode: 'contain',
+        right: 21,
+        width: 4,
+        height: 96
     },
     text: {
         flex: 6,
@@ -170,8 +196,8 @@ const styles = {
         backgroundColor: "#fff"
     },
     h2: {
-        fontSize: 24,
-        lineHeight: 30
+        fontSize: 22,
+        lineHeight: 25
     },
     p: {
         marginTop: 5,
@@ -180,7 +206,11 @@ const styles = {
         color: "#8E9091"
     },
     circleChart: {
-        flex: 4,
+        position: 'absolute',     
+        right: 40,
+        width: 96,
+        height: 96,
+        top: 10
     },
     titleIcon: {
         flex: 1,
@@ -207,7 +237,7 @@ const styles = {
     },
     chartTitleLeft: {
         flex: 13,
-        paddingTop: 20,
+        paddingTop: 24,
         paddingLeft: 15,
     },
     chartTitleRight: {
@@ -216,9 +246,11 @@ const styles = {
     },
     h4: {
         fontSize: 13,
-        fontWeight:"400"
+        fontWeight: "400",
+        color: "#172434"
     },
     psmall: {
+        marginTop: 4,
         fontSize: 11,
         color: "#8E9091"
     },
