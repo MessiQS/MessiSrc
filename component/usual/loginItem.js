@@ -40,6 +40,7 @@ export default class LoginItem extends Component {
             <View style={styles.item}>
                 {this.renderIcon(data.iconName)}
                 <TextInput
+                    style={styles.textInput}
                     secureTextEntry={data.secureTextEntry}
                     placeholder={data.placeholder}
                     keyboardType={data.keyboardType}
@@ -51,11 +52,11 @@ export default class LoginItem extends Component {
 }
 const styles = StyleSheet.create({
     item: {
-        marginTop: 35,
+        marginTop: 20,
         paddingBottom: 5,
         flexDirection: 'row',
         borderBottomWidth :1,
-        borderBottomColor:'#dcdcdc'
+        borderBottomColor:'rgba(5,20,37,0.2)', 
     },
     iconViewStyle: {
         marginRight: 5,
@@ -69,4 +70,7 @@ const styles = StyleSheet.create({
         fontSize: 23,
         opacity: 0.7,
     },
+    textInput: {
+        fontSize: 14,
+    }
 });
