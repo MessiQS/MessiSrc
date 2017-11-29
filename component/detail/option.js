@@ -15,10 +15,7 @@ export default class Option extends React.Component {
 
     static propTypes = {
         option_Text: PropTypes.string,
-        select: PropTypes.func,
-        iconURLSource: PropTypes.number,
-        selectedRightURLSource: PropTypes.number,
-        selectedErrorURLSource: PropTypes.number,        
+        select: PropTypes.func,      
         selection: PropTypes.string,
         isSelected: PropTypes.bool,
         answer: PropTypes.string,
@@ -36,15 +33,15 @@ export default class Option extends React.Component {
 
     _afterSelectText() {
 
-        const that = this
+        const { isSelected, selection, answer } = this.props
 
         ///  选择正确
-        if (that.props.isSelected && that.props.selection == that.props.answer) {
+        if (isSelected && selection == answer) {
             return {color: "#8FDA3C"}
         }
 
         /// 选择错误
-        if (that.props.isSelected && that.props.selection != that.props.answer) {
+        if (isSelected && selection != answer) {
             return {color: "#FF5B29"}
         }
 
@@ -52,22 +49,29 @@ export default class Option extends React.Component {
     }
 
     _selectIcon() {
-        const that = this
-        
-        if (that.props.isSelected == false) {
-            return this.iconURLSource
-        }
+        const { isSelected, selection, answer } = this.props
 
         ///  选择正确
-        if (that.props.isSelected && that.props.selection == that.props.answer) {
-            return this.props.selectedRightURLSource
+        if (isSelected && selection == answer) {
+
+            switch (selection) {
+                case 'A': return require("../../Images/Option_A_Selected_Right.png")
+                case 'B': return require("../../Images/Option_B_Selected_Right.png")
+                case 'C': return require("../../Images/Option_C_Selected_Right.png")
+                case 'D': return require("../../Images/Option_D_Selected_Right.png")                
+            }
         }
 
         /// 选择错误
-        if (that.props.isSelected && that.props.selection != that.props.answer) {
-            return this.props.selectedErrorURLSource
-        }
+        if (isSelected && selection != answer) {
 
+            switch (selection) {
+                case 'A': return require("../../Images/Option_A_Selected_Error.png")
+                case 'B': return require("../../Images/Option_B_Selected_Error.png")
+                case 'C': return require("../../Images/Option_C_Selected_Error.png")
+                case 'D': return require("../../Images/Option_D_Selected_Error.png")                
+            }
+        }
         return null
     }
 
@@ -77,6 +81,17 @@ export default class Option extends React.Component {
         
         if (that.props.isSelected && that.props.selection == that.props.answer) {
             return styles.background
+        }
+        return null
+    }
+
+    _selectDefalutIcon(selection) {
+
+        switch (selection) {
+            case 'A': return require("../../Images/Option_A.png")
+            case 'B': return require("../../Images/Option_B.png")
+            case 'C': return require("../../Images/Option_C.png")
+            case 'D': return require("../../Images/Option_D.png")                
         }
         return null
     }
@@ -99,7 +114,6 @@ export default class Option extends React.Component {
 
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
         let splits = filterStr.split(imageTagRegex)
-
         if (selection == selectedOption) {
             return (
                 <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
@@ -143,7 +157,7 @@ export default class Option extends React.Component {
                 <View style={[styles.answerItem]} >
                     <Image
                         style={styles.icon}
-                        source={iconURLSource}
+                        source={this._selectDefalutIcon(selection)}
                     />
                     <View style={styles.detailOptionView}>
                         {

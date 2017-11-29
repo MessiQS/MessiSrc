@@ -135,18 +135,33 @@ const Messi = StackNavigator({
     },
     AccountInfo: {
         screen: AccountInfo,
+        navigationOptions: TabOptions({
+            title: '账号信息'
+        })
     },
     ModifyPasswordPage: {
         screen: ModifyPasswordPage,
+        navigationOptions: TabOptions({
+            title: '修改密码'
+        })
     },
     CPStepOne: {
         screen: CPStepOne,
+        navigationOptions: TabOptions({
+            title: '更换手机号'
+        })
     },
     CPStepTwo: {
         screen: CPStepTwo,
+        navigationOptions: TabOptions({
+            title: '更换手机号'
+        })
     },
     CPStepThree: {
         screen: CPStepThree,
+        navigationOptions: TabOptions({
+            title: '更换手机号'
+        })
     },
     FPStepOne: {
         screen: FPStepOne,

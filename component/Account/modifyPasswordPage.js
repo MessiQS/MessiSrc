@@ -30,16 +30,7 @@ class ModifyPasswordPage extends React.Component {
 
         }
     }
-
-    static navigationOptions = ({ navigation }) => ({
-        title: '修改密码',
-        headerStyle: {
-            backgroundColor: '#051425',
-            opacity: 0.9,
-        },
-        headerTintColor: 'white',
-    });
-
+    
     changePassword(key,value){
         this[key] = value;
     };

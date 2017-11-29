@@ -3,15 +3,6 @@ export const newPaper = {
         title: {
             text: ''
         },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
-                }
-            }
-        },
         legend: {
             data: []
         },
@@ -96,15 +87,6 @@ export const rememberPaper = {
     option: {
         title: {
             text: ''
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
-                }
-            }
         },
         legend: {
             data: []
