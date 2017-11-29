@@ -60,6 +60,7 @@ export default class Find extends Component {
             shadowOffset: { width: 0, height: 1 }
         },
         headerTintColor: 'white',
+        gesturesEnabled: false,
         headerLeft: (
             <View style={header.header}>
                 <Text style={header.text}>
