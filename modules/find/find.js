@@ -32,14 +32,21 @@ const header = {
         flex: 7
     },
     icon: {
-        marginRight: 20
+        marginRight: 20,
         // flex: 1,
     },
+    moreView: {
+        marginTop: 20,
+        width:22,
+        height:22,
+    },
     magnifier: {
+        resizeMode: 'contain',        
         width: 18,
         height: 17,
     },
     more: {
+        resizeMode: 'contain',        
         width: 20,
         height: 4
     }
@@ -73,7 +80,9 @@ export default class Find extends Component {
                     <Image style={header.magnifier} source={require('../../Images/magnifier.png')} />
                 </View>
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Image style={header.more} source={require('../../Images/more.png')} />
+                    <View style={header.moreView}>
+                        <Image style={header.more} source={require('../../Images/more.png')} />
+                    </View>
                 </TouchableOpacity>
             </View>)
     })

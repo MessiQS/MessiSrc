@@ -114,7 +114,8 @@ export default class Detail extends Component {
                     <View style={styles.rightButtonStyle}>
                     <Text style={styles.rightText}>下一题</Text>
                     </View>
-            </TouchableOpacity>)
+            </TouchableOpacity>
+        )
         that.props.navigation.setParams({headerRight: headerRight});        
     }
 

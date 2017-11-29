@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
     View,
+    ImageBackground
 } from 'react-native';
 import Storage from '../service/storage';
 import Http from '../service/http';
@@ -42,7 +43,7 @@ class LaunchPage extends React.Component {
 
     render() {
         return (
-            <View></View>
+            <ImageBackground source={require('../../Images/login_background.png')} style={{flex: 1}} />
         );
     }
 }
