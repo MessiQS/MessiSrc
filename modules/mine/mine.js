@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     },
     phoneNumber: {
         marginTop: 3,
-        fontSize: 24,
+        fontSize: 22,
         color: '#000',
     },
     thumbnail: {

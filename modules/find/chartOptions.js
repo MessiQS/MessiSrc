@@ -1,13 +1,5 @@
 export const newPaper = {
     option: {
-        title: {
-            text: ''
-        },
-        legend: {
-            data: []
-        },
-        toolbox: {
-        },
         grid: {
             left: '3%',
             right: '4%',
@@ -85,15 +77,6 @@ export const newPaper = {
 
 export const rememberPaper = {
     option: {
-        title: {
-            text: ''
-        },
-        legend: {
-            data: []
-        },
-        toolbox: {
-
-        },
         grid: {
             left: '3%',
             right: '4%',
@@ -133,6 +116,15 @@ export const rememberPaper = {
 
             }
         ],
+        dataZoom: [
+            {
+                show: false,
+            },
+        ],
+        legend: {
+            borderWidth: 0,
+            borderColor: "#FFF"
+        },
         series: [
             {
                 type: 'line',

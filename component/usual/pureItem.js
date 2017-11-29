@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     textInView:{
         lineHeight: 46,
-        fontSize: 16,
+        fontSize: 17,
         paddingLeft: 15
     },
     spanceView: {

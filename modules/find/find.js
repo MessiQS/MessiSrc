@@ -92,7 +92,6 @@ export default class Find extends Component {
     routeToPayPage() {
         const { navigate } = this.props.navigation;
         navigate('Message', {})
-
     }
 
     routeToDetail() {
@@ -156,7 +155,6 @@ export default class Find extends Component {
                             <Image style={styles.arrow} source={require("../../Images/find_arrow_right.png")} />
                         </View>
                     </TouchableOpacity>
-
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}
                 </ScrollView>

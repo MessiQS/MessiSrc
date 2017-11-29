@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         fontSize: 14,
+        width: 200,
     }
 });

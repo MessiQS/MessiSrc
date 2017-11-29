@@ -38,15 +38,6 @@ class AccountInfo extends React.Component {
         })
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: '账号信息',
-        headerStyle: {
-            backgroundColor: '#051425',
-            opacity: 0.9,
-        },
-        headerTintColor: 'white',
-    });
-
     listItemArray = [
         {
             sref: 'ModifyPasswordPage',
@@ -89,7 +80,7 @@ var styles = ({
     headerText: {
         marginTop:7,
         color: '#FF5B29',
-        fontSize: 24,
+        fontSize: 20,
         textAlign: 'center', 
         lineHeight:45,
         backgroundColor:"#fff",
@@ -99,6 +90,7 @@ var styles = ({
         height: 40,
     },
     listTextStyle: {
+        color: "#030303",
         fontSize: 17,
     },
 });
