@@ -35,7 +35,6 @@ const header = {
         marginRight: 20,
         paddingTop: 8,
         paddingBottom: 8,
-        // flex: 1,
     },
     magnifier: {
         width: 18,

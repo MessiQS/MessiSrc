@@ -19,6 +19,7 @@ import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
 import Analysis from "./analysis";
 import key from "../../service/path"
+
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 

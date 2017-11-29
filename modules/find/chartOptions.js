@@ -161,7 +161,8 @@ export const rememberPaper = {
                         lineStyle:{
                             color: '#FF5B29'
                         }
-                    }
+                    },
+                    
                 },
                 smooth:false,
                 symbol: 'none',
@@ -191,17 +192,14 @@ export const rememberPaper = {
 export const pieOption = {
     
     option :{
-        tooltip: {
-            trigger: 'item',
-            formatter: ""
-        },
+        animation: false,
+        trigger: 'axis',
         legend: {
-            orient: 'vertical',
-            x: 'left',
+            show:false
         },
         series: [
             {
-                name:'访问来源',
+                hoverOffset:0,
                 type:'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
@@ -225,11 +223,7 @@ export const pieOption = {
                     }
                 },
                 itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
+
                 },
                 data:[
                     {value:310},
@@ -239,5 +233,4 @@ export const pieOption = {
             }
         ]
     }
-       
 }
