@@ -43,7 +43,7 @@ class LaunchPage extends React.Component {
 
     render() {
         return (
-            <ImageBackground source={require('../../Images/login_background.png')} style={{flex: 1}} />
+            <ImageBackground source={require('../Images/login_background.png')} style={{flex: 1}} />
         );
     }
 }

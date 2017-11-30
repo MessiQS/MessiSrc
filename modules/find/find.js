@@ -144,17 +144,15 @@ export default class Find extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
-                        <View style={styles.titleContent}>
-                            <View style={styles.text}>
-                                <Text style={styles.h2}>2017年北京省考</Text>
-                                <Text style={styles.p}>历年真题</Text>
-                            </View>
-                            <View style={styles.circleChart}>
-                                <Echarts option={pieOption.option} height={75} />
-                            </View>
-                            <Image style={styles.arrow} source={require("../../Images/find_arrow_right.png")} />
+                    <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
+                        <View style={styles.text}>
+                            <Text style={styles.h2}>2017年北京省考</Text>
+                            <Text style={styles.p}>历年真题</Text>
                         </View>
+                        <View style={styles.circleChart}>
+                            <Echarts option={pieOption.option} height={75} />
+                        </View>
+                        <Image style={styles.arrow} source={require("../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}
@@ -166,8 +164,6 @@ export default class Find extends Component {
 
 const styles = {
     container: {
-        flex: 1,
-        width: '100%',
         backgroundColor: '#f5f5f5',
     },
     instructions: {
