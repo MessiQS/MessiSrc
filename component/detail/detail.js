@@ -26,48 +26,54 @@ const window = Dimensions.get('window');
 export default class Detail extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: navigation.state.params.headerTitle,        
+        title: navigation.state.params.headerTitle,
         headerTitleStyle: {
-            color: 'black', 
+            color: 'black',
             alignSelf: 'center',
-            fontSize: 18 
+            fontSize: 18
         },
-		headerStyle: {
-			backgroundColor: '#FFF',
+        headerStyle: {
+            backgroundColor: '#FFF',
             opacity: 1,
             borderBottomWidth: 0,
             shadowOpacity: 0.2,
             shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1}
-		},
-		headerTintColor: 'black',
+            shadowOffset: { width: 0, height: 1 }
+        },
+        headerTintColor: 'black',
         gesturesEnabled: true,
         headerLeft: (
-            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
+            <TouchableOpacity onPress={() => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
+                    <Image style={{ width: 14, height: 10 }} source={require('../../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),
-        headerRight: navigation.state.params.headerRight
+        headerRight: (
+            <TouchableOpacity onPress={ () => {
+                navigation.state.params.clickNextQuestion()
+            } }>
+                <View style={[styles.rightButtonStyle, {overflow: navigation.state.params.showNextQuestion}]}>
+                    <Text style={styles.rightText}>下一题</Text>
+                </View>
+            </TouchableOpacity>
+        )
     });
 
     componentWillMount() {
-        this.props.navigation.setParams({handleNextQuestion: this.nextQuestion.bind(this)});
-        this.props.navigation.setParams({headerRight: null});
-        this.props.navigation.setParams({headerTitle:this.state.detail.questionPaper.title})   
-        
-        console.log(this.state.detail.questionPaper)
+        this.props.navigation.setParams({ 
+            headerTitle: this.state.detail.questionPaper.title,
+            clickNextQuestion: this.nextQuestion.bind(this),
+            showNextQuestion: 'hidden'
+        })
     }
 
     constructor(props) {
         super(props);
         this.memoryModel = realmManager.getMemoryModels()
-                            .filtered("weighting < 7")
-                            .sorted('lastBySelectedTime', false)[0]
-                            
-        console.log(this.memoryModel)
-                            
+            .filtered("weighting < 7")
+            .sorted('lastBySelectedTime', false)[0]
+
         this.state = {
             detail: this.memoryModel,
             isSelected: false,
@@ -76,17 +82,17 @@ export default class Detail extends Component {
     }
 
     nextQuestion() {
-        
+
         const that = this
         that.memoryModel = realmManager.getMemoryModels()
-                            .filtered("weighting < 7")
-                            .sorted('lastBySelectedTime', false)[0]
+            .filtered("weighting < 7")
+            .sorted('lastBySelectedTime', false)[0]
         that.setState({
             detail: that.memoryModel,
             isSelected: false,
             selectedOption: ""
         })
-        that.props.navigation.setParams({headerRight: null});                        
+        that.props.navigation.setParams({ showNextQuestion: 'hidden' });
     }
 
     getRandomInt(min, max) {
@@ -110,14 +116,7 @@ export default class Detail extends Component {
             isSelected: true,
             selectedOption: option,
         })
-        const headerRight = (
-            <TouchableOpacity onPress={ that.nextQuestion.bind(that) }>
-                    <View style={styles.rightButtonStyle}>
-                    <Text style={styles.rightText}>下一题</Text>
-                    </View>
-            </TouchableOpacity>
-        )
-        that.props.navigation.setParams({headerRight: headerRight});        
+        that.props.navigation.setParams({showNextQuestion: 'visible'});        
     }
 
     _renderAnalysis() {
@@ -138,19 +137,19 @@ export default class Detail extends Component {
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
         filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span> /g, "")
         filterStr = filterStr.replace(/<span style=\"color: #46a546;\"> ( 不定项选择 ) <\/span> /g, "")
-        
+
         return filterStr
     }
 
     _renderQuestion(str) {
 
         let filterStr = this._filterTag(str)
-        
+
         var re = /.\/(.*)files/g;
         var results = re.exec(filterStr);
-        var img="";
-        if(results) {
-            img = results[0].replace("./", "")     
+        var img = "";
+        if (results) {
+            img = results[0].replace("./", "")
             filterStr = filterStr.replace(img, key[img])
         }
 
@@ -160,7 +159,7 @@ export default class Detail extends Component {
         return (
             <View style={styles.questionView}>
                 {
-                    splits.map ((content, index) => {
+                    splits.map((content, index) => {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                             const url = content.replace("./", "http://www.samso.cn/images/")
                             let expr = /_(.*)x(.*)_/;
@@ -168,7 +167,7 @@ export default class Detail extends Component {
                             let scale = (window.width - 60) / size[1]
                             let height = size[2] * scale
                             return (
-                                <Image key={index} style={[styles.questionImage, {height:height}]} resizeMode={'contain'}  source={{uri: url}} />
+                                <Image key={index} style={[styles.questionImage, { height: height }]} resizeMode={'contain'} source={{ uri: url }} />
                             )
                         } else {
                             return (
@@ -195,7 +194,7 @@ export default class Detail extends Component {
                 </View>
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
-                    <OptionForm 
+                    <OptionForm
                         detail={this.state.detail.questionPaper}
                         select={this._select.bind(this)}
                         isSelected={this.state.isSelected}
@@ -251,7 +250,7 @@ var styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 20,
     },
-    questionImage: {  
+    questionImage: {
         width: '100%',
         height: '100%',
     },

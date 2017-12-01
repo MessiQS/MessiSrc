@@ -9,6 +9,7 @@ import Storage from '../../service/storage';
 import UserTemplate from '../usual/userTemplate';
 
 export default class CPStepOne extends React.Component {
+    
     constructor(props) {
         super(props);
         Storage.getItem('account').then( res=>{
@@ -18,15 +19,6 @@ export default class CPStepOne extends React.Component {
         })
     }
     
-    static navigationOptions = ({ navigation }) => ({
-        title: '更换手机号',
-        // headerStyle: {
-        //     backgroundColor: '#051425',
-        //     opacity: 0.9,
-        // },
-        // headerTintColor: 'white',
-    });
-
     updatePassword(password){
         this.setState({
             password:password

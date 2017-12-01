@@ -10,6 +10,8 @@ class RealmManager {
                 realm.write(() => {
                     let questions = []
                     json.data.forEach( function(value, index) {
+                        console.log(value)
+
                         let question = realm.create('QuestionPaper', value);
                         questions.push(question)
                     })

@@ -13,15 +13,6 @@ export default class CPStepThree extends React.Component {
         super(props);
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: '更换手机号',
-        // headerStyle: {
-        //     backgroundColor: '#051425',
-        //     opacity: 0.9,
-        // },
-        // headerTintColor: 'white',
-    });
-
     getCode() {
         const { account } = this.props.navigation.state.params;
         if (!account) {

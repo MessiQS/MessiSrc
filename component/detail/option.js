@@ -98,7 +98,7 @@ export default class Option extends React.Component {
 
     _renderOptionView(str) {
         
-        const { iconURLSource, selection, isSelected, selectedOption } = this.props
+        const { selection, isSelected, selectedOption } = this.props
 
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")

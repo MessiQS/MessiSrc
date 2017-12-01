@@ -110,8 +110,8 @@ export default class Find extends Component {
                         <Text style={styles.psmall}>平均值:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
-                        <Text style={styles.h4}>本月共进行6次</Text>
-                        <Text style={styles.psmall}>最后刷题日：今日</Text>
+                        <Text style={[styles.rightTitle, {color: "#1495EB"}]}>刷新题</Text>
+                        <Text style={styles.rightDetail}>剩余：75</Text>
                     </View>
                     <Image style={[styles.arrow, {height: 74}]} source={require("../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -130,8 +130,8 @@ export default class Find extends Component {
                         <Text style={styles.psmall}>平均值:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
-                        <Text style={styles.h4}>本月共进行6次</Text>
-                        <Text style={styles.psmall}>最后刷题日：今日</Text>
+                        <Text style={[styles.rightTitle, {color: "#FF5B29"}]}>刷错题</Text>
+                        <Text style={styles.rightDetail}>剩余：18</Text>
                     </View>
                     <Image style={[styles.arrow, {height: 74}]} source={require("../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -191,12 +191,12 @@ const styles = {
         backgroundColor: "#fff"
     },
     h2: {
-        fontSize: 22,
+        fontSize: 16,
         lineHeight: 25
     },
     p: {
         marginTop: 5,
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 20,
         color: "#8E9091"
     },
@@ -233,21 +233,30 @@ const styles = {
     },
     chartTitleLeft: {
         flex: 13,
-        paddingTop: 24,
+        paddingTop: 10,
         paddingLeft: 15,
     },
     chartTitleRight: {
-        flex: 7,
-        paddingTop: 20,
+        position: "absolute",
+        paddingTop: 11,
+        right: 54,
     },
     h4: {
-        fontSize: 13,
+        fontSize: 16,
         fontWeight: "400",
         color: "#172434"
     },
     psmall: {
-        marginTop: 4,
-        fontSize: 11,
+        marginTop: 10,
+        fontSize: 12,
         color: "#8E9091"
     },
+    rightTitle: {
+        fontSize: 16
+    },
+    rightDetail: {
+        marginTop: 9,
+        fontSize: 12,
+        color: "#8E9091"
+    }  
 }
