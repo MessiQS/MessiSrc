@@ -68,7 +68,7 @@ class Mine extends Component {
             rightIcon,
             tipBorder: 0
         }, {
-            sref: 'Request',
+            sref: 'Feedback',
             name: '问题反馈',
             info: { user: 'Lucy' },
             leftIcon:createLeftIcon('user-follow'),

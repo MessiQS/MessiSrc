@@ -179,6 +179,12 @@ const Messi = StackNavigator({
     },
     TopicsDeail: {
         screen: TopicsDeail
+    },
+    Feedback: {
+        screen: Feedback,
+        navigationOptions: TabOptions({
+            title: '问题反馈'
+        })
     }
 })
 

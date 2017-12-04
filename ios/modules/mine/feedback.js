@@ -56,6 +56,7 @@ var styles = {
         height: 40,
         marginTop: 14,        
         marginRight: 12,
+        paddingTop:10,
         marginLeft: 12,        
         borderRadius: 5,
     },
@@ -74,6 +75,7 @@ var styles = {
         color: "white",
     },
     textInput: {
+        fontSize:14,
         marginRight: 10,
         marginLeft: 10,
     }

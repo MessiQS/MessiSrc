@@ -49,7 +49,7 @@ class Register extends React.Component {
             vericode: vericode
         }).then(console.log)
 
-        Keyboard.dismiss()
+        // Keyboard.dismiss()
     };
     //电话号码改变
     phoneChange(phone) {
