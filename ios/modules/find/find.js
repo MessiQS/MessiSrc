@@ -71,10 +71,10 @@ export default class Find extends Component {
         headerRight: (
             <View style={header.header}>
                 <View style={header.icon}>
-                    <Image style={header.magnifier} source={require('../../Images/magnifier.png')} />
+                    <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
                 </View>
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Image style={header.more} source={require('../../Images/more.png')} />
+                    <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
             </View>)
     })
@@ -113,7 +113,7 @@ export default class Find extends Component {
                         <Text style={[styles.rightTitle, {color: "#1495EB"}]}>刷新题</Text>
                         <Text style={styles.rightDetail}>剩余：75</Text>
                     </View>
-                    <Image style={[styles.arrow, {height: 74}]} source={require("../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -133,7 +133,7 @@ export default class Find extends Component {
                         <Text style={[styles.rightTitle, {color: "#FF5B29"}]}>刷错题</Text>
                         <Text style={styles.rightDetail}>剩余：18</Text>
                     </View>
-                    <Image style={[styles.arrow, {height: 74}]} source={require("../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -152,7 +152,7 @@ export default class Find extends Component {
                         <View style={styles.circleChart}>
                             <Echarts option={pieOption.option} height={75} />
                         </View>
-                        <Image style={styles.arrow} source={require("../../Images/find_arrow_right.png")} />
+                        <Image style={styles.arrow} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}

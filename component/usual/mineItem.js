@@ -4,8 +4,18 @@ import {
     Text,
     View,
     TouchableOpacity,
+    Platform
 } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { androidItem, iosItem } from '../usualCss/usualCss'
+
+let styles;
+if (Platform.OS === 'ios') {
+    styles = StyleSheet.create(iosItem);
+} else {
+    styles = StyleSheet.create(androidItem);
+}
+
 
 const IconObject = {
     SimpleLineIcons
@@ -35,7 +45,7 @@ export default class MineListItem extends Component {
             const { type, name, iconStyle } = this.props.item.rightIcon;
             const Icon = IconObject[type];
             return (<View style={styles.spanceView}>
-                <Icon name={name} size={16} style={[styles.rightIcon,iconStyle]}></Icon>
+                <Icon name={name} size={16} style={[styles.rightIcon, iconStyle]}></Icon>
             </View>)
         } else {
             return (<View style={styles.spanceView}></View>)
@@ -59,32 +69,3 @@ export default class MineListItem extends Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    cellTitleView: {
-        // justifyContent: 'center',
-        flexDirection: 'row',
-    },
-    leftIcon: {
-        lineHeight: 47,
-        paddingLeft: 20
-    },
-    rightIcon: {
-        lineHeight: 47,
-        paddingLeft: 20
-    },
-    text: {
-        flex: 6,
-        paddingBottom: 14,
-        borderBottomWidth: 0.5,
-        borderBottomColor: "#D3D5D7",
-    },
-    textInView: {
-        lineHeight: 46,
-        fontSize: 16,
-        paddingLeft: 9
-    },
-    spanceView: {
-        height: 47,
-        flex: 1,
-    }
-});

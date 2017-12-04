@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import CollapseListView from "./collapseListView"
 import DictStyle from './dictStyle';
-import MessageService from "../../service/message.service";
-import realmManager from '../../component/Realm/realmManager';
+import MessageService from "../../../service/message.service";
+import realmManager from '../../../component/Realm/realmManager';
 import PropTypes from 'prop-types';
 
 export default class ListOfTopics extends React.Component {
@@ -63,7 +63,7 @@ export default class ListOfTopics extends React.Component {
                 <View style={styles.sectionViewStyle}>
                     <Text style={styles.sectionTitleStyle}>{item.item.title}</Text>
                     <Text style={styles.detailTitleStyle}>{item.item.length}套真题</Text>
-                    <Image style={styles.arrowStyle} source={require('../../Images/arrow_right.png')} ></Image>
+                    <Image style={styles.arrowStyle} source={require('../../../Images/arrow_right.png')} ></Image>
                 </View>
             </TouchableOpacity>
         );

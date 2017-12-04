@@ -7,8 +7,8 @@ import {
     FlatList,
     Vibration
 } from 'react-native';
-import MessageService from "../../service/message.service"
-import realmManager from "../../component/Realm/realmManager"
+import MessageService from "../../../service/message.service"
+import realmManager from "../../../component/Realm/realmManager"
 
 export default class TopicsDeail extends React.Component {
 
@@ -32,7 +32,7 @@ export default class TopicsDeail extends React.Component {
         headerLeft: (
             <TouchableOpacity onPress={ () => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
+                    <Image style={{width:14, height:10}} source={require('../../../Images/back_arrow.png')}/>
                 </View>
             </TouchableOpacity>
         ),

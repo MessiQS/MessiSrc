@@ -17,34 +17,36 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 
 import Home from './modules/home/home';
 import Mine from './modules/mine/mine';
+import SoftwareAgreement from './modules/mine/software_agreement';
+import Feedback from './modules/mine/feedback';
 import Find from './modules/find/find';
 import Message from './modules/message/message';//选题
-import Account from './component/MineMenu/account';
-import Update from './component/MineMenu/update';
-import Request from './component/MineMenu/request';
-import Detail from './component/detail/detail';
+import Account from '../component/MineMenu/account';
+import Update from '../component/MineMenu/update';
+import Request from '../component/MineMenu/request';
+import Detail from '../component/detail/detail';
 import TopicsDeail from "./modules/message/topics_detail"
-import Register from './component/Login/register';
-import Login from './component/Login/login';
-import LoginPage from './component/Login/loginPage';
-import AccountInfo from './component/Account/accountInfo';
-import ModifyPasswordPage from './component/Account/modifyPasswordPage';
+import Register from '../component/Login/register';
+import Login from '../component/Login/login';
+import LoginPage from '../component/Login/loginPage';
+import AccountInfo from '../component/Account/accountInfo';
+import ModifyPasswordPage from '../component/Account/modifyPasswordPage';
 //cps changePhoneNumber
-import CPStepOne from './component/changePhoneNumber/stepOne';
-import CPStepTwo from './component/changePhoneNumber/stepTwo';
-import CPStepThree from './component/changePhoneNumber/stepThree';
+import CPStepOne from '../component/changePhoneNumber/stepOne';
+import CPStepTwo from '../component/changePhoneNumber/stepTwo';
+import CPStepThree from '../component/changePhoneNumber/stepThree';
 //fps forgotPassword
-import FPStepOne from './component/forgetPassword/stepOne';
-import FPStepTwo from './component/forgetPassword/stepTwo';
-import FPStepThree from './component/forgetPassword/stepThree';
-import PayPage from './component/pay/payPage'
-import LaunchPage from './component/launchPage';
+import FPStepOne from '../component/forgetPassword/stepOne';
+import FPStepTwo from '../component/forgetPassword/stepTwo';
+import FPStepThree from '../component/forgetPassword/stepThree';
+import PayPage from '../component/pay/payPage'
+import LaunchPage from '../component/launchPage';
 
-let bookIcon = require('./Images/book.png');
-let questionIcon = require('./Images/question.png');
-let chartIcon = require('./Images/chart.png');
-let mineIcon = require('./Images/mine.png');
-let headImage = require('./Images/head.png');
+let bookIcon = require('../Images/book.png');
+let questionIcon = require('../Images/question.png');
+let chartIcon = require('../Images/chart.png');
+let mineIcon = require('../Images/mine.png');
+let headImage = require('../Images/head.png');
 
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
@@ -75,7 +77,7 @@ const TabOptions = ({ title }) => {
                     width: 44,
                     height: 44,
                 }}>
-                    <Image style={{ width: 14, height: 10 }} source={require('./Images/back_arrow.png')} />
+                    <Image style={{ width: 14, height: 10 }} source={require('../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),

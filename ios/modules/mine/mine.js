@@ -13,11 +13,11 @@ import {
     Image,
     Button,
 } from 'react-native';
-import AccountInfo from '../../component/Account/accountInfo';
-import Storage from '../../service/storage';
-import Pingpay from '../../service/pingpp';
+import AccountInfo from '../../../component/Account/accountInfo';
+import Storage from '../../../service/storage';
+import Pingpay from '../../../service/pingpp';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { MineListItem } from '../../component/usual/item'
+import { MineListItem } from '../../../component/usual/item'
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (name) => {
@@ -109,7 +109,7 @@ class Mine extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.head}>
-                    <Image source={require('../../Images/head.png')}
+                    <Image source={require('../../../Images/head.png')}
                         style={styles.thumbnail} />
                     <Text style={styles.phoneNumber}>
                         +86 {this.state.account}
