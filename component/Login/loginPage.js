@@ -6,7 +6,9 @@ import {
     TextInput,
     TouchableOpacity,
     Image,
-    Text
+    Text,
+    ScrollView,
+    Keyboard
 } from 'react-native';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
@@ -14,7 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';
-import  SamsoButton  from '../usual/button';
+import SamsoButton  from '../usual/button';
 import styles from "./loginPageCss";
 
 class LoginPage extends React.Component {
@@ -64,6 +66,7 @@ class LoginPage extends React.Component {
                     ['account', account]
                 ]);
                 setToken.then(res => {
+                    Keyboard.dismiss()
                     navigate('Home', {})
                 }, err => {
                     Alert('登录错误，请重试')
@@ -74,6 +77,11 @@ class LoginPage extends React.Component {
             }
         })
     };
+
+    _sofewareAgreementClick() {
+        const { navigate } = this.props.navigation;
+        navigate('SoftwareAgreement', {})
+    }
 
     render() {
         const { navigate } = this.props.navigation;
@@ -111,10 +119,10 @@ class LoginPage extends React.Component {
                     onPress={this.login.bind(this)}
                     title = '登录'
                 ></SamsoButton>
-
+                <ScrollView></ScrollView>
                 <View style={styles.agreeView}>
                     <Text style={styles.agreeBaseText}>注册即表示同意本
-                        <Text style={styles.agreeButton} >软件协议</Text>
+                        <Text style={styles.agreeButton} onPress={this._sofewareAgreementClick.bind(this)}>软件协议</Text>
                     </Text>
                 </View>
             </View>

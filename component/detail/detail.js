@@ -42,13 +42,6 @@ export default class Detail extends Component {
         },
         headerTintColor: 'black',
         gesturesEnabled: true,
-        headerLeft: (
-            <TouchableOpacity onPress={() => { navigation.goBack() }}>
-                <View style={styles.headerLeftView}>
-                    <Image style={{ width: 14, height: 10 }} source={require('../../Images/back_arrow.png')} />
-                </View>
-            </TouchableOpacity>
-        ),
         headerRight: (
             <TouchableOpacity onPress={ () => {
                 navigation.state.params.clickNextQuestion()
@@ -62,7 +55,7 @@ export default class Detail extends Component {
 
     componentWillMount() {
         this.props.navigation.setParams({ 
-            headerTitle: this.state.detail.questionPaper.title,
+            headerTitle: this.state.detail.questionPaper.category,
             clickNextQuestion: this.nextQuestion.bind(this),
             showNextQuestion: 'hidden'
         })
@@ -92,7 +85,10 @@ export default class Detail extends Component {
             isSelected: false,
             selectedOption: ""
         })
-        that.props.navigation.setParams({ showNextQuestion: 'hidden' });
+        that.props.navigation.setParams({ 
+            headerTitle: that.memoryModel.questionPaper.category,            
+            showNextQuestion: 'hidden' 
+        });
     }
 
     getRandomInt(min, max) {
@@ -144,7 +140,6 @@ export default class Detail extends Component {
     _renderQuestion(str) {
 
         let filterStr = this._filterTag(str)
-
         var re = /.\/(.*)files/g;
         var results = re.exec(filterStr);
         var img = "";
@@ -180,20 +175,37 @@ export default class Detail extends Component {
         )
     }
 
+    _renderQuestion2(str) {
+        if (str !== "") {
+           return this._renderQuestion(str)
+        } else {
+            return (<View></View>)
+        }
+    }
+
     render() {
+
+        const { detail } = this.state
+        let str = ""
+        let str1 = ""
+        if (detail.questionPaper.category.indexOf("资料分析") !== -1) {
+            str = detail.questionPaper.question_material
+            str1 = detail.questionPaper.question
+        }  else {
+            str = detail.questionPaper.question
+            str1 = ""
+        }
+       
         return (
             <View style={{ flexDirection: 'column', height: "100%" }}>
                 <View style={styles.topContent}>
                     <ScrollView style={styles.content}>
-                        <View style={styles.categoryView}>
-                            <View style={styles.categoryLine} />
-                            <Text style={styles.category}>{this.state.detail.questionPaper.category}</Text>
-                        </View>
-                        {this._renderQuestion(this.state.detail.questionPaper.question)}
+                        {this._renderQuestion(str)}
                     </ScrollView>
                 </View>
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
+                    {this._renderQuestion2(str1)}
                     <OptionForm
                         detail={this.state.detail.questionPaper}
                         select={this._select.bind(this)}

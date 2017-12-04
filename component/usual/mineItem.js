@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     },
     text: {
         flex: 6,
+        paddingBottom: 14,
         borderBottomWidth: 0.5,
         borderBottomColor: "#D3D5D7",
     },

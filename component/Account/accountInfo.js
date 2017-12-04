@@ -58,7 +58,7 @@ class AccountInfo extends React.Component {
         // const { navigate } = this.props.navigation;
         return (
             <View>
-                <View>
+                <View style={styles.headerView}>
                     <Text style={styles.headerText}>
                         +86 { this.state.account }
                     </Text>
@@ -77,13 +77,18 @@ class AccountInfo extends React.Component {
 }
 
 var styles = ({
+    headerView: {
+        height: 45,
+        backgroundColor:"#fff",
+    },
     headerText: {
-        marginTop:7,
+        flex: 1,    
+        marginTop:12,
         color: '#FF5B29',
         fontSize: 20,
-        textAlign: 'center', 
-        lineHeight:45,
-        backgroundColor:"#fff",
+        textAlign:'center',
+        // alignSelf:'center',
+        // lineHeight: 45,
     },
     listStyle: {
         backgroundColor: 'white',

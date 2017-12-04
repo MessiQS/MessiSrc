@@ -17,32 +17,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MD5 from 'crypto-js/md5';
 
 class Register extends React.Component {
-    static navigationOptions = ({ navigation, screenProps }) => ({
-        title: '注册',        
-        headerTitleStyle: {
-            color: 'black', 
-            alignSelf: 'center',
-            fontSize: 20 
-        },
-		headerStyle: {
-			backgroundColor: '#FFF',
-            opacity: 1,
-            borderBottomWidth: 0,
-            shadowOpacity: 0.2,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1}
-		},
-		headerTintColor: 'black',
-        gesturesEnabled: true,
-        headerLeft: (
-            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
-                <View style={styles.headerLeftView}>
-                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
-                </View>
-            </TouchableOpacity>
-        ),
-        headerRight: navigation.state.params.headerRight
-    });
 
     constructor(...props) {
         super();
@@ -74,6 +48,8 @@ class Register extends React.Component {
             phone: phone,
             vericode: vericode
         }).then(console.log)
+
+        Keyboard.dismiss()
     };
     //电话号码改变
     phoneChange(phone) {
@@ -108,7 +84,11 @@ class Register extends React.Component {
             console.log(response)
         })
     }
-    
+
+    _sofewareAgreementClick() {
+        const { navigate } = this.props.navigation;
+        navigate('SoftwareAgreement', {})
+    }
 
     render() {
         return (
@@ -120,7 +100,10 @@ class Register extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <TextInput placeholder="请输入您的电话号码"
+                    <TextInput 
+                        style={styles.textInput} 
+                        underlineColorAndroid={'transparent'}
+                        placeholder="请输入您的电话号码"
                         maxLength={11}
                         keyboardType={'numeric'}
                         onChangeText={phone => this.phoneChange(phone)}></TextInput>
@@ -133,7 +116,10 @@ class Register extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <TextInput placeholder="请输入您的密码"
+                    <TextInput
+                        underlineColorAndroid={'transparent'}
+                        style={styles.textInput} 
+                        placeholder="请输入您的密码"
                         secureTextEntry={true}
                         maxLength={21}
                         onChangeText={passpord => this.passwordtChange(passpord)}></TextInput>
@@ -146,7 +132,10 @@ class Register extends React.Component {
                             style={styles.icon}
                         />
                     </View>
-                    <TextInput placeholder="请输入验证码"
+                    <TextInput 
+                        underlineColorAndroid={'transparent'}
+                        style={styles.vertiTextInput} 
+                        placeholder="请输入验证码"
                         keyboardType={'numeric'}
                         maxLength={4}
                         onChangeText={variCode => this.codeChange(variCode)}></TextInput>
@@ -166,9 +155,10 @@ class Register extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <ScrollView></ScrollView>
                 <View style={stylesContainer.agreeView}>
                     <Text style={styles.agreeBaseText}>注册即表示同意本
-                         <Text style={styles.agreeButton} >软件协议</Text>
+                         <Text style={styles.agreeButton} onPress={this._sofewareAgreementClick.bind(this)}>软件协议</Text>
                     </Text>
                 </View>
             </View>

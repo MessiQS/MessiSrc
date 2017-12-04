@@ -7,6 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 import SamsoButton from './button';
+
 export default class UserTemplate extends Component {
     constructor(props) {
         super(props);
@@ -22,10 +23,10 @@ export default class UserTemplate extends Component {
     }
     isHaveText(initText) {
         let text;
-        if(initText){
-             text = initText;
-        }else{
-            text  = this.data.text;
+        if (initText) {
+            text = initText;
+        } else {
+            text = this.data.text;
         };
         if (text) {
             return (
@@ -39,17 +40,21 @@ export default class UserTemplate extends Component {
             code: {
                 top: 55,
                 position: 'absolute',
+                justifyContent: 'center',
+                alignItems: 'center',
                 right: 0,
                 borderWidth: 1,
                 borderColor: '#FF5B29',
                 borderRadius: 3,
                 paddingLeft: 5,
                 backgroundColor: '#fff',
-                paddingRight: 5
+                paddingRight: 5,
+                height: 21,
+                width: 76,
             },
             text: {
-                fontSize: 12,
-                lineHeight: 22,
+                fontSize: 7,
+                lineHeight: 7,
                 color: '#FF5B29'
             }
         }
@@ -64,10 +69,10 @@ export default class UserTemplate extends Component {
             )
         }
     }
-    inputRender(input){
+    inputRender(input) {
         const { text } = this.data;
-        if(Array.isArray(input)){
-            var inputArr = input.map( (res,index) => {
+        if (Array.isArray(input)) {
+            var inputArr = input.map((res, index) => {
 
                 res = Object.assign({
                     placeholder: '请输入',
@@ -76,10 +81,11 @@ export default class UserTemplate extends Component {
                 }, res)
                 res.key = 'repeatInput' + index;
 
-                return(
-                    <View style={styles.input}  key = {res.key}>
-                        {this.isHaveText(text[index])}     
+                return (
+                    <View style={styles.input} key={res.key}>
+                        {this.isHaveText(text[index])}
                         <TextInput
+                            underlineColorAndroid={'transparent'}
                             secureTextEntry={res.secureTextEntry}
                             style={styles.passwordInputStyle}
                             placeholder={res.placeholder}
@@ -90,11 +96,12 @@ export default class UserTemplate extends Component {
                 )
             })
             return inputArr;
-        }else{
-            return(
+        } else {
+            return (
                 <View style={styles.input}>
-                    {this.isHaveText()}     
+                    {this.isHaveText()}
                     <TextInput
+                        underlineColorAndroid={'transparent'}
                         secureTextEntry={input.secureTextEntry}
                         style={styles.passwordInputStyle}
                         placeholder={input.placeholder}
@@ -110,7 +117,7 @@ export default class UserTemplate extends Component {
 
         let { input, button } = this.data;
 
-        if(!Array.isArray(input)){
+        if (!Array.isArray(input)) {
             input = Object.assign({
                 placeholder: '请输入',
                 maxLength: 21,
@@ -154,9 +161,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 70
     },
-    input:{
+    input: {
         flexDirection: 'row',
-        paddingTop:7,
+        paddingTop: 7,
         borderBottomColor: '#dcdcdc',
         paddingBottom: 7,
         borderBottomWidth: 1,
@@ -168,6 +175,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     passwordInputStyle: {
+        width:"100%",
+        paddingBottom: 0,
         paddingTop: 3,
         fontSize: 14,
         lineHeight: 29,

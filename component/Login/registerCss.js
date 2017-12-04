@@ -87,6 +87,12 @@ export const styles = {
     agreeButton:{
         fontSize:14,
         color:"#FF5B29"
+    },
+    textInput: {
+        width: "100%",
+    },
+    vertiTextInput: {
+        width: "50%",
     }
 };
 export default stylesContainer = StyleSheet.create({
@@ -103,8 +109,6 @@ export default stylesContainer = StyleSheet.create({
     },
     agreeView: {
         bottom:10,
-        width:'133%',
-        // flex:1,
-        position :'absolute',
+        width:'100%',
     }
 });

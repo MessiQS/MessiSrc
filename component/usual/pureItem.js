@@ -6,6 +6,7 @@ import {
     Text,
     View,
     TouchableOpacity,
+    Image
 } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -20,16 +21,7 @@ export default class PureItem extends Component {
         super(props);
         this.state = props;
     }
-
-    isRightIcon(){
-        if(this.props.item.rightIcon){
-            const { type, name, iconStyle } = this.props.item.rightIcon;
-            const Icon = IconObject[type];
-            return (<View style={styles.spanceView}>
-                <Icon name={name} size={16} style={[styles.rightIcon,iconStyle]}></Icon>
-            </View>)
-        }
-    }
+    
     render() {
         return (
             <TouchableOpacity onPress={() =>
@@ -37,10 +29,8 @@ export default class PureItem extends Component {
                     this.props.item.info
                 )}>
                 <View style={styles.cellTitleView}>
-                    <View style={styles.text}>
-                        <Text style={styles.textInView}>{this.props.item.name}</Text>
-                    </View>
-                    {this.isRightIcon()}
+                    <Text style={styles.textInView}>{this.props.item.name}</Text>
+                    <Image source={require("../../Images/arrow_right.png")} resizeMode={"contain"} style={[styles.rightIcon]} />
                 </View>
             </TouchableOpacity>
         )
@@ -49,22 +39,25 @@ export default class PureItem extends Component {
 const styles = StyleSheet.create({
     cellTitleView: {
         marginTop:5,
+        justifyContent: 'center',
+        alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor:'#fff'
-    },
-    text:{
-        flex: 6,
+        backgroundColor:'#fff',
+        height: 40,
     },
     textInView:{
-        lineHeight: 46,
+        position: "absolute",
+        left: 15,
         fontSize: 17,
-        paddingLeft: 15
+        color: "#030303"
     },
     spanceView: {
         flex: 1,
     },
     rightIcon:{
-        paddingLeft: 20,
-        lineHeight:47,
+        position: "absolute",
+        right: 20,
+        width: 4,
+        height: 7,
     }
 });

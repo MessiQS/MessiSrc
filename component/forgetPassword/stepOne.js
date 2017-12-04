@@ -18,33 +18,6 @@ export default class FPStepOne extends React.Component {
 		super(props);
     }
 
-    static navigationOptions = ({ navigation, screenProps }) => ({
-        title: "忘记密码",        
-        headerTitleStyle: {
-            color: 'black', 
-            alignSelf: 'center',
-            fontSize: 20 
-        },
-		headerStyle: {
-			backgroundColor: '#FFF',
-            opacity: 1,
-            borderBottomWidth: 0,
-            shadowOpacity: 0.2,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1}
-		},
-		headerTintColor: 'black',
-        gesturesEnabled: true,
-        headerLeft: (
-            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
-                <View style={styles.headerLeftView}>
-                    <Image style={{width:14, height:10}} source={require('../../Images/back_arrow.png')}/>
-                </View>
-            </TouchableOpacity>
-        ),
-        headerRight: navigation.state.params.headerRight
-    });
-
     accountChange(account){
         this.account = account;
     }

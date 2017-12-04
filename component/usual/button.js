@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     initView: {
         backgroundColor: '#FF5B29',
         borderRadius: 5,
+        height: 60,
     },
     initStyle: {
         justifyContent:'center',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     },
     textStyle:{
         lineHeight:44,
-        fontSize:16,
+        fontSize:20,
         color:'#fff'
     }
 })
