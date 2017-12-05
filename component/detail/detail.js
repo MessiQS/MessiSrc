@@ -43,10 +43,10 @@ export default class Detail extends Component {
         headerTintColor: 'black',
         gesturesEnabled: true,
         headerRight: (
-            <TouchableOpacity onPress={ () => {
+            <TouchableOpacity onPress={() => {
                 navigation.state.params.clickNextQuestion()
-            } }>
-                <View style={[styles.rightButtonStyle, {overflow: navigation.state.params.showNextQuestion}]}>
+            }}>
+                <View style={[styles.rightButtonStyle, { overflow: navigation.state.params.showNextQuestion }]}>
                     <Text style={styles.rightText}>下一题</Text>
                 </View>
             </TouchableOpacity>
@@ -54,7 +54,7 @@ export default class Detail extends Component {
     });
 
     componentWillMount() {
-        this.props.navigation.setParams({ 
+        this.props.navigation.setParams({
             headerTitle: this.state.detail.questionPaper.category,
             clickNextQuestion: this.nextQuestion.bind(this),
             showNextQuestion: 'hidden'
@@ -72,6 +72,8 @@ export default class Detail extends Component {
             isSelected: false,
             selectedOption: "",
         }
+
+        console.log(this.memoryModel.questionPaper.category)
     }
 
     nextQuestion() {
@@ -85,9 +87,9 @@ export default class Detail extends Component {
             isSelected: false,
             selectedOption: ""
         })
-        that.props.navigation.setParams({ 
-            headerTitle: that.memoryModel.questionPaper.category,            
-            showNextQuestion: 'hidden' 
+        that.props.navigation.setParams({
+            headerTitle: that.memoryModel.questionPaper.category,
+            showNextQuestion: 'hidden'
         });
     }
 
@@ -112,7 +114,7 @@ export default class Detail extends Component {
             isSelected: true,
             selectedOption: option,
         })
-        that.props.navigation.setParams({showNextQuestion: 'visible'});        
+        that.props.navigation.setParams({ showNextQuestion: 'visible' });
     }
 
     _renderAnalysis() {
@@ -176,11 +178,32 @@ export default class Detail extends Component {
     }
 
     _renderQuestion2(str) {
+
         if (str !== "") {
-           return this._renderQuestion(str)
+            return this._renderQuestion(str)
         } else {
             return (<View></View>)
         }
+    }
+
+    _renderIndefiniteItem() {
+
+        // if (this.state.detail.questionPaper.subject.indexOf("不定项") !== -1) {
+        return (
+            <View style={styles.indefiniteItem}>
+                <Text style={styles.indefiniteItemText}>请你选择多个答案</Text>
+                <TouchableOpacity onPress={() => {
+                    navigation.state.params.clickNextQuestion()
+                }}>
+                    <View>
+                        <Text>确定选择</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+        // } else {
+        //     return (<View></View>)
+        // }         
     }
 
     render() {
@@ -191,11 +214,11 @@ export default class Detail extends Component {
         if (detail.questionPaper.category.indexOf("资料分析") !== -1) {
             str = detail.questionPaper.question_material
             str1 = detail.questionPaper.question
-        }  else {
+        } else {
             str = detail.questionPaper.question
             str1 = ""
         }
-       
+
         return (
             <View style={{ flexDirection: 'column', height: "100%" }}>
                 <View style={styles.topContent}>
@@ -206,6 +229,7 @@ export default class Detail extends Component {
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
                     {this._renderQuestion2(str1)}
+                    {this._renderIndefiniteItem()}
                     <OptionForm
                         detail={this.state.detail.questionPaper}
                         select={this._select.bind(this)}
@@ -286,6 +310,17 @@ var styles = StyleSheet.create({
     rightText: {
         color: "#FF5B29",
         fontSize: 16,
+    },
+    indefiniteItem: {
+        flexDirection: 'row',
+        // justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
+    },
+    indefiniteItemText: {
+        fontSize: 13,
+        color: "#172434",
+        marginLeft: 28,
     }
 })
 
