@@ -12,6 +12,7 @@ import {
     TouchableOpacity,
     Image,
     Button,
+    Alert,
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
@@ -29,8 +30,8 @@ const createLeftIcon = (name) => {
 const rightIcon = {
     type: 'SimpleLineIcons',
     name: 'arrow-right',
-    iconStyle:{
-        fontSize:10
+    iconStyle: {
+        fontSize: 10
     }
 }
 class Mine extends Component {
@@ -56,7 +57,7 @@ class Mine extends Component {
             sref: 'AccountInfo',
             name: '账号信息',
             info: { name: 'AccountInfo' },
-            leftIcon:createLeftIcon('user'),
+            leftIcon: createLeftIcon('user'),
             rightIcon,
             tipBorder: 1
         },
@@ -64,14 +65,14 @@ class Mine extends Component {
             sref: 'CPStepThree',
             name: '版本更新',
             info: { account: 15895537043 },
-            leftIcon:createLeftIcon('settings'),
+            leftIcon: createLeftIcon('settings'),
             rightIcon,
             tipBorder: 0
         }, {
             sref: 'Feedback',
             name: '问题反馈',
             info: { user: 'Lucy' },
-            leftIcon:createLeftIcon('user-follow'),
+            leftIcon: createLeftIcon('user-follow'),
             rightIcon,
             tipBorder: 0
         }
@@ -90,11 +91,10 @@ class Mine extends Component {
             subject: 'ss0001',
             body: "1234"
         });
-
-        Pingpp.createPayment({
-            "object": response.data,
-            "urlScheme": "wx8f1006588bd45d9b"
-        }, function (res, error) {
+        const data = JSON.stringify(response.data)
+        console.log(response.data)
+        // Alert.alert(JSON.stringify(response.data))
+        Pingpp.createPayment(data, function (res, error) {
             console.log(res, error);
         });
     }
@@ -123,11 +123,11 @@ class Mine extends Component {
                     </View>
                     {
                         this.listItemArray.map(result => (
-                        <MineListItem
-                            navigation={this.state.navigation}
-                            item={result}
-                            key ={result.name}
-                        />))
+                            <MineListItem
+                                navigation={this.state.navigation}
+                                item={result}
+                                key={result.name}
+                            />))
                     }
                     <View style={styles.buttonView}>
                         <View>
