@@ -7,7 +7,7 @@ import Storage from '../service/storage';
 import Http from '../service/http';
 
 class LaunchPage extends React.Component {
-
+s
     constructor(...props) {
         super();
         this.state = this.state || {};
@@ -27,11 +27,11 @@ class LaunchPage extends React.Component {
         const { navigate } = this.props.navigation;
         Storage.multiGet(['accountToken', 'account']).then(({ accountToken, account }) => {
             if (accountToken && account) {
-                return Http.post('api/checkToken',{accountToken,account}).then(({ type, data }) => {
-                    if(!type){
+                return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
+                    if (!type) {
                         navigate('Login', { name: 'MainTab' })
                         console.log("login")
-                    }else{
+                    } else {
                         navigate('Home', { name: 'MainTab' })
                         console.log("MyTab")
                     }
@@ -43,7 +43,7 @@ class LaunchPage extends React.Component {
 
     render() {
         return (
-            <ImageBackground source={require('../Images/login_background.png')} style={{flex: 1}} />
+            <ImageBackground source={require('../Images/login_background.png')} style={{ flex: 1 }} />
         );
     }
 }

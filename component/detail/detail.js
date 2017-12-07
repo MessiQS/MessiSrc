@@ -12,7 +12,7 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
-    Button
+    Platform
 } from 'react-native';
 import realmManager from "../Realm/realmManager";
 import realm from '../Realm/realm';
@@ -50,7 +50,23 @@ export default class Detail extends Component {
                     <Text style={styles.rightText}>下一题</Text>
                 </View>
             </TouchableOpacity>
-        )
+        ),
+        headerLeft: (
+            Platform.OS == "ios" ? (
+                <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                    <View style={{
+                        left: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: 44,
+                        height: 44,
+                    }}>
+                        <Image style={{ width: 14, height: 10 }} source={require('../../Images/back_arrow.png')} />
+                    </View>
+                </TouchableOpacity>
+            ) : navigation.state.params.headerLeft
+        ),
+
     });
 
     componentWillMount() {
@@ -70,7 +86,7 @@ export default class Detail extends Component {
         this.state = {
             detail: this.memoryModel,
             isSelected: false,
-            selectedOption: "",
+            selectedOption: [],
         }
 
         console.log(this.memoryModel.questionPaper.category)
@@ -81,11 +97,12 @@ export default class Detail extends Component {
         const that = this
         that.memoryModel = realmManager.getMemoryModels()
             .filtered("weighting < 7")
+            .filtered("questionPaper.subject == '不定项'")
             .sorted('lastBySelectedTime', false)[0]
         that.setState({
             detail: that.memoryModel,
             isSelected: false,
-            selectedOption: ""
+            selectedOption: []
         })
         that.props.navigation.setParams({
             headerTitle: that.memoryModel.questionPaper.category,
@@ -101,20 +118,37 @@ export default class Detail extends Component {
 
     _select(option) {
 
-        const that = this
+        const { subject } = this.state.detail.questionPaper
+        if (subject == "不定项") {
 
-        let score = 7 - that.memoryModel.appearedSeveralTime
-        score = Math.max(1, score)
-        realm.write(() => {
-            that.memoryModel.weighting = that.memoryModel.weighting + score
-            that.memoryModel.appearedSeveralTime += 1
-            that.memoryModel.lastBySelectedTime = Date.parse(new Date())
-        });
-        that.setState({
-            isSelected: true,
-            selectedOption: option,
-        })
-        that.props.navigation.setParams({ showNextQuestion: 'visible' });
+
+
+        } else {
+
+            const that = this
+
+            let score = 7 - that.memoryModel.appearedSeveralTime
+            score = Math.max(1, score)
+            realm.write(() => {
+                that.memoryModel.weighting = that.memoryModel.weighting + score
+                that.memoryModel.appearedSeveralTime += 1
+                that.memoryModel.lastBySelectedTime = Date.parse(new Date())
+            });
+            that.setState({
+                isSelected: true,
+                selectedOption: [option],
+            })
+            that.props.navigation.setParams({ showNextQuestion: 'visible' });
+        }
+
+    }
+
+    _addSelect() {
+
+    }
+
+    _doneSelect() {
+
     }
 
     _renderAnalysis() {
@@ -133,8 +167,8 @@ export default class Detail extends Component {
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span> /g, "")
-        filterStr = filterStr.replace(/<span style=\"color: #46a546;\"> ( 不定项选择 ) <\/span> /g, "")
+        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">/g, "")
+        filterStr = filterStr.replace(/<\/span>/g, "")
 
         return filterStr
     }
@@ -158,7 +192,7 @@ export default class Detail extends Component {
                 {
                     splits.map((content, index) => {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                            const url = content.replace("./", "http://www.samso.cn/images/")
+                            const url = content.replace("./", "http://118.89.196.123/images/")
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
                             let scale = (window.width - 60) / size[1]
@@ -186,26 +220,6 @@ export default class Detail extends Component {
         }
     }
 
-    _renderIndefiniteItem() {
-
-        // if (this.state.detail.questionPaper.subject.indexOf("不定项") !== -1) {
-        return (
-            <View style={styles.indefiniteItem}>
-                <Text style={styles.indefiniteItemText}>请你选择多个答案</Text>
-                <TouchableOpacity onPress={() => {
-                    navigation.state.params.clickNextQuestion()
-                }}>
-                    <View>
-                        <Text>确定选择</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        )
-        // } else {
-        //     return (<View></View>)
-        // }         
-    }
-
     render() {
 
         const { detail } = this.state
@@ -229,7 +243,6 @@ export default class Detail extends Component {
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
                     {this._renderQuestion2(str1)}
-                    {this._renderIndefiniteItem()}
                     <OptionForm
                         detail={this.state.detail.questionPaper}
                         select={this._select.bind(this)}
@@ -311,16 +324,5 @@ var styles = StyleSheet.create({
         color: "#FF5B29",
         fontSize: 16,
     },
-    indefiniteItem: {
-        flexDirection: 'row',
-        // justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-    },
-    indefiniteItemText: {
-        fontSize: 13,
-        color: "#172434",
-        marginLeft: 28,
-    }
 })
 

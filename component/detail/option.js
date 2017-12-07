@@ -15,11 +15,11 @@ export default class Option extends React.Component {
 
     static propTypes = {
         option_Text: PropTypes.string,
-        select: PropTypes.func,      
+        select: PropTypes.func,
         selection: PropTypes.string,
         isSelected: PropTypes.bool,
-        answer: PropTypes.string,
-        selectedOption: PropTypes.string,
+        detail: PropTypes.object,
+        selectedOption: PropTypes.array,
     }
 
     constructor(props) {
@@ -33,43 +33,57 @@ export default class Option extends React.Component {
 
     _afterSelectText() {
 
-        const { isSelected, selection, answer } = this.props
+        const { isSelected, selection, detail } = this.props
 
-        ///  选择正确
-        if (isSelected && selection == answer) {
-            return {color: "#8FDA3C"}
+        /// 多选题
+        if (detail.subject == "不定项") {
+
+            
+
+            if (isSelected) {
+                return { color: "#D8D8D8" }
+            }
+
+        } else {
+
+            ///  选择正确
+            if (isSelected && selection == detail.answer) {
+                return { color: "#8FDA3C" }
+            }
+
+            /// 选择错误
+            if (isSelected && selection != detail.answer) {
+                return { color: "#FF5B29" }
+            }
         }
 
-        /// 选择错误
-        if (isSelected && selection != answer) {
-            return {color: "#FF5B29"}
-        }
+
 
         return null
     }
 
     _selectIcon() {
-        const { isSelected, selection, answer } = this.props
+        const { isSelected, selection, detail } = this.props
 
         ///  选择正确
-        if (isSelected && selection == answer) {
+        if (isSelected && selection == detail.answer) {
 
             switch (selection) {
                 case 'A': return require("../../Images/Option_A_Selected_Right.png")
                 case 'B': return require("../../Images/Option_B_Selected_Right.png")
                 case 'C': return require("../../Images/Option_C_Selected_Right.png")
-                case 'D': return require("../../Images/Option_D_Selected_Right.png")                
+                case 'D': return require("../../Images/Option_D_Selected_Right.png")
             }
         }
 
         /// 选择错误
-        if (isSelected && selection != answer) {
+        if (isSelected && selection != detail.answer) {
 
             switch (selection) {
                 case 'A': return require("../../Images/Option_A_Selected_Error.png")
                 case 'B': return require("../../Images/Option_B_Selected_Error.png")
                 case 'C': return require("../../Images/Option_C_Selected_Error.png")
-                case 'D': return require("../../Images/Option_D_Selected_Error.png")                
+                case 'D': return require("../../Images/Option_D_Selected_Error.png")
             }
         }
         return null
@@ -78,7 +92,7 @@ export default class Option extends React.Component {
     _afterSelectBackgroundView() {
 
         const that = this
-        
+
         if (that.props.isSelected && that.props.selection == that.props.answer) {
             return styles.background
         }
@@ -91,13 +105,13 @@ export default class Option extends React.Component {
             case 'A': return require("../../Images/Option_A.png")
             case 'B': return require("../../Images/Option_B.png")
             case 'C': return require("../../Images/Option_C.png")
-            case 'D': return require("../../Images/Option_D.png")                
+            case 'D': return require("../../Images/Option_D.png")
         }
         return null
     }
 
     _renderOptionView(str) {
-        
+
         const { selection, isSelected, selectedOption } = this.props
 
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
@@ -106,51 +120,51 @@ export default class Option extends React.Component {
 
         let re = /.\/(.*)files/g;
         let results = re.exec(filterStr);
-        let img="";
-        if(results) {
-            img = results[0].replace("./", "")     
+        let img = "";
+        if (results) {
+            img = results[0].replace("./", "")
             filterStr = filterStr.replace(img, key[img])
         }
 
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
         let splits = filterStr.split(imageTagRegex)
-        if (selection == selectedOption) {
+        if (selectedOption.include(selection) == true) {
             return (
                 <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
-                <Image
-                    style={styles.icon}
-                    source={this._selectIcon()}
-                />
-                <View style={styles.detailOptionView}>
-                    {
-                        splits.map ((content, index) => {
-                            if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                const url = content.replace("./", "http://www.samso.cn/images/")
-                                let expr = /\/(.*)_(.*)x(.*)_/;
-                                let size = url.match(expr)
-                                const scale = 0.3
-                                let width = size[2] * scale
-                                let height = size[3] * scale
+                    <Image
+                        style={styles.icon}
+                        source={this._selectIcon()}
+                    />
+                    <View style={styles.detailOptionView}>
+                        {
+                            splits.map((content, index) => {
+                                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                                    const url = content.replace("./", "http://www.samso.cn/images/")
+                                    let expr = /\/(.*)_(.*)x(.*)_/;
+                                    let size = url.match(expr)
+                                    const scale = 0.3
+                                    let width = size[2] * scale
+                                    let height = size[3] * scale
 
-                                if (size[1].search("formula")) {
-                                    width = size[2] * (23 / size[3])                                    
-                                    height = 23
+                                    if (size[1].search("formula")) {
+                                        width = size[2] * (23 / size[3])
+                                        height = 23
+                                    }
+
+                                    return (
+                                        <Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />
+                                    )
+                                } else {
+                                    return (
+                                        <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
+                                    )
                                 }
-                                
-                                return (
-                                    <Image key={index} style={[styles.optionImage, {width: width, height: height}]} resizeMode={'contain'}  source={{uri: url}} />
-                                )
-                            } else {
-                                return (
-                                    <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
-                                )
-                            }
-                        })
-                    }
+                            })
+                        }
+                    </View>
                 </View>
-            </View>
             );
-            
+
         } else {
 
             return (
@@ -161,7 +175,7 @@ export default class Option extends React.Component {
                     />
                     <View style={styles.detailOptionView}>
                         {
-                            splits.map ((content, index) => {
+                            splits.map((content, index) => {
                                 if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                                     const url = content.replace("./", "http://www.samso.cn/images/")
                                     let expr = /\/(.*)_(.*)x(.*)_/;
@@ -171,12 +185,12 @@ export default class Option extends React.Component {
                                     let height = size[3] * scale
 
                                     if (size[1].search("formula")) {
-                                        width = size[2] * (23 / size[3])                                    
+                                        width = size[2] * (23 / size[3])
                                         height = 23
                                     }
-                                    
+
                                     return (
-                                        <Image key={index} style={[styles.optionImage, {width: width, height: height}]} resizeMode={'contain'}  source={{uri: url}} />
+                                        <Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />
                                     )
                                 } else {
                                     return (
@@ -197,7 +211,7 @@ export default class Option extends React.Component {
             <TouchableOpacity disabled={isSelected} onPress={() =>
                 this._select(selection)
             }>
-                { this._renderOptionView(option_Text) }
+                {this._renderOptionView(option_Text)}
             </TouchableOpacity>
         );
     }
@@ -214,6 +228,8 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        paddingLeft: 19,
+        paddingRight: 29,
     },
     detailOptionView: {
         flex: 1,
@@ -224,13 +240,13 @@ var styles = StyleSheet.create({
     detailOptionText: {
         marginTop: 12,
         lineHeight: 20,
-        fontSize: 18, 
+        fontSize: 18,
         color: "#172434",
     },
     background: {
         backgroundColor: "#D8D8D8"
     },
-    optionImage: {  
+    optionImage: {
         marginTop: 10,
     },
 })

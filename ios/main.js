@@ -127,7 +127,10 @@ const Messi = StackNavigator({
         screen: Detail
     },
     Register: {
-        screen: Register
+        screen: Register,
+        navigationOptions: TabOptions({
+            title: '注册'
+        })
     },
     LoginPage: {
         screen: LoginPage,
@@ -167,18 +170,33 @@ const Messi = StackNavigator({
     },
     FPStepOne: {
         screen: FPStepOne,
+        navigationOptions: TabOptions({
+            title: '忘记密码'
+        })
     },
     FPStepTwo: {
         screen: FPStepTwo,
+        navigationOptions: TabOptions({
+            title: '忘记密码'
+        })
     },
     FPStepThree: {
         screen: FPStepThree,
+        navigationOptions: TabOptions({
+            title: '忘记密码'
+        })
     },
     PayPage: {
         screen: PayPage,
     },
     TopicsDeail: {
         screen: TopicsDeail
+    },
+    SoftwareAgreement: {
+        screen: SoftwareAgreement,
+        navigationOptions: TabOptions({
+            title: '软件协议'
+        })
     },
     Feedback: {
         screen: Feedback,
