@@ -121,7 +121,7 @@ export default class Detail extends Component {
         const { subject } = this.state.detail.questionPaper
         if (subject == "不定项") {
 
-
+            
 
         } else {
 
@@ -140,7 +140,6 @@ export default class Detail extends Component {
             })
             that.props.navigation.setParams({ showNextQuestion: 'visible' });
         }
-
     }
 
     _addSelect() {

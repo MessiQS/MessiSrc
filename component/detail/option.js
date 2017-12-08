@@ -36,9 +36,7 @@ export default class Option extends React.Component {
         const { isSelected, selection, detail } = this.props
 
         /// 多选题
-        if (detail.subject == "不定项") {
-
-            
+        if (detail.subject == "不定项") {            
 
             if (isSelected) {
                 return { color: "#D8D8D8" }
@@ -56,8 +54,6 @@ export default class Option extends React.Component {
                 return { color: "#FF5B29" }
             }
         }
-
-
 
         return null
     }
@@ -128,7 +124,7 @@ export default class Option extends React.Component {
 
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
         let splits = filterStr.split(imageTagRegex)
-        if (selectedOption.include(selection) == true) {
+        if (selectedOption.includes(selection) == true) {
             return (
                 <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
                     <Image

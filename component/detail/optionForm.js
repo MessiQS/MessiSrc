@@ -72,21 +72,21 @@ export default class OptionForm extends React.Component {
         const { isSelected, selectedOption, answer, detail } = this.props
 
         if (detail.subject == "单选题") {
-/// 选择正确
-if (isSelected && selectedOption.includes(detail.answer) == true) {
-    return (
-        <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{this.state.answerTitle}</Text>
-    )
-}
+            /// 选择正确
+            if (isSelected && selectedOption.includes(detail.answer) == true) {
+                return (
+                    <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{this.state.answerTitle}</Text>
+                )
+            }
 
-/// 选择错误
-if (isSelected && selectedOption.includes(detail.answer) == false) {
-    return (
-        <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{this.state.answerTitle}</Text>
-    )
-}
+            /// 选择错误
+            if (isSelected && selectedOption.includes(detail.answer) == false) {
+                return (
+                    <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{this.state.answerTitle}</Text>
+                )
+            }
         }
-        
+
         if (detail.subject == "不定项") {
             return (
                 <View style={styles.indefiniteItem}>
