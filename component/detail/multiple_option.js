@@ -16,81 +16,53 @@ export default class MultipleOption extends React.Component {
     static propTypes = {
         option_Text: PropTypes.string,
         selection: PropTypes.string,    /// 当前选项
-        addSelect: PropTypes.func,
-        deselect: PropTypes.func,
+        multipleSelect: PropTypes.func,
         isSelected: PropTypes.bool,
         detail: PropTypes.object,
-        selectedOption: PropTypes.array,
+        status: PropTypes.string
     }
 
     constructor(props) {
         super(props)
-
     }
 
     _select(option) {
 
-        if (this.props.selectedOption.includes(option)) {
-            this.props.deselect(option)
-        } else {
-            this.props.addSelect(option)
-        }
-    }
-
-    _afterSelectText() {
-
-        const { isSelected, selection, detail, selectedOption } = this.props
-        const answers = detail.answer.split(',')
-
-        ///  选择正确
-        if (isSelected && answers.includes(selection) == true) {
-            return { color: "#8FDA3C" }
-        }
-
-        if (selectedOption.includes(selection)) {    
-
-            /// 选择错误
-            if (isSelected && answers.includes(selection) == false) {
-                return { color: "#FF5B29" }
-            }
-        }
-
-        return null
+        this.props.multipleSelect(option)
     }
 
     _selectIcon() {
-        const { isSelected, selection, detail, selectedOption } = this.props
-        let answers = detail.answer.split(",")
-        const compareSO = selectedOption.sort().toString()
-        const compareAns = answers.sort().toString()
-        ///  选择正确
-        if (isSelected && compareSO == compareAns) {
 
+        const { status, selection } = this.props
+        if (status == "normal") {
+            return this._selectDefalutIcon(selection)
+        }
+        if (status == "selected") {
+            return this._selectDefalutIcon(selection)
+        }
+        if (status == "right") {
             return this._selectIconRight(selection)
         }
-
-        if (selectedOption.includes(selection)) {
-
-            /// 选择错误
-            if (isSelected && compareSO != compareAns) {
-
-                return this._selectIconError(selection)
-            }
+        if (status == "error") {
+            return this._selectIconError(selection)
         }
-
-        return this._selectDefalutIcon(selection)
+        return null        
     }
 
     _afterSelectBackgroundView() {
-        const { isSelected, selection, detail, selectedOption } = this.props
-        const answers = detail.answer.split(',')
 
-        if (isSelected && answers.includes(selection) == true) {
+        const { status, selection } = this.props
+        if (status == "normal") {
+            return null
+        }
+        if (status == "selected") {
             return styles.background
         }
-
-        if (isSelected == false && selectedOption.includes(selection) == true) {
+        if (status == "right") {
             return styles.background
+        }
+        if (status == "error") {
+            return null
         }
         return null
     }
@@ -128,7 +100,7 @@ export default class MultipleOption extends React.Component {
 
     _renderOptionView(str) {
 
-        const { selection, isSelected, selectedOption, detail } = this.props
+        const { detail } = this.props
         const answers = detail.answer.split(',')
 
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
@@ -159,7 +131,7 @@ export default class MultipleOption extends React.Component {
                                 this._renderImage(content)
                             } else {
                                 return (
-                                    <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
+                                    <Text key={index} style={styles.detailOptionText}>{content}</Text>
                                 )
                             }
                         })

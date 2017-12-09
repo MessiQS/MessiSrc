@@ -9,6 +9,7 @@ import {
     ScrollView
 } from 'react-native';
 
+
 export default class MultipleOptionForm extends React.Component {
 
     static propTypes = {
@@ -17,23 +18,18 @@ export default class MultipleOptionForm extends React.Component {
         selectedOption: PropTypes.array,
         addSelect: PropTypes.func,
         doneSelect: PropTypes.func,
-        deselect: PropTypes.func
+        A_Status: PropTypes.string,
+        B_Status: PropTypes.string,
+        C_Status: PropTypes.string,
+        D_Status: PropTypes.string,
     }
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            answerTitle: null,
-        }
     }
 
-    _addSelect(option) {
-        this.props.addSelect(option)
-    }
-
-    _deselect(option) {
-        this.props.deselect(option)
+    _multipleSelect(option) {
+        this.props.multipleSelect(option)
     }
 
     _doneSelect() {
@@ -51,7 +47,7 @@ export default class MultipleOptionForm extends React.Component {
 
     _showTitle() {
 
-        const { isSelected, selectedOption, answer, detail } = this.props
+        const { isSelected, selectedOption, detail } = this.props
 
         if (isSelected) {
 
@@ -68,7 +64,6 @@ export default class MultipleOptionForm extends React.Component {
                     <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{"答案错误！"}</Text>
                 )
             }
-
             return null
 
         } else {
@@ -90,7 +85,7 @@ export default class MultipleOptionForm extends React.Component {
     }
 
     render() {
-        const { detail, selectedOption, isSelected } = this.props;
+        const { detail, isSelected, A_Status, B_Status, C_Status, D_Status } = this.props;
 
         return (
             <View style={styles.content}>
@@ -98,36 +93,32 @@ export default class MultipleOptionForm extends React.Component {
                     {this._showTitle()}
                 </View>
                 <MultipleOption option_Text={this._filterTag(detail.option_A)}
-                    addSelect={this._addSelect.bind(this)}
-                    deselect={this._deselect.bind(this)}
+                    multipleSelect={this._multipleSelect.bind(this)}
                     selection={"A"}
                     isSelected={isSelected}
                     detail={detail}
-                    selectedOption={selectedOption}
+                    status={A_Status}
                 />
                 <MultipleOption option_Text={this._filterTag(detail.option_B)}
-                    addSelect={this._addSelect.bind(this)}
-                    deselect={this._deselect.bind(this)}
+                    multipleSelect={this._multipleSelect.bind(this)}
                     selection={"B"}
                     isSelected={isSelected}
                     detail={detail}
-                    selectedOption={selectedOption}
+                    status={B_Status}
                 />
                 <MultipleOption option_Text={this._filterTag(detail.option_C)}
-                    addSelect={this._addSelect.bind(this)}
-                    deselect={this._deselect.bind(this)}
+                    multipleSelect={this._multipleSelect.bind(this)}
                     selection={"C"}
                     isSelected={isSelected}
                     detail={detail}
-                    selectedOption={selectedOption}
+                    status={C_Status}
                 />
                 <MultipleOption option_Text={this._filterTag(detail.option_D)}
-                    addSelect={this._addSelect.bind(this)}
-                    deselect={this._deselect.bind(this)}
+                    multipleSelect={this._multipleSelect.bind(this)}
                     selection={"D"}
                     isSelected={isSelected}
                     detail={detail}
-                    selectedOption={selectedOption}
+                    status={D_Status}
                 />
             </View>
         );

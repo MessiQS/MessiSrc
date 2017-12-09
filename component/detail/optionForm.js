@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native';
+import key from "../../service/path"
 
 export default class OptionForm extends React.Component {
 
@@ -16,6 +17,10 @@ export default class OptionForm extends React.Component {
         select: PropTypes.func,
         isSelected: PropTypes.bool,
         selectedOption: PropTypes.array,
+        A_Status: PropTypes.string,
+        B_Status: PropTypes.string,
+        C_Status: PropTypes.string,
+        D_Status: PropTypes.string,
     }
 
     constructor(props) {
@@ -33,12 +38,20 @@ export default class OptionForm extends React.Component {
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
 
+        let re = /.\/(.*)files/g;
+        let results = re.exec(filterStr);
+        let img = "";
+        if (results) {
+            img = results[0].replace("./", "")
+            filterStr = filterStr.replace(img, key[img])
+        }
+
         return filterStr
     }
 
     _showTitle() {
 
-        const { isSelected, selectedOption, answer, detail } = this.props
+        const { isSelected, selectedOption, detail } = this.props
 
         /// 选择正确
         if (isSelected && selectedOption.includes(detail.answer) == true) {
@@ -58,7 +71,7 @@ export default class OptionForm extends React.Component {
     }
 
     render() {
-        const { detail, selectedOption, isSelected } = this.props;
+        const { detail, isSelected, A_Status, B_Status, C_Status, D_Status } = this.props;
 
         return (
             <View style={styles.content}>
@@ -69,29 +82,25 @@ export default class OptionForm extends React.Component {
                     select={this._select.bind(this)}
                     selection={"A"}
                     isSelected={isSelected}
-                    detail={detail}
-                    selectedOption={selectedOption}
+                    status={A_Status}
                 />
                 <Option option_Text={this._filterTag(detail.option_B)}
                     select={this._select.bind(this)}
                     selection={"B"}
                     isSelected={isSelected}
-                    detail={detail}
-                    selectedOption={selectedOption}
+                    status={B_Status}
                 />
                 <Option option_Text={this._filterTag(detail.option_C)}
                     select={this._select.bind(this)}
                     selection={"C"}
                     isSelected={isSelected}
-                    detail={detail}
-                    selectedOption={selectedOption}
+                    status={C_Status}
                 />
                 <Option option_Text={this._filterTag(detail.option_D)}
                     select={this._select.bind(this)}
                     selection={"D"}
                     isSelected={isSelected}
-                    detail={detail}
-                    selectedOption={selectedOption}
+                    status={D_Status}
                 />
             </View>
         );

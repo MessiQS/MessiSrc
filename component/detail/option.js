@@ -7,7 +7,6 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
-import key from "../../service/path"
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
@@ -18,8 +17,7 @@ export default class Option extends React.Component {
         select: PropTypes.func,
         selection: PropTypes.string,
         isSelected: PropTypes.bool,
-        detail: PropTypes.object,
-        selectedOption: PropTypes.array,
+        status: PropTypes.string
     }
 
     constructor(props) {
@@ -33,49 +31,52 @@ export default class Option extends React.Component {
 
     _afterSelectText() {
 
-        const { isSelected, selection, detail, selectedOption } = this.props
-        if (selectedOption.includes(selection)) {
-            ///  选择正确
-            if (isSelected && selection == detail.answer) {
-                return { color: "#8FDA3C" }
-            }
-
-            /// 选择错误
-            if (isSelected && selection != detail.answer) {
-                return { color: "#FF5B29" }
-            }
+        const { status, selection } = this.props
+        if (status == "normal") {
         }
-
-        return null
+        if (status == "selected") {
+        }
+        if (status == "right") {
+            return { color: "#8FDA3C" }
+        }
+        if (status == "error") {
+            return { color: "#FF5B29" }
+        }
+        return null  
     }
 
     _selectIcon() {
-        const { isSelected, selection, detail, selectedOption } = this.props
 
-        if (selectedOption.includes(selection)) {
-
-            ///  选择正确
-            if (isSelected && selection == detail.answer) {
-
-                return this._selectIconRight(selection)
-            }
-
-            /// 选择错误
-            if (isSelected && selection != detail.answer) {
-
-                return this._selectIconError(selection)
-            }
+        const { status, selection } = this.props
+        if (status == "normal") {
+            return this._selectDefalutIcon(selection)
         }
-
-        return this._selectDefalutIcon(selection)
+        if (status == "selected") {
+            return this._selectDefalutIcon(selection)
+        }
+        if (status == "right") {
+            return this._selectIconRight(selection)
+        }
+        if (status == "error") {
+            return this._selectIconError(selection)
+        }
+        return null        
     }
 
     _afterSelectBackgroundView() {
 
-        const that = this
-
-        if (that.props.isSelected && that.props.selection == that.props.answer) {
+        const { status, selection } = this.props
+        if (status == "normal") {
+            return null
+        }
+        if (status == "selected") {
             return styles.background
+        }
+        if (status == "right") {
+            return styles.background
+        }
+        if (status == "error") {
+            return null
         }
         return null
     }
@@ -112,22 +113,10 @@ export default class Option extends React.Component {
     }
     _renderOptionView(str) {
 
-        const { selection, isSelected, selectedOption } = this.props
-
-        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
-        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
-        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-
-        let re = /.\/(.*)files/g;
-        let results = re.exec(filterStr);
-        let img = "";
-        if (results) {
-            img = results[0].replace("./", "")
-            filterStr = filterStr.replace(img, key[img])
-        }
+        const { selection, isSelected } = this.props
 
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
-        let splits = filterStr.split(imageTagRegex)
+        let splits = str.split(imageTagRegex)
 
         return (
             <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >

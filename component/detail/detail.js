@@ -24,6 +24,14 @@ import key from "../../service/path"
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
+const ItemStatus = {
+    NORMAL: 'normal',
+    SELECTED: 'selected',
+    RIGHT: 'right',
+    ERROR: 'error',
+}
+
+
 export default class Detail extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -67,7 +75,6 @@ export default class Detail extends Component {
                 </TouchableOpacity>
             ) : navigation.state.params.headerLeft
         ),
-
     });
 
     componentWillMount() {
@@ -88,6 +95,10 @@ export default class Detail extends Component {
             detail: this.memoryModel,
             isSelected: false,
             selectedOption: [],
+            A_Status: ItemStatus.NORMAL,
+            B_Status: ItemStatus.NORMAL,
+            C_Status: ItemStatus.NORMAL,
+            D_Status: ItemStatus.NORMAL,
         }
 
         console.log(this.memoryModel.questionPaper.category)
@@ -103,7 +114,11 @@ export default class Detail extends Component {
         that.setState({
             detail: that.memoryModel,
             isSelected: false,
-            selectedOption: []
+            selectedOption: [],
+            A_Status: ItemStatus.NORMAL,
+            B_Status: ItemStatus.NORMAL,
+            C_Status: ItemStatus.NORMAL,
+            D_Status: ItemStatus.NORMAL,
         })
         that.props.navigation.setParams({
             headerTitle: that.memoryModel.questionPaper.category,
@@ -120,35 +135,95 @@ export default class Detail extends Component {
     _select(option) {
 
         let score = 0
+        let itemStatus = ItemStatus.NORMAL
         if (option == this.memoryModel.questionPaper.answer) {
             score = 7 - this.memoryModel.appearedSeveralTime
-            score = Math.max(1, score)            
-        } 
+            score = Math.max(1, score)
+            itemStatus = ItemStatus.RIGHT
+        } else {
+            itemStatus = ItemStatus.ERROR
+        }
 
         realm.write(() => {
             this.memoryModel.weighting = this.memoryModel.weighting + score
             this.memoryModel.appearedSeveralTime += 1
             this.memoryModel.lastBySelectedTime = Date.parse(new Date())
         });
-        this.setState({
-            isSelected: true,
-            selectedOption: [option],
-        })
+   
+        if (option == "A") {
+            this.setState({
+                isSelected: true,
+                selectedOption: [option],
+                A_Status: itemStatus
+            })
+        }
+        if (option == "B") {
+            this.setState({
+                isSelected: true,
+                selectedOption: [option],
+                B_Status: itemStatus
+            })
+        }
+        if (option == "C") {
+            this.setState({
+                isSelected: true,
+                selectedOption: [option],
+                C_Status: itemStatus
+            })
+        }
+        if (option == "D") {
+            this.setState({
+                isSelected: true,
+                selectedOption: [option],
+                D_Status: itemStatus
+            })
+        }
     }
-    
+
     /**
      * 多选题，添加答案
      * 
      * @param {any} option 
      * @memberof Detail
      */
-    _addSelect(option) {
-        console.log("_addSelect", option)
+    _multipleSelect(option) {
+
         const array = this.state.selectedOption
-        array.push(option)
-        this.setState({
-            selectedOption: array,
-        })
+        
+        let itemStatus = null
+
+        if (this.state.selectedOption.includes(option)) {
+            array.splice(array, 1)
+            itemStatus = ItemStatus.NORMAL
+        } else {
+            array.push(option)
+            itemStatus = ItemStatus.SELECTED            
+        }
+
+        if (option == "A") {
+            this.setState({
+                selectedOption: array,
+                A_Status: itemStatus
+            })
+        }
+        if (option == "B") {
+            this.setState({
+                selectedOption: array,
+                B_Status: itemStatus
+            })
+        }
+        if (option == "C") {
+            this.setState({
+                selectedOption: array,
+                C_Status: itemStatus
+            })
+        }
+        if (option == "D") {
+            this.setState({
+                selectedOption: array,
+                D_Status: itemStatus
+            })
+        }
     }
 
     /**
@@ -157,6 +232,10 @@ export default class Detail extends Component {
      * @memberof Detail
      */
     _doneSelect() {
+
+        if (this.state.selectedOption.length == 0) {
+            return null
+        }
 
         let score = 7 - this.memoryModel.appearedSeveralTime
         score = Math.max(1, score)
@@ -167,25 +246,6 @@ export default class Detail extends Component {
         });
         this.setState({
             isSelected: true,
-        })
-    }
-
-    /**
-     * 取消勾选答案
-     * 
-     * @param {any} option 
-     * @memberof Detail
-     */
-    _deselecte(option) {
-        console.log("_addSelect", option)
-        const array = this.state.selectedOption
-
-        if (array.includes(option)) {
-            array.splice(array, 1)
-        }
-
-        this.setState({
-            selectedOption: array,
         })
     }
 
@@ -221,7 +281,6 @@ export default class Detail extends Component {
             img = results[0].replace("./", "")
             filterStr = filterStr.replace(img, key[img])
         }
-
         var re2 = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
         let splits = filterStr.split(re2)
 
@@ -264,23 +323,30 @@ export default class Detail extends Component {
         if (detail.questionPaper.subject == "不定项") {
 
             return (
-                <MultipleOptionForm 
-                detail={detail.questionPaper}
-                isSelected={isSelected}
-                selectedOption={selectedOption}
-                addSelect={this._addSelect.bind(this)}
-                deselecte={this._deselecte.bind(this)}
-                doneSelect={this._doneSelect.bind(this)} />
+                <MultipleOptionForm
+                    detail={detail.questionPaper}
+                    isSelected={isSelected}
+                    selectedOption={selectedOption}
+                    multipleSelect={this._multipleSelect.bind(this)}
+                    doneSelect={this._doneSelect.bind(this)}
+                    A_Status={this.state.A_Status}
+                    B_Status={this.state.B_Status}
+                    C_Status={this.state.C_Status}
+                    D_Status={this.state.D_Status} />
             )
 
         } else {
 
             return (
                 <OptionForm
-                detail={detail.questionPaper}
-                isSelected={isSelected}
-                selectedOption={selectedOption}
-                select={this._select.bind(this)}/>
+                    detail={detail.questionPaper}
+                    isSelected={isSelected}
+                    selectedOption={selectedOption}
+                    select={this._select.bind(this)} 
+                    A_Status={this.state.A_Status}
+                    B_Status={this.state.B_Status}
+                    C_Status={this.state.C_Status}
+                    D_Status={this.state.D_Status} />
             )
         }
     }
