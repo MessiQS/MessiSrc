@@ -17,6 +17,7 @@ import {
 import realmManager from "../Realm/realmManager";
 import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
+import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
 import key from "../../service/path"
 
@@ -118,36 +119,75 @@ export default class Detail extends Component {
 
     _select(option) {
 
-        const { subject } = this.state.detail.questionPaper
-        if (subject == "不定项") {
-
-            
-
-        } else {
-
-            const that = this
-
-            let score = 7 - that.memoryModel.appearedSeveralTime
-            score = Math.max(1, score)
-            realm.write(() => {
-                that.memoryModel.weighting = that.memoryModel.weighting + score
-                that.memoryModel.appearedSeveralTime += 1
-                that.memoryModel.lastBySelectedTime = Date.parse(new Date())
-            });
-            that.setState({
-                isSelected: true,
-                selectedOption: [option],
-            })
-            that.props.navigation.setParams({ showNextQuestion: 'visible' });
-        }
+        let score = 0
+        if (option == this.memoryModel.questionPaper.answer) {
+            score = 7 - this.memoryModel.appearedSeveralTime
+            score = Math.max(1, score)            
+        } 
+        
+        realm.write(() => {
+            this.memoryModel.weighting = this.memoryModel.weighting + score
+            this.memoryModel.appearedSeveralTime += 1
+            this.memoryModel.lastBySelectedTime = Date.parse(new Date())
+        });
+        this.setState({
+            isSelected: true,
+            selectedOption: [option],
+        })
+    }
+    
+    /**
+     * 多选题，添加答案
+     * 
+     * @param {any} option 
+     * @memberof Detail
+     */
+    _addSelect(option) {
+        console.log("_addSelect", option)
+        const array = this.state.selectedOption
+        array.push(option)
+        this.setState({
+            selectedOption: array,
+        })
     }
 
-    _addSelect() {
-
-    }
-
+    /**
+     * 多选题确认按钮
+     * 
+     * @memberof Detail
+     */
     _doneSelect() {
 
+        let score = 7 - this.memoryModel.appearedSeveralTime
+        score = Math.max(1, score)
+        realm.write(() => {
+            this.memoryModel.weighting = this.memoryModel.weighting + score
+            this.memoryModel.appearedSeveralTime += 1
+            this.memoryModel.lastBySelectedTime = Date.parse(new Date())
+        });
+        this.setState({
+            isSelected: true,
+            isSelected: true
+        })
+    }
+
+    /**
+     * 取消勾选答案
+     * 
+     * @param {any} option 
+     * @memberof Detail
+     */
+    _deselecte(option) {
+        console.log("_addSelect", option)
+        const array = this.state.selectedOption
+
+        if (array.includes(option)) {
+            array.splice(array, 1)
+        }
+
+        this.setState({
+            selectedOption: array,
+        })
     }
 
     _renderAnalysis() {
@@ -219,6 +259,33 @@ export default class Detail extends Component {
         }
     }
 
+    _renderOptionForm() {
+        const { detail, isSelected, selectedOption } = this.state
+
+        if (detail.questionPaper.subject == "不定项") {
+
+            return (
+                <MultipleOptionForm 
+                detail={detail.questionPaper}
+                isSelected={isSelected}
+                selectedOption={selectedOption}
+                addSelect={this._addSelect.bind(this)}
+                deselecte={this._deselecte.bind(this)}
+                doneSelect={this._doneSelect.bind(this)} />
+            )
+
+        } else {
+
+            return (
+                <OptionForm
+                detail={detail.questionPaper}
+                isSelected={isSelected}
+                selectedOption={selectedOption}
+                select={this._select.bind(this)}/>
+            )
+        }
+    }
+
     render() {
 
         const { detail } = this.state
@@ -242,12 +309,7 @@ export default class Detail extends Component {
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
                     {this._renderQuestion2(str1)}
-                    <OptionForm
-                        detail={this.state.detail.questionPaper}
-                        select={this._select.bind(this)}
-                        isSelected={this.state.isSelected}
-                        selectedOption={this.state.selectedOption}
-                    />
+                    {this._renderOptionForm()}
                     {this._renderAnalysis()}
                 </ScrollView>
             </View>

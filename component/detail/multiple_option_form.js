@@ -1,5 +1,5 @@
 import React from 'react';
-import Option from "./option";
+import MultipleOption from "./multiple_option";
 import PropTypes from 'prop-types';
 import {
     View,
@@ -9,13 +9,15 @@ import {
     ScrollView
 } from 'react-native';
 
-export default class OptionForm extends React.Component {
+export default class MultipleOptionForm extends React.Component {
 
     static propTypes = {
         detail: PropTypes.object,
-        select: PropTypes.func,
         isSelected: PropTypes.bool,
         selectedOption: PropTypes.array,
+        addSelect: PropTypes.func,
+        doneSelect: PropTypes.func,
+        deselect: PropTypes.func
     }
 
     constructor(props) {
@@ -26,19 +28,16 @@ export default class OptionForm extends React.Component {
         }
     }
 
-    _select(option) {
+    _addSelect(option) {
+        this.props.addSelect(option)
+    }
 
-        let answerTitle
+    _deselect(option) {
+        this.props.deselect(option)
+    }
 
-        if (option == this.props.detail.answer) {
-            answerTitle = "回答正确！"
-        } else {
-            answerTitle = "回答错误！"
-        }
-        this.setState({
-            answerTitle: answerTitle,
-        })
-        this.props.select(option)
+    _doneSelect() {
+        this.props.doneSelect()
     }
 
     _filterTag(str) {
@@ -54,19 +53,19 @@ export default class OptionForm extends React.Component {
 
         const { isSelected, selectedOption, answer, detail } = this.props
 
-        /// 选择正确
-        if (isSelected && selectedOption.includes(detail.answer) == true) {
-            return (
-                <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{this.state.answerTitle}</Text>
-            )
-        }
-
-        /// 选择错误
-        if (isSelected && selectedOption.includes(detail.answer) == false) {
-            return (
-                <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{this.state.answerTitle}</Text>
-            )
-        }
+        return (
+            <View style={styles.indefiniteItem}>
+                <Text style={styles.indefiniteItemText}>请你选择多个答案</Text>
+                <ScrollView></ScrollView>
+                <TouchableOpacity onPress={() => {
+                    this._doneSelect()
+                }}>
+                    <View style={styles.doneView}>
+                        <Text style={styles.doneText}>确定选择</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
     }
 
     render() {
@@ -77,29 +76,33 @@ export default class OptionForm extends React.Component {
                 <View style={styles.answerTitleView}>
                     {this._showTitle()}
                 </View>
-                <Option option_Text={this._filterTag(detail.option_A)}
-                    select={this._select.bind(this)}
+                <MultipleOption option_Text={this._filterTag(detail.option_A)}
+                    addSelect={this._addSelect.bind(this)}
+                    deselect={this._deselect.bind(this)}
                     selection={"A"}
                     isSelected={isSelected}
                     detail={detail}
                     selectedOption={selectedOption}
                 />
-                <Option option_Text={this._filterTag(detail.option_B)}
-                    select={this._select.bind(this)}
+                <MultipleOption option_Text={this._filterTag(detail.option_B)}
+                    addSelect={this._addSelect.bind(this)}
+                    deselect={this._deselect.bind(this)}
                     selection={"B"}
                     isSelected={isSelected}
                     detail={detail}
                     selectedOption={selectedOption}
                 />
-                <Option option_Text={this._filterTag(detail.option_C)}
-                    select={this._select.bind(this)}
+                <MultipleOption option_Text={this._filterTag(detail.option_C)}
+                    addSelect={this._addSelect.bind(this)}
+                    deselect={this._deselect.bind(this)}
                     selection={"C"}
                     isSelected={isSelected}
                     detail={detail}
                     selectedOption={selectedOption}
                 />
-                <Option option_Text={this._filterTag(detail.option_D)}
-                    select={this._select.bind(this)}
+                <MultipleOption option_Text={this._filterTag(detail.option_D)}
+                    addSelect={this._addSelect.bind(this)}
+                    deselect={this._deselect.bind(this)}
                     selection={"D"}
                     isSelected={isSelected}
                     detail={detail}
