@@ -124,7 +124,7 @@ export default class Detail extends Component {
             score = 7 - this.memoryModel.appearedSeveralTime
             score = Math.max(1, score)            
         } 
-        
+
         realm.write(() => {
             this.memoryModel.weighting = this.memoryModel.weighting + score
             this.memoryModel.appearedSeveralTime += 1
@@ -167,7 +167,6 @@ export default class Detail extends Component {
         });
         this.setState({
             isSelected: true,
-            isSelected: true
         })
     }
 

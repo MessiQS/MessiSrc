@@ -33,45 +33,41 @@ export default class Option extends React.Component {
 
     _afterSelectText() {
 
-        const { isSelected, selection, detail } = this.props
+        const { isSelected, selection, detail, selectedOption } = this.props
+        if (selectedOption.includes(selection)) {
+            ///  选择正确
+            if (isSelected && selection == detail.answer) {
+                return { color: "#8FDA3C" }
+            }
 
-        ///  选择正确
-        if (isSelected && selection == detail.answer) {
-            return { color: "#8FDA3C" }
+            /// 选择错误
+            if (isSelected && selection != detail.answer) {
+                return { color: "#FF5B29" }
+            }
         }
 
-        /// 选择错误
-        if (isSelected && selection != detail.answer) {
-            return { color: "#FF5B29" }
-        }
         return null
     }
 
     _selectIcon() {
-        const { isSelected, selection, detail } = this.props
+        const { isSelected, selection, detail, selectedOption } = this.props
 
-        ///  选择正确
-        if (isSelected && selection == detail.answer) {
+        if (selectedOption.includes(selection)) {
 
-            switch (selection) {
-                case 'A': return require("../../Images/Option_A_Selected_Right.png")
-                case 'B': return require("../../Images/Option_B_Selected_Right.png")
-                case 'C': return require("../../Images/Option_C_Selected_Right.png")
-                case 'D': return require("../../Images/Option_D_Selected_Right.png")
+            ///  选择正确
+            if (isSelected && selection == detail.answer) {
+
+                return this._selectIconRight(selection)
+            }
+
+            /// 选择错误
+            if (isSelected && selection != detail.answer) {
+
+                return this._selectIconError(selection)
             }
         }
 
-        /// 选择错误
-        if (isSelected && selection != detail.answer) {
-
-            switch (selection) {
-                case 'A': return require("../../Images/Option_A_Selected_Error.png")
-                case 'B': return require("../../Images/Option_B_Selected_Error.png")
-                case 'C': return require("../../Images/Option_C_Selected_Error.png")
-                case 'D': return require("../../Images/Option_D_Selected_Error.png")
-            }
-        }
-        return null
+        return this._selectDefalutIcon(selection)
     }
 
     _afterSelectBackgroundView() {
@@ -84,6 +80,26 @@ export default class Option extends React.Component {
         return null
     }
 
+    _selectIconRight(selection) {
+
+        switch (selection) {
+            case 'A': return require("../../Images/Option_A_Selected_Right.png")
+            case 'B': return require("../../Images/Option_B_Selected_Right.png")
+            case 'C': return require("../../Images/Option_C_Selected_Right.png")
+            case 'D': return require("../../Images/Option_D_Selected_Right.png")
+        }
+    }
+
+    _selectIconError(selection) {
+
+        switch (selection) {
+            case 'A': return require("../../Images/Option_A_Selected_Error.png")
+            case 'B': return require("../../Images/Option_B_Selected_Error.png")
+            case 'C': return require("../../Images/Option_C_Selected_Error.png")
+            case 'D': return require("../../Images/Option_D_Selected_Error.png")
+        }
+    }
+
     _selectDefalutIcon(selection) {
 
         switch (selection) {
@@ -94,7 +110,6 @@ export default class Option extends React.Component {
         }
         return null
     }
-
     _renderOptionView(str) {
 
         const { selection, isSelected, selectedOption } = this.props
@@ -113,82 +128,42 @@ export default class Option extends React.Component {
 
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
         let splits = filterStr.split(imageTagRegex)
-        
-        if (selectedOption.includes(selection) == true) {
-            return (
-                <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
-                    <Image
-                        style={styles.icon}
-                        source={this._selectIcon()}
-                    />
-                    <View style={styles.detailOptionView}>
-                        {
-                            splits.map((content, index) => {
-                                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                    const url = content.replace("./", "http://www.samso.cn/images/")
-                                    let expr = /\/(.*)_(.*)x(.*)_/;
-                                    let size = url.match(expr)
-                                    const scale = 0.3
-                                    let width = size[2] * scale
-                                    let height = size[3] * scale
 
-                                    if (size[1].search("formula")) {
-                                        width = size[2] * (23 / size[3])
-                                        height = 23
-                                    }
+        return (
+            <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
+                <Image
+                    style={styles.icon}
+                    source={this._selectIcon()}
+                />
+                <View style={styles.detailOptionView}>
+                    {
+                        splits.map((content, index) => {
+                            if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                                const url = content.replace("./", "http://www.samso.cn/images/")
+                                let expr = /\/(.*)_(.*)x(.*)_/;
+                                let size = url.match(expr)
+                                const scale = 0.3
+                                let width = size[2] * scale
+                                let height = size[3] * scale
 
-                                    return (
-                                        <Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />
-                                    )
-                                } else {
-                                    return (
-                                        <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
-                                    )
+                                if (size[1].search("formula")) {
+                                    width = size[2] * (23 / size[3])
+                                    height = 23
                                 }
-                            })
-                        }
-                    </View>
+
+                                return (
+                                    <Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />
+                                )
+                            } else {
+                                return (
+                                    <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
+                                )
+                            }
+                        })
+                    }
                 </View>
-            );
-
-        } else {
-
-            return (
-                <View style={[styles.answerItem]} >
-                    <Image
-                        style={styles.icon}
-                        source={this._selectDefalutIcon(selection)}
-                    />
-                    <View style={styles.detailOptionView}>
-                        {
-                            splits.map((content, index) => {
-                                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                    const url = content.replace("./", "http://www.samso.cn/images/")
-                                    let expr = /\/(.*)_(.*)x(.*)_/;
-                                    let size = url.match(expr)
-                                    const scale = 0.3
-                                    let width = size[2] * scale
-                                    let height = size[3] * scale
-
-                                    if (size[1].search("formula")) {
-                                        width = size[2] * (23 / size[3])
-                                        height = 23
-                                    }
-
-                                    return (
-                                        <Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />
-                                    )
-                                } else {
-                                    return (
-                                        <Text key={index} style={styles.detailOptionText}>{content}</Text>
-                                    )
-                                }
-                            })
-                        }
-                    </View>
-                </View>
-            );
-        }
+            </View>
+        );
     }
 
     render() {

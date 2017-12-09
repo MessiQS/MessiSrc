@@ -20,24 +20,10 @@ export default class OptionForm extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            answerTitle: null,
-        }
     }
 
     _select(option) {
 
-        let answerTitle
-
-        if (option == this.props.detail.answer) {
-            answerTitle = "回答正确！"
-        } else {
-            answerTitle = "回答错误！"
-        }
-        this.setState({
-            answerTitle: answerTitle,
-        })
         this.props.select(option)
     }
 
@@ -57,16 +43,18 @@ export default class OptionForm extends React.Component {
         /// 选择正确
         if (isSelected && selectedOption.includes(detail.answer) == true) {
             return (
-                <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{this.state.answerTitle}</Text>
+                <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{"答案正确！"}</Text>
             )
         }
 
         /// 选择错误
         if (isSelected && selectedOption.includes(detail.answer) == false) {
             return (
-                <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{this.state.answerTitle}</Text>
+                <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{"答案错误！"}</Text>
             )
         }
+
+        return null;
     }
 
     render() {

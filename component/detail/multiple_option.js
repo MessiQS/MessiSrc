@@ -25,6 +25,7 @@ export default class MultipleOption extends React.Component {
 
     constructor(props) {
         super(props)
+
     }
 
     _select(option) {
@@ -38,47 +39,42 @@ export default class MultipleOption extends React.Component {
 
     _afterSelectText() {
 
-        const { isSelected, selection, detail } = this.props
+        const { isSelected, selection, detail, selectedOption } = this.props
         const answers = detail.answer.split(',')
-        console.log("answers", answers)
-        if (isSelected) {
-            ///  选择正确
-            if (answers.includes(selection) == true) {
-                return { color: "#8FDA3C" }
-            }
+
+        ///  选择正确
+        if (isSelected && answers.includes(selection) == true) {
+            return { color: "#8FDA3C" }
+        }
+
+        if (selectedOption.includes(selection)) {    
 
             /// 选择错误
-            if (answers.includes(selection) == false) {
+            if (isSelected && answers.includes(selection) == false) {
                 return { color: "#FF5B29" }
             }
         }
-        
+
         return null
     }
 
     _selectIcon() {
-        const { isSelected, selection, detail } = this.props
+        const { isSelected, selection, detail, selectedOption } = this.props
         let answers = detail.answer.split(",")
-
+        const compareSO = selectedOption.sort().toString()
+        const compareAns = answers.sort().toString()
         ///  选择正确
-        if (isSelected && answers.includes(selection) == true) {
+        if (isSelected && compareSO == compareAns) {
 
-            switch (selection) {
-                case 'A': return require("../../Images/Option_A_Selected_Right.png")
-                case 'B': return require("../../Images/Option_B_Selected_Right.png")
-                case 'C': return require("../../Images/Option_C_Selected_Right.png")
-                case 'D': return require("../../Images/Option_D_Selected_Right.png")
-            }
+            return this._selectIconRight(selection)
         }
 
-        /// 选择错误
-        if (isSelected && answers.includes(selection) == false) {
+        if (selectedOption.includes(selection)) {
 
-            switch (selection) {
-                case 'A': return require("../../Images/Option_A_Selected_Error.png")
-                case 'B': return require("../../Images/Option_B_Selected_Error.png")
-                case 'C': return require("../../Images/Option_C_Selected_Error.png")
-                case 'D': return require("../../Images/Option_D_Selected_Error.png")
+            /// 选择错误
+            if (isSelected && compareSO != compareAns) {
+
+                return this._selectIconError(selection)
             }
         }
 
@@ -86,13 +82,37 @@ export default class MultipleOption extends React.Component {
     }
 
     _afterSelectBackgroundView() {
-        const { isSelected, selection, detail } = this.props
+        const { isSelected, selection, detail, selectedOption } = this.props
         const answers = detail.answer.split(',')
 
         if (isSelected && answers.includes(selection) == true) {
             return styles.background
         }
+
+        if (isSelected == false && selectedOption.includes(selection) == true) {
+            return styles.background
+        }
         return null
+    }
+
+    _selectIconRight(selection) {
+
+        switch (selection) {
+            case 'A': return require("../../Images/Option_A_Selected_Right.png")
+            case 'B': return require("../../Images/Option_B_Selected_Right.png")
+            case 'C': return require("../../Images/Option_C_Selected_Right.png")
+            case 'D': return require("../../Images/Option_D_Selected_Right.png")
+        }
+    }
+
+    _selectIconError(selection) {
+
+        switch (selection) {
+            case 'A': return require("../../Images/Option_A_Selected_Error.png")
+            case 'B': return require("../../Images/Option_B_Selected_Error.png")
+            case 'C': return require("../../Images/Option_C_Selected_Error.png")
+            case 'D': return require("../../Images/Option_D_Selected_Error.png")
+        }
     }
 
     _selectDefalutIcon(selection) {
@@ -126,53 +146,27 @@ export default class MultipleOption extends React.Component {
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
         let splits = filterStr.split(imageTagRegex)
 
-        if (selectedOption.includes(selection) == true || answers.includes(selection)) {
-            return (
-                <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
-                    <Image
-                        style={styles.icon}
-                        source={this._selectIcon()}
-                    />
-                    <View style={styles.detailOptionView}>
-                        {
-                            splits.map((content, index) => {
-                                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                    this._renderImage(content)
-                                } else {
-                                    return (
-                                        <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
-                                    )
-                                }
-                            })
-                        }
-                    </View>
+        return (
+            <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
+                <Image
+                    style={styles.icon}
+                    source={this._selectIcon()}
+                />
+                <View style={styles.detailOptionView}>
+                    {
+                        splits.map((content, index) => {
+                            if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                                this._renderImage(content)
+                            } else {
+                                return (
+                                    <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>
+                                )
+                            }
+                        })
+                    }
                 </View>
-            );
-
-        } else {
-
-            return (
-                <View style={[styles.answerItem]} >
-                    <Image
-                        style={styles.icon}
-                        source={this._selectDefalutIcon(selection)}
-                    />
-                    <View style={styles.detailOptionView}>
-                        {
-                            splits.map((content, index) => {
-                                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                    this._renderImage(content)
-                                } else {
-                                    return (
-                                        <Text key={index} style={styles.detailOptionText}>{content}</Text>
-                                    )
-                                }
-                            })
-                        }
-                    </View>
-                </View>
-            );
-        }
+            </View>
+        );
     }
 
     _renderImage(content) {

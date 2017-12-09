@@ -53,19 +53,40 @@ export default class MultipleOptionForm extends React.Component {
 
         const { isSelected, selectedOption, answer, detail } = this.props
 
-        return (
-            <View style={styles.indefiniteItem}>
-                <Text style={styles.indefiniteItemText}>请你选择多个答案</Text>
-                <ScrollView></ScrollView>
-                <TouchableOpacity onPress={() => {
-                    this._doneSelect()
-                }}>
-                    <View style={styles.doneView}>
-                        <Text style={styles.doneText}>确定选择</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        )
+        if (isSelected) {
+
+            /// 选择正确
+            if (selectedOption.includes(detail.answer) == true) {
+                return (
+                    <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{"答案正确！"}</Text>
+                )
+            }
+
+            /// 选择错误
+            if (selectedOption.includes(detail.answer) == false) {
+                return (
+                    <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{"答案错误！"}</Text>
+                )
+            }
+
+            return null
+
+        } else {
+
+            return (
+                <View style={styles.indefiniteItem}>
+                    <Text style={styles.indefiniteItemText}>请你选择多个答案</Text>
+                    <ScrollView></ScrollView>
+                    <TouchableOpacity onPress={() => {
+                        this._doneSelect()
+                    }}>
+                        <View style={styles.doneView}>
+                            <Text style={styles.doneText}>确定选择</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
     }
 
     render() {
@@ -121,18 +142,18 @@ var styles = StyleSheet.create({
         width: "100%"
     },
     answerTitleView: {
-        height: 40,
+        height: 52,
     },
     answerTitleText: {
         marginLeft: 28,
-        marginTop: 8,
+        marginTop: 23,
         fontSize: 13,
     },
     indefiniteItem: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: 40,
+        height: 52,
     },
     indefiniteItemText: {
         fontSize: 13,
