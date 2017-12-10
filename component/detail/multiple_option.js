@@ -26,6 +26,25 @@ export default class MultipleOption extends React.Component {
         super(props)
     }
 
+    _handleImageURL(content) {
+        /// 获取 "/2016年上海《行测》真题（B类） - 腰果公考_files/normal_610x328_a0d18f5c4d9ceac41b845efc3b73876a.png"
+        var re2 = /\/.*?\.(?:png|jpg)/gm;
+        let suffixUrl = re2.exec(content)
+        let sufUrl = suffixUrl[0]
+
+        // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
+        var re = /\/(.*)files/g;
+        var results = re.exec(sufUrl);
+        let suffix = null
+        if (results) {
+            let img = results[0].replace("/", "", )
+            if (key[img] != null) {
+                suffix = sufUrl.replace(img, key[img])
+            }
+        }
+        return url = "http://118.89.196.123/images" + suffix
+    }
+
     _select(option) {
 
         this.props.multipleSelect(option)
@@ -46,7 +65,7 @@ export default class MultipleOption extends React.Component {
         if (status == "error") {
             return this._selectIconError(selection)
         }
-        return null        
+        return null
     }
 
     _afterSelectBackgroundView() {
@@ -127,7 +146,8 @@ export default class MultipleOption extends React.Component {
     }
 
     _renderImage(content) {
-        const url = content.replace("./", "http://www.samso.cn/images/")
+
+        const url = this._handleImageURL(content)
         let expr = /\/(.*)_(.*)x(.*)_/;
         let size = url.match(expr)
         const scale = 0.3

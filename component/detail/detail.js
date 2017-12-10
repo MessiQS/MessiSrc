@@ -298,10 +298,10 @@ export default class Detail extends Component {
                             let suffix = null
                             if (results) {
                                 let img = results[0].replace("/", "",)
-                                suffix = sufUrl.replace(img, key[img])
+                                if (key[img] != null) {
+                                    suffix = sufUrl.replace(img, key[img])
+                                }
                             }
-
-                            console.log(sufUrl)
 
                             const url = "http://118.89.196.123/images" + suffix
                             let expr = /_(.*)x(.*)_/;

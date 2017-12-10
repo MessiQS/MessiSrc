@@ -35,24 +35,32 @@ export default class Analysis extends React.Component {
 
         const { analysis } = this.props.detail;
         let filterStr = this._filterTag(analysis)
-        
-        var re = /.\/(.*)files/g;
-        var results = re.exec(filterStr);
-        var img="";
-        if(results) {
-            img = results[0].replace("./", "")     
-            filterStr = filterStr.replace(img, key[img])
-        }
-
-        var re2 = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
-        let splits = filterStr.split(re2)
+        let regex = /<img/g
+        let splits = filterStr.split(regex)
 
         return (
             <View>
                 {
                     splits.map ((content, index) => {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                            const url = content.replace("./", "http://118.89.196.123/images/")
+                            /// 获取 "/2016年上海《行测》真题（B类） - 腰果公考_files/normal_610x328_a0d18f5c4d9ceac41b845efc3b73876a.png"
+                            var re2 = /\/.*?\.(?:png|jpg)/gm;
+                            let suffixUrl = re2.exec(content)
+                            let sufUrl = suffixUrl[0]
+
+                            // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
+                            var re = /\/(.*)files/g;
+                            var results = re.exec(sufUrl);
+                            let suffix = null
+                            if (results) {
+                                let img = results[0].replace("/", "",)
+                                if (key[img] != null) {
+                                    suffix = sufUrl.replace(img, key[img])
+                                }
+                            }
+
+
+                            const url = "http://118.89.196.123/images" + suffix
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
                             let scale = (window.width - 60) / size[1]
