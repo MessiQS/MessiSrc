@@ -87,12 +87,12 @@ export default class Detail extends Component {
 
     constructor(props) {
         super(props);
-        this.memoryModel = realmManager.getMemoryModels()
+        this._memoryModel = realmManager.getMemoryModels()
             .filtered("weighting < 7")
             .sorted('lastBySelectedTime', false)[0]
 
         this.state = {
-            detail: this.memoryModel,
+            detail: this._memoryModel,
             isSelected: false,
             selectedOption: [],
             A_Status: ItemStatus.NORMAL,
@@ -100,19 +100,15 @@ export default class Detail extends Component {
             C_Status: ItemStatus.NORMAL,
             D_Status: ItemStatus.NORMAL,
         }
-
-        console.log(this.memoryModel.questionPaper.category)
     }
 
     nextQuestion() {
 
-        const that = this
-        that.memoryModel = realmManager.getMemoryModels()
+        this._memoryModel = realmManager.getMemoryModels()
             .filtered("weighting < 7")
-            .filtered("questionPaper.subject == '不定项'")
             .sorted('lastBySelectedTime', false)[0]
-        that.setState({
-            detail: that.memoryModel,
+        this.setState({
+            detail: this._memoryModel,
             isSelected: false,
             selectedOption: [],
             A_Status: ItemStatus.NORMAL,
@@ -120,8 +116,8 @@ export default class Detail extends Component {
             C_Status: ItemStatus.NORMAL,
             D_Status: ItemStatus.NORMAL,
         })
-        that.props.navigation.setParams({
-            headerTitle: that.memoryModel.questionPaper.category,
+        this.props.navigation.setParams({
+            headerTitle: this._memoryModel.questionPaper.category,
             showNextQuestion: 'hidden'
         });
     }
@@ -136,8 +132,8 @@ export default class Detail extends Component {
 
         let score = 0
         let itemStatus = ItemStatus.NORMAL
-        if (option == this.memoryModel.questionPaper.answer) {
-            score = 7 - this.memoryModel.appearedSeveralTime
+        if (option == this._memoryModel.questionPaper.answer) {
+            score = 7 - this._memoryModel.appearedSeveralTime
             score = Math.max(1, score)
             itemStatus = ItemStatus.RIGHT
         } else {
@@ -145,9 +141,9 @@ export default class Detail extends Component {
         }
 
         realm.write(() => {
-            this.memoryModel.weighting = this.memoryModel.weighting + score
-            this.memoryModel.appearedSeveralTime += 1
-            this.memoryModel.lastBySelectedTime = Date.parse(new Date())
+            this._memoryModel.weighting = this._memoryModel.weighting + score
+            this._memoryModel.appearedSeveralTime += 1
+            this._memoryModel.lastBySelectedTime = Date.parse(new Date())
         });
    
         if (option == "A") {
@@ -237,12 +233,12 @@ export default class Detail extends Component {
             return null
         }
 
-        let score = 7 - this.memoryModel.appearedSeveralTime
+        let score = 7 - this._memoryModel.appearedSeveralTime
         score = Math.max(1, score)
         realm.write(() => {
-            this.memoryModel.weighting = this.memoryModel.weighting + score
-            this.memoryModel.appearedSeveralTime += 1
-            this.memoryModel.lastBySelectedTime = Date.parse(new Date())
+            this._memoryModel.weighting = this._memoryModel.weighting + score
+            this._memoryModel.appearedSeveralTime += 1
+            this._memoryModel.lastBySelectedTime = Date.parse(new Date())
         });
         this.setState({
             isSelected: true,
@@ -320,7 +316,8 @@ export default class Detail extends Component {
     _renderOptionForm() {
         const { detail, isSelected, selectedOption } = this.state
 
-        if (detail.questionPaper.subject == "不定项") {
+        if (detail.questionPaper.subject == "不定项" || 
+            detail.questionPaper.question.indexOf("不定项选择题")) {
 
             return (
                 <MultipleOptionForm

@@ -100,23 +100,8 @@ export default class MultipleOption extends React.Component {
 
     _renderOptionView(str) {
 
-        const { detail } = this.props
-        const answers = detail.answer.split(',')
-
-        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
-        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
-        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-
-        let re = /.\/(.*)files/g;
-        let results = re.exec(filterStr);
-        let img = "";
-        if (results) {
-            img = results[0].replace("./", "")
-            filterStr = filterStr.replace(img, key[img])
-        }
-
         let imageTagRegex = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
-        let splits = filterStr.split(imageTagRegex)
+        let splits = str.split(imageTagRegex)
 
         return (
             <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >

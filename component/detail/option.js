@@ -7,6 +7,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
+import key from "../../service/path"
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 

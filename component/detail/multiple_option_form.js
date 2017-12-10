@@ -42,24 +42,34 @@ export default class MultipleOptionForm extends React.Component {
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
 
+        let re = /.\/(.*)files/g;
+        let results = re.exec(filterStr);
+        let img = "";
+        if (results) {
+            img = results[0].replace("./", "")
+            filterStr = filterStr.replace(img, key[img])
+        }
         return filterStr
     }
 
     _showTitle() {
 
         const { isSelected, selectedOption, detail } = this.props
-
+        
         if (isSelected) {
+            let answers = detail.answer.split(",")
+            const compareSO = selectedOption.sort().toString()
+            const compareAns = answers.sort().toString()
 
             /// 选择正确
-            if (selectedOption.includes(detail.answer) == true) {
+            if (compareSO == compareAns) {
                 return (
                     <Text style={[styles.answerTitleText, { color: "#8FDA3C" }]}>{"答案正确！"}</Text>
                 )
             }
 
             /// 选择错误
-            if (selectedOption.includes(detail.answer) == false) {
+            if (compareSO != compareAns) {
                 return (
                     <Text style={[styles.answerTitleText, { color: "#FF5B29" }]}>{"答案错误！"}</Text>
                 )
