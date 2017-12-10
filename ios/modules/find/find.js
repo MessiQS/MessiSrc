@@ -17,6 +17,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import moment from 'moment';
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -44,6 +45,17 @@ const header = {
         width:20, 
     }
 }
+var daysTransfer = {
+    'Sunday': '周日',
+    'Monday': '周一',
+    'Tuesday': '周二',
+    'Wednesday': '周三',
+    'Thursday': '周四',
+    'Friday': '周五',
+    'Saturday': '周六'
+}
+
+
 export default class Find extends Component {
 
     constructor(props) {
@@ -85,6 +97,7 @@ export default class Find extends Component {
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
         });
+
     }
 
     routeToMine() {
@@ -104,6 +117,15 @@ export default class Find extends Component {
 
     _renderGetChatNewPaper() {
         const newPaperOption = newPaper.option;
+        
+        let weekArray = []
+        for (var i = 5; i > 0; i--) {
+            let day = moment().subtract(i, 'days').format('dddd')
+            let d = daysTransfer[day]
+            weekArray.push(d)
+        }
+        weekArray.push('今日')
+        newPaperOption.xAxis[0].data = weekArray
         return (
             <View style={styles.calendarView}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
@@ -124,6 +146,14 @@ export default class Find extends Component {
 
     _renderGetChatRemember() {
         const newPaperOption = rememberPaper.option;
+        let weekArray = ['今日']
+        for (var i = 1; i < 6; i++) {
+            let day = moment().add(i, 'days').format('dddd')
+            let d = daysTransfer[day]
+            weekArray.push(d)
+        }
+        newPaperOption.xAxis[0].data = weekArray
+
         return (
             <View style={[styles.calendarView, {marginTop:4}]}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>

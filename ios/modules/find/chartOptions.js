@@ -10,7 +10,6 @@ export const newPaper = {
             {
                 type: 'category',
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                 axisLine: {
                     show: false
                 },
@@ -69,7 +68,7 @@ export const newPaper = {
                         }
                     }
                 },
-                data: [0, 15, 40, 30, 80, 50, 100]
+                data: [0, 15, 40, 30, 80, 50]
             }
         ]
     }
@@ -87,7 +86,6 @@ export const rememberPaper = {
             {
                 type: 'category',
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                 axisLine: {
                     show: false
                 },
@@ -157,7 +155,7 @@ export const rememberPaper = {
                         }
                     }
                 },
-                data: [0, 15, 40, 30, 80, 50, 100]
+                data: [0, 15, 40, 30, 80, 100]
             }
         ]
     }
