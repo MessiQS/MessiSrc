@@ -52,13 +52,13 @@ export default class Detail extends Component {
         headerTintColor: 'black',
         gesturesEnabled: true,
         headerRight: (
-            <TouchableOpacity 
-            disabled={navigation.state.params.nextButtonDisable}
-            onPress={() => {
-                navigation.state.params.clickNextQuestion()
-            }}>
+            <TouchableOpacity
+                disabled={navigation.state.params.nextButtonDisable}
+                onPress={() => {
+                    navigation.state.params.clickNextQuestion()
+                }}>
                 <View style={styles.rightButtonStyle}>
-                    <Text style={[styles.rightText,navigation.state.params.nextButtonDisable == false ? {color: "#FF5B29"} : {}]}>下一题</Text>
+                    <Text style={[styles.rightText, navigation.state.params.nextButtonDisable == false ? { color: "#FF5B29" } : {}]}>下一题</Text>
                 </View>
             </TouchableOpacity>
         ),
@@ -102,6 +102,7 @@ export default class Detail extends Component {
             C_Status: ItemStatus.NORMAL,
             D_Status: ItemStatus.NORMAL,
         }
+        // console.log(this._memoryModel)
     }
 
     nextQuestion() {
@@ -147,7 +148,7 @@ export default class Detail extends Component {
             this._memoryModel.appearedSeveralTime += 1
             this._memoryModel.lastBySelectedTime = Date.parse(new Date())
         });
-   
+
         if (option == "A") {
             this.setState({
                 isSelected: true,
@@ -190,7 +191,7 @@ export default class Detail extends Component {
     _multipleSelect(option) {
 
         const array = this.state.selectedOption
-        
+
         let itemStatus = null
 
         if (this.state.selectedOption.includes(option)) {
@@ -198,7 +199,7 @@ export default class Detail extends Component {
             itemStatus = ItemStatus.NORMAL
         } else {
             array.push(option)
-            itemStatus = ItemStatus.SELECTED            
+            itemStatus = ItemStatus.SELECTED
         }
 
         if (option == "A") {
@@ -278,33 +279,46 @@ export default class Detail extends Component {
     _renderQuestion(str) {
 
         let filterStr = this._filterTag(str)
-        var re = /.\/(.*)files/g;
-        var results = re.exec(filterStr);
-        var img = "";
-        if (results) {
-            img = results[0].replace("./", "")
-            filterStr = filterStr.replace(img, key[img])
-        }
-        var re2 = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
-        let splits = filterStr.split(re2)
+        let regex = /<img/g
+        let splits = filterStr.split(regex)
 
         return (
             <View style={styles.questionView}>
                 {
                     splits.map((content, index) => {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                            const url = content.replace("./", "http://118.89.196.123/images/")
+                            /// 获取 "/2016年上海《行测》真题（B类） - 腰果公考_files/normal_610x328_a0d18f5c4d9ceac41b845efc3b73876a.png"
+                            var re2 = /\/.*?\.(?:png|jpg)/gm;
+                            let suffixUrl = re2.exec(content)
+                            let sufUrl = suffixUrl[0]
+
+                            // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
+                            var re = /\/(.*)files/g;
+                            var results = re.exec(sufUrl);
+                            let suffix = null
+                            if (results) {
+                                let img = results[0].replace("/", "",)
+                                suffix = sufUrl.replace(img, key[img])
+                            }
+
+                            console.log(sufUrl)
+
+                            const url = "http://118.89.196.123/images" + suffix
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
                             let scale = (window.width - 60) / size[1]
                             let height = size[2] * scale
+
                             return (
                                 <Image key={index} style={[styles.questionImage, { height: height }]} resizeMode={'contain'} source={{ uri: url }} />
                             )
                         } else {
-                            return (
-                                <Text key={index} style={styles.questionText}>{content}</Text>
-                            )
+                            if (content.length > 0) {
+                                return (
+                                    <Text key={index} style={styles.questionText}>{content}</Text>
+                                )
+                            }
+                            return null
                         }
                     })
                 }
@@ -324,8 +338,8 @@ export default class Detail extends Component {
     _renderOptionForm() {
         const { detail, isSelected, selectedOption } = this.state
 
-        if (detail.questionPaper.subject == "不定项" || 
-            detail.questionPaper.question.indexOf("不定项选择题")) {
+        if (detail.questionPaper.subject == "不定项" ||
+            detail.questionPaper.question.indexOf("不定项选择题") !== -1) {
 
             return (
                 <MultipleOptionForm
@@ -347,7 +361,7 @@ export default class Detail extends Component {
                     detail={detail.questionPaper}
                     isSelected={isSelected}
                     selectedOption={selectedOption}
-                    select={this._select.bind(this)} 
+                    select={this._select.bind(this)}
                     A_Status={this.state.A_Status}
                     B_Status={this.state.B_Status}
                     C_Status={this.state.C_Status}
@@ -452,7 +466,7 @@ var styles = StyleSheet.create({
         width: 80,
     },
     rightText: {
-        color:'white',
+        color: 'white',
         fontSize: 16,
     },
 })

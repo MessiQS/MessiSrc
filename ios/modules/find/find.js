@@ -38,7 +38,7 @@ const header = {
     },
     magnifier: {
         width: 18,
-        height: 17,
+        height: 18,
     },
     more: {
         width:20, 
@@ -48,7 +48,9 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+
+        };
     }
 
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -106,7 +108,7 @@ export default class Find extends Component {
             <View style={styles.calendarView}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                        <Text style={styles.h4}>过去5日刷题亮统计</Text>
                         <Text style={styles.psmall}>平均值:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
@@ -126,7 +128,7 @@ export default class Find extends Component {
             <View style={[styles.calendarView, {marginTop:4}]}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>过去6日刷题亮统计</Text>
+                        <Text style={styles.h4}>未来5日数量统计</Text>
                         <Text style={styles.psmall}>平均值:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>

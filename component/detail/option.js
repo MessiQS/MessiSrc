@@ -129,7 +129,7 @@ export default class Option extends React.Component {
                     {
                         splits.map((content, index) => {
                             if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                const url = content.replace("./", "http://www.samso.cn/images/")
+                                const url = content.replace("./", "http://118.89.196.123/images/")
                                 let expr = /\/(.*)_(.*)x(.*)_/;
                                 let size = url.match(expr)
                                 const scale = 0.3
