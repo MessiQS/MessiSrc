@@ -12,7 +12,8 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
-    Platform
+    Platform,
+    Button
 } from 'react-native';
 import realmManager from "../Realm/realmManager";
 import realm from '../Realm/realm';
@@ -30,7 +31,6 @@ const ItemStatus = {
     RIGHT: 'right',
     ERROR: 'error',
 }
-
 
 export default class Detail extends Component {
 
@@ -52,11 +52,13 @@ export default class Detail extends Component {
         headerTintColor: 'black',
         gesturesEnabled: true,
         headerRight: (
-            <TouchableOpacity onPress={() => {
+            <TouchableOpacity 
+            disabled={navigation.state.params.nextButtonDisable}
+            onPress={() => {
                 navigation.state.params.clickNextQuestion()
             }}>
-                <View style={[styles.rightButtonStyle, { overflow: navigation.state.params.showNextQuestion }]}>
-                    <Text style={styles.rightText}>下一题</Text>
+                <View style={styles.rightButtonStyle}>
+                    <Text style={[styles.rightText,navigation.state.params.nextButtonDisable == false ? {color: "#FF5B29"} : {}]}>下一题</Text>
                 </View>
             </TouchableOpacity>
         ),
@@ -81,7 +83,7 @@ export default class Detail extends Component {
         this.props.navigation.setParams({
             headerTitle: this.state.detail.questionPaper.category,
             clickNextQuestion: this.nextQuestion.bind(this),
-            showNextQuestion: 'hidden'
+            nextButtonDisable: true,
         })
     }
 
@@ -118,7 +120,7 @@ export default class Detail extends Component {
         })
         this.props.navigation.setParams({
             headerTitle: this._memoryModel.questionPaper.category,
-            showNextQuestion: 'hidden'
+            nextButtonDisable: true,
         });
     }
 
@@ -174,6 +176,9 @@ export default class Detail extends Component {
                 D_Status: itemStatus
             })
         }
+        this.props.navigation.setParams({
+            nextButtonDisable: false,
+        });
     }
 
     /**
@@ -243,6 +248,9 @@ export default class Detail extends Component {
         this.setState({
             isSelected: true,
         })
+        this.props.navigation.setParams({
+            nextButtonDisable: false,
+        });
     }
 
     _renderAnalysis() {
@@ -444,7 +452,7 @@ var styles = StyleSheet.create({
         width: 80,
     },
     rightText: {
-        color: "#FF5B29",
+        color:'white',
         fontSize: 16,
     },
 })
