@@ -10,7 +10,7 @@ import {
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
 
-export default class TopicsDeail extends React.Component {
+export default class TopicsDetail extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: navigation.state.params.section.item.title,

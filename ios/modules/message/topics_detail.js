@@ -5,80 +5,98 @@ import {
     View,
     TouchableOpacity,
     FlatList,
-    Vibration
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
+import Progress from '../../../component/progress/progress'
 
-export default class TopicsDeail extends React.Component {
+export default class TopicsDetail extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: navigation.state.params.section.item.title,
         headerTitleStyle: {
-            color: 'black', 
+            color: 'black',
             alignSelf: 'center',
-            fontSize: 20 
+            fontSize: 20
         },
-		headerStyle: {
-			backgroundColor: '#FFF',
+        headerStyle: {
+            backgroundColor: '#FFF',
             opacity: 1,
             borderBottomWidth: 0,
             shadowOpacity: 0.2,
             shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1}
-		},
-		headerTintColor: 'black',
+            shadowOffset: { width: 0, height: 1 }
+        },
+        headerTintColor: 'black',
         gesturesEnabled: true,
         headerLeft: (
-            <TouchableOpacity onPress={ () => { navigation.goBack() }}>
+            <TouchableOpacity onPress={() => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image style={{width:14, height:10}} source={require('../../../Images/back_arrow.png')}/>
+                    <Image style={{ width: 14, height: 10 }} source={require('../../../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),
     });
-    
+
     constructor(props) {
         super(props)
         const array = this.props.navigation.state.params.section.item.data
-        array.sort(function(a, b) {
+        array.sort(function (a, b) {
             if (a.value > b.value) {
                 return -1;
-              }
-              if (a.value < b.value) {
+            }
+            if (a.value < b.value) {
                 return 1;
-              }
-              // a 必须等于 b
-              return 0;
+            }
+            // a 必须等于 b
+            return 0;
         })
-        this.state = {
-            data:array
-        }
+        this.state = ({
+            data: array,
+            loading: false,
+        })
     }
 
     _buy(item) {
-        console.log(item)
+        this.setState ({
+            loading: true
+        })
         MessageService.downloadPaper({
             paperId: item.id
         }).then((json) => {
 
             realmManager.createQuestion(json)
-            .then((data) => {
-                realmManager.createMemoryModels(data)
-                .then((memoryModels) => {
+                .then((data) => {
+                    realmManager.createMemoryModels(data)
+                        .then((memoryModels) => {
+                            this.setState ({
+                                loading: false
+                            })
 
+                        }).catch((error) => {
+                            this.setState ({
+                                loading: false
+                            })
+                            console.log("createMemoryModels error " + error)
+                        })
 
                 }).catch((error) => {
-                    console.log("createMemoryModels error " + error )
+                    console.log(error)
                 })
-
-            }).catch((error) => {
-                console.log(error)
+        })
+            .catch((error) => {
+                alert(error)
             })
-        })
-        .catch((error) => {
-            alert(error)
-        })
+    }
+
+    _renderProgress() {
+        if (this.state.loading == true) {
+            return(
+                <Progress/>
+            )
+        } else {
+            return null
+        }
     }
 
     _renderHeader() {
@@ -107,12 +125,15 @@ export default class TopicsDeail extends React.Component {
 
     render() {
         return (
-            <FlatList
-            ListHeaderComponent={this._renderHeader()}
-            data={this.state.data}
-            keyExtractor={(item, index) => index}            
-            renderItem={({item}) => this._renderItem(item)}
-          />
+            <View>
+                { this._renderProgress() }
+                <FlatList
+                    ListHeaderComponent={this._renderHeader()}
+                    data={this.state.data}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item }) => this._renderItem(item)}
+                />
+            </View>
         )
     }
 }
@@ -127,9 +148,9 @@ var styles = ({
     },
     listHeader: {
         marginTop: 4,
-        height: 34, 
+        height: 34,
         backgroundColor: 'white'
-    },  
+    },
     listTitle: {
         marginTop: 10,
         fontSize: 12,
@@ -137,7 +158,7 @@ var styles = ({
         marginLeft: 15,
     },
     bottomLine: {
-        position:"absolute",
+        position: "absolute",
         right: 15,
         left: 15,
         bottom: 1,

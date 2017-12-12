@@ -58,7 +58,8 @@ export default class MultipleOptionForm extends React.Component {
         
         if (isSelected) {
             let answers = detail.answer.split(",")
-            const compareSO = selectedOption.sort().toString()
+            const array =  selectedOption
+            const compareSO = array.sort().toString()
             const compareAns = answers.sort().toString()
 
             /// 选择正确

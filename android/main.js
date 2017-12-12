@@ -25,7 +25,7 @@ import Account from '../component/MineMenu/account';
 import Update from '../component/MineMenu/update';
 import Request from '../component/MineMenu/request';
 import Detail from '../component/detail/detail';
-import TopicsDeail from "./modules/message/topics_detail"
+import TopicsDetail from "./modules/message/topics_detail"
 import Register from '../component/Login/register';
 import Login from '../component/Login/login';
 import LoginPage from '../component/Login/loginPage';
@@ -176,8 +176,8 @@ const Messi = StackNavigator({
     PayPage: {
         screen: PayPage,
     },
-    TopicsDeail: {
-        screen: TopicsDeail,
+    TopicsDetail: {
+        screen: TopicsDetail,
         navigationOptions: TabOptions({
         })
     },

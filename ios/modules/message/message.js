@@ -23,7 +23,7 @@ export default class Message extends Component {
     _select_province(section) {
 
         const { navigate } = this.props.navigation;
-        navigate('TopicsDeail', { section: section })
+        navigate('TopicsDetail', { section: section })
     }
 
     render() {

@@ -102,6 +102,7 @@ export default class Detail extends Component {
             C_Status: ItemStatus.NORMAL,
             D_Status: ItemStatus.NORMAL,
         }
+        console.log(this._memoryModel)
     }
 
     _handleImageURL(content) {
@@ -165,6 +166,10 @@ export default class Detail extends Component {
             this._memoryModel.weighting = this._memoryModel.weighting + score
             this._memoryModel.appearedSeveralTime += 1
             this._memoryModel.lastBySelectedTime = Date.parse(new Date())
+            this._memoryModel.records.push({
+                select: option,
+                isRight: isRight
+            })
         });
 
         if (option == "A") {

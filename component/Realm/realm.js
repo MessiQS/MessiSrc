@@ -68,6 +68,19 @@ ExaminationPaper.schema = {
     }
 }
 
+/// 答题记录
+class MemoryRecordModel extends Realm.Object { }
+
+MemoryRecordModel.schema = {
+
+    name: 'MemoryRecordModel',
+    properties: {
+        time: { type: 'int', default: new Date().getTime() },        /// 选择时间，初始化为 0
+        isRight: {type: 'bool', default: true},                      /// 是否正确
+        select: 'string',                                             /// 所选的答案 'A,B,C,D'
+    }
+}
+
 /// 记忆模型
 class MemoryModel extends Realm.Object { }
 
@@ -78,10 +91,11 @@ MemoryModel.schema = {
     properties: {
 
         id: 'string',
-        questionPaper: 'QuestionPaper',                         /// 题目
-        weighting: { type: 'float', default: 0 },               /// 加权分数, 初始化为 0
-        appearedSeveralTime: { type: 'int', default: 0 },       /// 出现次数, 初始化为 0
-        lastBySelectedTime: { type: 'int', default: 0 },        /// 上一次被选择时间，初始化为 0
+        questionPaper: 'QuestionPaper',                                 /// 题目
+        weighting: { type: 'float', default: 0 },                       /// 加权分数, 初始化为 0
+        appearedSeveralTime: { type: 'int', default: 0 },               /// 出现次数, 初始化为 0
+        lastBySelectedTime: { type: 'int', default: 0 },                /// 上一次被选择时间，初始化为 0
+        records: { type: 'list', objectType: 'MemoryRecordModel' }      /// 答题记录
     }
 }
 
@@ -102,4 +116,5 @@ Schedule.schema = {
     }
 }
 
-export default new Realm({ schema: [QuestionPaper, User, ExaminationPaper, MemoryModel, Schedule] });
+export default new Realm({ schema: [QuestionPaper, User, ExaminationPaper, 
+                                    MemoryModel, Schedule, MemoryRecordModel] });
