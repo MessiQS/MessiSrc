@@ -106,6 +106,7 @@ export default class Detail extends Component {
     }
 
     _handleImageURL(content) {
+
         /// 获取 "/2016年上海《行测》真题（B类） - 腰果公考_files/normal_610x328_a0d18f5c4d9ceac41b845efc3b73876a.png"
         var re2 = /\/.*?\.(?:png|jpg)/gm;
         let suffixUrl = re2.exec(content)
@@ -154,10 +155,12 @@ export default class Detail extends Component {
 
         let score = 0
         let itemStatus = ItemStatus.NORMAL
+        var isRight = false
         if (option == this._memoryModel.questionPaper.answer) {
             score = 7 - this._memoryModel.appearedSeveralTime
             score = Math.max(1, score)
             itemStatus = ItemStatus.RIGHT
+            isRight = true
         } else {
             itemStatus = ItemStatus.ERROR
         }
@@ -258,16 +261,25 @@ export default class Detail extends Component {
      */
     _doneSelect() {
 
-        if (this.state.selectedOption.length == 0) {
+        const { selectedOption } = this.state
+        if (selectedOption.length == 0) {
             return null
         }
+        var sortedSelection = array.sort().toString()
+        var answer = this._memoryModel.questionPaper.answer
 
         let score = 7 - this._memoryModel.appearedSeveralTime
         score = Math.max(1, score)
+        var isRight = sortedSelection && answer.toString()
+        
         realm.write(() => {
             this._memoryModel.weighting = this._memoryModel.weighting + score
             this._memoryModel.appearedSeveralTime += 1
             this._memoryModel.lastBySelectedTime = Date.parse(new Date())
+            this._memoryModel.records.push({
+                select: sortedSelection,
+                isRight: isRight
+            })
         });
         this.setState({
             isSelected: true,
@@ -295,6 +307,9 @@ export default class Detail extends Component {
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
         filterStr = filterStr.replace(/<span style=\"color: #46a546;\">/g, "")
         filterStr = filterStr.replace(/<\/span>/g, "")
+        if (filterStr[0] == " ") {
+            filterStr = filterStr.replace(" ", "")
+        }
 
         return filterStr
     }
@@ -312,6 +327,7 @@ export default class Detail extends Component {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                         
                             const url = this._handleImageURL(content)
+                            
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
                             let scale = (window.width - 60) / size[1]

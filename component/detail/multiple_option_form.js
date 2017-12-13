@@ -42,6 +42,9 @@ export default class MultipleOptionForm extends React.Component {
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
 
+        if (filterStr[0] == " ") {
+            filterStr = filterStr.replace(" ", "")
+        }
         let re = /.\/(.*)files/g;
         let results = re.exec(filterStr);
         let img = "";

@@ -18,6 +18,7 @@ import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import moment from 'moment';
+import realmManager from "../../../component/Realm/realmManager";
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -97,7 +98,12 @@ export default class Find extends Component {
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
         });
+    }
 
+    componentDidMount() {
+        realmManager.updateSchedule((finished) => {
+            
+        })
     }
 
     routeToMine() {

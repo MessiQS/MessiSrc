@@ -103,7 +103,10 @@ class RealmManager {
         }
     }
 
-    
+    /// 更新进程
+    updateSchedule(callback) {
+        
+    }
 
     /// 查询数据
 

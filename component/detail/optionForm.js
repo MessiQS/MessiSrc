@@ -37,7 +37,9 @@ export default class OptionForm extends React.Component {
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
         filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-
+        if (filterStr[0] == " ") {
+            filterStr = filterStr.replace(" ", "")
+        }
         let re = /.\/(.*)files/g;
         let results = re.exec(filterStr);
         let img = "";

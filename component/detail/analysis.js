@@ -46,7 +46,9 @@ export default class Analysis extends React.Component {
         filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
         filterStr = filterStr.replace(/<span style=\"color: #46a546;\">  ( 不定项选择 ) <\/span> /g, "")
         filterStr = filterStr.replace(/<span style=\"color: #46a546;\"> ( 不定项选择 ) <\/span> /g, "")
-        
+        if (filterStr[0] == " ") {
+            filterStr = filterStr.replace(" ", "")
+        }
         return filterStr
     }
 
