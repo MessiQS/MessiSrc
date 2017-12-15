@@ -13,7 +13,6 @@ import {
     Image,
     View
 } from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
