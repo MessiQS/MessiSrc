@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -15,7 +14,7 @@ import {
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
 
-import Home from './modules/home/home';
+// import Home from './modules/home/home';
 import Mine from './modules/mine/mine';
 import SoftwareAgreement from './modules/mine/software_agreement';
 import Feedback from './modules/mine/feedback';
@@ -80,9 +79,6 @@ const Messi = StackNavigator({
     Login: {
         screen: Login,
     },
-    // MyTab: {
-    //     screen: MainTab,
-    // },
     Home: {
         screen: Find
     },
