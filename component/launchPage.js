@@ -6,8 +6,8 @@ import {
 import Storage from '../service/storage';
 import Http from '../service/http';
 
-class LaunchPage extends React.Component {
-s
+
+export default  class LaunchPage extends React.Component {
     constructor(...props) {
         super();
         this.state = this.state || {};
@@ -47,5 +47,3 @@ s
         );
     }
 }
-
-export default LaunchPage;

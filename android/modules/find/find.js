@@ -13,7 +13,6 @@ import {
     Image,
     View
 } from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
@@ -41,7 +40,7 @@ const header = {
         height: 17,
     },
     more: {
-        width:20, 
+        width: 20,
     }
 }
 export default class Find extends Component {
@@ -51,33 +50,37 @@ export default class Find extends Component {
         this.state = {};
     }
 
-    static navigationOptions = ({ navigation, screenProps }) => ({
-        headerStyle: {
-            borderBottomWidth: 0,
-            backgroundColor: '#FFF',
-            shadowOpacity: 0.1,
-            shadowColor: '#333',
-            shadowOffset: { width: 0, height: 1 }
-        },
-        headerTintColor: 'white',
-        gesturesEnabled: false,
-        headerLeft: (
-            <View style={header.header}>
-                <Text style={header.text}>
-                    刷题统计
+    static navigationOptions = ({ navigation, screenProps }) => {
+        return {
+            headerStyle: {
+                borderBottomWidth: 0,
+                backgroundColor: '#FFF',
+                shadowOpacity: 0.1,
+                shadowColor: '#333',
+                shadowOffset: { width: 0, height: 1 }
+            },
+            headerTintColor: 'white',
+            gesturesEnabled: false,
+            headerLeft: (
+                <View style={header.header}>
+                    <Text style={header.text}>
+                        刷题统计
                 </Text>
-            </View>
-        ),
-        headerRight: (
-            <View style={header.header}>
-                <View style={header.icon}>
-                    <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
                 </View>
-                <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
-                    <Image style={header.more} source={require('../../../Images/more.png')} />
-                </TouchableOpacity>
-            </View>)
-    })
+            ),
+            headerRight: (
+                <View style={header.header}>
+                    <View style={header.icon}>
+                        <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
+                    </View>
+                    <TouchableOpacity onPress={
+                        navigation.state.params ? navigation.state.params.setting : () => { }
+                    } style={header.icon}>
+                        <Image style={header.more} source={require('../../../Images/more.png')} />
+                    </TouchableOpacity>
+                </View>)
+        }
+    }
 
     componentWillMount() {
         this.props.navigation.setParams({
@@ -110,10 +113,10 @@ export default class Find extends Component {
                         <Text style={styles.psmall}>平均值:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, {color: "#1495EB"}]}>刷新题</Text>
+                        <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
                         <Text style={styles.rightDetail}>剩余：75</Text>
                     </View>
-                    <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -123,23 +126,23 @@ export default class Find extends Component {
     _renderGetChatRemember() {
         const newPaperOption = rememberPaper.option;
         return (
-            <View style={[styles.calendarView, {marginTop:4}]}>
+            <View style={[styles.calendarView, { marginTop: 4 }]}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
                         <Text style={styles.h4}>过去6日刷题亮统计</Text>
                         <Text style={styles.psmall}>平均值:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, {color: "#FF5B29"}]}>刷错题</Text>
+                        <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
                         <Text style={styles.rightDetail}>剩余：18</Text>
                     </View>
-                    <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
         )
     }
-    
+
     render() {
         return (
             <View style={styles.container}>
@@ -201,7 +204,7 @@ const styles = {
         color: "#8E9091"
     },
     circleChart: {
-        position: 'absolute',     
+        position: 'absolute',
         right: 40,
         width: 96,
         height: 96,
@@ -219,7 +222,7 @@ const styles = {
         position: 'relative',
         paddingTop: 20,
         backgroundColor: '#fff',
-        marginBottom:8,
+        marginBottom: 8,
         width: "100%"
     },
     chartTitle: {
@@ -259,5 +262,5 @@ const styles = {
         marginTop: 9,
         fontSize: 12,
         color: "#8E9091"
-    }  
+    }
 }

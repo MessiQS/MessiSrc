@@ -11,7 +11,7 @@ import {
 	View,
 } from 'react-native';
 // import { Container, ListItem, Icon, Right, Left, Body } from 'native-base';
-import Swiper from 'react-native-swiper';
+// import Swiper from 'react-native-swiper';
 import Echarts from 'native-echarts';
 import { nativeStyle, styles } from './homeCss';
 import Item from './listItem';

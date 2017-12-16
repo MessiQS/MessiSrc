@@ -92,9 +92,9 @@ class Mine extends Component {
             body: "1234"
         });
         const data = JSON.stringify(response.data)
-        console.log(response.data)
-        // Alert.alert(JSON.stringify(response.data))
+        console.log(data)
         Pingpp.createPayment(data, function (res, error) {
+            // Alert.alert(13)
             console.log(res, error);
         });
     }
