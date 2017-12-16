@@ -1,12 +1,12 @@
 
 import Storage from "./storage";
 import { AlertIOS } from "react-native";
-const webURL = "http://118.89.196.123/";
-// const webURL = "http://192.168.0.104:8080/";
+// const webURL = "http://118.89.196.123/";
+const webURL = "http://192.168.0.100/";
 
 export default class Http {
 
-    static post(api, paramObj, hasToken) {
+    static async post(api, paramObj, hasToken) {
         let url = webURL + api,
             body = ((obj) => {
                 let keyArray = Object.keys(obj),
@@ -17,11 +17,13 @@ export default class Http {
                             return res + '=' + obj[res];
                     }).join('');
                 return str;
-            })(paramObj),
+            })(paramObj);
+            let token = await Storage.getItem("accountToken") || '';
             params = Object.assign({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
+                    Authorization:token,
                 },
                 body: body,
             });

@@ -27,7 +27,7 @@ QuestionPaper.schema = {
         subject: { type: 'string', optional: true },             /// 类型 '单选题'
         title: 'string',                                         /// 试卷名称 "2004年国家(A卷)《行测》真题"
         question_point: { type: 'string', optional: true },      /// 考点 '历史类' '语义分析' "对应关系,同一关系"
-        question_material: {type: 'string', optional: true}      /// 材料
+        question_material: {type: 'string', optional: true},     /// 材料
     }
 }
 
@@ -41,10 +41,12 @@ User.schema = {
     properties: {
 
         userId: 'string',
-        account: { type: 'string', optional: true },              /// 账号
-        avatarURL: { type: 'string' },                            /// 头像
-        token: { type: 'string', },
-        examinationPapers: { type: 'list', objectType: "ExaminationPaper" } /// 购买的试卷
+        account: { type: 'string', optional: true },                            /// 账号
+        avatarURL: { type: 'string', default:"" },                              /// 头像
+        token: { type: 'string', default: ""},
+        examIds: { type: 'string', default: "" },                                /// 购买的试卷
+        currentExamId: { type: 'string', default: "" }, 
+        currentExamTitle: { type: 'string', default: "" }, 
     }
 }
 
@@ -77,7 +79,7 @@ MemoryRecordModel.schema = {
     properties: {
         time: { type: 'int', default: new Date().getTime() },        /// 选择时间，初始化为 0
         isRight: {type: 'bool', default: true},                      /// 是否正确
-        select: 'string',                                             /// 所选的答案 'A,B,C,D'
+        select: 'string',                                            /// 所选的答案 'A,B,C,D'
     }
 }
 

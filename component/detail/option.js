@@ -46,7 +46,7 @@ export default class Option extends React.Component {
                 suffix = sufUrl.replace(img, key[img])
             }
         }
-        return url = "http://118.89.196.123/images" + suffix
+        return "http://118.89.196.123/images" + suffix
     }
 
     _afterSelectText() {
@@ -147,7 +147,7 @@ export default class Option extends React.Component {
                         splits.map((content, index) => {
                             if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
 
-                                let url = this._handleImageURL(conctent)
+                                let url = this._handleImageURL(content)
                                 let expr = /\/(.*)_(.*)x(.*)_/;
                                 let size = url.match(expr)
                                 const scale = 0.3

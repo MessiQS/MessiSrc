@@ -19,6 +19,8 @@ import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import moment from 'moment';
 import realmManager from "../../../component/Realm/realmManager";
+import Storage from "../../../service/storage";
+import realm from '../../../component/Realm/realm';
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -61,8 +63,11 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props);
+        
         this.state = {
-
+            current_exam: null,
+            newQuestionCount: null,
+            wrongQuestionCount: null,
         };
     }
 
@@ -95,9 +100,21 @@ export default class Find extends Component {
     })
 
     componentWillMount() {
+        
+
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
         });
+    }
+
+    componentWillUpdate() {
+        Storage.getItem("current_exam").then(res => {
+            this.setState({
+                current_exam: res,
+                newQuestionCount: realmManager.getNewQuestionCount(), 
+                wrongQuestionCount: realmManager.getWrongQuestionCount(),
+            })
+        })
     }
 
     componentDidMount() {
@@ -141,7 +158,7 @@ export default class Find extends Component {
                     </View>
                     <View style={styles.chartTitleRight}>
                         <Text style={[styles.rightTitle, {color: "#1495EB"}]}>刷新题</Text>
-                        <Text style={styles.rightDetail}>剩余：75</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
                     </View>
                     <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -169,7 +186,7 @@ export default class Find extends Component {
                     </View>
                     <View style={styles.chartTitleRight}>
                         <Text style={[styles.rightTitle, {color: "#FF5B29"}]}>刷错题</Text>
-                        <Text style={styles.rightDetail}>剩余：18</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
                     </View>
                     <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -184,7 +201,7 @@ export default class Find extends Component {
                 <ScrollView>
                     <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.text}>
-                            <Text style={styles.h2}>2017年北京省考</Text>
+                            <Text style={styles.h2}>{this.state.current_exam}</Text>
                             <Text style={styles.p}>历年真题</Text>
                         </View>
                         <View style={styles.circleChart}>

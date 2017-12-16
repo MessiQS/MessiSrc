@@ -36,7 +36,8 @@ export default class Analysis extends React.Component {
                 suffix = sufUrl.replace(img, key[img])
             }
         }
-        return url = "http://118.89.196.123/images" + suffix
+        console.log("http://118.89.196.123/images" + suffix)
+        return "http://118.89.196.123/images" + suffix
     }
 
     _filterTag(str) {

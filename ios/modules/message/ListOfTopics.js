@@ -12,6 +12,8 @@ import DictStyle from './dictStyle';
 import MessageService from "../../../service/message.service";
 import realmManager from '../../../component/Realm/realmManager';
 import PropTypes from 'prop-types';
+import HTTP from '../../../service/http';
+import realm from '../../../component/Realm/realm';
 
 export default class ListOfTopics extends React.Component {
 
@@ -33,6 +35,21 @@ export default class ListOfTopics extends React.Component {
                 papers: papers
             })
         });
+        const user = realmManager.getCurrentUser();
+        HTTP.post("api/getUserBuyInfo", {
+            user_id: user.userId
+        })
+        .then(value => {
+            if (value.type) {
+                let array = value.buyedInfo
+                realm.write(()=> {
+                    user.examIds = JSON.stringify(array)
+                })
+            }
+        })
+        .catch(err => {
+
+        })
     };
 
     static propTypes = {

@@ -21,6 +21,7 @@ import OptionForm from "./optionForm";
 import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
 import key from "../../service/path"
+import Http from '../../service/http';
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -124,7 +125,7 @@ export default class Detail extends Component {
         }
         return url = "http://118.89.196.123/images" + suffix
     }
-    
+
     nextQuestion() {
 
         this._memoryModel = realmManager.getMemoryModels()
@@ -164,9 +165,12 @@ export default class Detail extends Component {
         } else {
             itemStatus = ItemStatus.ERROR
         }
+        const type = isRight == true ? "right" : "wrong"
+        const newWeighting = this._memoryModel.weighting + score
+        this._sendUpdateInfoCache(type, newWeighting)
 
         realm.write(() => {
-            this._memoryModel.weighting = this._memoryModel.weighting + score
+            this._memoryModel.weighting = newWeighting
             this._memoryModel.appearedSeveralTime += 1
             this._memoryModel.lastBySelectedTime = Date.parse(new Date())
             this._memoryModel.records.push({
@@ -210,8 +214,8 @@ export default class Detail extends Component {
 
     /**
      * 多选题，添加答案
-     * 
-     * @param {any} option 
+     *
+     * @param {any} option
      * @memberof Detail
      */
     _multipleSelect(option) {
@@ -256,7 +260,7 @@ export default class Detail extends Component {
 
     /**
      * 多选题确认按钮
-     * 
+     *
      * @memberof Detail
      */
     _doneSelect() {
@@ -271,7 +275,7 @@ export default class Detail extends Component {
         let score = 7 - this._memoryModel.appearedSeveralTime
         score = Math.max(1, score)
         var isRight = sortedSelection && answer.toString()
-        
+
         realm.write(() => {
             this._memoryModel.weighting = this._memoryModel.weighting + score
             this._memoryModel.appearedSeveralTime += 1
@@ -287,6 +291,22 @@ export default class Detail extends Component {
         this.props.navigation.setParams({
             nextButtonDisable: false,
         });
+    }
+
+    _sendUpdateInfoCache(type, weighted) {
+
+        var user = realmManager.getCurrentUser()
+        Http.post('api/getUpdateInfoCache', {
+            user_id: user.userId,
+            bankname: user.currentExamId,
+            qname: this._memoryModel.questionPaper.question_number,
+            type: type,
+            weighted: weighted,
+        }).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     _renderAnalysis() {
@@ -325,9 +345,9 @@ export default class Detail extends Component {
                 {
                     splits.map((content, index) => {
                         if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                        
+
                             const url = this._handleImageURL(content)
-                            
+
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
                             let scale = (window.width - 60) / size[1]

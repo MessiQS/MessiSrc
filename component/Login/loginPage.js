@@ -18,6 +18,7 @@ import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';
 import SamsoButton  from '../usual/button';
 import styles from "./loginPageCss";
+import realmManager from "../Realm/realmManager";
 
 class LoginPage extends React.Component {
 
@@ -58,11 +59,12 @@ class LoginPage extends React.Component {
         Http.post('api/login', {
             "account": account,
             "password": password
-        }).then(({ type, data, token }) => {
+        }).then(({ type, data }) => {
+            console.log("api/login",type, data)
             if (type) {
                 //将账号和token存到本地存储
                 let setToken = Storage.multiSet([
-                    ['accountToken', token],
+                    ['accountToken', data.token],
                     ['account', account]
                 ]);
                 setToken.then(res => {
@@ -71,10 +73,21 @@ class LoginPage extends React.Component {
                 }, err => {
                     Alert('登录错误，请重试')
                 })
+                const examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+                var user = {
+                    userId: data.user_id,
+                    token: data.token,
+                    examIds: examIdJson
+                }
+                realmManager.createUser(user)
+
             } else {
                 //此处提示错误信息
                 Alert.alert(data);
             }
+        })
+        .catch(error => {
+            console.log("api/login", error)
         })
     };
 

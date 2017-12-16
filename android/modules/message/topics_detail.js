@@ -19,9 +19,6 @@ export default class TopicsDetail extends React.Component {
     constructor(props) {
         super(props)
 
-        // this.props.navigation.setParams({ 
-        //     headerTitle: this.state.detail.questionPaper.title,
-        // })
         const array = this.props.navigation.state.params.section.item.data
         array.sort(function(a, b) {
             if (a.value > b.value) {
@@ -39,27 +36,22 @@ export default class TopicsDetail extends React.Component {
     }
 
     _buy(item) {
-        console.log(item)
-        MessageService.downloadPaper({
-            paperId: item.id
-        }).then((json) => {
-
-            realmManager.createQuestion(json)
-            .then((data) => {
-                realmManager.createMemoryModels(data)
-                .then((memoryModels) => {
-
-
-                }).catch((error) => {
-                    console.log("createMemoryModels error " + error )
-                })
-
-            }).catch((error) => {
-                console.log(error)
-            })
+        this.setState({
+            loading: true
         })
-        .catch((error) => {
-            alert(error)
+        const json = await MessageService.downloadPaper({
+            paperId: item.id
+        });
+        const papers = await realmManager.createQuestion(json)
+        const memoryModels = await realmManager.createMemoryModels(papers)
+        await realmManager.createExaminationPaper({
+            id: item.id,
+            title: item.value,
+            questionPapers: papers
+        })
+
+        this.setState({
+            loading: false
         })
     }
 

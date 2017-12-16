@@ -8,7 +8,11 @@ import {
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
+import realm from '../../../component/Realm/realm';
 import Progress from '../../../component/progress/progress'
+import HTTP from "../../../service/http"
+import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
+import Storage from "../../../service/http";
 
 export default class TopicsDetail extends React.Component {
 
@@ -57,42 +61,61 @@ export default class TopicsDetail extends React.Component {
         })
     }
 
-    _buy(item) {
-        this.setState ({
+    async _buy(item) {
+        this.setState({
             loading: true
         })
-        MessageService.downloadPaper({
-            paperId: item.id
-        }).then((json) => {
-
-            realmManager.createQuestion(json)
-                .then((data) => {
-                    realmManager.createMemoryModels(data)
-                        .then((memoryModels) => {
-                            this.setState ({
-                                loading: false
-                            })
-
-                        }).catch((error) => {
-                            this.setState ({
-                                loading: false
-                            })
-                            console.log("createMemoryModels error " + error)
-                        })
-
-                }).catch((error) => {
-                    console.log(error)
-                })
+        
+        const user = realmManager.getCurrentUser()
+        
+        const res = await HTTP.post("api/updateUserBuyInfo",{
+            "user_id":user.userId,
+            "bankname":item.id
         })
-            .catch((error) => {
-                alert(error)
+        if (res.type == true) {
+            const user = realmManager.getCurrentUser()
+            var examIdsjson = []
+            if (!!user.examIds) {
+                examIdsjson = JSON.parse(user.examIds)
+            }
+            examIdsjson.push(item.id)
+            try {
+                realm.write(() => {
+                    user.examIds = JSON.stringify(examIdsjson)
+                    user.currentExamId = item.id
+                    user.currentExamTitle = item.value
+                })
+            } catch (e) {
+                console.log("buy", e)
+            }
+
+            const json = await MessageService.downloadPaper({
+                paperId: item.id
+            });
+            const papers = await realmManager.createQuestion(json)
+            const memoryModels = await realmManager.createMemoryModels(papers)
+            await realmManager.createExaminationPaper({
+                id: item.id,
+                title: item.value,
+                questionPapers: papers,
+                year: "",
+                province: "",
+                version: "",
+                purchased: true,
+                price: 0,
             })
+        }
+        console.log("api/updateUserBuyInfo", res)
+        
+        this.setState({
+            loading: false
+        })
     }
 
     _renderProgress() {
         if (this.state.loading == true) {
-            return(
-                <Progress/>
+            return (
+                <Progress />
             )
         } else {
             return null
@@ -126,7 +149,7 @@ export default class TopicsDetail extends React.Component {
     render() {
         return (
             <View>
-                { this._renderProgress() }
+                {this._renderProgress()}
                 <FlatList
                     ListHeaderComponent={this._renderHeader()}
                     data={this.state.data}
