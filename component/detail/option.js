@@ -52,10 +52,8 @@ export default class Option extends React.Component {
     _afterSelectText() {
 
         const { status, selection } = this.props
-        if (status == "normal") {
-        }
-        if (status == "selected") {
-        }
+        if (status == "normal") { }
+        if (status == "selected") { }
         if (status == "right") {
             return { color: "#8FDA3C" }
         }

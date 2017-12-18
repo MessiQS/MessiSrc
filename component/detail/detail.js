@@ -90,10 +90,7 @@ export default class Detail extends Component {
 
     constructor(props) {
         super(props);
-        this._memoryModel = realmManager.getMemoryModels()
-            .filtered("weighting < 7")
-            .sorted('lastBySelectedTime', false)[0]
-
+        this.updateMemoryModel()
         this.state = {
             detail: this._memoryModel,
             isSelected: false,
@@ -128,9 +125,13 @@ export default class Detail extends Component {
 
     nextQuestion() {
 
-        this._memoryModel = realmManager.getMemoryModels()
-            .filtered("weighting < 7")
-            .sorted('lastBySelectedTime', false)[0]
+        this.updateMemoryModel()
+        
+        this.props.navigation.setParams({
+            headerTitle: this._memoryModel.questionPaper.category,
+            nextButtonDisable: true,
+        });
+
         this.setState({
             detail: this._memoryModel,
             isSelected: false,
@@ -140,10 +141,15 @@ export default class Detail extends Component {
             C_Status: ItemStatus.NORMAL,
             D_Status: ItemStatus.NORMAL,
         })
-        this.props.navigation.setParams({
-            headerTitle: this._memoryModel.questionPaper.category,
-            nextButtonDisable: true,
-        });
+    }
+
+    updateMemoryModel() {
+
+        this._memoryModel = realmManager.getMemoryModels()
+        .filtered("weighting < 7")
+        .sorted('lastBySelectedTime', false)[0]
+
+        
     }
 
     getRandomInt(min, max) {
@@ -168,11 +174,11 @@ export default class Detail extends Component {
         const type = isRight == true ? "right" : "wrong"
         const newWeighting = this._memoryModel.weighting + score
         this._sendUpdateInfoCache(type, newWeighting)
-
+        var time = new Date()
         realm.write(() => {
             this._memoryModel.weighting = newWeighting
             this._memoryModel.appearedSeveralTime += 1
-            this._memoryModel.lastBySelectedTime = Date.parse(new Date())
+            this._memoryModel.lastBySelectedTime = time.getTime()
             this._memoryModel.records.push({
                 select: option,
                 isRight: isRight

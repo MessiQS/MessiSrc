@@ -44,7 +44,7 @@ const header = {
         height: 18,
     },
     more: {
-        width:20, 
+        width:20,
     }
 }
 var daysTransfer = {
@@ -62,11 +62,13 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             current_exam: null,
             newQuestionCount: null,
             wrongQuestionCount: null,
+            beforeDaysAverage: null,
+            lastSelectDate: null,
         };
     }
 
@@ -99,26 +101,41 @@ export default class Find extends Component {
     })
 
     componentWillMount() {
-        
 
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
         });
     }
 
-    componentWillUpdate() {
-        Storage.getItem("current_exam").then(res => {
-            this.setState({
-                current_exam: res,
-                newQuestionCount: realmManager.getNewQuestionCount(), 
-                wrongQuestionCount: realmManager.getWrongQuestionCount(),
-            })
+    componentWillUpdate(nextProps, nextState) {
+        
+        const user = realmManager.getCurrentUser()
+        let info = realmManager.getFindInfo()
+        this.setState({
+            current_exam: user.currentExamTitle,
+            newQuestionCount: info.newQuestionCount,
+            wrongQuestionCount: info.wrongQuestionCount,
+            beforeDaysAverage: info.beforeDaysAverage,
+            lastSelectDate: info.lastSelectDate
         })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+
+        const user = realmManager.getCurrentUser()
+        let info = realmManager.getFindInfo()
+
+        var { newQuestionCount, wrongQuestionCount, current_exam, lastSelectDate } = this.state
+
+        return ( newQuestionCount != info.newQuestionCount ||
+            wrongQuestionCount != info.wrongQuestionCount ||
+            current_exam != user.currentExamTitle ||
+            lastSelectDate != user.lastSelectDate)
     }
 
     componentDidMount() {
         realmManager.updateSchedule((finished) => {
-            
+
         })
     }
 
@@ -139,7 +156,7 @@ export default class Find extends Component {
 
     _renderGetChatNewPaper() {
         const newPaperOption = newPaper.option;
-        
+
         let weekArray = []
         for (var i = 5; i > 0; i--) {
             let day = moment().subtract(i, 'days').format('dddd')
@@ -153,7 +170,7 @@ export default class Find extends Component {
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
                         <Text style={styles.h4}>过去5日刷题亮统计</Text>
-                        <Text style={styles.psmall}>平均值:318</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.lastSelectDate}</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
                         <Text style={[styles.rightTitle, {color: "#1495EB"}]}>刷新题</Text>
@@ -180,12 +197,12 @@ export default class Find extends Component {
             <View style={[styles.calendarView, {marginTop:4}]}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>未来5日数量统计</Text>
-                        <Text style={styles.psmall}>平均值:318</Text>
+                        <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                        <Text style={styles.psmall}>最后刷题日:318</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
                         <Text style={[styles.rightTitle, {color: "#FF5B29"}]}>刷错题</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
+                        <Text style={styles.rightDetail}>最后刷题日: {this.state.lastSelectDate}</Text>
                     </View>
                     <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -193,7 +210,7 @@ export default class Find extends Component {
             </View>
         )
     }
-    
+
     render() {
         return (
             <View style={styles.container}>
@@ -255,7 +272,7 @@ const styles = {
         color: "#8E9091"
     },
     circleChart: {
-        position: 'absolute',     
+        position: 'absolute',
         right: 40,
         width: 96,
         height: 96,
@@ -312,5 +329,5 @@ const styles = {
         marginTop: 9,
         fontSize: 12,
         color: "#8E9091"
-    }  
+    }
 }

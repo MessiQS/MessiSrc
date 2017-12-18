@@ -112,8 +112,6 @@ Schedule.schema = {
 
         id: 'string',
         date: { type: 'date' },
-        learnTotal: { type: 'int', default: 0 },                      /// 需要被
-        needLearnTotal: { type: 'int', default: 0 },                  /// 需要被记忆数量 (抗遗忘刷题数量)
         memoryModels: { type: 'list', objectType: 'MemoryModel' },    /// 记忆模型库
     }
 }
