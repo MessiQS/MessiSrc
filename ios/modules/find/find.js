@@ -94,7 +94,7 @@ export default class Find extends Component {
         const user = realmManager.getCurrentUser()
         let info = realmManager.getFindInfo()
         this.state = {
-            currentExam: user.currentExamTitle,
+            // currentExam: user.currentExamTitle,
             newQuestionCount: info.newQuestionCount,
             wrongQuestionCount: info.wrongQuestionCount,
             newLastSelectDate: info.newLastSelectDate,
@@ -120,7 +120,7 @@ export default class Find extends Component {
             const user = realmManager.getCurrentUser()
             let info = realmManager.getFindInfo()
             this.setState({
-                currentExam: user.currentExamTitle,
+                // currentExam: user.currentExamTitle,
                 newQuestionCount: info.newQuestionCount,
                 wrongQuestionCount: info.wrongQuestionCount,
                 newLastSelectDate: info.newLastSelectDate,
