@@ -209,12 +209,22 @@ class RealmManager {
         object.wrongQuestionCount = models.filtered('appearedSeveralTime>0 && weighting<7').length;
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
-        var fiveDayAgo = timeStamp - 86400 * 5
-
+        var todayNumber = models.filtered('lastBySelectedTime>' + timeStamp).length
+        console.log("todayNumber", todayNumber)
         var finishedModels = models.filtered('weighting>=7')
         var unfishedModels = models.filtered('weighting<7')
         var x = finishedModels.length
         var y = unfishedModels.length
+
+        var futureArray = []
+        futureArray.push(todayNumber)
+        futureArray.push(x+(0.6*y))
+        futureArray.push(x+(0.45*y))
+        futureArray.push(x+(0.36*y))
+        futureArray.push(x+(0.34*y))
+        futureArray.push(x+(0.28*y))
+
+        object.futureArray = futureArray
 
         var sortedModels = unfishedModels
 
@@ -231,6 +241,8 @@ class RealmManager {
             var date = new Date(model.lastBySelectedTime)
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
+
+
 
         return object
     }

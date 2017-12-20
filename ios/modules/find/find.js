@@ -98,7 +98,8 @@ export default class Find extends Component {
             newQuestionCount: info.newQuestionCount,
             wrongQuestionCount: info.wrongQuestionCount,
             newLastSelectDate: info.newLastSelectDate,
-            wrongLastSelectDate: info.wrongLastSelectDate
+            wrongLastSelectDate: info.wrongLastSelectDate,
+            futureArray: info.futureArray
         }
 
         this.onMessage();
@@ -123,7 +124,7 @@ export default class Find extends Component {
                 wrongQuestionCount: info.wrongQuestionCount,
                 newLastSelectDate: info.newLastSelectDate,
                 wrongLastSelectDate: info.wrongLastSelectDate,
-                beforeData: info.beforeData
+                futureArray: info.futureArray
             })
         })
     }
@@ -181,7 +182,7 @@ export default class Find extends Component {
             weekArray.push(d)
         }
         newPaperOption.xAxis[0].data = weekArray
-        newPaperOption.series[0].data = this.state
+        newPaperOption.series[0].data = this.state.futureArray
 
         return (
             <View style={[styles.calendarView, { marginTop: 4 }]}>
