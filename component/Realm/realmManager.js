@@ -210,7 +210,6 @@ class RealmManager {
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         var todayNumber = models.filtered('lastBySelectedTime>' + timeStamp).length
-        console.log("todayNumber", todayNumber)
         var finishedModels = models.filtered('weighting>=7')
         var unfishedModels = models.filtered('weighting<7')
         var x = finishedModels.length
@@ -225,6 +224,22 @@ class RealmManager {
         futureArray.push(x+(0.28*y))
 
         object.futureArray = futureArray
+
+        var beforeArray = []
+        /// 五天前
+        var before_5 = models.filtered('lastBySelectedTime<' + (timeStamp - 4 * 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 5 * 24 * 60 * 60)).length
+        beforeArray.push(before_5)
+        var before_4 = models.filtered('lastBySelectedTime<' + (timeStamp - 3 * 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 4 * 24 * 60 * 60)).length
+        beforeArray.push(before_4)
+        var before_3 = models.filtered('lastBySelectedTime<' + (timeStamp - 2 * 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 3 * 24 * 60 * 60)).length
+        beforeArray.push(before_3)
+        var before_2 = models.filtered('lastBySelectedTime<' + (timeStamp - 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 2 * 24 * 60 * 60)).length
+        beforeArray.push(before_2)
+        var before_1 = models.filtered('lastBySelectedTime<' + timeStamp + "&&" + 'lastBySelectedTime>' + (timeStamp - 24 * 60 * 60)).length
+        beforeArray.push(before_1)
+        beforeArray.push(todayNumber)
+        object.beforeArray = beforeArray
+
 
         var sortedModels = unfishedModels
 
