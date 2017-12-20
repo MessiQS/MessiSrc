@@ -211,73 +211,56 @@ class RealmManager {
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         var fiveDayAgo = timeStamp - 86400 * 5
 
-        object.beforeDaysAverage = models.filtered('lastBySelectedTime>' + fiveDayAgo + '&&' + 'lastBySelectedTime<' + timeStamp) / 5
-
         var finishedModels = models.filtered('weighting>=7')
         var unfishedModels = models.filtered('weighting<7')
         var x = finishedModels.length
         var y = unfishedModels.length
 
-
         var sortedModels = unfishedModels
-        console.log("sortedModels", sortedModels)
-        var lastModel = null
-        if (sortedModels.length > 0) {
 
-            lastModel = sortedModels[0]
+        object.newLastSelectDate = "暂无数据"
+        object.wrongLastSelectDate = "暂无数据"
+
+        if (unfishedModels.length != 0) {
+            var model = unfishedModels[0]
+            var date = new Date(model.lastBySelectedTime)
+            object.newLastSelectDate = this.getDateFormat(date)
         }
-        object.lastSelectDate = moment(lastModel.lastBySelectedTime.toString(), "X").startOf('day').fromNow(); 
-        console.log("time", object.lastSelectDate)
-
-        // object.lastSelectDate = ""
-        // console.log("lastModel", lastModel)
-        // if (lastModel != null) {
-
-        //     var date = new Date(lastModel.lastBySelectedTime)
-        //     object.lastSelectDate = getDateFormat(date)
-
-        //     var selectTime = lastModel.lastBySelectedTime
-        //     if (timeStamp < selectTime) {
-        //         object.lastSelectDate = "今日"
-        //     }
-
-        //     var oneDayAgo = timeStamp - 86400 * 1
-        //     if (timeStamp > selectTime && selectTime > oneDayAgo) {
-        //         object.lastSelectDate = "昨日"
-        //     }
-
-        //     if (lastModel.lastBySelectedTime == 0) {
-        //         object.lastSelectDate = "暂无数据"
-        //     }
-        // }
+        if (finishedModels.length != 0) {
+            var model = finishedModels[0]
+            var date = new Date(model.lastBySelectedTime)
+            object.wrongLastSelectDate = this.getDateFormat(date)
+        }
 
         return object
     }
 
     getDateFormat(date) {
 
-        // 获取当前月份
-        var nowMonth = date.getMonth() + 1;
-
-        // 获取当前是几号
-        var strDate = date.getDate();
-
-        // 添加分隔符“-”
-        var seperator = "-";
-
-        // 对月份进行处理，1-9月在前面添加一个“0”
-        if (nowMonth >= 1 && nowMonth <= 9) {
-            nowMonth = "0" + nowMonth;
-        }
-
-        // 对月份进行处理，1-9号在前面添加一个“0”
-        if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
-        }
-
-        // 最后拼接字符串，得到一个格式为(yyyy-MM-dd)的日期
-        return date.getFullYear() + seperator + nowMonth + seperator + strDate;
-
+        return moment(date).calendar(null, {
+            sameDay: '今日',
+            lastDay: '昨日',
+            lastWeek: '1周前',
+            sameElse(moment_input) {
+                
+                /// 当前年份减输入年份
+                var diff = moment().diff(moment_input, 'days')
+                if (diff<7) {
+                    return diff + "天前"
+                } 
+                var diff_1 = moment().diff(moment_input, 'weeks')
+                if (diff_1<=5) {
+                    return diff_1 + "周前"
+                }
+                var diff_2 = moment().diff(moment_input, 'months')
+                if (diff_2<=12) {
+                    return diff_2 + "月前"
+                }
+                var diff_3 = moment().diff(moment_input, 'months')
+                
+                return diff_3 + "年前"
+            },
+        });
     }
 
     deleteAllRealmData() {

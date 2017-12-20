@@ -20,6 +20,7 @@ import moment from 'moment';
 import realmManager from "../../../component/Realm/realmManager";
 import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
+import runtime from "../../../service/runtime";
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -44,7 +45,7 @@ const header = {
         height: 18,
     },
     more: {
-        width:20,
+        width: 20,
     }
 }
 var daysTransfer = {
@@ -59,18 +60,6 @@ var daysTransfer = {
 
 
 export default class Find extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            current_exam: null,
-            newQuestionCount: null,
-            wrongQuestionCount: null,
-            beforeDaysAverage: null,
-            lastSelectDate: null,
-        };
-    }
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         headerStyle: {
@@ -100,42 +89,42 @@ export default class Find extends Component {
             </View>)
     })
 
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        const user = realmManager.getCurrentUser()
+        let info = realmManager.getFindInfo()
+        this.state = {
+            currentExam: user.currentExamTitle,
+            newQuestionCount: info.newQuestionCount,
+            wrongQuestionCount: info.wrongQuestionCount,
+            newLastSelectDate: info.newLastSelectDate,
+            wrongLastSelectDate: info.wrongLastSelectDate
+        }
+
+        this.onMessage();
+    }
+
+    componentDidMount() {
 
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
         });
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        
-        const user = realmManager.getCurrentUser()
-        let info = realmManager.getFindInfo()
-        this.setState({
-            current_exam: user.currentExamTitle,
-            newQuestionCount: info.newQuestionCount,
-            wrongQuestionCount: info.wrongQuestionCount,
-            beforeDaysAverage: info.beforeDaysAverage,
-            lastSelectDate: info.lastSelectDate
-        })
-    }
+    onMessage() {
 
-    shouldComponentUpdate(nextProps, nextState) {
+        runtime.on("database_change", () => {
 
-        const user = realmManager.getCurrentUser()
-        let info = realmManager.getFindInfo()
-
-        var { newQuestionCount, wrongQuestionCount, current_exam, lastSelectDate } = this.state
-
-        return ( newQuestionCount != info.newQuestionCount ||
-            wrongQuestionCount != info.wrongQuestionCount ||
-            current_exam != user.currentExamTitle ||
-            lastSelectDate != user.lastSelectDate)
-    }
-
-    componentDidMount() {
-        realmManager.updateSchedule((finished) => {
-
+            const user = realmManager.getCurrentUser()
+            let info = realmManager.getFindInfo()
+            this.setState({
+                currentExam: user.currentExamTitle,
+                newQuestionCount: info.newQuestionCount,
+                wrongQuestionCount: info.wrongQuestionCount,
+                newLastSelectDate: info.newLastSelectDate,
+                wrongLastSelectDate: info.wrongLastSelectDate,
+                beforeData: info.beforeData
+            })
         })
     }
 
@@ -170,13 +159,13 @@ export default class Find extends Component {
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
                         <Text style={styles.h4}>过去5日刷题亮统计</Text>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.lastSelectDate}</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, {color: "#1495EB"}]}>刷新题</Text>
+                        <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
                     </View>
-                    <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -192,19 +181,20 @@ export default class Find extends Component {
             weekArray.push(d)
         }
         newPaperOption.xAxis[0].data = weekArray
+        newPaperOption.series[0].data = this.state
 
         return (
-            <View style={[styles.calendarView, {marginTop:4}]}>
+            <View style={[styles.calendarView, { marginTop: 4 }]}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
                         <Text style={styles.h4}>未来5日遗忘数量统计</Text>
-                        <Text style={styles.psmall}>最后刷题日:318</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, {color: "#FF5B29"}]}>刷错题</Text>
-                        <Text style={styles.rightDetail}>最后刷题日: {this.state.lastSelectDate}</Text>
+                        <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
                     </View>
-                    <Image style={[styles.arrow, {height: 74}]} source={require("../../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -217,7 +207,7 @@ export default class Find extends Component {
                 <ScrollView>
                     <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.text}>
-                            <Text style={styles.h2}>{this.state.current_exam}</Text>
+                            <Text style={styles.h2}>{this.state.currentExam}</Text>
                             <Text style={styles.p}>历年真题</Text>
                         </View>
                         <View style={styles.circleChart}>
@@ -290,7 +280,7 @@ const styles = {
         position: 'relative',
         paddingTop: 20,
         backgroundColor: '#fff',
-        marginBottom:8
+        marginBottom: 8
     },
     chartTitle: {
         flexDirection: "row",

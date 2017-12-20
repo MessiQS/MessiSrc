@@ -22,6 +22,7 @@ import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
 import key from "../../service/path"
 import Http from '../../service/http';
+import runtime from '../../service/runtime';
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -184,6 +185,8 @@ export default class Detail extends Component {
                 isRight: isRight
             })
         });
+
+        runtime.emit("database_change");
 
         if (option == "A") {
             this.setState({
