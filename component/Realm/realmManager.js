@@ -205,6 +205,7 @@ class RealmManager {
     getFindInfo() {
         let object = new Object()
         let models = realm.objects('MemoryModel')
+
         object.newQuestionCount = models.filtered('appearedSeveralTime=0').length;
         object.wrongQuestionCount = models.filtered('appearedSeveralTime>0 && weighting<7').length;
 
@@ -240,11 +241,20 @@ class RealmManager {
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
 
+        console.log("----------------")
+        var a = models.filtered('records.Count() != 0')
+        console.log("a.length", a.length)
+        console.log("----------------")
 
-        var sortedModels = unfishedModels
+        // var sortedModels = models.sorted(function(a, b) {
+        //     return a.lastBySelectedTime.toString() < b.lastBySelectedTime.toString()
+        // })
+        // console.log("sortedModels", sortedModels)
 
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
+
+
 
         if (unfishedModels.length != 0) {
             var model = unfishedModels[0]
@@ -256,8 +266,6 @@ class RealmManager {
             var date = new Date(model.lastBySelectedTime)
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
-
-
 
         return object
     }

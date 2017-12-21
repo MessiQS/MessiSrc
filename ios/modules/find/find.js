@@ -158,6 +158,7 @@ export default class Find extends Component {
         weekArray.push('今日')
         newPaperOption.xAxis[0].data = weekArray
         newPaperOption.series[0].data = this.state.beforeArray
+
         return (
             <View style={styles.calendarView}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
