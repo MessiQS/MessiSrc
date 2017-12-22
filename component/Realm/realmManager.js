@@ -241,28 +241,31 @@ class RealmManager {
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
 
-        console.log("----------------")
-        var a = models.filtered('records.Count() != 0')
-        console.log("a.length", a.length)
-        console.log("----------------")
 
-        // var sortedModels = models.sorted(function(a, b) {
-        //     return a.lastBySelectedTime.toString() < b.lastBySelectedTime.toString()
-        // })
-        // console.log("sortedModels", sortedModels)
+        var a = []
+        var b = []
 
+        models.forEach(value => {
+            if (value.records == []) {
+                a.push(value)
+            } else {
+                b.push(value)
+            }
+        })
+        
+       console.log("a",a,"b",b)
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
 
 
-        if (unfishedModels.length != 0) {
-            var model = unfishedModels[0]
+        if (a.length != 0) {
+            var model = a[0]
             var date = new Date(model.lastBySelectedTime)
             object.newLastSelectDate = this.getDateFormat(date)
         }
-        if (finishedModels.length != 0) {
-            var model = finishedModels[0]
+        if (b.length != 0) {
+            var model = b[0]
             var date = new Date(model.lastBySelectedTime)
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
