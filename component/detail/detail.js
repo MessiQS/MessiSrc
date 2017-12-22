@@ -149,8 +149,6 @@ export default class Detail extends Component {
         this._memoryModel = realmManager.getMemoryModels()
         .filtered("weighting < 7")
         .sorted('lastBySelectedTime', false)[0]
-
-        
     }
 
     getRandomInt(min, max) {

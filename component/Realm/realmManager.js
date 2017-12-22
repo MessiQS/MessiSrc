@@ -118,7 +118,7 @@ class RealmManager {
 
             return null;
         } else {
-            var user = users[0]
+            // var user = users[0]
 
             // if (user.currentExamTitle == "") {
             //     user.currentExamTitle = "当前暂无题库信息"
@@ -266,6 +266,8 @@ class RealmManager {
             var date = new Date(model.lastBySelectedTime)
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
+
+        object.pieArray = [{value:x}, {value:y}, {value:a.length}];
 
         return object
     }

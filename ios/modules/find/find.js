@@ -94,13 +94,14 @@ export default class Find extends Component {
         const user = realmManager.getCurrentUser()
         let info = realmManager.getFindInfo()
         this.state = {
-            // currentExam: user.currentExamTitle,
+            currentExam: null,
             newQuestionCount: info.newQuestionCount,
             wrongQuestionCount: info.wrongQuestionCount,
             newLastSelectDate: info.newLastSelectDate,
             wrongLastSelectDate: info.wrongLastSelectDate,
             futureArray: info.futureArray,
-            beforeArray: info.beforeArray
+            beforeArray: info.beforeArray,
+            pieArray: info.pieArray,
         }
 
         this.onMessage();
@@ -126,7 +127,8 @@ export default class Find extends Component {
                 newLastSelectDate: info.newLastSelectDate,
                 wrongLastSelectDate: info.wrongLastSelectDate,
                 futureArray: info.futureArray,
-                beforeArray: info.beforeArray
+                beforeArray: info.beforeArray,
+                pieArray: info.pieArray,
             })
         })
     }
@@ -207,6 +209,10 @@ export default class Find extends Component {
     }
 
     render() {
+
+        const option = pieOption.option
+        option.series[0].data = this.state.pieArray
+
         return (
             <View style={styles.container}>
                 <ScrollView>
