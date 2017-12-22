@@ -109,24 +109,20 @@ class RealmManager {
         }
     }
 
-    /// 更新进程
-    updateSchedule(callback) {
-
-    }
-
     /// 查询数据
-
     // 获取当前用户
     getCurrentUser() {
 
         let users = realm.objects('User');
-        // console.log("user", users)
         if (users.length == 0) {
 
             return null;
-
         } else {
+            var user = users[0]
 
+            // if (user.currentExamTitle == "") {
+            //     user.currentExamTitle = "当前暂无题库信息"
+            // }
             return users[0];
         }
     }
@@ -198,16 +194,10 @@ class RealmManager {
         return models.length
     }
 
-    getPassFiveDaysAverage() {
-
-    }
-
     getFindInfo() {
+
         let object = new Object()
         let models = realm.objects('MemoryModel')
-
-        object.newQuestionCount = models.filtered('appearedSeveralTime=0').length;
-        object.wrongQuestionCount = models.filtered('appearedSeveralTime>0 && weighting<7').length;
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         var todayNumber = models.filtered('lastBySelectedTime>' + timeStamp).length
@@ -241,31 +231,38 @@ class RealmManager {
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
 
-
         var a = []
         var b = []
+        var c = []
 
         models.forEach(value => {
-            if (value.records == []) {
+            if (value.records.length == 0) {
                 a.push(value)
-            } else {
+            } else if (value.records.length == 1) {
                 b.push(value)
+            } else {
+                c.push(value)
             }
         })
-        
-       console.log("a",a,"b",b)
+
+        object.newQuestionCount = a.length
+        object.wrongQuestionCount = b.length + c.length
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
-
-
-        if (a.length != 0) {
-            var model = a[0]
+        if (b.length != 0) {
+            b.sort(function(a1, b1) {
+                return b1.lastBySelectedTime - a1.lastBySelectedTime
+            })
+            var model = b[0]
             var date = new Date(model.lastBySelectedTime)
             object.newLastSelectDate = this.getDateFormat(date)
         }
-        if (b.length != 0) {
-            var model = b[0]
+        if (c.length != 0) {
+            c.sort(function(a1, b1) {
+                return b1.lastBySelectedTime - a1.lastBySelectedTime
+            })
+            var model = c[0]
             var date = new Date(model.lastBySelectedTime)
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
