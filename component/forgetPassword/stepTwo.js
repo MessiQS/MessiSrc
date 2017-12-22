@@ -15,7 +15,7 @@ export default class FPStepTwo extends Component {
         super(props);
     }
 
-    getCode() {
+    async getCode() {
         let { account } = this.props.navigation.state.params;
         if (!account) {
             console.log('请输入账号');
@@ -25,11 +25,11 @@ export default class FPStepTwo extends Component {
             */
             return;
         }
-        Http.post('api/getcode', {
+        const response = await Http.post('api/getcode', {
             account: account
-        }).then(response => {
-            console.log(response)
         })
+        console.log(new Date().getTime())
+        console.log(response)
     }
 
     changVericode(vericode) {
@@ -62,31 +62,31 @@ export default class FPStepTwo extends Component {
 
     render() {
         const inputPasswors = {
-            title:{
-                content:'请填写短信验证码'
+            title: {
+                content: '请填写短信验证码'
             },
-            text:{
-                content:'验证码',
-                style:{
-                    color:'#FF5B29'
+            text: {
+                content: '验证码',
+                style: {
+                    color: '#FF5B29'
                 }
             },
-            input:{
-                onChangeText:this.changVericode.bind(this),
-                placeholder:"请输入验证码",
-                maxLength:11
+            input: {
+                onChangeText: this.changVericode.bind(this),
+                placeholder: "请输入验证码",
+                maxLength: 11
             },
-            button:{
-                title:"下一步",
-                onPress:this.nextNaviegate.bind(this)
+            button: {
+                title: "下一步",
+                onPress: this.nextNaviegate.bind(this)
             },
-            varicode:{
-                title:'获取验证码',
-                onPress:this.getCode.bind(this)
+            varicode: {
+                title: '获取验证码',
+                onPress: this.getCode.bind(this)
             }
         }
         return (
-            <UserTemplate data = {inputPasswors} />
+            <UserTemplate data={inputPasswors} />
         );
     }
 }

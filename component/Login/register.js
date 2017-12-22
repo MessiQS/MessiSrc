@@ -20,7 +20,9 @@ class Register extends React.Component {
 
     constructor(...props) {
         super();
-        this.state = this.state || {};
+        this.state =  {
+            codeText:"获取验证码",
+        };
     }
     _onPressButton() {
         let { account, password, phone, vericode } = this.state;
@@ -69,7 +71,11 @@ class Register extends React.Component {
             "vericode": vericode
         })
     };
-    getCode() {
+    getCode = () => {
+        if(this.state.codeText !== "获取验证码"){
+            return;
+        }
+
         let { account } = this.state;
         if (!account) {
             Alert.alert('请输入账号')
@@ -78,11 +84,33 @@ class Register extends React.Component {
             Alert.alert('账号格式错误', '请输入11位手机号码');
             return;
         };
+
+        const timeout = (time) => {
+            time = parseInt(time,10) - 1;
+            if(time > 0 ){
+                this.setState({
+                    codeText:`(${time})`
+                })
+                this.timeouthash = setTimeout(timeout,1000,time)
+            }else{
+                this.timeouthash = null
+                this.setState({
+                    codeText:"获取验证码"
+                })
+            }
+        }
         Http.post('api/getcode', {
             account: account
         }).then(response => {
+            timeout(61)
             console.log(response)
         })
+    }
+
+    componentWillUnmount(){
+        if(this.timeouthash){
+            clearTimeout(this.timeouthash)
+        }
     }
 
     _sofewareAgreementClick() {
@@ -140,9 +168,9 @@ class Register extends React.Component {
                         maxLength={4}
                         onChangeText={variCode => this.codeChange(variCode)}></TextInput>
                     <ScrollView></ScrollView>
-                    <TouchableOpacity onPress={this.getCode.bind(this)}>
+                    <TouchableOpacity onPress={this.getCode}>
                         <View style={styles.vertificationCodeView}>
-                            <Text style={styles.vertificationCodeText}>获取验证码</Text>
+                            <Text style={styles.vertificationCodeText}>{this.state.codeText}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

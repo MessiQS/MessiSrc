@@ -8,13 +8,37 @@ import {
 } from 'react-native';
 import SamsoButton from './button';
 
+
+
+const textStyle = {
+    code: {
+        top: 55,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        right: 0,
+        borderWidth: 1,
+        borderColor: '#FF5B29',
+        borderRadius: 3,
+        paddingLeft: 5,
+        backgroundColor: '#fff',
+        paddingRight: 5,
+        height: 21,
+        width: 76,
+    },
+    text: {
+        fontSize: 7,
+        lineHeight: 7,
+        color: '#FF5B29'
+    }
+}
 export default class UserTemplate extends Component {
     constructor(props) {
         super(props);
-        this.data = this.props.data;
+        this.state = this.props.data;
     }
     isHaveTitle() {
-        const { title } = this.data;
+        const { title } = this.state;
         if (title) {
             return (
                 <Text style={styles.title}>{title.content}</Text>
@@ -26,7 +50,7 @@ export default class UserTemplate extends Component {
         if (initText) {
             text = initText;
         } else {
-            text = this.data.text;
+            text = this.state.text;
         };
         if (text) {
             return (
@@ -35,33 +59,44 @@ export default class UserTemplate extends Component {
         }
     }
     isHaveVaricode() {
-        const { varicode } = this.data;
-        const textStyle = {
-            code: {
-                top: 55,
-                position: 'absolute',
-                justifyContent: 'center',
-                alignItems: 'center',
-                right: 0,
-                borderWidth: 1,
-                borderColor: '#FF5B29',
-                borderRadius: 3,
-                paddingLeft: 5,
-                backgroundColor: '#fff',
-                paddingRight: 5,
-                height: 21,
-                width: 76,
-            },
-            text: {
-                fontSize: 7,
-                lineHeight: 7,
-                color: '#FF5B29'
+        const { varicode } = this.state;
+        if (!varicode) {
+            return;
+        }
+
+        const oldVaricode = this.props.data.varicode;
+
+        const timeout = (time) => {
+            time = parseInt(time, 10) - 1;
+            if (time > 0) {
+                this.setState({
+                    varicode: {
+                        ...varicode,
+                        title: `(${time})`
+                    }
+                })
+                this.timeouthash = setTimeout(timeout, 1000, time)
+            } else {
+                this.timeouthash = null
+                this.setState({
+                    ...varicode,
+                    title: oldVaricode.title
+                })
             }
         }
+
+        const getCode = async () => {
+            if (varicode.title !== oldVaricode.title) {
+                return;
+            }
+            await varicode.onPress();
+            timeout(61)
+        }
+
         if (varicode) {
             return (
                 <SamsoButton
-                    onPress={varicode.onPress}
+                    onPress={getCode}
                     title={varicode.title}
                     style={textStyle.code}
                     textStyle={textStyle.text}
@@ -69,8 +104,15 @@ export default class UserTemplate extends Component {
             )
         }
     }
+
+    componentWillUnmount() {
+        if (this.timeouthash) {
+            clearTimeout(this.timeouthash)
+        }
+    }
+
     inputRender(input) {
-        const { text } = this.data;
+        const { text } = this.state;
         if (Array.isArray(input)) {
             var inputArr = input.map((res, index) => {
 
@@ -115,7 +157,7 @@ export default class UserTemplate extends Component {
     }
     render() {
 
-        let { input, button } = this.data;
+        let { input, button } = this.state;
 
         if (!Array.isArray(input)) {
             input = Object.assign({
@@ -175,7 +217,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     passwordInputStyle: {
-        width:"100%",
+        width: "100%",
         paddingBottom: 0,
         paddingTop: 3,
         fontSize: 14,

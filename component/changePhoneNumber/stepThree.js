@@ -13,7 +13,7 @@ export default class CPStepThree extends React.Component {
         super(props);
     }
 
-    getCode() {
+    async getCode() {
         const { account } = this.props.navigation.state.params;
         if (!account) {
             Alert.alert('请输入账号')
@@ -22,14 +22,13 @@ export default class CPStepThree extends React.Component {
             Alert.alert('账号格式错误', '请输入11位手机号码');
             return;
         };
-        Http.post('api/getcode', {
+        const response = await Http.post('api/getcode', {
             account: account
-        }).then(response => {
-            this.setState({
-                account: account
-            })
-            console.log(response)
         })
+        this.setState({
+            account: account
+        })
+        console.log(response)
     }
     //输入验证码
     updateData(vericode) {
