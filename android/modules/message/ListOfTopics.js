@@ -26,13 +26,28 @@ export default class ListOfTopics extends React.Component {
     componentDidMount() {
         const that = this
         MessageService.getPaper().then(data => {
-            papers = [];
+            var papers = [];
             that.cacheData = data.data;
             papers = that.getCurrentPaper();
             that.setState({
                 papers: papers
             })
         });
+        const user = realmManager.getCurrentUser();
+        HTTP.post("api/getUserBuyInfo", {
+            user_id: user.userId
+        })
+        .then(value => {
+            if (value.type) {
+                let array = value.buyedInfo
+                realm.write(()=> {
+                    user.examIds = JSON.stringify(array)
+                })
+            }
+        })
+        .catch(err => {
+
+        })
     };
 
     static propTypes = {

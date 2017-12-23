@@ -44,6 +44,7 @@ export default class TopicsDetail extends React.Component {
 
     constructor(props) {
         super(props)
+        
         const array = this.props.navigation.state.params.section.item.data
         array.sort((a, b) => {
             if (a.title > b.title) {

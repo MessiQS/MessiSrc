@@ -41,7 +41,7 @@ export default class TopicsDetail extends React.Component {
         })
     }
 
-    _buy(item) {
+    async _buy(item) {
         this.setState({
             loading: true
         })
