@@ -45,11 +45,11 @@ export default class TopicsDetail extends React.Component {
     constructor(props) {
         super(props)
         const array = this.props.navigation.state.params.section.item.data
-        array.sort(function (a, b) {
-            if (a.value > b.value) {
+        array.sort((a, b) => {
+            if (a.title > b.title) {
                 return -1;
             }
-            if (a.value < b.value) {
+            if (a.title < b.title) {
                 return 1;
             }
             // a 必须等于 b
@@ -94,15 +94,16 @@ export default class TopicsDetail extends React.Component {
             });
             const papers = await realmManager.createQuestion(json)
             const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+
             await realmManager.createExaminationPaper({
                 id: item.id,
-                title: item.value,
+                title: item.title,
                 questionPapers: papers,
-                year: "",
-                province: "",
-                version: "",
+                year: item.year,
+                province: item.province,
+                version: item.version,
                 purchased: true,
-                price: 0,
+                price: parseFloat(item.price),
             })
         }
         console.log("api/updateUserBuyInfo", res)
@@ -134,7 +135,7 @@ export default class TopicsDetail extends React.Component {
     _renderItem(item) {
         return (
             <View style={styles.itemView}>
-                <Text style={styles.itemText}>{item.value}</Text>
+                <Text style={styles.itemText}>{item.title}</Text>
                 <TouchableOpacity onPress={() =>
                     this._buy(item)
                 }>

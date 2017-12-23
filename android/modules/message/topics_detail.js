@@ -5,10 +5,15 @@ import {
     View,
     TouchableOpacity,
     FlatList,
-    Vibration
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
+import realm from '../../../component/Realm/realm';
+import Progress from '../../../component/progress/progress'
+import HTTP from "../../../service/http"
+import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
+import Storage from "../../../service/http";
+
 
 export default class TopicsDetail extends React.Component {
 
@@ -20,36 +25,68 @@ export default class TopicsDetail extends React.Component {
         super(props)
 
         const array = this.props.navigation.state.params.section.item.data
-        array.sort(function(a, b) {
-            if (a.value > b.value) {
+        array.sort((a, b) => {
+            if (a.title > b.title) {
                 return -1;
-              }
-              if (a.value < b.value) {
+            }
+            if (a.title < b.title) {
                 return 1;
-              }
-              // a 必须等于 b
-              return 0;
+            }
+            // a 必须等于 b
+            return 0;
         })
-        this.state = {
-            data:array
-        }
+        this.state = ({
+            data: array,
+            loading: false,
+        })
     }
 
     _buy(item) {
         this.setState({
             loading: true
         })
-        const json = await MessageService.downloadPaper({
-            paperId: item.id
-        });
-        const papers = await realmManager.createQuestion(json)
-        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        await realmManager.createExaminationPaper({
-            id: item.id,
-            title: item.value,
-            questionPapers: papers
-        })
 
+        const user = realmManager.getCurrentUser()
+        const res = await HTTP.post("api/updateUserBuyInfo",{
+            "user_id":user.userId,
+            "bankname":item.id
+        })
+        if (res.type == true) {
+            const user = realmManager.getCurrentUser()
+            var examIdsjson = []
+            if (!!user.examIds) {
+                examIdsjson = JSON.parse(user.examIds)
+            }
+            examIdsjson.push(item.id)
+            try {
+                realm.write(() => {
+                    user.examIds = JSON.stringify(examIdsjson)
+                    user.currentExamId = item.id
+                    user.currentExamTitle = item.value
+                })
+            } catch (e) {
+                console.log("buy", e)
+            }
+
+            const json = await MessageService.downloadPaper({
+                paperId: item.id
+            });
+            const papers = await realmManager.createQuestion(json)
+            const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+
+            await realmManager.createExaminationPaper({
+                id: item.id,
+                title: item.title,
+                questionPapers: papers,
+                year: item.year,
+                province: item.province,
+                version: item.version,
+                purchased: true,
+                price: parseFloat(item.price),
+            })
+        }
+        console.log("api/updateUserBuyInfo", res)
+        
         this.setState({
             loading: false
         })

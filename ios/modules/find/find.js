@@ -96,6 +96,7 @@ export default class Find extends Component {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.state = {
                 currentExam: user.currentExamTitle,
+                currentExamDetail: "历年真题",
                 newQuestionCount: info.newQuestionCount,
                 wrongQuestionCount: info.wrongQuestionCount,
                 newLastSelectDate: info.newLastSelectDate,
@@ -106,17 +107,17 @@ export default class Find extends Component {
             }
         } else {
             this.state = {
-                currentExam: "",
+                currentExam: "当前暂无题库信息",
+                currentExamDetail: "请选择题库",
                 newQuestionCount: "0",
                 wrongQuestionCount: "0",
-                newLastSelectDate: "",
-                wrongLastSelectDate: "",
+                newLastSelectDate: "暂无数据",
+                wrongLastSelectDate: "暂无数据",
                 futureArray: [0, 0, 0, 0, 0, 0],
                 beforeArray: [0, 0, 0, 0, 0, 0],
                 pieArray: [{value:1}],
             }
         }
-        
 
         this.onMessage();
     }
@@ -233,7 +234,7 @@ export default class Find extends Component {
                     <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.text}>
                             <Text style={styles.h2}>{this.state.currentExam}</Text>
-                            <Text style={styles.p}>历年真题</Text>
+                            <Text style={styles.p}>{this.state.currentExamDetail}</Text>
                         </View>
                         <View style={styles.circleChart}>
                             <Echarts option={pieOption.option} height={75} />
@@ -305,7 +306,8 @@ const styles = {
         position: 'relative',
         paddingTop: 20,
         backgroundColor: '#fff',
-        marginBottom: 8
+        marginBottom: 8,
+        width: "100%"
     },
     chartTitle: {
         flexDirection: "row",

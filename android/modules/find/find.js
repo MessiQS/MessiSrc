@@ -43,12 +43,17 @@ const header = {
         width: 20,
     }
 }
-export default class Find extends Component {
+var daysTransfer = {
+    'Sunday': '周日',
+    'Monday': '周一',
+    'Tuesday': '周二',
+    'Wednesday': '周三',
+    'Thursday': '周四',
+    'Friday': '周五',
+    'Saturday': '周六'
+}
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => {
         return {
@@ -82,6 +87,46 @@ export default class Find extends Component {
         }
     }
 
+    constructor(props) {
+        super(props);
+        const user = realmManager.getCurrentUser()
+        if (!!user.currentExamId) {
+            let info = realmManager.getFindInfo(user.currentExamId)
+            this.state = {
+                currentExam: user.currentExamTitle,
+                currentExamDetail: "历年真题",
+                newQuestionCount: info.newQuestionCount,
+                wrongQuestionCount: info.wrongQuestionCount,
+                newLastSelectDate: info.newLastSelectDate,
+                wrongLastSelectDate: info.wrongLastSelectDate,
+                futureArray: info.futureArray,
+                beforeArray: info.beforeArray,
+                pieArray: info.pieArray,
+            }
+        } else {
+            this.state = {
+                currentExam: "当前暂无题库信息",
+                currentExamDetail: "请选择题库",
+                newQuestionCount: "0",
+                wrongQuestionCount: "0",
+                newLastSelectDate: "暂无数据",
+                wrongLastSelectDate: "暂无数据",
+                futureArray: [0, 0, 0, 0, 0, 0],
+                beforeArray: [0, 0, 0, 0, 0, 0],
+                pieArray: [{value:1}],
+            }
+        }
+
+        this.onMessage();
+    }
+
+    componentDidMount() {
+
+        this.props.navigation.setParams({
+            setting: this.routeToMine.bind(this)
+        });
+    }
+
     componentWillMount() {
         this.props.navigation.setParams({
             setting: this.routeToMine.bind(this)
@@ -105,16 +150,27 @@ export default class Find extends Component {
 
     _renderGetChatNewPaper() {
         const newPaperOption = newPaper.option;
+
+        let weekArray = []
+        for (var i = 5; i > 0; i--) {
+            let day = moment().subtract(i, 'days').format('dddd')
+            let d = daysTransfer[day]
+            weekArray.push(d)
+        }
+        weekArray.push('今日')
+        newPaperOption.xAxis[0].data = weekArray
+        newPaperOption.series[0].data = this.state.beforeArray
+
         return (
             <View style={styles.calendarView}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>过去6日刷题亮统计</Text>
-                        <Text style={styles.psmall}>平均值:318</Text>
+                        <Text style={styles.h4}>过去5日刷题亮统计</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
                         <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
-                        <Text style={styles.rightDetail}>剩余：75</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
                     </View>
                     <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -122,19 +178,28 @@ export default class Find extends Component {
             </View>
         )
     }
-
+   
     _renderGetChatRemember() {
         const newPaperOption = rememberPaper.option;
+        let weekArray = ['今日']
+        for (var i = 1; i < 6; i++) {
+            let day = moment().add(i, 'days').format('dddd')
+            let d = daysTransfer[day]
+            weekArray.push(d)
+        }
+        newPaperOption.xAxis[0].data = weekArray
+        newPaperOption.series[0].data = this.state.futureArray
+
         return (
             <View style={[styles.calendarView, { marginTop: 4 }]}>
                 <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>过去6日刷题亮统计</Text>
-                        <Text style={styles.psmall}>平均值:318</Text>
+                        <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
                     </View>
                     <View style={styles.chartTitleRight}>
                         <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
-                        <Text style={styles.rightDetail}>剩余：18</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
                     </View>
                     <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
@@ -144,13 +209,17 @@ export default class Find extends Component {
     }
 
     render() {
+
+        const option = pieOption.option
+        option.series[0].data = this.state.pieArray
+
         return (
             <View style={styles.container}>
                 <ScrollView>
                     <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.text}>
-                            <Text style={styles.h2}>2017年北京省考</Text>
-                            <Text style={styles.p}>历年真题</Text>
+                            <Text style={styles.h2}>{this.state.currentExam}</Text>
+                            <Text style={styles.p}>{this.state.currentExamDetail}</Text>
                         </View>
                         <View style={styles.circleChart}>
                             <Echarts option={pieOption.option} height={75} />
