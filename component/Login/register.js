@@ -15,6 +15,7 @@ import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MD5 from 'crypto-js/md5';
+import realmManager from "../Realm/realmManager";
 
 class Register extends React.Component {
 
@@ -24,7 +25,7 @@ class Register extends React.Component {
             codeText:"获取验证码",
         };
     }
-    _onPressButton() {
+    async _onPressButton() {
         let { account, password, phone, vericode } = this.state;
         if (!account) {
             Alert.alert('请输入账号')
@@ -41,15 +42,47 @@ class Register extends React.Component {
             return;
         }
         if (!AccountCheck.isValidPassword(password)) {
-            Alert.alert('密码格式错误', '请输入6-20位密码，不包含特殊字符');
+            Alert.alert('密码格式错误', '请输入6-20位字母数字组合，不包含特殊字符');
             return;
         }
-        Http.post('api/signin', {
-            account: account,
-            password: MD5(password).toString(),
-            phone: phone,
+        password = MD5(password).toString()
+        const responseData = await Http.post('api/signin', {
+            account,
+            password,
             vericode: vericode
-        }).then(console.log)
+        })
+        if(!!responseData.type){
+            Http.post('api/login', {
+                account,
+                password
+            }).then(({ type, data }) => {
+                const { navigate } = this.props.navigation;
+                if (type) {
+                    //将账号和token存到本地存储
+                    let setToken = Storage.multiSet([
+                        ['accountToken', data.token],
+                        ['account', account]
+                    ]);
+                    setToken.then(res => {
+                        Keyboard.dismiss()
+                        navigate('Home', {})
+                    }, err => {
+                        Alert('登录错误，请重试')
+                    })
+                    const examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+                    var user = {
+                        userId: data.user_id,
+                        token: data.token,
+                        examIds: examIdJson
+                    }
+                    realmManager.createUser(user)
+    
+                } else {
+                    //此处提示错误信息
+                    Alert.alert(data);
+                }
+            })
+        }
 
         // Keyboard.dismiss()
     };

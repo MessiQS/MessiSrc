@@ -10,8 +10,10 @@ import {
 import CollapseListView from "./collapseListView"
 import DictStyle from './dictStyle';
 import MessageService from "../../../service/message.service";
+import realm from '../../../component/Realm/realm';
 import realmManager from '../../../component/Realm/realmManager';
 import PropTypes from 'prop-types';
+import HTTP from '../../../service/http';
 
 export default class ListOfTopics extends React.Component {
 
@@ -19,7 +21,7 @@ export default class ListOfTopics extends React.Component {
         super(props);
         this.state = {
             papers: [],
-            arrow_image_list_source:[]
+            arrow_image_list_source: []
         };
     };
 
@@ -35,27 +37,26 @@ export default class ListOfTopics extends React.Component {
         });
         const user = realmManager.getCurrentUser();
         HTTP.post("api/getUserBuyInfo", {
-            user_id: user.userId
-        })
-        .then(value => {
+            user_id: user ? user.userId : "1312"
+        }).then(value => {
             if (value.type) {
                 let array = value.buyedInfo
-                realm.write(()=> {
+                realm.write(() => {
                     user.examIds = JSON.stringify(array)
                 })
             }
         })
-        .catch(err => {
+            .catch(err => {
 
-        })
+            })
     };
 
     static propTypes = {
         select_province: PropTypes.func,
     }
 
-    getCurrentPaper(){
-        return this.cacheData.map( (res,idx) => {
+    getCurrentPaper() {
+        return this.cacheData.map((res, idx) => {
             res.length = res.length || res.data.length;
             return res;
         })
@@ -69,12 +70,12 @@ export default class ListOfTopics extends React.Component {
         const that = this
         that.props.select_province(item);
     }
-    
+
     _renderItemView = (item) => {
         return (
             <TouchableOpacity onPress={() =>
-                        this._select_province(item)
-                    } >
+                this._select_province(item)
+            } >
                 <View style={styles.sectionViewStyle}>
                     <Text style={styles.sectionTitleStyle}>{item.item.title}</Text>
                     <Text style={styles.detailTitleStyle}>{item.item.length}套真题</Text>
@@ -87,8 +88,8 @@ export default class ListOfTopics extends React.Component {
     render() {
         return (
             <FlatList
-                data={this.state.papers}               
-                renderItem={(item)=>this._renderItemView(item)}
+                data={this.state.papers}
+                renderItem={(item) => this._renderItemView(item)}
                 keyExtractor={(item, index) => index}
             />
         )
