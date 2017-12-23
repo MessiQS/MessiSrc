@@ -16,6 +16,7 @@ import AccountCheck from '../../service/accountCheck';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MD5 from 'crypto-js/md5';
 import realmManager from "../Realm/realmManager";
+import Storage from '../../service/storage';
 
 class Register extends React.Component {
 
