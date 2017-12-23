@@ -184,7 +184,12 @@ export default class Detail extends Component {
             })
         });
 
-        runtime.emit("database_change");
+        setTimeout(function(){
+        
+            runtime.emit("database_change");
+        }, 1);
+
+        
 
         if (option == "A") {
             this.setState({

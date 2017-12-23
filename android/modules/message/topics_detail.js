@@ -43,7 +43,7 @@ export default class TopicsDetail extends React.Component {
             paperId: item.id
         });
         const papers = await realmManager.createQuestion(json)
-        const memoryModels = await realmManager.createMemoryModels(papers)
+        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
         await realmManager.createExaminationPaper({
             id: item.id,
             title: item.value,

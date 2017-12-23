@@ -92,17 +92,31 @@ export default class Find extends Component {
     constructor(props) {
         super(props);
         const user = realmManager.getCurrentUser()
-        let info = realmManager.getFindInfo()
-        this.state = {
-            currentExam: null,
-            newQuestionCount: info.newQuestionCount,
-            wrongQuestionCount: info.wrongQuestionCount,
-            newLastSelectDate: info.newLastSelectDate,
-            wrongLastSelectDate: info.wrongLastSelectDate,
-            futureArray: info.futureArray,
-            beforeArray: info.beforeArray,
-            pieArray: info.pieArray,
+        if (!!user.currentExamId) {
+            let info = realmManager.getFindInfo(user.currentExamId)
+            this.state = {
+                currentExam: user.currentExamTitle,
+                newQuestionCount: info.newQuestionCount,
+                wrongQuestionCount: info.wrongQuestionCount,
+                newLastSelectDate: info.newLastSelectDate,
+                wrongLastSelectDate: info.wrongLastSelectDate,
+                futureArray: info.futureArray,
+                beforeArray: info.beforeArray,
+                pieArray: info.pieArray,
+            }
+        } else {
+            this.state = {
+                currentExam: "",
+                newQuestionCount: "0",
+                wrongQuestionCount: "0",
+                newLastSelectDate: "",
+                wrongLastSelectDate: "",
+                futureArray: [0, 0, 0, 0, 0, 0],
+                beforeArray: [0, 0, 0, 0, 0, 0],
+                pieArray: [{value:1}],
+            }
         }
+        
 
         this.onMessage();
     }
@@ -119,9 +133,9 @@ export default class Find extends Component {
         runtime.on("database_change", () => {
 
             const user = realmManager.getCurrentUser()
-            let info = realmManager.getFindInfo()
+            let info = realmManager.getFindInfo(user.currentExamId)
             this.setState({
-                // currentExam: user.currentExamTitle,
+                currentExam: user.currentExamTitle,
                 newQuestionCount: info.newQuestionCount,
                 wrongQuestionCount: info.wrongQuestionCount,
                 newLastSelectDate: info.newLastSelectDate,

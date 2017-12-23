@@ -53,7 +53,7 @@ class RealmManager {
         }
     }
 
-    createMemoryModels(papers) {
+    createMemoryModels(papers, examId) {
 
         const that = this
         let promise = new Promise((resolve, reject) => {
@@ -65,6 +65,7 @@ class RealmManager {
                         let memoryModel = realm.create('MemoryModel', {
                             id: that.uuidv4(),
                             questionPaper: value,
+                            examId: examId,
                         })
                         array.push(memoryModel)
                     })
@@ -115,14 +116,8 @@ class RealmManager {
 
         let users = realm.objects('User');
         if (users.length == 0) {
-
             return null;
         } else {
-            // var user = users[0]
-
-            // if (user.currentExamTitle == "") {
-            //     user.currentExamTitle = "当前暂无题库信息"
-            // }
             return users[0];
         }
     }
@@ -194,10 +189,16 @@ class RealmManager {
         return models.length
     }
 
-    getFindInfo() {
+    getFindInfo(examId) {
+
+        if (examId == '') {
+            return
+        }
 
         let object = new Object()
-        let models = realm.objects('MemoryModel')
+        let models = realm.objects('MemoryModel').filtered('examId=' + examId)       
+
+        console.log("models", models)
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         var todayNumber = models.filtered('lastBySelectedTime>' + timeStamp).length
@@ -251,7 +252,7 @@ class RealmManager {
         object.wrongLastSelectDate = "暂无数据"
 
         if (b.length != 0) {
-            b.sort(function(a1, b1) {
+            b.sort((a1, b1) => {
                 return b1.lastBySelectedTime - a1.lastBySelectedTime
             })
             var model = b[0]
@@ -259,7 +260,7 @@ class RealmManager {
             object.newLastSelectDate = this.getDateFormat(date)
         }
         if (c.length != 0) {
-            c.sort(function(a1, b1) {
+            c.sort((a1, b1) => {
                 return b1.lastBySelectedTime - a1.lastBySelectedTime
             })
             var model = c[0]
@@ -267,7 +268,7 @@ class RealmManager {
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
 
-        object.pieArray = [{value:x}, {value:y}, {value:a.length}];
+        object.pieArray = [{value:x}, {value:object.wrongQuestionCount}, {value:a.length}];
 
         return object
     }
