@@ -6,6 +6,7 @@ import moment from "moment";
 class RealmManager {
 
     createQuestion(json) {
+
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
@@ -26,20 +27,20 @@ class RealmManager {
     }
 
     createExaminationPaper(examinationPaper) {
+
         const that = this
-        let promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
+
                     let exam = realm.create('ExaminationPaper', examinationPaper);
                     resolve(exam)
                 });
             } catch (e) {
-                console.log("ExaminationPaper Error on creation");
+                console.log("ExaminationPaper Error on creation", e);
                 reject(e)
             }
         })
-
-        return promise
     }
 
     createUser(user) {
@@ -125,9 +126,13 @@ class RealmManager {
     // 通过id获取指定试卷
     getExaminationPaper(id) {
 
-        let examinationPaper = realm.objectForPrimaryKey('id', id);
+        let examinationPapers = realm.objectForPrimaryKey('id', id);
 
-        return examinationPaper;
+        if (examinationPapers.length == 0) {
+            return null
+        } else {
+            return examinationPapers[0]
+        }
     }
 
     getScheduleBySpecialDate(date) {
@@ -196,38 +201,41 @@ class RealmManager {
         }
 
         let object = new Object()
-        let models = realm.objects('MemoryModel').filtered('examId=' + examId)       
 
-        console.log("models", models)
+        let models = realm.objects("MemoryModel")
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
-        var todayNumber = models.filtered('lastBySelectedTime>' + timeStamp).length
-        var finishedModels = models.filtered('weighting>=7')
-        var unfishedModels = models.filtered('weighting<7')
+        var todayNumber = models.filtered('lastBySelectedTime>$0 && examId=$1', timeStamp, examId).length
+        console.log("todayNumber", todayNumber)
+        var finishedModels = models.filtered('weighting>=7 && examId=$0', examId)
+        var unfishedModels = models.filtered('weighting<7 && examId=$0', examId)
         var x = finishedModels.length
         var y = unfishedModels.length
 
         var futureArray = []
         futureArray.push(todayNumber)
-        futureArray.push(x+(0.6*y))
-        futureArray.push(x+(0.45*y))
-        futureArray.push(x+(0.36*y))
-        futureArray.push(x+(0.34*y))
-        futureArray.push(x+(0.28*y))
+        futureArray.push(x + (0.6 * y))
+        futureArray.push(x + (0.45 * y))
+        futureArray.push(x + (0.36 * y))
+        futureArray.push(x + (0.34 * y))
+        futureArray.push(x + (0.28 * y))
 
         object.futureArray = futureArray
 
         var beforeArray = []
+        var oneDay = 24 * 60 * 60
+        
+        
         /// 五天前
-        var before_5 = models.filtered('lastBySelectedTime<' + (timeStamp - 4 * 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 5 * 24 * 60 * 60)).length
+        var before_5 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay), examId).length
         beforeArray.push(before_5)
-        var before_4 = models.filtered('lastBySelectedTime<' + (timeStamp - 3 * 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 4 * 24 * 60 * 60)).length
+        var before_4 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 3 * oneDay), (timeStamp - 4 * oneDay), examId).length
         beforeArray.push(before_4)
-        var before_3 = models.filtered('lastBySelectedTime<' + (timeStamp - 2 * 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 3 * 24 * 60 * 60)).length
+        var before_3 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 2 * oneDay), (timeStamp - 3 * oneDay), examId).length
         beforeArray.push(before_3)
-        var before_2 = models.filtered('lastBySelectedTime<' + (timeStamp - 24 * 60 * 60) + "&&" + 'lastBySelectedTime>' + (timeStamp - 2 * 24 * 60 * 60)).length
+        var before_2 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - oneDay), (timeStamp - 2 * oneDay), examId).length
         beforeArray.push(before_2)
-        var before_1 = models.filtered('lastBySelectedTime<' + timeStamp + "&&" + 'lastBySelectedTime>' + (timeStamp - 24 * 60 * 60)).length
+        var before_1 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', timeStamp, (timeStamp - oneDay), examId).length
         beforeArray.push(before_1)
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
@@ -268,7 +276,7 @@ class RealmManager {
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
 
-        object.pieArray = [{value:x}, {value:object.wrongQuestionCount}, {value:a.length}];
+        object.pieArray = [{ value: x }, { value: object.wrongQuestionCount }, { value: a.length }];
 
         return object
     }
@@ -280,22 +288,22 @@ class RealmManager {
             lastDay: '昨日',
             lastWeek: '1周前',
             sameElse(moment_input) {
-                
+
                 /// 当前年份减输入年份
                 var diff = moment().diff(moment_input, 'days')
-                if (diff<7) {
+                if (diff < 7) {
                     return diff + "天前"
-                } 
+                }
                 var diff_1 = moment().diff(moment_input, 'weeks')
-                if (diff_1<=5) {
+                if (diff_1 <= 5) {
                     return diff_1 + "周前"
                 }
                 var diff_2 = moment().diff(moment_input, 'months')
-                if (diff_2<=12) {
+                if (diff_2 <= 12) {
                     return diff_2 + "月前"
                 }
                 var diff_3 = moment().diff(moment_input, 'months')
-                
+
                 return diff_3 + "年前"
             },
         });

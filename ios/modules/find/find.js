@@ -58,7 +58,6 @@ var daysTransfer = {
     'Saturday': '周六'
 }
 
-
 export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -91,8 +90,10 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props);
+
         const user = realmManager.getCurrentUser()
-        if (!!user.currentExamId) {
+        console.log(user)
+        if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.state = {
                 currentExam: user.currentExamTitle,
@@ -195,6 +196,7 @@ export default class Find extends Component {
     }
 
     _renderGetChatRemember() {
+
         const newPaperOption = rememberPaper.option;
         let weekArray = ['今日']
         for (var i = 1; i < 6; i++) {

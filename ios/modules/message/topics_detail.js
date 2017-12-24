@@ -44,7 +44,7 @@ export default class TopicsDetail extends React.Component {
 
     constructor(props) {
         super(props)
-        
+
         const array = this.props.navigation.state.params.section.item.data
         array.sort((a, b) => {
             if (a.title > b.title) {
@@ -68,13 +68,13 @@ export default class TopicsDetail extends React.Component {
         })
         
         const user = realmManager.getCurrentUser()
-        
         const res = await HTTP.post("api/updateUserBuyInfo",{
             "user_id":user.userId,
             "bankname":item.id
         })
+        console.log("res", res)
         if (res.type == true) {
-            const user = realmManager.getCurrentUser()
+
             var examIdsjson = []
             if (!!user.examIds) {
                 examIdsjson = JSON.parse(user.examIds)
@@ -84,7 +84,7 @@ export default class TopicsDetail extends React.Component {
                 realm.write(() => {
                     user.examIds = JSON.stringify(examIdsjson)
                     user.currentExamId = item.id
-                    user.currentExamTitle = item.value
+                    user.currentExamTitle = item.title
                 })
             } catch (e) {
                 console.log("buy", e)
@@ -95,7 +95,6 @@ export default class TopicsDetail extends React.Component {
             });
             const papers = await realmManager.createQuestion(json)
             const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-
             await realmManager.createExaminationPaper({
                 id: item.id,
                 title: item.title,
@@ -107,11 +106,27 @@ export default class TopicsDetail extends React.Component {
                 price: parseFloat(item.price),
             })
         }
-        console.log("api/updateUserBuyInfo", res)
         
         this.setState({
             loading: false
         })
+    }
+
+    _chooseExam(item) {
+
+        var exam = realmManager.getExaminationPaper(item.id)
+
+        if (!!exam) {
+
+        } else {
+
+            this.setState({
+                loading: true
+            })
+
+
+
+        }
     }
 
     _renderProgress() {

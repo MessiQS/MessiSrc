@@ -34,9 +34,10 @@ export default class Analysis extends React.Component {
             let img = results[0].replace("/", "", )
             if (key[img] != null) {
                 suffix = sufUrl.replace(img, key[img])
+            } else {
+                suffix = sufUrl
             }
         }
-        console.log("http://118.89.196.123/images" + suffix)
         return "http://118.89.196.123/images" + suffix
     }
 

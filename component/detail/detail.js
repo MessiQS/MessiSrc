@@ -111,7 +111,7 @@ export default class Detail extends Component {
         let suffixUrl = re2.exec(content)
         let sufUrl = suffixUrl[0]
 
-        // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
+        // 获取 "/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
         var re = /\/(.*)files/g;
         var results = re.exec(sufUrl);
         let suffix = null
@@ -119,6 +119,8 @@ export default class Detail extends Component {
             let img = results[0].replace("/", "", )
             if (key[img] != null) {
                 suffix = sufUrl.replace(img, key[img])
+            } else {
+                suffix = sufUrl
             }
         }
         return url = "http://118.89.196.123/images" + suffix
@@ -170,6 +172,7 @@ export default class Detail extends Component {
         } else {
             itemStatus = ItemStatus.ERROR
         }
+        console.log("score", score)
         const type = isRight == true ? "right" : "wrong"
         const newWeighting = this._memoryModel.weighting + score
         this._sendUpdateInfoCache(type, newWeighting)

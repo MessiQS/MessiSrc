@@ -59,7 +59,7 @@ ExaminationPaper.schema = {
     primaryKey: 'id',
     properties: {
 
-        id: 'string',
+        id: 'string',                                           /// 例如 SP00065
         title: 'string',                                        /// 名称  "江苏省2013年B类卷"
         year: 'string',                                         /// 年份
         province: 'string',                                     /// 所在省份

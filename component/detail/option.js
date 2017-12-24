@@ -44,6 +44,8 @@ export default class Option extends React.Component {
             let img = results[0].replace("/", "", )
             if (key[img] != null) {
                 suffix = sufUrl.replace(img, key[img])
+            } else {
+                suffix = sufUrl
             }
         }
         return "http://118.89.196.123/images" + suffix
