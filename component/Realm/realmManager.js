@@ -255,7 +255,7 @@ class RealmManager {
         })
 
         object.newQuestionCount = a.length
-        object.wrongQuestionCount = b.length + c.length
+        object.wrongQuestionCount = models.filtered('weighting<7 && appearedSeveralTime > 0 && examId=$0', examId).length
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
