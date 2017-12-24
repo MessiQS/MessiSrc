@@ -16,6 +16,11 @@ import {
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import moment from 'moment';
+import realmManager from "../../../component/Realm/realmManager";
+import Storage from "../../../service/storage";
+import realm from '../../../component/Realm/realm';
+import runtime from "../../../service/runtime";
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -90,7 +95,7 @@ export default class Find extends Component {
     constructor(props) {
         super(props);
         const user = realmManager.getCurrentUser()
-        if (!!user.currentExamId) {
+        if (user && !!user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.state = {
                 currentExam: user.currentExamTitle,
@@ -118,6 +123,24 @@ export default class Find extends Component {
         }
 
         this.onMessage();
+    }
+
+    onMessage() {
+
+        runtime.on("database_change", () => {
+            const user = realmManager.getCurrentUser()
+            let info = realmManager.getFindInfo(user.currentExamId)
+            this.setState({
+                currentExam: user.currentExamTitle,
+                newQuestionCount: info.newQuestionCount,
+                wrongQuestionCount: info.wrongQuestionCount,
+                newLastSelectDate: info.newLastSelectDate,
+                wrongLastSelectDate: info.wrongLastSelectDate,
+                futureArray: info.futureArray,
+                beforeArray: info.beforeArray,
+                pieArray: info.pieArray,
+            })
+        })
     }
 
     componentDidMount() {
