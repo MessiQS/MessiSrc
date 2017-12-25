@@ -19,6 +19,8 @@ import Storage from '../../../service/storage';
 import Pingpay from '../../../service/pingpp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../../component/usual/item'
+import realmManger from "../../../component/Realm/realmManager"
+
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (name) => {
