@@ -55,8 +55,16 @@ export default class Storage {
         try {
             return AsyncStorage.removeItem(key);
         } catch (error) {
-            return false;
             Alert.alert(error)
+            return false;
+        }
+    }
+    static clearAll() {
+        try {
+            return AsyncStorage.clear();
+        } catch (error) {
+            Alert.alert(error)
+            return false;
         }
     }
 }

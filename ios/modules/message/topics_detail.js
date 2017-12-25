@@ -56,9 +56,13 @@ export default class TopicsDetail extends React.Component {
             // a 必须等于 b
             return 0;
         })
+
+        const user = realmManager.getCurrentUser()
+
         this.state = ({
             data: array,
             loading: false,
+            user: user,
         })
     }
 
@@ -108,26 +112,36 @@ export default class TopicsDetail extends React.Component {
         }
         
         this.setState({
-            loading: false
+            loading: false,
+            user: user,
         })
     }
 
     _chooseExam(item) {
 
-        var exam = realmManager.getExaminationPaper(item.id)
-        
+        const user = realmManager.getCurrentUser()
+
         if (!!exam) {
+
+            try {
+                realm.write(() => {
+                    user.currentExamId = item.id
+                    user.currentExamTitle = item.title
+                })
+            } catch (e) {
+                console.log("choose", e)
+            }
+
+            this.setState({
+                user: user,
+            })
 
         } else {
 
-            this.setState({
-                loading: true
-            })
-
-
-
+            
         }
     }
+
 
     _renderProgress() {
         if (this.state.loading == true) {
@@ -149,8 +163,34 @@ export default class TopicsDetail extends React.Component {
     }
 
     _renderItem(item) {
-        console.log("item", item)
-        
+
+        if (item.id == this.state.user.currentExamId) {
+            console.log("item.id == this.state.user.currentExamId")
+            return (
+                <View style={styles.itemView}>
+                    <Text style={styles.itemText}>{item.title}</Text>
+                    <View style={[styles.buyView, {borderColor: '#DDDDDD'}]}>
+                        <Text style={this._buyStyle()}>选择</Text>
+                    </View>
+                </View>
+            )
+        }
+
+        if (this.state.user.examIds.includes(item.id)) {
+            return (
+                <View style={styles.itemView}>
+                    <Text style={styles.itemText}>{item.title}</Text>
+                    <TouchableOpacity onPress={() =>
+                        this._chooseExam(item)
+                    }>
+                        <View style={styles.buyView}>
+                         <Text style={[styles.buyText,{color: '#DDDDDD'}]}>选择</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText}>{item.title}</Text>
@@ -158,7 +198,7 @@ export default class TopicsDetail extends React.Component {
                     this._buy(item)
                 }>
                     <View style={styles.buyView}>
-                        <Text style={styles.buyText}>购买</Text>
+                        <Text style={this._buyStyle()}>购买</Text>
                     </View>
                 </TouchableOpacity>
             </View>

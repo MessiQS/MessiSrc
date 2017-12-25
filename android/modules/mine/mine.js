@@ -98,13 +98,15 @@ class Mine extends Component {
             console.log(res, error);
         });
     }
+    
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
-        //将账号和token存到本地存储
-        let setToken = Storage.removeItem('accountToken');
-        setToken.then(res => navigate('Login', { name: 'MainTab' }))
+        realmManger.deleteAllRealmData()
+        let clearPromise = Storage.clearAll()
+        clearPromise.then(res => navigate('Login', { name: 'MainTab' }))
     }
+
     render() {
         return (
             <View style={styles.container}>

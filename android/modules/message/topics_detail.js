@@ -38,21 +38,24 @@ export default class TopicsDetail extends React.Component {
         this.state = ({
             data: array,
             loading: false,
+            user: user,
         })
     }
 
     async _buy(item) {
+
         this.setState({
             loading: true
         })
-
+        
         const user = realmManager.getCurrentUser()
         const res = await HTTP.post("api/updateUserBuyInfo",{
             "user_id":user.userId,
             "bankname":item.id
         })
+        console.log("res", res)
         if (res.type == true) {
-            const user = realmManager.getCurrentUser()
+
             var examIdsjson = []
             if (!!user.examIds) {
                 examIdsjson = JSON.parse(user.examIds)
@@ -62,7 +65,7 @@ export default class TopicsDetail extends React.Component {
                 realm.write(() => {
                     user.examIds = JSON.stringify(examIdsjson)
                     user.currentExamId = item.id
-                    user.currentExamTitle = item.value
+                    user.currentExamTitle = item.title
                 })
             } catch (e) {
                 console.log("buy", e)
@@ -73,7 +76,6 @@ export default class TopicsDetail extends React.Component {
             });
             const papers = await realmManager.createQuestion(json)
             const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-
             await realmManager.createExaminationPaper({
                 id: item.id,
                 title: item.title,
@@ -85,11 +87,35 @@ export default class TopicsDetail extends React.Component {
                 price: parseFloat(item.price),
             })
         }
-        console.log("api/updateUserBuyInfo", res)
         
         this.setState({
-            loading: false
+            loading: false,
+            user: user,
         })
+    }
+
+    _chooseExam(item) {
+
+        const user = realmManager.getCurrentUser()
+
+        if (!!exam) {
+
+            try {
+                realm.write(() => {
+                    user.currentExamId = item.id
+                    user.currentExamTitle = item.title
+                })
+            } catch (e) {
+                console.log("choose", e)
+            }
+
+            this.setState({
+                user: user,
+            })
+
+        } else {
+            
+        }
     }
 
     _renderHeader() {
@@ -102,14 +128,42 @@ export default class TopicsDetail extends React.Component {
     }
 
     _renderItem(item) {
+
+        if (item.id == this.state.user.currentExamId) {
+            console.log("item.id == this.state.user.currentExamId")
+            return (
+                <View style={styles.itemView}>
+                    <Text style={styles.itemText}>{item.title}</Text>
+                    <View style={[styles.buyView, {borderColor: '#DDDDDD'}]}>
+                        <Text style={[styles.buyText,{color: '#DDDDDD'}]}>选择</Text>
+                    </View>
+                </View>
+            )
+        }
+
+        if (this.state.user.examIds.includes(item.id)) {
+            return (
+                <View style={styles.itemView}>
+                    <Text style={styles.itemText}>{item.title}</Text>
+                    <TouchableOpacity onPress={() =>
+                        this._chooseExam(item)
+                    }>
+                        <View style={styles.buyView}>
+                            <Text style={this._buyStyle()}>选择</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+
         return (
             <View style={styles.itemView}>
-                <Text style={styles.itemText}>{item.value}</Text>
+                <Text style={styles.itemText}>{item.title}</Text>
                 <TouchableOpacity onPress={() =>
                     this._buy(item)
                 }>
                     <View style={styles.buyView}>
-                        <Text style={styles.buyText}>购买</Text>
+                        <Text style={this._buyStyle()}>购买</Text>
                     </View>
                 </TouchableOpacity>
             </View>

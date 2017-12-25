@@ -223,8 +223,8 @@ class RealmManager {
 
         var beforeArray = []
         var oneDay = 24 * 60 * 60
-        
-        
+
+
         /// 五天前
         var before_5 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay), examId).length
         beforeArray.push(before_5)
@@ -312,6 +312,9 @@ class RealmManager {
 
     deleteAllRealmData() {
 
+        realm.write(() => {
+            realm.deleteAll();
+        });
     }
 
     uuidv4() {

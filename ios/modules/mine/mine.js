@@ -18,6 +18,8 @@ import Storage from '../../../service/storage';
 import Pingpay from '../../../service/pingpp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../../component/usual/item'
+import realmManger from "../../../component/Realm/realmManager"
+
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (name) => {
@@ -98,13 +100,15 @@ class Mine extends Component {
             console.log(res, error);
         });
     }
+
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
-        //将账号和token存到本地存储
-        let setToken = Storage.removeItem('accountToken');
-        setToken.then(res => navigate('Login', { name: 'MainTab' }))
+        realmManger.deleteAllRealmData()
+        let clearPromise = Storage.clearAll()
+        clearPromise.then(res => navigate('Login', { name: 'MainTab' }))
     }
+
     render() {
         return (
             <View style={styles.container}>
