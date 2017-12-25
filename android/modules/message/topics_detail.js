@@ -35,6 +35,8 @@ export default class TopicsDetail extends React.Component {
             // a 必须等于 b
             return 0;
         })
+        const user = realmManager.getCurrentUser()
+
         this.state = ({
             data: array,
             loading: false,
