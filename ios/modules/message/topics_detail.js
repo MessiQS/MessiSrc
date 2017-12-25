@@ -115,7 +115,7 @@ export default class TopicsDetail extends React.Component {
     _chooseExam(item) {
 
         var exam = realmManager.getExaminationPaper(item.id)
-
+        
         if (!!exam) {
 
         } else {
@@ -149,6 +149,8 @@ export default class TopicsDetail extends React.Component {
     }
 
     _renderItem(item) {
+        console.log("item", item)
+        
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText}>{item.title}</Text>

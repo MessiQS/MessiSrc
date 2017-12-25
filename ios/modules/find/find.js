@@ -92,7 +92,6 @@ export default class Find extends Component {
         super(props);
 
         const user = realmManager.getCurrentUser()
-        console.log(user)
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.state = {

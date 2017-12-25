@@ -172,7 +172,7 @@ export default class Detail extends Component {
         } else {
             itemStatus = ItemStatus.ERROR
         }
-        console.log("score", score)
+
         const type = isRight == true ? "right" : "wrong"
         const newWeighting = this._memoryModel.weighting + score
         this._sendUpdateInfoCache(type, newWeighting)
@@ -191,8 +191,6 @@ export default class Detail extends Component {
         
             runtime.emit("database_change");
         }, 1);
-
-        
 
         if (option == "A") {
             this.setState({
