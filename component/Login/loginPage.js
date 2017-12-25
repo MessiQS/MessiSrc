@@ -73,7 +73,8 @@ class LoginPage extends React.Component {
                 }, err => {
                     Alert('登录错误，请重试')
                 })
-                const examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+                data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
+                var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
                 var user = {
                     userId: data.user_id,
                     token: data.token,

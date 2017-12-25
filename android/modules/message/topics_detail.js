@@ -98,7 +98,7 @@ export default class TopicsDetail extends React.Component {
 
         const user = realmManager.getCurrentUser()
 
-        if (!!exam) {
+        if (!!item) {
 
             try {
                 realm.write(() => {

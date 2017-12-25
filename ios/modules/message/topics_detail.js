@@ -121,7 +121,7 @@ export default class TopicsDetail extends React.Component {
 
         const user = realmManager.getCurrentUser()
 
-        if (!!exam) {
+        if (!!item) {
 
             try {
                 realm.write(() => {
@@ -170,7 +170,7 @@ export default class TopicsDetail extends React.Component {
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>{item.title}</Text>
                     <View style={[styles.buyView, {borderColor: '#DDDDDD'}]}>
-                        <Text style={this._buyStyle()}>选择</Text>
+                        <Text style={[styles.buyText,{color:"#ddd"}]}>选择</Text>
                     </View>
                 </View>
             )
