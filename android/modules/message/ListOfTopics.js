@@ -7,7 +7,6 @@ import {
     ScrollView,
     FlatList
 } from 'react-native';
-import CollapseListView from "./collapseListView"
 import DictStyle from './dictStyle';
 import MessageService from "../../../service/message.service";
 import realm from '../../../component/Realm/realm';

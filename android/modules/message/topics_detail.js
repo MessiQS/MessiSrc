@@ -149,7 +149,7 @@ export default class TopicsDetail extends React.Component {
                         this._chooseExam(item)
                     }>
                         <View style={styles.buyView}>
-                            <Text style={this._buyStyle()}>选择</Text>
+                            <Text style={styles.buyText}>选择</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -163,7 +163,7 @@ export default class TopicsDetail extends React.Component {
                     this._buy(item)
                 }>
                     <View style={styles.buyView}>
-                        <Text style={this._buyStyle()}>购买</Text>
+                        <Text style={styles.buyText}>购买</Text>
                     </View>
                 </TouchableOpacity>
             </View>
