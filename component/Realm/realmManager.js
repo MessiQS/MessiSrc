@@ -206,7 +206,6 @@ class RealmManager {
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         var todayNumber = models.filtered('lastBySelectedTime>$0 && examId=$1', timeStamp, examId).length
-        console.log("todayNumber", todayNumber)
         var finishedModels = models.filtered('weighting>=7 && examId=$0', examId)
         var unfishedModels = models.filtered('weighting<7 && examId=$0', examId)
         var x = finishedModels.length
@@ -245,12 +244,14 @@ class RealmManager {
         var c = []
 
         models.forEach(value => {
-            if (value.records.length == 0) {
-                a.push(value)
-            } else if (value.records.length == 1) {
-                b.push(value)
-            } else {
-                c.push(value)
+            if (value.examId == examId) {
+                if (value.records.length == 0) {
+                    a.push(value)
+                } else if (value.records.length == 1) {
+                    b.push(value)
+                } else {
+                    c.push(value)
+                }
             }
         })
 
