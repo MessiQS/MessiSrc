@@ -100,7 +100,7 @@ class RealmManager {
     // 更新试卷
     updateExaminationPaper(newExaminationPaper) {
 
-        let oldExaminationPaper = realm.objectForPrimaryKey('id', newExaminationPaper.id);
+        let oldExaminationPaper = realm.objectForPrimaryKey('ExaminationPaper', newExaminationPaper.id);
 
         try {
             realm.write(() => {
@@ -123,15 +123,25 @@ class RealmManager {
         }
     }
 
+    isHaveExamiationPaper(id) {
+        let examinationPaper = realm.objectForPrimaryKey('ExaminationPaper', id);
+        console.log("isHaveExamiationPaper", id)
+        if (examinationPaper) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     // 通过id获取指定试卷
     getExaminationPaper(id) {
 
-        let examinationPapers = realm.objectForPrimaryKey('id', id);
+        let examinationPaper = realm.objectForPrimaryKey('ExaminationPaper', id);
 
-        if (examinationPapers.length == 0) {
-            return null
+        if (examinationPaper) {
+            return examinationPaper
         } else {
-            return examinationPapers[0]
+            return null
         }
     }
 
@@ -157,6 +167,21 @@ class RealmManager {
 
     updateSchdule(model) {
 
+    }
+
+    updateCurrentExamInfo(item) {
+
+        const user = this.getCurrentUser()
+
+        try {
+            realm.write(() => {
+                user.currentExamId = item.id
+                user.currentExamTitle = item.title
+            })
+        } catch (e) {
+            console.log("choose", e)
+        }
+        return user
     }
 
     getRandomPaper() {

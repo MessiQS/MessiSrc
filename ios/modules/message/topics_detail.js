@@ -70,13 +70,12 @@ export default class TopicsDetail extends React.Component {
         this.setState({
             loading: true
         })
-        
+
         const user = realmManager.getCurrentUser()
-        const res = await HTTP.post("api/updateUserBuyInfo",{
-            "user_id":user.userId,
-            "bankname":item.id
+        const res = await HTTP.post("api/updateUserBuyInfo", {
+            "user_id": user.userId,
+            "bankname": item.id
         })
-        console.log("res", res)
         if (res.type == true) {
 
             var examIdsjson = []
@@ -84,64 +83,61 @@ export default class TopicsDetail extends React.Component {
                 examIdsjson = JSON.parse(user.examIds)
             }
             examIdsjson.push(item.id)
-            try {
-                realm.write(() => {
-                    user.examIds = JSON.stringify(examIdsjson)
-                    user.currentExamId = item.id
-                    user.currentExamTitle = item.title
-                })
-            } catch (e) {
-                console.log("buy", e)
-            }
+            realmManager.updateCurrentExamInfo(item)
 
-            const json = await MessageService.downloadPaper({
-                paperId: item.id
-            });
-            const papers = await realmManager.createQuestion(json)
-            const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-            await realmManager.createExaminationPaper({
-                id: item.id,
-                title: item.title,
-                questionPapers: papers,
-                year: item.year,
-                province: item.province,
-                version: item.version,
-                purchased: true,
-                price: parseFloat(item.price),
-            })
+            const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+
+            if (isHavePaper == false) {
+                this._downloadExam(item)
+            }
         }
-        
+
         this.setState({
             loading: false,
             user: user,
         })
     }
 
-    _chooseExam(item) {
+    async _chooseExam(item) {
 
-        const user = realmManager.getCurrentUser()
-
-        if (!!item) {
-
-            try {
-                realm.write(() => {
-                    user.currentExamId = item.id
-                    user.currentExamTitle = item.title
-                })
-            } catch (e) {
-                console.log("choose", e)
-            }
-
-            this.setState({
-                user: user,
-            })
-
-        } else {
-
-            
+        if (item == null) {
+            return 
         }
+        this.setState({
+            loading: true,
+        })
+
+        const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+
+        if (isHavePaper == false) {
+            this._downloadExam(item)
+        }
+        let user = realmManager.updateCurrentExamInfo(item)
+
+        this.setState({
+            loading: false,
+            user: user,
+        })
     }
 
+    async _downloadExam(item) {
+
+        const json = await MessageService.downloadPaper({
+            paperId: item.id
+        });
+        const papers = await realmManager.createQuestion(json)
+        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+        await realmManager.createExaminationPaper({
+            id: item.id,
+            title: item.title,
+            questionPapers: papers,
+            year: item.year,
+            province: item.province,
+            version: item.version,
+            purchased: true,
+            price: parseFloat(item.price),
+        })
+    }
 
     _renderProgress() {
         if (this.state.loading == true) {
@@ -165,12 +161,11 @@ export default class TopicsDetail extends React.Component {
     _renderItem(item) {
 
         if (item.id == this.state.user.currentExamId) {
-            console.log("item.id == this.state.user.currentExamId")
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>{item.title}</Text>
-                    <View style={[styles.buyView, {borderColor: '#DDDDDD'}]}>
-                        <Text style={[styles.buyText,{color:"#ddd"}]}>选择</Text>
+                    <View style={[styles.buyView, { borderColor: '#DDDDDD' }]}>
+                        <Text style={[styles.buyText, { color: "#ddd" }]}>选择</Text>
                     </View>
                 </View>
             )
@@ -184,7 +179,7 @@ export default class TopicsDetail extends React.Component {
                         this._chooseExam(item)
                     }>
                         <View style={styles.buyView}>
-                         <Text style={styles.buyText}>选择</Text>
+                            <Text style={styles.buyText}>选择</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
