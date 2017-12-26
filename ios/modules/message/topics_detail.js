@@ -81,7 +81,7 @@ export default class TopicsDetail extends React.Component {
 
             var examIdsjson = []
             if (!!user.examIds) {
-                examIdsjson = JSON.parse(user.examIds)
+                examIdsjson = JSON.parse(JSON.parse(user.examIds))
             }
             examIdsjson.push(item.id)
             realmManager.updateCurrentExamInfo(item)
