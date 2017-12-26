@@ -13,6 +13,7 @@ import Progress from '../../../component/progress/progress'
 import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
 import Storage from "../../../service/http";
+import runtime from "../../../service/runtime";
 
 export default class TopicsDetail extends React.Component {
 
@@ -92,6 +93,10 @@ export default class TopicsDetail extends React.Component {
             }
         }
 
+        setTimeout(() => {
+            runtime.emit("database_change");
+        }, 1)
+
         this.setState({
             loading: false,
             user: user,
@@ -110,9 +115,13 @@ export default class TopicsDetail extends React.Component {
         const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
 
         if (isHavePaper == false) {
-            this._downloadExam(item)
+            await this._downloadExam(item)
         }
         let user = realmManager.updateCurrentExamInfo(item)
+
+        setTimeout(() => {
+            runtime.emit("database_change");
+        }, 1)
 
         this.setState({
             loading: false,

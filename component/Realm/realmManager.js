@@ -227,12 +227,12 @@ class RealmManager {
 
         let object = new Object()
 
-        let models = realm.objects("MemoryModel")
+        let models = realm.objects("MemoryModel").filtered("examId=$0", examId)
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
-        var todayNumber = models.filtered('lastBySelectedTime>$0 && examId=$1', timeStamp, examId).length
-        var finishedModels = models.filtered('weighting>=7 && examId=$0', examId)
-        var unfishedModels = models.filtered('weighting<7 && examId=$0', examId)
+        var todayNumber = models.filtered('lastBySelectedTime>$0', timeStamp).length
+        var finishedModels = models.filtered('weighting>=7', examId)
+        var unfishedModels = models.filtered('weighting<7', examId)
         var x = finishedModels.length
         var y = unfishedModels.length
 
@@ -251,15 +251,15 @@ class RealmManager {
 
 
         /// 五天前
-        var before_5 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay), examId).length
+        var before_5 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay)).length
         beforeArray.push(before_5)
-        var before_4 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 3 * oneDay), (timeStamp - 4 * oneDay), examId).length
+        var before_4 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - 3 * oneDay), (timeStamp - 4 * oneDay)).length
         beforeArray.push(before_4)
-        var before_3 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - 2 * oneDay), (timeStamp - 3 * oneDay), examId).length
+        var before_3 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - 2 * oneDay), (timeStamp - 3 * oneDay)).length
         beforeArray.push(before_3)
-        var before_2 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', (timeStamp - oneDay), (timeStamp - 2 * oneDay), examId).length
+        var before_2 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - oneDay), (timeStamp - 2 * oneDay)).length
         beforeArray.push(before_2)
-        var before_1 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1&&examId=$2', timeStamp, (timeStamp - oneDay), examId).length
+        var before_1 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', timeStamp, (timeStamp - oneDay)).length
         beforeArray.push(before_1)
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
@@ -281,7 +281,7 @@ class RealmManager {
         })
 
         object.newQuestionCount = a.length
-        object.wrongQuestionCount = models.filtered('weighting<7 && appearedSeveralTime > 0 && examId=$0', examId).length
+        object.wrongQuestionCount = models.filtered('weighting<7 && appearedSeveralTime > 0').length
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
