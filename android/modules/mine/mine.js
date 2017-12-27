@@ -16,12 +16,10 @@ import {
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
-import Pingpay from '../../../service/pingpp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../../component/usual/item'
 import realmManger from "../../../component/Realm/realmManager"
 
-var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (name) => {
     return {
@@ -83,23 +81,6 @@ class Mine extends Component {
     avatarClick() {
 
     };
-    //支付测试
-    async paytest() {
-        // PayService.wechatPay();
-        const response = await Pingpay.createCharge({
-            client_ip: "192.168.0.103",
-            amount: '1',
-            channel: 'wx',
-            subject: 'ss0001',
-            body: "1234"
-        });
-        const data = JSON.stringify(response.data)
-        console.log(data)
-        Pingpp.createPayment(data, function (res, error) {
-            // Alert.alert(13)
-            console.log(res, error);
-        });
-    }
     
     //退出登录
     outofLogin() {
@@ -133,7 +114,7 @@ class Mine extends Component {
                                 key={result.name}
                             />))
                     }
-                    <View style={styles.buttonView}>
+                    {/* <View style={styles.buttonView}>
                         <View>
                             <Button
                                 title="支付测试"
@@ -141,7 +122,7 @@ class Mine extends Component {
                             >
                             </Button>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
                     <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>

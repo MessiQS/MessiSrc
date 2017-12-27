@@ -81,7 +81,7 @@ const TabOptions = ({ title }) => {
                 </View>
             </TouchableOpacity>
         ),
-        headerRight: navigation.state.params.headerRight,
+        headerRight: navigation.state.params ? navigation.state.params.headerRight : null,
     })
 }
 const Messi = StackNavigator({
@@ -188,6 +188,9 @@ const Messi = StackNavigator({
     },
     PayPage: {
         screen: PayPage,
+        navigationOptions: TabOptions({
+            title: '支付结算'
+        })
     },
     TopicsDetail: {
         screen: TopicsDetail

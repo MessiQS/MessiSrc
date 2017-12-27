@@ -29,18 +29,26 @@ export default class Message extends Component {
     render() {
         const that = this
         return (
-            <ScrollableTabView 
-                tabBarActiveTextColor={'#FF5B29'}
-                tabBarBackgroundColor={'#fff'}
-                tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-                style={styles.scrollableTabViewStyle}
-                tabBarTextStyle={styles.tabBarTextStyle}
-                tabBarPosition={"overlayTop"}>
-                <ListOfTopics tabLabel="历年真题" 
-                              select_province={that._select_province.bind(that)}/>
-                <View tabLabel="专项练习" />
-                <View tabLabel="申论" />
-            </ScrollableTabView>
+            <View>
+                <View style={{height:50}}>
+                    <Text onPress={() => this.props.navigation.navigate('PayPage')}>
+                        1234
+                    </Text>
+                </View>
+                <ScrollableTabView
+                    tabBarActiveTextColor={'#FF5B29'}
+                    tabBarBackgroundColor={'#fff'}
+                    tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+                    style={styles.scrollableTabViewStyle}
+                    tabBarTextStyle={styles.tabBarTextStyle}
+                    tabBarPosition={"overlayTop"}>
+                    <ListOfTopics tabLabel="历年真题"
+                        select_province={that._select_province.bind(that)} />
+                    <View tabLabel="专项练习" />
+                    <View tabLabel="申论" />
+                </ScrollableTabView>
+            </View>
+
         );
     }
 }
@@ -48,7 +56,7 @@ export default class Message extends Component {
 var styles = ({
     tabBarUnderlineStyle: {
         backgroundColor: '#FF5B29',
-        height:2,
+        height: 2,
     },
     scrollableTabViewStyle: {
         marginTop: -10,

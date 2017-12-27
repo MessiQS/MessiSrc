@@ -14,11 +14,11 @@ export default class Pingpay {
         */
         const { client_ip, amount, channel, subject, body } = data;
         const resposne = await Http.post('api/createcharge',{
-            client_ip:client_ip,
-            amount:amount,
-            channel:channel,
-            subject:subject,
-            body:body,
+            client_ip,
+            amount,
+            channel,
+            subject,
+            body,
         });
         return resposne;
     }
