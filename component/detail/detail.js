@@ -148,14 +148,6 @@ export default class Detail extends Component {
 
     updateMemoryModel() {
 
-        // var user = realm.getCurrentUser();
-
-        // this._memoryModel = realmManager.getMemoryModels()
-        // .filtered("weighting < 7")
-        // .sorted('lastBySelectedTime', false)[0]
-        
-        // console.log("category", this.props.navigation.state.params.category)
-        console.log("this.navigation", this.props.navigation.state.params.category)
         var category = this.props.navigation.state.params.category
         this._memoryModel = realmManager.getCurrentMemoryModel(category);
     }

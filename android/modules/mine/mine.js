@@ -81,13 +81,24 @@ class Mine extends Component {
     avatarClick() {
 
     };
-    
+
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
         realmManger.deleteAllRealmData()
         let clearPromise = Storage.clearAll()
-        clearPromise.then(res => navigate('Login', { name: 'MainTab' }))
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ]
+        })
+
+        clearPromise.then(res => {
+
+            this.props.navigation.dispatch(resetAction)
+        }
+        )
     }
 
     render() {

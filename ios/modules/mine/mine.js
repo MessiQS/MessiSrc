@@ -19,6 +19,7 @@ import Pingpay from '../../../service/pingpp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../../component/usual/item'
 import realmManger from "../../../component/Realm/realmManager"
+import { NavigationActions } from 'react-navigation'
 
 var Pingpp = require('pingpp-react-native');
 
@@ -106,7 +107,18 @@ class Mine extends Component {
         const { navigate } = this.props.navigation;
         realmManger.deleteAllRealmData()
         let clearPromise = Storage.clearAll()
-        clearPromise.then(res => navigate('Login', { name: 'MainTab' }))
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Login'})
+            ]
+          })
+
+        clearPromise.then(res => {
+
+            this.props.navigation.dispatch(resetAction)
+           }
+        )
     }
 
     render() {
