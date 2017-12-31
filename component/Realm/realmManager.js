@@ -205,6 +205,34 @@ class RealmManager {
         return models
     }
 
+    getCurrentMemoryModel(category) {
+
+        let user = this.getCurrentUser();
+        if (category == "new") {
+            let models = realm.objects('MemoryModel')
+            .filtered("appearedSeveralTime=0 && examId=$0", user.currentExamId)
+            .sorted('lastBySelectedTime', false)
+
+            if (models.length == 0) {
+                console.log("Memory Models is empty")
+                return null;
+            }
+            return models[0]
+        } 
+        if (category == "wrong") {
+
+            let models = realm.objects('MemoryModel')
+            .filtered("weighting < 7 && appearedSeveralTime>0 && examId=$0", user.currentExamId)
+            .sorted('lastBySelectedTime', false)
+
+            if (models.length == 0) {
+                console.log("Memory Models is empty")
+                return null;
+            }
+            return models[0]
+        }
+    }
+
     getNewQuestionCount() {
 
         let models = realm.objects('MemoryModel').filtered('appearedSeveralTime=0');

@@ -158,9 +158,14 @@ export default class Find extends Component {
         navigate('Message', {})
     }
 
-    routeToDetail() {
+    routeToNewDetail() {
         const { navigate } = this.props.navigation;
-        navigate('Detail', {})
+        navigate('Detail', {category: "new"})
+    }
+
+    routeToWrongDetail() {
+        const { navigate } = this.props.navigation;
+        navigate('Detail', {category: "wrong"})
     }
 
     _renderGetChatNewPaper() {
@@ -178,7 +183,7 @@ export default class Find extends Component {
 
         return (
             <View style={styles.calendarView}>
-                <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
+                <TouchableOpacity onPress={this.routeToNewDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
                         <Text style={styles.h4}>过去5日刷题亮统计</Text>
                         <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
@@ -208,7 +213,7 @@ export default class Find extends Component {
 
         return (
             <View style={[styles.calendarView, { marginTop: 4 }]}>
-                <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
+                <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.chartTitleLeft}>
                         <Text style={styles.h4}>未来5日遗忘数量统计</Text>
                         <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
