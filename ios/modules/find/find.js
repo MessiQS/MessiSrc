@@ -21,6 +21,7 @@ import realmManager from "../../../component/Realm/realmManager";
 import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
 import runtime from "../../../service/runtime";
+import Alert from "../../../component/progress/alert";
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -104,6 +105,7 @@ export default class Find extends Component {
                 futureArray: info.futureArray,
                 beforeArray: info.beforeArray,
                 pieArray: info.pieArray,
+                showAlert: false,
             }
         } else {
             this.state = {
@@ -116,6 +118,7 @@ export default class Find extends Component {
                 futureArray: [0, 0, 0, 0, 0, 0],
                 beforeArray: [0, 0, 0, 0, 0, 0],
                 pieArray: [{value:1}],
+                showAlert: false,
             }
         }
 
@@ -159,13 +162,43 @@ export default class Find extends Component {
     }
 
     routeToNewDetail() {
-        const { navigate } = this.props.navigation;
-        navigate('Detail', {category: "new"})
+        const that = this
+        if (this.state.newQuestionCount == 0) {
+            that.setState({
+                showAlert: true,
+            })
+
+            setTimeout(() => {
+                that.setState({
+                    showAlert: false,
+                })
+            }, 2500)
+
+        } else {
+
+            const { navigate } = this.props.navigation;
+            navigate('Detail', {category: "new"})
+        }
     }
 
     routeToWrongDetail() {
-        const { navigate } = this.props.navigation;
-        navigate('Detail', {category: "wrong"})
+        const that = this
+        if (this.state.wrongQuestionCount == 0) {
+            that.setState({
+                showAlert: true,
+            })
+
+            setTimeout(() => {
+                that.setState({
+                    showAlert: false,
+                })
+            }, 2500)
+
+        } else {
+
+            const { navigate } = this.props.navigation;
+            navigate('Detail', {category: "wrong"})
+        }
     }
 
     _renderGetChatNewPaper() {
@@ -236,6 +269,7 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
+                {this.state.showAlert == true ? <Alert/> : null}
                 <ScrollView>
                     <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.text}>

@@ -82,11 +82,20 @@ class LoginPage extends React.Component {
                 }
                 realmManager.createUser(user)
 
+                // Http.post('api/getUserQuestionInfo', {
+                //     user_id: data.user_id,
+                // }).then((value) => {
+                //     console.log("api/getUserQuestionInfo value", value)
+                // }).catch(err => {
+                //     console.log("api/getUserQuestionInfo error", err)
+                // })
+
             } else {
                 //此处提示错误信息
                 Alert.alert(data);
             }
         })
+        
         .catch(error => {
             console.log("api/login", error)
         })

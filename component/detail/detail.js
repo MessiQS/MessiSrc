@@ -91,7 +91,7 @@ export default class Detail extends Component {
 
     constructor(props) {
         super(props);
-        this.updateMemoryModel()
+        this._memoryModel = this._getMemoryModel()
         this.state = {
             detail: this._memoryModel,
             isSelected: false,
@@ -128,28 +128,34 @@ export default class Detail extends Component {
 
     nextQuestion() {
 
-        this.updateMemoryModel()
+        this._memoryModel = this._getMemoryModel()
         
-        this.props.navigation.setParams({
-            headerTitle: this._memoryModel.questionPaper.category,
-            nextButtonDisable: true,
-        });
+        if (this._memoryModel == null) {
 
-        this.setState({
-            detail: this._memoryModel,
-            isSelected: false,
-            selectedOption: [],
-            A_Status: ItemStatus.NORMAL,
-            B_Status: ItemStatus.NORMAL,
-            C_Status: ItemStatus.NORMAL,
-            D_Status: ItemStatus.NORMAL,
-        })
+            this.props.navigation.goBack()
+
+        } else {
+
+            this.props.navigation.setParams({
+                headerTitle: this._memoryModel.questionPaper.category,
+                nextButtonDisable: true,
+            });
+    
+            this.setState({
+                detail: this._memoryModel,
+                isSelected: false,
+                selectedOption: [],
+                A_Status: ItemStatus.NORMAL,
+                B_Status: ItemStatus.NORMAL,
+                C_Status: ItemStatus.NORMAL,
+                D_Status: ItemStatus.NORMAL,
+            })
+        }
     }
 
-    updateMemoryModel() {
-
+    _getMemoryModel() {
         var category = this.props.navigation.state.params.category
-        this._memoryModel = realmManager.getCurrentMemoryModel(category);
+        return realmManager.getCurrentMemoryModel(category);
     }
 
     getRandomInt(min, max) {

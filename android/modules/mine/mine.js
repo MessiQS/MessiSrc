@@ -95,10 +95,8 @@ class Mine extends Component {
         })
 
         clearPromise.then(res => {
-
             this.props.navigation.dispatch(resetAction)
-        }
-        )
+        })
     }
 
     render() {
