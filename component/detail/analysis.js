@@ -37,6 +37,9 @@ export default class Analysis extends React.Component {
             } else {
                 suffix = sufUrl
             }
+        } else {
+
+            suffix = sufUrl
         }
         return "http://118.89.196.123/images" + suffix
     }

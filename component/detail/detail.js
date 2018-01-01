@@ -122,6 +122,8 @@ export default class Detail extends Component {
             } else {
                 suffix = sufUrl
             }
+        } else {
+            suffix = sufUrl
         }
         return url = "http://118.89.196.123/images" + suffix
     }

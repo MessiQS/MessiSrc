@@ -1,8 +1,8 @@
 
 import Storage from "./storage";
 import { AlertIOS } from "react-native";
-// const webURL = "http://118.89.196.123/";
-const webURL = "http://192.168.0.183/";
+const webURL = "http://118.89.196.123/";
+// const webURL = "http://192.168.0.183/";
 
 export default class Http {
 
