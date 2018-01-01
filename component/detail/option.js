@@ -35,6 +35,7 @@ export default class Option extends React.Component {
         var re2 = /\/.*?\.(?:png|jpg)/gm;
         let suffixUrl = re2.exec(content)
         let sufUrl = suffixUrl[0]
+        console.log("_handleImageURL sufUrl", sufUrl)
 
         // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
         var re = /\/(.*)files/g;
@@ -146,12 +147,14 @@ export default class Option extends React.Component {
                     {
                         splits.map((content, index) => {
                             if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-
+                                console.log("option.js, content ", content)
                                 let url = this._handleImageURL(content)
+                                console.log("option.js url", url)
                                 let expr = /\/(.*)_(.*)x(.*)_/;
                                 let size = url.match(expr)
+                                console.log("option.js size", size)
                                 const scale = 0.3
-                                let width = size[2] * scale
+                                let width = size[2] * scale /// cannot read 2 TODO
                                 let height = size[3] * scale
 
                                 if (size[1].search("formula")) {

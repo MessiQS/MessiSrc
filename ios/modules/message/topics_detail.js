@@ -14,6 +14,7 @@ import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
 import Storage from "../../../service/http";
 import runtime from "../../../service/runtime";
+import Constant from "../../../service/constant";
 
 export default class TopicsDetail extends React.Component {
 
@@ -81,10 +82,10 @@ export default class TopicsDetail extends React.Component {
 
             var examIdsjson = []
             if (!!user.examIds) {
-                examIdsjson = JSON.parse(JSON.parse(user.examIds))
+                examIdsjson = JSON.parse(user.examIds)
             }
             examIdsjson.push(item.id)
-            realmManager.updateCurrentExamInfo(item)
+            const exam = await realmManager.updateCurrentExamInfo(item)
 
             const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
 
@@ -94,7 +95,7 @@ export default class TopicsDetail extends React.Component {
         }
 
         setTimeout(() => {
-            runtime.emit("database_change");
+            runtime.emit(Constant.DBChange);
         }, 1)
 
         this.setState({
@@ -120,7 +121,7 @@ export default class TopicsDetail extends React.Component {
         let user = realmManager.updateCurrentExamInfo(item)
 
         setTimeout(() => {
-            runtime.emit("database_change");
+            runtime.emit(Constant.DBChange);
         }, 1)
 
         this.setState({
@@ -179,8 +180,9 @@ export default class TopicsDetail extends React.Component {
                 </View>
             )
         }
-
-        if (this.state.user.examIds.includes(item.id)) {
+        
+        const examIds = JSON.parse(this.state.user.examIds)
+        if (examIds.includes(item.id)) {
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>{item.title}</Text>

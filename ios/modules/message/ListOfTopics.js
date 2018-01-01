@@ -40,7 +40,7 @@ export default class ListOfTopics extends React.Component {
         })
         .then(value => {
             if (value.type) {
-                let array = value.buyedInfo
+                let array = value.data.buyedInfo
                 realm.write(()=> {
                     user.examIds = JSON.stringify(array)
                 })

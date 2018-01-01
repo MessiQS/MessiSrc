@@ -129,7 +129,7 @@ export default class Detail extends Component {
     nextQuestion() {
 
         this._memoryModel = this._getMemoryModel()
-        
+        console.log("nextQuestion this._memoryModel", this._memoryModel)
         if (this._memoryModel == null) {
 
             this.props.navigation.goBack()
@@ -311,17 +311,21 @@ export default class Detail extends Component {
         });
     }
 
+    /// 更新服务端试卷信息
     _sendUpdateInfoCache(type, weighted) {
 
         var user = realmManager.getCurrentUser()
-        Http.post('api/getUpdateInfoCache', {
+
+        var param = {
             user_id: user.userId,
             bankname: user.currentExamId,
             qname: this._memoryModel.questionPaper.question_number,
             type: type,
             weighted: weighted,
-        }).then(res => {
-            console.log(res)
+        }
+        console.log("api/getUpdateInfoCache param", param)
+        Http.post('api/getUpdateInfoCache', param).then(res => {
+            console.log("api/getUpdateInfoCache", res)
         }).catch(err => {
             console.log(err)
         })
