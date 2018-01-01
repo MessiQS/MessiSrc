@@ -63,7 +63,7 @@ var styles = ({
         paddingTop: 50,
     },
     tabBarTextStyle: {
-        fontSize: 14,
+        fontSize: 16,
         marginTop: 15,
     },
 })
