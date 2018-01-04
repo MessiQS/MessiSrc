@@ -49,7 +49,7 @@ let headImage = require('../Images/head.png');
 
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
-        color: 'black',
+        color: '#172434',
         alignSelf: 'center',
         fontSize: 20
     }

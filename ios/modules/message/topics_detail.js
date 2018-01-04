@@ -173,7 +173,7 @@ export default class TopicsDetail extends React.Component {
         if (item.id == this.state.user.currentExamId) {
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                     <View style={[styles.buyView, { borderColor: '#DDDDDD' }]}>
                         <Text style={[styles.buyText, { color: "#ddd" }]}>选择</Text>
                     </View>
@@ -185,7 +185,7 @@ export default class TopicsDetail extends React.Component {
         if (examIds.includes(item.id)) {
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                     <TouchableOpacity onPress={() =>
                         this._chooseExam(item)
                     }>
@@ -199,7 +199,7 @@ export default class TopicsDetail extends React.Component {
 
         return (
             <View style={styles.itemView}>
-                <Text style={styles.itemText}>{item.title}</Text>
+                <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                 <TouchableOpacity onPress={() =>
                     this._buy(item)
                 }>
@@ -243,7 +243,7 @@ var styles = ({
         marginTop: 10,
         fontSize: 12,
         color: "#9B9B9B",
-        marginLeft: 15,
+        marginLeft: 17,
     },
     bottomLine: {
         position: "absolute",
@@ -261,9 +261,9 @@ var styles = ({
         justifyContent: 'space-between',
     },
     itemText: {
-        marginLeft: 15,
+        marginLeft: 19,
         width: "80%",
-        fontSize: 13,
+        fontSize: 16,
     },
     buyView: {
         alignItems: 'center',

@@ -50,7 +50,7 @@ let headImage = require('../Images/head.png');
 
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
-        color: 'black',
+        color: '#172434',
         alignSelf: 'center',
         fontSize: 20
     }
@@ -77,7 +77,7 @@ const TabOptions = ({ title }) => {
                     width: 44,
                     height: 44,
                 }}>
-                    <Image style={{ width: 14, height: 10 }} source={require('../Images/back_arrow.png')} />
+                    <Image style={{ width: 16, height: 16 }} source={require('../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),

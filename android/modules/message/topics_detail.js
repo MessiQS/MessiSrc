@@ -135,7 +135,7 @@ export default class TopicsDetail extends React.Component {
             console.log("item.id == this.state.user.currentExamId")
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                     <View style={[styles.buyView, {borderColor: '#DDDDDD'}]}>
                         <Text style={[styles.buyText,{color: '#DDDDDD'}]}>选择</Text>
                     </View>
@@ -146,7 +146,7 @@ export default class TopicsDetail extends React.Component {
         if (this.state.user.examIds.includes(item.id)) {
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                     <TouchableOpacity onPress={() =>
                         this._chooseExam(item)
                     }>
@@ -160,7 +160,7 @@ export default class TopicsDetail extends React.Component {
 
         return (
             <View style={styles.itemView}>
-                <Text style={styles.itemText}>{item.title}</Text>
+                <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                 <TouchableOpacity onPress={() =>
                     this._buy(item)
                 }>

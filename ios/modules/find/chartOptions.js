@@ -1,8 +1,8 @@
 export const newPaper = {
     option: {
         grid: {
-            left: '3%',
-            right: '4%',
+            left: '5%',
+            right: '5%',
             bottom: '3%',
             containLabel: true
         },
@@ -24,6 +24,7 @@ export const newPaper = {
         ],
         yAxis: [
             {
+                minInterval: 1,
                 type: 'value',
                 axisLine: {
                     show: false
@@ -34,7 +35,20 @@ export const newPaper = {
                 nameTextStyle: {
                     color: "#8E9091",
                     fontSize: 14
-                }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#8E9091',
+                        fontSize: 14
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#D8D8D8',
+                        type: 'dashed'
+                    }
+                },
             }
         ],
         series: [
@@ -77,8 +91,8 @@ export const newPaper = {
 export const rememberPaper = {
     option: {
         grid: {
-            left: '3%',
-            right: '4%',
+            left: '5%',
+            right: '5%',
             bottom: '3%',
             containLabel: true
         },
@@ -100,6 +114,7 @@ export const rememberPaper = {
         ],
         yAxis: [
             {
+                minInterval: 1,
                 type: 'value',
                 axisLine: {
                     show: false
@@ -110,8 +125,20 @@ export const rememberPaper = {
                 nameTextStyle: {
                     color: "#8E9091",
                     fontSize: 14
-                }
-
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#8E9091',
+                        fontSize: 14
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#D8D8D8',
+                        type: 'dashed'
+                    }
+                },
             }
         ],
         dataZoom: [

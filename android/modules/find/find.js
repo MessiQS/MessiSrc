@@ -177,10 +177,22 @@ export default class Find extends Component {
         let weekArray = []
         for (var i = 5; i > 0; i--) {
             let day = moment().subtract(i, 'days').format('dddd')
-            let d = daysTransfer[day]
+            let d = {
+                value: daysTransfer[day],
+                textStyle: {
+                    fontSize: 12,
+                    color: '#8E9091'
+                }
+            }
             weekArray.push(d)
         }
-        weekArray.push('今日')
+        weekArray.push({
+            value: '今日',
+            textStyle: {
+                fontSize: 12,
+                color: '#172434'
+            }
+        })
         newPaperOption.xAxis[0].data = weekArray
         newPaperOption.series[0].data = this.state.beforeArray
 
@@ -204,10 +216,22 @@ export default class Find extends Component {
    
     _renderGetChatRemember() {
         const newPaperOption = rememberPaper.option;
-        let weekArray = ['今日']
+        let weekArray = [{
+            value: '今日',
+            textStyle: {
+                fontSize: 12,
+                color: '#172434'
+            }
+        }]
         for (var i = 1; i < 6; i++) {
             let day = moment().add(i, 'days').format('dddd')
-            let d = daysTransfer[day]
+            let d = {
+                value: daysTransfer[day],
+                textStyle: {
+                    fontSize: 12,
+                    color: '#8E9091'
+                }
+            }
             weekArray.push(d)
         }
         newPaperOption.xAxis[0].data = weekArray

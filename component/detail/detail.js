@@ -75,7 +75,7 @@ export default class Detail extends Component {
                         width: 44,
                         height: 44,
                     }}>
-                        <Image style={{ width: 14, height: 10 }} source={require('../../Images/back_arrow.png')} />
+                        <Image style={{ width: 16, height: 16 }} source={require('../../Images/back_arrow.png')} />
                     </View>
                 </TouchableOpacity>
             ) : navigation.state.params.headerLeft

@@ -80,7 +80,7 @@ export default class ListOfTopics extends React.Component {
                 <View style={styles.sectionViewStyle}>
                     <Text style={styles.sectionTitleStyle}>{item.item.title}</Text>
                     <Text style={styles.detailTitleStyle}>{item.item.length}套真题</Text>
-                    <Image style={styles.arrowStyle} source={require('../../../Images/arrow_right.png')} ></Image>
+                    <Image style={styles.arrowStyle} source={require('../../../Images/find_arrow_right.png')} ></Image>
                 </View>
             </TouchableOpacity>
         );
@@ -105,8 +105,8 @@ const styles = ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         borderBottomWidth: 0.5,
-        borderBottomColor: DictStyle.colorSet.lineColor,
-        backgroundColor: 'white'
+        // borderBottomColor: DictStyle.colorSet.lineColor,
+        // backgroundColor: 'white'
     },
     sectionTitleStyle: {
         marginLeft: 20,
@@ -116,14 +116,14 @@ const styles = ({
     detailTitleStyle: {
         position: 'absolute',
         left: 100,
-        color: "#9B9B9B",
-        fontSize: 14,
+        color: "#172434",
+        fontSize: 16,
     },
     arrowStyle: {
         position: 'absolute',
-        width: 4,
-        height: 7,
-        right: 22,
+        width: 7.4,
+        height: 12,
+        right: 26.2,
     },
     itemViewStyle: {
         flexDirection: 'row',
