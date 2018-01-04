@@ -7,6 +7,7 @@ import {
     Image
 } from 'react-native'
 import key from "../../service/path"
+import { webURL } from "../../service/constant"
 
 export default class Analysis extends React.Component {
 
@@ -41,7 +42,7 @@ export default class Analysis extends React.Component {
 
             suffix = sufUrl
         }
-        return "http://118.89.196.123/images" + suffix
+        return webURL + "images" + suffix
     }
 
     _filterTag(str) {

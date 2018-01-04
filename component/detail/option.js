@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import key from "../../service/path"
+import {webURL} from "../../service/constant"
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
@@ -56,7 +57,7 @@ export default class Option extends React.Component {
 
             suffix = sufUrl
         }
-        return "http://118.89.196.123/images" + suffix
+        return webURL + "images" + suffix
     }
 
     _afterSelectText() {

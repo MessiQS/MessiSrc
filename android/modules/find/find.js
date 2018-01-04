@@ -275,8 +275,8 @@ const styles = {
     arrow: {
         position: 'absolute',
         resizeMode: 'contain',
-        right: 21,
-        width: 4,
+        right: 19.6,
+        width: 7.4,
         height: 96
     },
     text: {

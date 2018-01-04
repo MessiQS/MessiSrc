@@ -14,7 +14,7 @@ import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
 import Storage from "../../../service/http";
 import runtime from "../../../service/runtime";
-import Constant from "../../../service/constant";
+import { DBChange } from "../../../service/constant";
 
 export default class TopicsDetail extends React.Component {
 
@@ -95,7 +95,7 @@ export default class TopicsDetail extends React.Component {
         }
 
         setTimeout(() => {
-            runtime.emit(Constant.DBChange);
+            runtime.emit(DBChange);
         }, 1)
 
         this.setState({
@@ -121,7 +121,7 @@ export default class TopicsDetail extends React.Component {
         let user = realmManager.updateCurrentExamInfo(item)
 
         setTimeout(() => {
-            runtime.emit(Constant.DBChange);
+            runtime.emit(DBChange);
         }, 1)
 
         this.setState({

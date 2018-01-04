@@ -23,6 +23,7 @@ import Analysis from "./analysis";
 import key from "../../service/path"
 import Http from '../../service/http';
 import runtime from '../../service/runtime';
+import {webURL} from "../../service/constant";
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -125,7 +126,7 @@ export default class Detail extends Component {
         } else {
             suffix = sufUrl
         }
-        return url = "http://118.89.196.123/images" + suffix
+        return webURL + "images" + suffix
     }
 
     nextQuestion() {
@@ -195,7 +196,6 @@ export default class Detail extends Component {
         });
 
         setTimeout(function(){
-        
             runtime.emit("database_change");
         }, 1);
 
@@ -289,12 +289,16 @@ export default class Detail extends Component {
         if (selectedOption.length == 0) {
             return null
         }
+        var array = selectedOption
         var sortedSelection = array.sort().toString()
         var answer = this._memoryModel.questionPaper.answer
 
         let score = 7 - this._memoryModel.appearedSeveralTime
         score = Math.max(1, score)
-        var isRight = sortedSelection && answer.toString()
+        var isRight = false
+        if (sortedSelection == answer.toString()) {
+            isRight = true
+        }
 
         realm.write(() => {
             this._memoryModel.weighting = this._memoryModel.weighting + score
@@ -407,7 +411,7 @@ export default class Detail extends Component {
         const { detail, isSelected, selectedOption } = this.state
 
         if (detail.questionPaper.subject == "不定项" ||
-            detail.questionPaper.question.indexOf("不定项选择题") !== -1) {
+            detail.questionPaper.question.indexOf("不定项选择") !== -1) {
 
             return (
                 <MultipleOptionForm
@@ -443,7 +447,8 @@ export default class Detail extends Component {
         const { detail } = this.state
         let str = ""
         let str1 = ""
-        if (detail.questionPaper.category.indexOf("资料分析") !== -1) {
+        if (detail.questionPaper.category.indexOf("资料分析") !== -1 ||
+            detail.questionPaper.question_material !== "") {
             str = detail.questionPaper.question_material
             str1 = detail.questionPaper.question
         } else {

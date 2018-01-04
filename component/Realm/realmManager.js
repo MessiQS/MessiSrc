@@ -44,14 +44,17 @@ class RealmManager {
     }
 
     createUser(user) {
-
-        try {
-            realm.write(() => {
-                realm.create('User', user);
-            });
-        } catch (e) {
-            console.log("User Error on creation", e);
-        }
+        return new Promise((resolve, reject) => {
+            try {
+                realm.write(() => {
+                    realm.create('User', user);
+                    resolve();
+                });
+            } catch (e) {
+                console.log("User Error on creation", e);
+                reject(e);
+            }
+        })
     }
 
     createMemoryModels(papers, examId) {
@@ -222,7 +225,7 @@ class RealmManager {
         if (category == "wrong") {
 
             let models = realm.objects('MemoryModel')
-            .filtered("weighting < 7 && appearedSeveralTime>0 && examId=$0", user.currentExamId)
+            .filtered("weighting < 7 && appearedSeveralTime>0", user.currentExamId)
             .sorted('lastBySelectedTime', false)
 
             if (models.length == 0) {

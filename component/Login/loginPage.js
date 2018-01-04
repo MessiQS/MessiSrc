@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';
-import SamsoButton  from '../usual/button';
+import SamsoButton from '../usual/button';
 import styles from "./loginPageCss";
 import realmManager from "../Realm/realmManager";
 
@@ -37,7 +37,7 @@ class LoginPage extends React.Component {
             password: password
         })
     }
-    login() {
+    async login() {
         let { account, password } = this.state;
         const { navigate } = this.props.navigation;
         if (!account) {
@@ -56,50 +56,57 @@ class LoginPage extends React.Component {
             return;
         };
         password = MD5(password).toString();
-        Http.post('api/login', {
+        const loginResponse = await Http.post('api/login', {
             "account": account,
             "password": password
-        }).then(({ type, data }) => {
-            console.log("api/login",type, data)
-            if (type) {
-                //将账号和token存到本地存储
-                let setToken = Storage.multiSet([
+        })
+        const { type, data } = loginResponse
+        console.log("api/login", type, data)
+        if (type) {
+            //将账号和token存到本地存储
+            let setToken
+            try {
+                setToken = await Storage.multiSet([
                     ['accountToken', data.token],
                     ['account', account]
                 ]);
-                setToken.then(res => {
-                    Keyboard.dismiss()
-                    navigate('Home', {})
-                }, err => {
-                    Alert('登录错误，请重试')
-                })
-                data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
-                var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
-                var user = {
-                    userId: data.user_id,
-                    token: data.token,
-                    examIds: examIdJson
-                }
-                realmManager.createUser(user)
-
-                Http.post('api/getUserQuestionInfo', {
-                    user_id: data.user_id,
-                }).then((value) => {
-                    console.log("api/getUserQuestionInfo value", value)
-                }).catch(err => {
-                    console.log("api/getUserQuestionInfo error", err)
-                })
-
-            } else {
-                //此处提示错误信息
-                Alert.alert(data);
+                Keyboard.dismiss()
+                navigate('Home', {})
+            } catch (e) {
+                Alert('登录错误，请重试')
             }
-        })
-        
-        .catch(error => {
-            console.log("api/login", error)
-        })
+            data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
+            var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+            var user = {
+                userId: data.user_id,
+                token: data.token,
+                examIds: examIdJson
+            }
+            await realmManager.createUser(user)
+
+            this._handleUserInfo(data.user_id)
+
+        } else {
+            //此处提示错误信息
+            Alert.alert(data);
+        }
     };
+
+    _handleUserInfo(userId) {
+
+        Http.get('api/getUserQuestionInfo', {
+            user_id: userId,
+        },true).then((value) => {
+            console.log("api/getUserQuestionInfo value", value)
+            value.data.bankModel.cell.forEach(function(data) {
+                
+            })
+            console.log("data", value.data.bankModel.cell)
+
+        }).catch(err => {
+            console.log("api/getUserQuestionInfo error", err)
+        })
+    }
 
     _sofewareAgreementClick() {
         const { navigate } = this.props.navigation;
@@ -112,35 +119,35 @@ class LoginPage extends React.Component {
             placeholder: '请输入您的电话号码',
             keyboardType: 'numeric',
             onChangeText: account => this.phoneChange(account),
-            iconName:"ios-phone-portrait-outline",
-            maxLength:11,
-            key:'loginPage0'
-        },{
+            iconName: "ios-phone-portrait-outline",
+            maxLength: 11,
+            key: 'loginPage0'
+        }, {
             placeholder: '请输入您的密码',
-            secureTextEntry:true,
-            iconName:"ios-lock-outline",
-            onChangeText:password => this.passwordtChange(password),
-            key:'loginPage1'
+            secureTextEntry: true,
+            iconName: "ios-lock-outline",
+            onChangeText: password => this.passwordtChange(password),
+            key: 'loginPage1'
         }]
         return (
             <View style={styles.container}>
-                {inputObjectArraty.map( res => {
+                {inputObjectArraty.map(res => {
                     return (<LoginItem key={res.key} data={res}></LoginItem>)
                 })}
-                
-                <View style={styles.forgotButton}    
-                    >
+
+                <View style={styles.forgotButton}
+                >
                     <Text onPress={() =>
-                                navigate('FPStepOne', 
-                                    { name: 'FPStepOne' }
-                                )} 
+                        navigate('FPStepOne',
+                            { name: 'FPStepOne' }
+                        )}
                         style={styles.forgotText}>忘记密码</Text>
                 </View>
 
                 <SamsoButton
                     style={styles.enter}
                     onPress={this.login.bind(this)}
-                    title = '登录'
+                    title='登录'
                 ></SamsoButton>
                 <ScrollView></ScrollView>
                 <View style={styles.agreeView}>

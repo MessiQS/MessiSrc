@@ -32,9 +32,10 @@ const header = {
         alignItems: 'center',
     },
     text: {
-        fontSize: 24,
+        fontSize: 18,
         paddingLeft: 15,
-        flex: 7
+        flex: 7,
+        color: "#172434",
     },
     icon: {
         marginRight: 20,
@@ -207,10 +208,22 @@ export default class Find extends Component {
         let weekArray = []
         for (var i = 5; i > 0; i--) {
             let day = moment().subtract(i, 'days').format('dddd')
-            let d = daysTransfer[day]
+            let d = {
+                value: daysTransfer[day],
+                textStyle: {
+                    fontSize: 12,
+                    color: '#8E9091'
+                }
+            }
             weekArray.push(d)
         }
-        weekArray.push('今日')
+        weekArray.push({
+            value: '今日',
+            textStyle: {
+                fontSize: 12,
+                color: '#172434'
+            }
+        })
         newPaperOption.xAxis[0].data = weekArray
         newPaperOption.series[0].data = this.state.beforeArray
 
@@ -235,10 +248,22 @@ export default class Find extends Component {
     _renderGetChatRemember() {
 
         const newPaperOption = rememberPaper.option;
-        let weekArray = ['今日']
+        let weekArray = [{
+            value: '今日',
+            textStyle: {
+                fontSize: 12,
+                color: '#172434'
+            }
+        }]
         for (var i = 1; i < 6; i++) {
             let day = moment().add(i, 'days').format('dddd')
-            let d = daysTransfer[day]
+            let d = {
+                value: daysTransfer[day],
+                textStyle: {
+                    fontSize: 12,
+                    color: '#8E9091'
+                }
+            }
             weekArray.push(d)
         }
         newPaperOption.xAxis[0].data = weekArray
@@ -307,8 +332,8 @@ const styles = {
     arrow: {
         position: 'absolute',
         resizeMode: 'contain',
-        right: 21,
-        width: 4,
+        right: 19.6,
+        width: 7.4,
         height: 96
     },
     text: {
@@ -319,7 +344,8 @@ const styles = {
     },
     h2: {
         fontSize: 16,
-        lineHeight: 25
+        lineHeight: 25,
+        color: "#172434",
     },
     p: {
         marginTop: 5,

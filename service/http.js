@@ -1,7 +1,8 @@
 
 import Storage from "./storage";
 import { AlertIOS } from "react-native";
-const webURL = "http://118.89.196.123/";
+import { webURL } from "./constant";
+// export const webURL = "https://shuatiapp.cn/";
 // const webURL = "http://192.168.0.183/";
 
 export default class Http {
@@ -18,6 +19,7 @@ export default class Http {
                     }).join('');
                 return str;
             })(paramObj);
+            console.log(api, paramObj, hasToken, url)
             let token = await Storage.getItem("accountToken") || '';
             params = Object.assign({
                 method: 'POST',
@@ -42,6 +44,7 @@ export default class Http {
             params["account"] = await Storage.getItem("account");
             params["token"] = await Storage.getItem("accountToken");
         };
+        console.log(api, params, hasToken)
         const keyArray = Object.keys(params);
         keyArray.forEach((res, index) => {
             const condi = index === 0 ? '?' : '&';

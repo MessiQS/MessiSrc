@@ -13,7 +13,7 @@ import realm from '../../../component/Realm/realm';
 import realmManager from '../../../component/Realm/realmManager';
 import PropTypes from 'prop-types';
 import HTTP from '../../../service/http';
-import Constant from "../../../service/constant";
+import { TextColor } from "../../../service/constant";
 
 
 export default class ListOfTopics extends React.Component {
@@ -111,12 +111,12 @@ const styles = ({
     sectionTitleStyle: {
         marginLeft: 20,
         fontSize: 16,
-        color: Constant.TextColor,
+        color: TextColor,
     },
     detailTitleStyle: {
         position: 'absolute',
         left: 100,
-        color: Constant.TextColor,
+        color: "#9B9B9B",
         fontSize: 14,
     },
     arrowStyle: {
