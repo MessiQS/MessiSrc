@@ -6,7 +6,6 @@ import {
     StyleSheet,
     Image
 } from 'react-native'
-import key from "../../service/path"
 import { webURL, imageWebURL } from "../../service/constant"
 
 export default class Analysis extends React.Component {

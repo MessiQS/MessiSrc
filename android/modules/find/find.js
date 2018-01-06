@@ -60,37 +60,33 @@ var daysTransfer = {
 
 export default class Find extends Component {
 
-    static navigationOptions = ({ navigation, screenProps }) => {
-        return {
-            headerStyle: {
-                borderBottomWidth: 0,
-                backgroundColor: '#FFF',
-                shadowOpacity: 0.1,
-                shadowColor: '#333',
-                shadowOffset: { width: 0, height: 1 }
-            },
-            headerTintColor: 'white',
-            gesturesEnabled: false,
-            headerLeft: (
-                <View style={header.header}>
-                    <Text style={header.text}>
-                        刷题统计
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        headerStyle: {
+            borderBottomWidth: 0,
+            backgroundColor: '#FFF',
+            shadowOpacity: 0.1,
+            shadowColor: '#333',
+            shadowOffset: { width: 0, height: 1 }
+        },
+        headerTintColor: 'white',
+        gesturesEnabled: false,
+        headerLeft: (
+            <View style={header.header}>
+                <Text style={header.text}>
+                    刷题统计
                 </Text>
+            </View>
+        ),
+        headerRight: (
+            <View style={header.header}>
+                <View style={header.icon}>
+                    <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
                 </View>
-            ),
-            headerRight: (
-                <View style={header.header}>
-                    <View style={header.icon}>
-                        <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-                    </View>
-                    <TouchableOpacity onPress={
-                        navigation.state.params ? navigation.state.params.setting : () => { }
-                    } style={header.icon}>
-                        <Image style={header.more} source={require('../../../Images/more.png')} />
-                    </TouchableOpacity>
-                </View>)
-        }
-    }
+                <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
+                    <Image style={header.more} source={require('../../../Images/more.png')} />
+                </TouchableOpacity>
+            </View>)
+    })
 
     constructor(props) {
         super(props);

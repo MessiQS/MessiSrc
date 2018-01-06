@@ -99,8 +99,8 @@ class LoginPage extends React.Component {
         },true).then((value) => {
             console.log("api/getUserQuestionInfo value", value)
             console.log("login Page", value.data)
-
             for (var key in value.data) {
+                console.log("key", key)
                 var exam = value.data[key]
                 console.log("exam", exam)
             }
@@ -108,6 +108,10 @@ class LoginPage extends React.Component {
         }).catch(err => {
             console.log("api/getUserQuestionInfo error", err)
         })
+    }
+
+    _downloadExam() {
+        
     }
 
     _sofewareAgreementClick() {

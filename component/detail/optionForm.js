@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native';
-import key from "../../service/path"
 
 export default class OptionForm extends React.Component {
 
@@ -40,13 +39,13 @@ export default class OptionForm extends React.Component {
         if (filterStr[0] == " ") {
             filterStr = filterStr.replace(" ", "")
         }
-        let re = /.\/(.*)files/g;
-        let results = re.exec(filterStr);
-        let img = "";
-        if (results) {
-            img = results[0].replace("./", "")
-            filterStr = filterStr.replace(img, key[img])
-        }
+        // let re = /.\/(.*)files/g;
+        // let results = re.exec(filterStr);
+        // let img = "";
+        // if (results) {
+        //     img = results[0].replace("./", "")
+        //     filterStr = filterStr.replace(img, key[img])
+        // }
 
         return filterStr
     }

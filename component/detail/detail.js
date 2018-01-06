@@ -20,7 +20,6 @@ import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
 import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
-// import key from "../../service/path"
 import Http from '../../service/http';
 import runtime from '../../service/runtime';
 import { webURL, imageWebURL } from "../../service/constant";
