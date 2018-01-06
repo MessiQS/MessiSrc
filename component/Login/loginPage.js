@@ -110,8 +110,32 @@ class LoginPage extends React.Component {
         })
     }
 
-    _downloadExam() {
-        
+    _getPaperInfo() {
+
+        Http.get('api/getSinglePaperInfo', {
+            paperId: ["SP00009", "SP00319"]
+        },true).then((value) => {
+            console.log("api/getSinglePaperInfo", value);
+        }) 
+    }
+
+    async _downloadExam(item) {
+
+        const json = await MessageService.downloadPaper({
+            paperId: item.id
+        });
+        const papers = await realmManager.createQuestion(json)
+        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+        await realmManager.createExaminationPaper({
+            id: item.id,
+            title: item.title,
+            questionPapers: papers,
+            year: item.year,
+            province: item.province,
+            version: item.version,
+            purchased: true,
+            price: parseFloat(item.price),
+        })
     }
 
     _sofewareAgreementClick() {
