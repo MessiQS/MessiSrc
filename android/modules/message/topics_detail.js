@@ -132,7 +132,6 @@ export default class TopicsDetail extends React.Component {
     _renderItem(item) {
 
         if (item.id == this.state.user.currentExamId) {
-            console.log("item.id == this.state.user.currentExamId")
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
@@ -165,7 +164,7 @@ export default class TopicsDetail extends React.Component {
                     this._buy(item)
                 }>
                     <View style={styles.buyView}>
-                        <Text style={styles.buyText}>购买</Text>
+                        <Text style={styles.buyText}>￥{item.price}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

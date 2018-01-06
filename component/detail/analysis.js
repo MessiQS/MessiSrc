@@ -7,7 +7,7 @@ import {
     Image
 } from 'react-native'
 import key from "../../service/path"
-import { webURL } from "../../service/constant"
+import { webURL, imageWebURL } from "../../service/constant"
 
 export default class Analysis extends React.Component {
 
@@ -22,27 +22,12 @@ export default class Analysis extends React.Component {
     }
 
     _handleImageURL(content) {
-        /// 获取 "/2016年上海《行测》真题（B类） - 腰果公考_files/normal_610x328_a0d18f5c4d9ceac41b845efc3b73876a.png"
+
         var re2 = /\/.*?\.(?:png|jpg)/gm;
         let suffixUrl = re2.exec(content)
         let sufUrl = suffixUrl[0]
-
-        // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
-        // var re = /\/(.*)files/g;
-        // var results = re.exec(sufUrl);
-        // let suffix = null
-        // if (results) {
-        //     let img = results[0].replace("/", "", )
-        //     if (key[img] != null) {
-        //         suffix = sufUrl.replace(img, key[img])
-        //     } else {
-        //         suffix = sufUrl
-        //     }
-        // } else {
-
-        //     suffix = sufUrl
-        // }
-        return webURL + sufUrl
+     
+        return imageWebURL + sufUrl
     }
 
     _filterTag(str) {

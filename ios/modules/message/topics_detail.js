@@ -197,7 +197,6 @@ export default class TopicsDetail extends React.Component {
             )
         }
 
-        console.log("topic detail item", item)
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
