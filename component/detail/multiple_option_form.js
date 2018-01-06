@@ -151,7 +151,7 @@ var styles = StyleSheet.create({
     },
     answerTitleText: {
         marginLeft: 28,
-        marginTop: 23,
+        marginTop: 33,
         fontSize: 13,
     },
     indefiniteItem: {

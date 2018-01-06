@@ -45,6 +45,7 @@ export default class LoginItem extends Component {
                     secureTextEntry={data.secureTextEntry}
                     placeholder={data.placeholder}
                     keyboardType={data.keyboardType}
+                    placeholderTextColor= {'#051425'}
                     maxLength={data.maxLength}
                     onChangeText={data.onChangeText}></TextInput>
             </View>

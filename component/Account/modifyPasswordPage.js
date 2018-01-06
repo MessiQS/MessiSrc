@@ -121,6 +121,7 @@ var styles =StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
+        backgroundColor: '#F6F6F6'
     },
     contentStyle: {
         width: '80%',

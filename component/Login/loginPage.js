@@ -98,10 +98,10 @@ class LoginPage extends React.Component {
             user_id: userId,
         },true).then((value) => {
             console.log("api/getUserQuestionInfo value", value)
-            value.data.bankModel.cell.forEach(function(data) {
+            // value.data.bankModel.cell.forEach(function(data) {
                 
-            })
-            console.log("data", value.data.bankModel.cell)
+            // })
+            // console.log("data", value.data.bankModel.cell)
 
         }).catch(err => {
             console.log("api/getUserQuestionInfo error", err)

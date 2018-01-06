@@ -182,7 +182,7 @@ export default class TopicsDetail extends React.Component {
         }
         
         const examIds = JSON.parse(this.state.user.examIds)
-        if (examIds.includes(item.id)) {
+        if (examIds.includes(item.id) || item.price == 0) {
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
@@ -197,6 +197,7 @@ export default class TopicsDetail extends React.Component {
             )
         }
 
+        console.log("topic detail item", item)
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
@@ -204,7 +205,7 @@ export default class TopicsDetail extends React.Component {
                     this._buy(item)
                 }>
                     <View style={styles.buyView}>
-                        <Text style={styles.buyText}>购买</Text>
+                        <Text style={styles.buyText}>￥{item.price}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

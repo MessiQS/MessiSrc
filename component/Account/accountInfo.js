@@ -55,9 +55,8 @@ class AccountInfo extends React.Component {
         }
     ];
     render() {
-        // const { navigate } = this.props.navigation;
         return (
-            <View>
+            <View style={styles.container}>
                 <View style={styles.headerView}>
                     <Text style={styles.headerText}>
                         +86 { this.state.account }
@@ -77,6 +76,9 @@ class AccountInfo extends React.Component {
 }
 
 var styles = ({
+    container: {
+        backgroundColor:"#f6f6f6",
+    },
     headerView: {
         height: 45,
         backgroundColor:"#fff",

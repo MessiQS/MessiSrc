@@ -2,8 +2,6 @@
 import Storage from "./storage";
 import { AlertIOS } from "react-native";
 import { webURL } from "./constant";
-// export const webURL = "https://shuatiapp.cn/";
-// const webURL = "http://192.168.0.183/";
 
 export default class Http {
 

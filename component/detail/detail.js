@@ -20,7 +20,7 @@ import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
 import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
-import key from "../../service/path"
+// import key from "../../service/path"
 import Http from '../../service/http';
 import runtime from '../../service/runtime';
 import {webURL} from "../../service/constant";
@@ -61,7 +61,7 @@ export default class Detail extends Component {
                     navigation.state.params.clickNextQuestion()
                 }}>
                 <View style={styles.rightButtonStyle}>
-                    <Text style={[styles.rightText, navigation.state.params.nextButtonDisable == false ? { color: "#FF5B29" } : {}]}>下一题</Text>
+                    <Text style={[styles.rightText, navigation.state.params.nextButtonDisable == false ? { opacity: 1 } : { opacity: 0.5 }]}>下一题</Text>
                 </View>
             </TouchableOpacity>
         ),
@@ -83,8 +83,15 @@ export default class Detail extends Component {
     });
 
     componentWillMount() {
+
+        var category = this.state.detail.questionPaper.category
+        if (this.state.detail.questionPaper.subject == "不定项" ||
+            this.state.detail.questionPaper.question.indexOf("不定项选择") !== -1) {
+                category = category + "（多选）"
+            }
+
         this.props.navigation.setParams({
-            headerTitle: this.state.detail.questionPaper.category,
+            headerTitle: category,
             clickNextQuestion: this.nextQuestion.bind(this),
             nextButtonDisable: true,
         })
@@ -114,19 +121,19 @@ export default class Detail extends Component {
 
         // 获取 "/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
         var re = /\/(.*)files/g;
-        var results = re.exec(sufUrl);
-        let suffix = null
-        if (results) {
-            let img = results[0].replace("/", "", )
-            if (key[img] != null) {
-                suffix = sufUrl.replace(img, key[img])
-            } else {
-                suffix = sufUrl
-            }
-        } else {
-            suffix = sufUrl
-        }
-        return webURL + "images" + suffix
+        // var results = re.exec(sufUrl);
+        // let suffix = null
+        // if (results) {
+        //     let img = results[0].replace("/", "", )
+        //     if (key[img] != null) {
+        //         suffix = sufUrl.replace(img, key[img])
+        //     } else {
+        //         suffix = sufUrl
+        //     }
+        // } else {
+        //     suffix = sufUrl
+        // }
+        return webURL + sufUrl
     }
 
     nextQuestion() {
@@ -139,8 +146,13 @@ export default class Detail extends Component {
 
         } else {
 
+            var category = this._memoryModel.questionPaper.category
+            if (this._memoryModel.questionPaper.subject == "不定项" ||
+                this._memoryModel.questionPaper.question.indexOf("不定项选择") !== -1) {
+                category = category + "（多选）"
+            }
             this.props.navigation.setParams({
-                headerTitle: this._memoryModel.questionPaper.category,
+                headerTitle: category,
                 nextButtonDisable: true,
             });
     
@@ -321,15 +333,15 @@ export default class Detail extends Component {
     _sendUpdateInfoCache(type, weighted) {
 
         var user = realmManager.getCurrentUser()
-
+        var timestamp = Date.parse(new Date())
         var param = {
             user_id: user.userId,
             bankname: user.currentExamId,
-            qname: this._memoryModel.questionPaper.question_number,
+            qname: this._memoryModel.questionPaper.question_number.toString(),
             type: type,
             weighted: weighted,
+            dateTime: timestamp
         }
-        console.log("api/getUpdateInfoCache param", param)
         Http.post('api/getUpdateInfoCache', param).then(res => {
             console.log("api/getUpdateInfoCache", res)
         }).catch(err => {
@@ -539,7 +551,7 @@ var styles = StyleSheet.create({
         width: 80,
     },
     rightText: {
-        color: 'white',
+        color: "#172434",
         fontSize: 16,
     },
 })

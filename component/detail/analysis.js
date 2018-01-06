@@ -28,21 +28,21 @@ export default class Analysis extends React.Component {
         let sufUrl = suffixUrl[0]
 
         // 获取"/952428d694d9f518/normal_764x574_f7cd44964754b57.png"
-        var re = /\/(.*)files/g;
-        var results = re.exec(sufUrl);
-        let suffix = null
-        if (results) {
-            let img = results[0].replace("/", "", )
-            if (key[img] != null) {
-                suffix = sufUrl.replace(img, key[img])
-            } else {
-                suffix = sufUrl
-            }
-        } else {
+        // var re = /\/(.*)files/g;
+        // var results = re.exec(sufUrl);
+        // let suffix = null
+        // if (results) {
+        //     let img = results[0].replace("/", "", )
+        //     if (key[img] != null) {
+        //         suffix = sufUrl.replace(img, key[img])
+        //     } else {
+        //         suffix = sufUrl
+        //     }
+        // } else {
 
-            suffix = sufUrl
-        }
-        return webURL + "images" + suffix
+        //     suffix = sufUrl
+        // }
+        return webURL + sufUrl
     }
 
     _filterTag(str) {
