@@ -82,6 +82,12 @@ export const newPaper = {
                         }
                     }
                 },
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
                 data: [0, 15, 40, 30, 80, 50]
             }
         ]
@@ -161,7 +167,12 @@ export const rememberPaper = {
                             color: '#FF5B29'
                         }
                     },
-                    
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
                 },
                 smooth:false,
                 symbol: 'none',
@@ -202,6 +213,7 @@ export const pieOption = {
                 type:'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
+               
                 color:['#8FDA3C', '#FF5B29', '#1495EB'],
                 label: {
                     normal: {

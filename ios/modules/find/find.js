@@ -233,7 +233,7 @@ export default class Find extends Component {
                     <View style={styles.rightContainer}>
                         <Image style={styles.blueBlock} source={require("../../../Images/blue_block.png")} />
                         <View style={styles.chartTitleLeft}>
-                            <Text style={styles.h4}>过去5日刷题亮统计</Text>
+                            <Text style={styles.h4}>过去5日刷题量统计</Text>
                             <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
                         </View>
                         <View style={styles.separator} />
@@ -358,7 +358,7 @@ const styles = {
         color: "#172434",
     },
     examTitle: {
-        width: '60%',
+        width: '70%',
         marginTop: 17,
         marginLeft: 5,
     },

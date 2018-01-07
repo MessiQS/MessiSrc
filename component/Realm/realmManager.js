@@ -334,13 +334,13 @@ class RealmManager {
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         var todayNumber = models.filtered('lastBySelectedTime>$0', timeStamp).length
-        var finishedModels = models.filtered('weighting>=7', examId)
-        var unfishedModels = models.filtered('weighting<7', examId)
+        var finishedModels = models.filtered('weighting>=7 && appearedSeveralTime > 0')
+        var unfishedModels = models.filtered('weighting<7 && appearedSeveralTime > 0')
         var x = finishedModels.length
         var y = unfishedModels.length
 
         var futureArray = []
-        futureArray.push(todayNumber)
+        futureArray.push(x + y)
         futureArray.push(x + (0.6 * y))
         futureArray.push(x + (0.45 * y))
         futureArray.push(x + (0.36 * y))

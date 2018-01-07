@@ -90,25 +90,15 @@ class LoginPage extends React.Component {
             await realmManager.createUser(user)
 
             this._handleUserInfo(data.user_id)
-            navigate("Home", {})
 
-            // const resetAction = NavigationActions.reset({
-            //     index: 0,
-            //     actions: [
-            //       NavigationActions.navigate({ routeName: 'Home' })                
-            //     ]
-            // })
-            // this.props.navigation.dispatch(resetAction)
-
-            // const resetAction = NavigationActions.reset({
-            //     index: 0,
-            //     actions: [
-            //         // NavigationActions.navigate({ routeName: 'LoginPage'}),
-            //         NavigationActions.navigate({ routeName: 'Home'})
-            //     ]
-            // });
-            // this.props.navigation.dispatch(resetAction);
-            
+            const resetAction = NavigationActions.reset({
+                index: 1,
+                actions: [
+                  NavigationActions.navigate({ routeName: 'LoginPage' }),                
+                  NavigationActions.navigate({ routeName: 'LaunchPage' })                
+                ]
+            })
+            this.props.navigation.dispatch(resetAction)
 
         } else {
             //此处提示错误信息

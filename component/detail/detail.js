@@ -289,11 +289,12 @@ export default class Detail extends Component {
         var sortedSelection = array.sort().toString()
         var answer = this._memoryModel.questionPaper.answer
 
-        let score = 7 - this._memoryModel.appearedSeveralTime
-        score = Math.max(1, score)
+        let score = 0
         var isRight = false
         if (sortedSelection == answer.toString()) {
             isRight = true
+            score = 7 - this._memoryModel.appearedSeveralTime
+            score = Math.max(1, score)
         }
 
         realm.write(() => {

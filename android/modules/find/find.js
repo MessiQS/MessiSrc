@@ -194,16 +194,20 @@ export default class Find extends Component {
 
         return (
             <View style={styles.calendarView}>
-                <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
-                    <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>过去5日刷题亮统计</Text>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
+                <TouchableOpacity onPress={this.routeToNewDetail.bind(this)} style={styles.chartTitle}>
+                    <View style={styles.rightContainer}>
+                        <Image style={styles.blueBlock} source={require("../../../Images/blue_block.png")} />
+                        <View style={styles.chartTitleLeft}>
+                            <Text style={styles.h4}>过去5日刷题量统计</Text>
+                            <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
+                        </View>
+                        <View style={styles.separator} />
+                        <View style={styles.chartTitleRight}>
+                            <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
+                            <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
+                        </View>
+                        <Image style={[styles.arrow, { top: 1 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </View>
-                    <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
-                    </View>
-                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -235,16 +239,20 @@ export default class Find extends Component {
 
         return (
             <View style={[styles.calendarView, { marginTop: 4 }]}>
-                <TouchableOpacity onPress={this.routeToDetail.bind(this)} style={styles.chartTitle}>
-                    <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>未来5日遗忘数量统计</Text>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
+                <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)} style={styles.chartTitle}>
+                    <View style={styles.wrongContainer}>
+                        <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
+                        <View style={styles.chartTitleLeft}>
+                            <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                            <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
+                        </View>
+                        <View style={styles.separator} />
+                        <View style={styles.chartTitleRight}>
+                            <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
+                            <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
+                        </View>
+                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </View>
-                    <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
-                    </View>
-                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -258,16 +266,20 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
+                {this.state.showAlert == true ? <Alert/> : null}
                 <ScrollView>
-                    <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
-                        <View style={styles.text}>
-                            <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
-                            <Text style={styles.p}>{this.state.currentExamDetail}</Text>
+                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
+                    <View style={styles.titleContent}>
+                        <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
+                            <View style={styles.titleText}>
+                                <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
+                                <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
+                            </View>
+                            <View style={styles.circleChart}>
+                                <Echarts option={pieOption.option} height={60} />
+                            </View>
+                            <Image style={[styles.arrow, { top: 17 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
-                        <View style={styles.circleChart}>
-                            <Echarts option={pieOption.option} height={75} />
-                        </View>
-                        <Image style={styles.arrow} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}
@@ -277,9 +289,10 @@ export default class Find extends Component {
     }
 }
 
+
 const styles = {
     container: {
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#F1F4FB',
     },
     instructions: {
         textAlign: 'center',
@@ -288,8 +301,8 @@ const styles = {
     },
     titleContent: {
         flexDirection: "row",
-        backgroundColor: "#F1F4FB",
-        height: 96,
+        backgroundColor: "white",
+        height: 80,
         marginBottom: 5,
     },
     arrow: {
@@ -297,20 +310,25 @@ const styles = {
         resizeMode: 'contain',
         right: 19.6,
         width: 7.4,
-        height: 96
+        // height: 96
     },
-    text: {
-        flex: 6,
-        paddingTop: 20,
-        paddingLeft: 15,
+    titleText: {
+        width: '70%',
+        height: '100%',
         backgroundColor: "#fff"
     },
     h2: {
         fontSize: 16,
-        lineHeight: 25
+        lineHeight: 25,
+        color: "#172434",
     },
     examTitle: {
-        width: '50%',
+        width: '60%',
+        marginTop: 17,
+        marginLeft: 5,
+    },
+    examDetail: {
+        marginLeft: 5,
     },
     p: {
         marginTop: 5,
@@ -321,8 +339,8 @@ const styles = {
     circleChart: {
         position: 'absolute',
         right: 40,
-        width: 96,
-        height: 96,
+        width: 60,
+        height: 60,
         top: 10
     },
     titleIcon: {
@@ -331,6 +349,7 @@ const styles = {
         justifyContent: 'center'
     },
     calendarView: {
+        // flex: 5,
         backgroundColor: '#F1F4FB',
         height: clientWidth * 0.78,
         position: 'relative',
@@ -351,8 +370,8 @@ const styles = {
     },
     chartTitleLeft: {
         flex: 13,
-        paddingTop: 10,
-        paddingLeft: 15,
+        marginTop: 10,
+        marginLeft: 5,
     },
     chartTitleRight: {
         position: "absolute",
@@ -365,7 +384,7 @@ const styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 10,
+        marginTop: 21,
         fontSize: 12,
         color: "#8E9091"
     },
@@ -373,8 +392,48 @@ const styles = {
         fontSize: 16
     },
     rightDetail: {
-        marginTop: 9,
+        marginTop: 19,
         fontSize: 12,
         color: "#8E9091"
+    },
+    wrongContainer: {
+        flexDirection: "row",
+        height: 68,
+        width: '100%',
+        position: "absolute",
+    },
+    rightContainer: {
+        flexDirection: "row",
+        height: 68,
+        width: '100%',
+        position: "absolute",
+    },
+    greenBlock: {
+        marginLeft: 15,
+        marginTop: 23,
+        width: 15,
+        height: 15,
+    },
+    redBlock: {
+        marginLeft: 15,
+        marginTop: 12,
+        width: 15,
+        height: 15,
+    },
+    blueBlock: {
+        marginLeft: 15,
+        marginTop: 12,
+        width: 15,
+        height: 15,
+    },
+    separator: {
+        position: "absolute",
+        right: 15,
+        left: 15,
+        top: 38,
+        height: 1,
+        backgroundColor: '#7A8FAC',
+        zIndex: 9,
+        opacity: 0.1,
     }
 }
