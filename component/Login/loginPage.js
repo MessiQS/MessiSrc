@@ -157,6 +157,7 @@ class LoginPage extends React.Component {
         });
         const papers = await realmManager.createQuestion(json)
         const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+        console.log("login page ", memoryModels);
         await realmManager.createExaminationPaper({
             id: item.id,
             title: item.title,
@@ -173,7 +174,10 @@ class LoginPage extends React.Component {
     async _handleMemoryModels(userInfo) {
         console.log("_handleMemoryModels", userInfo)
         const that = this
+
         for (let key in userInfo.data) {
+
+            console.log("userInfo.data[key]", userInfo.data[key])
             realmManager.saveMemoryModelsByExamData(userInfo.data[key], key);
         }
     }

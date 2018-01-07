@@ -230,15 +230,19 @@ export default class Find extends Component {
         return (
             <View style={styles.calendarView}>
                 <TouchableOpacity onPress={this.routeToNewDetail.bind(this)} style={styles.chartTitle}>
-                    <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>过去5日刷题亮统计</Text>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
+                    <View style={styles.rightContainer}>
+                        <Image style={styles.blueBlock} source={require("../../../Images/blue_block.png")} />
+                        <View style={styles.chartTitleLeft}>
+                            <Text style={styles.h4}>过去5日刷题亮统计</Text>
+                            <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
+                        </View>
+                        <View style={styles.separator} />
+                        <View style={styles.chartTitleRight}>
+                            <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
+                            <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
+                        </View>
+                        <Image style={[styles.arrow, { top: 1 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </View>
-                    <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
-                    </View>
-                    <Image style={[styles.arrow, { top: 12 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -272,15 +276,19 @@ export default class Find extends Component {
         return (
             <View style={[styles.calendarView, { marginTop: 4 }]}>
                 <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)} style={styles.chartTitle}>
-                    <View style={styles.chartTitleLeft}>
-                        <Text style={styles.h4}>未来5日遗忘数量统计</Text>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
+                    <View style={styles.wrongContainer}>
+                        <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
+                        <View style={styles.chartTitleLeft}>
+                            <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                            <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
+                        </View>
+                        <View style={styles.separator} />
+                        <View style={styles.chartTitleRight}>
+                            <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
+                            <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
+                        </View>
+                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </View>
-                    <View style={styles.chartTitleRight}>
-                        <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
-                    </View>
-                    <Image style={[styles.arrow, { top: 14 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -297,9 +305,9 @@ export default class Find extends Component {
                 {this.state.showAlert == true ? <Alert/> : null}
                 <ScrollView>
                     <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
-                        <View style={styles.titleContent}>
-                            <View style={styles.greenBlock}></View>
-                            <View style={styles.text}>
+                    <View style={styles.titleContent}>
+                        <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
+                            <View style={styles.titleText}>
                                 <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
                                 <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
                             </View>
@@ -339,8 +347,9 @@ const styles = {
         width: 7.4,
         // height: 96
     },
-    text: {
-        flex: 6,
+    titleText: {
+        width: '70%',
+        height: '100%',
         backgroundColor: "#fff"
     },
     h2: {
@@ -351,10 +360,10 @@ const styles = {
     examTitle: {
         width: '60%',
         marginTop: 17,
-        marginLeft: 12,
+        marginLeft: 5,
     },
     examDetail: {
-        marginLeft: 12,
+        marginLeft: 5,
     },
     p: {
         marginTop: 5,
@@ -396,8 +405,8 @@ const styles = {
     },
     chartTitleLeft: {
         flex: 13,
-        paddingTop: 10,
-        paddingLeft: 15,
+        marginTop: 10,
+        marginLeft: 5,
     },
     chartTitleRight: {
         position: "absolute",
@@ -410,7 +419,7 @@ const styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 10,
+        marginTop: 21,
         fontSize: 12,
         color: "#8E9091"
     },
@@ -418,24 +427,48 @@ const styles = {
         fontSize: 16
     },
     rightDetail: {
-        marginTop: 9,
+        marginTop: 19,
         fontSize: 12,
         color: "#8E9091"
     },
+    wrongContainer: {
+        flexDirection: "row",
+        height: 68,
+        width: '100%',
+        position: "absolute",
+    },
+    rightContainer: {
+        flexDirection: "row",
+        height: 68,
+        width: '100%',
+        position: "absolute",
+    },
     greenBlock: {
-        backgroundColor: "#B4EC51",
-        marginLeft: 8,
+        marginLeft: 15,
         marginTop: 23,
         width: 15,
         height: 15,
-        borderRadius: 1,
     },
     redBlock: {
-        backgroundColor: "#2DC7F7",
-        marginLeft: 8,
-        marginTop: 23,
+        marginLeft: 15,
+        marginTop: 12,
         width: 15,
         height: 15,
-        borderRadius: 1,
+    },
+    blueBlock: {
+        marginLeft: 15,
+        marginTop: 12,
+        width: 15,
+        height: 15,
+    },
+    separator: {
+        position: "absolute",
+        right: 15,
+        left: 15,
+        top: 38,
+        height: 1,
+        backgroundColor: '#7A8FAC',
+        zIndex: 9,
+        opacity: 0.1,
     }
 }

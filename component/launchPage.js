@@ -27,7 +27,9 @@ export default  class LaunchPage extends React.Component {
         const { navigate } = this.props.navigation;
         Storage.multiGet(['accountToken', 'account']).then(({ accountToken, account }) => {
             if (accountToken && account) {
+                console.log("accountToken, account", accountToken, account)
                 return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
+                    console.log("api/checkToken", type, data)
                     if (!type) {
                         navigate('Login', { name: 'MainTab' })
                         console.log("login")
