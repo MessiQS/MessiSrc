@@ -19,6 +19,8 @@ import { LoginItem } from '../usual/item';
 import SamsoButton from '../usual/button';
 import styles from "./loginPageCss";
 import realmManager from "../Realm/realmManager";
+import MessageService from "../../service/message.service";
+import { NavigationActions } from 'react-navigation'
 
 class LoginPage extends React.Component {
 
@@ -71,9 +73,12 @@ class LoginPage extends React.Component {
                     ['account', account]
                 ]);
                 Keyboard.dismiss()
-                navigate('Home', {})
+                // navigate('Home', {})
+                
+
             } catch (e) {
                 Alert('登录错误，请重试')
+                return 
             }
             data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
             var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
@@ -85,6 +90,25 @@ class LoginPage extends React.Component {
             await realmManager.createUser(user)
 
             this._handleUserInfo(data.user_id)
+            navigate("Home", {})
+
+            // const resetAction = NavigationActions.reset({
+            //     index: 0,
+            //     actions: [
+            //       NavigationActions.navigate({ routeName: 'Home' })                
+            //     ]
+            // })
+            // this.props.navigation.dispatch(resetAction)
+
+            // const resetAction = NavigationActions.reset({
+            //     index: 0,
+            //     actions: [
+            //         // NavigationActions.navigate({ routeName: 'LoginPage'}),
+            //         NavigationActions.navigate({ routeName: 'Home'})
+            //     ]
+            // });
+            // this.props.navigation.dispatch(resetAction);
+            
 
         } else {
             //此处提示错误信息
@@ -94,29 +118,36 @@ class LoginPage extends React.Component {
 
     _handleUserInfo(userId) {
 
+        const that = this
         Http.get('api/getUserQuestionInfo', {
             user_id: userId,
         },true).then((value) => {
-            console.log("api/getUserQuestionInfo value", value)
-            console.log("login Page", value.data)
-            for (var key in value.data) {
-                console.log("key", key)
-                var exam = value.data[key]
-                console.log("exam", exam)
-            }
+            console.log("api/getUserQuestionInfo ", value)
+            
+            that._getPaperInfo(value)
 
         }).catch(err => {
             console.log("api/getUserQuestionInfo error", err)
         })
     }
 
-    _getPaperInfo() {
+    async _getPaperInfo(userInfo) {
+        const that = this
+        var keys = Object.keys(userInfo.data)
+        console.log("keys", keys)
+        const value = await Http.get('api/getSinglePaperInfo', {
+            paperId: keys
+        },true)
 
-        Http.get('api/getSinglePaperInfo', {
-            paperId: ["SP00009", "SP00319"]
-        },true).then((value) => {
-            console.log("api/getSinglePaperInfo", value);
-        }) 
+        console.log("api/getSinglePaperInfo", value);
+
+        for (let item of value.data) {
+
+            console.log("api/ get single page info ", item)
+            await that._downloadExam(item)
+        }
+        await that._handleMemoryModels(userInfo);
+
     }
 
     async _downloadExam(item) {
@@ -136,6 +167,15 @@ class LoginPage extends React.Component {
             purchased: true,
             price: parseFloat(item.price),
         })
+        console.log("_downloadExam", item)
+    }
+
+    async _handleMemoryModels(userInfo) {
+        console.log("_handleMemoryModels", userInfo)
+        const that = this
+        for (let key in userInfo.data) {
+            realmManager.saveMemoryModelsByExamData(userInfo.data[key], key);
+        }
     }
 
     _sofewareAgreementClick() {

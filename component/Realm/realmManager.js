@@ -136,6 +136,68 @@ class RealmManager {
         }
     }
 
+    saveMemoryModelsByExamData(examData, examId) {
+
+        console.log("save memory models by exam data ", examData, examId);
+        const that = this
+        return new Promise((resolve, reject) => {
+            try {
+                var memoryModels = that.getMemoryModelsByExam(examId)
+                memoryModels.forEach((model) => {
+
+                    for (let key in examData) {
+                        if (model.examId == examData[key].bankname &&
+                            model.questionPaper.question_number == examData[key].qname) {
+                            console.log("examData[key], model", examData[key], model)
+                            that._saveMemoryData(examData[key], model);
+                        }
+                    }
+                })
+
+                // for(let model of memoryModels) {
+
+                    
+                //     // for (let questionModel of examData) {
+                //     //     console.log("question model", questionModel);
+                //     // }
+
+                //     // if (model.examId == examData.bankname && model.questionPaper.question_number == examData.qname) {
+                //     //     that._saveMemoryData(examData);
+                //     // }
+                // }
+
+            } catch (e) {
+                console.log("ExaminationPaper Error on creation", e);
+                reject(e)
+            }
+        })
+    }
+
+    _saveMemoryData(questionData, memoryModel) {
+
+        realm.write(() => {
+            memoryModel.weighting = questionData.weighted
+            memoryModel.appearedSeveralTime = questionData.right + questionData.wrong
+            memoryModel.lastBySelectedTime = parseInt(questionData.dateTime)
+
+            for (let rightTime = 0; rightTime < questionData.right; rightTime++) {
+
+                memoryModel.records.push({
+                    isRight: true
+                })
+            }
+
+            for (let wrongTime = 0; wrongTime < questionData.wrong; wrongTime++) {
+
+                memoryModel.records.push({
+                    isRight: false
+                })
+            }
+            console.log("save memory data", memoryModel);
+        });
+    }
+
+
     // 通过id获取指定试卷
     getExaminationPaper(id) {
 
@@ -203,6 +265,16 @@ class RealmManager {
         let models = realm.objects('MemoryModel')
         if (models.length == 0) {
             console.log("Memory Models is empty")
+            return null
+        }
+        return models
+    }
+
+    getMemoryModelsByExam(examId) {
+
+        let models = realm.objects("MemoryModel").filtered("examId=$0", examId)
+        if (models.length == 0) {
+            console.log("getMemoryModelsByExam Memory Models is empty")
             return null
         }
         return models
