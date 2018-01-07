@@ -110,13 +110,11 @@ class Mine extends Component {
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-              NavigationActions.navigate({ routeName: 'Login'})
+                NavigationActions.navigate({ routeName: 'Login' })
             ]
-          })
-
+        })
         clearPromise.then(res => {
-
-            this.props.navigation.dispatch(resetAction)
+                this.props.navigation.dispatch(resetAction)
            }
         )
     }

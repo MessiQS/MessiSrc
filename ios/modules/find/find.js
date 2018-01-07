@@ -238,7 +238,7 @@ export default class Find extends Component {
                         <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
                     </View>
-                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, { top: 12 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -280,7 +280,7 @@ export default class Find extends Component {
                         <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
                     </View>
-                    <Image style={[styles.arrow, { height: 74 }]} source={require("../../../Images/find_arrow_right.png")} />
+                    <Image style={[styles.arrow, { top: 14 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </TouchableOpacity>
                 <Echarts option={newPaperOption} height={clientWidth * 0.7} />
             </View>
@@ -296,15 +296,18 @@ export default class Find extends Component {
             <View style={styles.container}>
                 {this.state.showAlert == true ? <Alert/> : null}
                 <ScrollView>
-                    <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
-                        <View style={styles.text}>
-                            <Text style={styles.h2}>{this.state.currentExam}</Text>
-                            <Text style={styles.p}>{this.state.currentExamDetail}</Text>
+                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
+                        <View style={styles.titleContent}>
+                            <View style={styles.greenBlock}></View>
+                            <View style={styles.text}>
+                                <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
+                                <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
+                            </View>
+                            <View style={styles.circleChart}>
+                                <Echarts option={pieOption.option} height={60} />
+                            </View>
+                            <Image style={[styles.arrow, { top: 17 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
-                        <View style={styles.circleChart}>
-                            <Echarts option={pieOption.option} height={75} />
-                        </View>
-                        <Image style={styles.arrow} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}
@@ -316,7 +319,7 @@ export default class Find extends Component {
 
 const styles = {
     container: {
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#F1F4FB',
     },
     instructions: {
         textAlign: 'center',
@@ -325,8 +328,8 @@ const styles = {
     },
     titleContent: {
         flexDirection: "row",
-        backgroundColor: "#F1F4FB",
-        height: 96,
+        backgroundColor: "white",
+        height: 80,
         marginBottom: 5,
     },
     arrow: {
@@ -334,18 +337,24 @@ const styles = {
         resizeMode: 'contain',
         right: 19.6,
         width: 7.4,
-        height: 96
+        // height: 96
     },
     text: {
         flex: 6,
-        paddingTop: 20,
-        paddingLeft: 15,
         backgroundColor: "#fff"
     },
     h2: {
         fontSize: 16,
         lineHeight: 25,
         color: "#172434",
+    },
+    examTitle: {
+        width: '60%',
+        marginTop: 17,
+        marginLeft: 12,
+    },
+    examDetail: {
+        marginLeft: 12,
     },
     p: {
         marginTop: 5,
@@ -356,8 +365,8 @@ const styles = {
     circleChart: {
         position: 'absolute',
         right: 40,
-        width: 96,
-        height: 96,
+        width: 60,
+        height: 60,
         top: 10
     },
     titleIcon: {
@@ -412,5 +421,21 @@ const styles = {
         marginTop: 9,
         fontSize: 12,
         color: "#8E9091"
+    },
+    greenBlock: {
+        backgroundColor: "#B4EC51",
+        marginLeft: 8,
+        marginTop: 23,
+        width: 15,
+        height: 15,
+        borderRadius: 1,
+    },
+    redBlock: {
+        backgroundColor: "#2DC7F7",
+        marginLeft: 8,
+        marginTop: 23,
+        width: 15,
+        height: 15,
+        borderRadius: 1,
     }
 }

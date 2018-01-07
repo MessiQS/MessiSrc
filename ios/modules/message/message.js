@@ -29,7 +29,6 @@ export default class Message extends Component {
     render() {
         const that = this
         return (
-
                 <ScrollableTabView
                     tabBarActiveTextColor={'#FF5B29'}
                     tabBarBackgroundColor={'#fff'}

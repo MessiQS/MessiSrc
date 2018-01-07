@@ -78,8 +78,8 @@ MemoryRecordModel.schema = {
     name: 'MemoryRecordModel',
     properties: {
         time: { type: 'int', default: new Date().getTime() },        /// 选择时间，初始化为 0
-        isRight: { type: 'bool', default: true },                      /// 是否正确
-        select: 'string',                                            /// 所选的答案 'A,B,C,D'
+        isRight: { type: 'bool', default: true },                    /// 是否正确
+        select: {type: 'string', default: ""}                        /// 所选的答案 'A,B,C,D'
     }
 }
 

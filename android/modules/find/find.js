@@ -261,7 +261,7 @@ export default class Find extends Component {
                 <ScrollView>
                     <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.text}>
-                            <Text style={styles.h2}>{this.state.currentExam}</Text>
+                            <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
                             <Text style={styles.p}>{this.state.currentExamDetail}</Text>
                         </View>
                         <View style={styles.circleChart}>
@@ -309,6 +309,9 @@ const styles = {
         fontSize: 16,
         lineHeight: 25
     },
+    examTitle: {
+        width: '50%',
+    },
     p: {
         marginTop: 5,
         fontSize: 12,
@@ -328,7 +331,6 @@ const styles = {
         justifyContent: 'center'
     },
     calendarView: {
-        // flex: 5,
         backgroundColor: '#F1F4FB',
         height: clientWidth * 0.78,
         position: 'relative',

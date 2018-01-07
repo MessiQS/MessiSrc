@@ -104,8 +104,6 @@ const styles = ({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        // borderBottomWidth: 0.5,
-        // borderBottomColor: DictStyle.colorSet.lineColor,
         backgroundColor: 'white'
     },
     sectionTitleStyle: {
