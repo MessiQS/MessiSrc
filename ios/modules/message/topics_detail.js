@@ -69,45 +69,47 @@ export default class TopicsDetail extends React.Component {
     }
 
     async _buy(item) {
-        this.setState({
-            loading: true
-        })
 
-        const user = realmManager.getCurrentUser()
-        const res = await HTTP.post("api/updateUserBuyInfo", {
-            "user_id": user.userId,
-            "bankname": item.id
-        })
-        if (res.type == true) {
+        this.props.navigation.navigate('PayPage', item)
 
-            var examIdsjson = []
-            if (!!user.examIds) {
-                examIdsjson = JSON.parse(user.examIds)
-            }
-            examIdsjson.push(item.id)
-            const exam = await realmManager.updateCurrentExamInfo(item)
+        // this.setState({
+        //     loading: true
+        // })
+        // const user = realmManager.getCurrentUser()
+        // const res = await HTTP.post("api/updateUserBuyInfo", {
+        //     "user_id": user.userId,
+        //     "bankname": item.id
+        // })
+        // if (res.type == true) {
 
-            const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+        //     var examIdsjson = []
+        //     if (!!user.examIds) {
+        //         examIdsjson = JSON.parse(user.examIds)
+        //     }
+        //     examIdsjson.push(item.id)
+        //     const exam = await realmManager.updateCurrentExamInfo(item)
 
-            if (isHavePaper == false) {
-                this._downloadExam(item)
-            }
-        }
+        //     const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
 
-        setTimeout(() => {
-            runtime.emit(DBChange);
-        }, 1)
+        //     if (isHavePaper == false) {
+        //         this._downloadExam(item)
+        //     }
+        // }
 
-        this.setState({
-            loading: false,
-            user: user,
-        })
+        // setTimeout(() => {
+        //     runtime.emit(DBChange);
+        // }, 1)
+
+        // this.setState({
+        //     loading: false,
+        //     user: user,
+        // })
     }
 
     async _chooseExam(item) {
 
         if (item == null) {
-            return 
+            return
         }
         this.setState({
             loading: true,
@@ -180,7 +182,7 @@ export default class TopicsDetail extends React.Component {
                 </View>
             )
         }
-        
+
         const examIds = JSON.parse(this.state.user.examIds)
         if (examIds.includes(item.id) || item.price == 0) {
             return (

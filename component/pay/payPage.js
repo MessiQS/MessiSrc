@@ -4,15 +4,17 @@ import {
     Text,
     Image,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 // import { NetworkInfo } from 'react-native-network-info';
 import Pingpay from '../../service/pingpp';
+import Http from '../../service/http';
 
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 var Pingpp = require('pingpp-react-native');
+
 
 export default class PayPage extends React.Component {
 
@@ -21,38 +23,42 @@ export default class PayPage extends React.Component {
         this.state = {
             channel: "alipay"
         };
-    }
 
-    componentWillMount = () => {
-        // console.log(NetworkInfo)
-        //应用注册
-        // WeChat.registerApp('wx8f1006588bd45d9b');
     }
 
     //支付测试
     paytest = async () => {
-        // console.log(NetworkInfo,NetworkInfo.getIPV4Address)
-        // NetworkInfo.getIPV4Address(ssid => {
-        //     console.log(ssid);
-        // });
+        const { state: { params } } = this.props.navigation
         const { channel } = this.state
         const response = await Pingpay.createCharge({
             client_ip: "192.168.0.103",
-            amount: '6',
+            amount: params.price,
             channel,
-            subject: 'ss0001',
-            body: "1234"
+            subject: params.title,
+            body: params.id
         });
         //安卓系统
-        const data = JSON.stringify(response.data)
-        console.log(data)
+        const charge = JSON.stringify(response.data)
         //苹果系统直接用data
 
-        Pingpp.createPayment({
-            "object": response.data,
-            "urlScheme": "wx8f1006588bd45d9b"
-        }, function (res, error) {
-            console.log(res, error);
+        //ios
+        // Pingpp.createPayment({
+        //     "object": response.data,
+        //     "urlScheme": "wx8f1006588bd45d9b"
+        // }, function (res, error) {
+        //     console.log(res, error);
+        // });
+
+
+        //安卓
+        Pingpp.createPayment(charge, function (result) {
+            var res = JSON.parse(result);
+            //  Http.post('api/feedback', res)
+            if (res.pay_result === "success") {
+                //成功的回调函数
+            } else if (res.error_msg === "cancel") {
+                //取消的回调函数
+            }
         });
     }
 
@@ -64,11 +70,13 @@ export default class PayPage extends React.Component {
         }
     }
     render() {
+        const { state: { params } } = this.props.navigation
+        const { price } = params
         return (
             <View style={styles.container}>
                 <View style={styles.headerView}>
                     <Text style={styles.headerTitleText}>支付金额</Text>
-                    <Text style={styles.headerPriceText}>¥ 6.0</Text>
+                    <Text style={styles.headerPriceText}>¥ {price}</Text>
                 </View>
 
                 <View style={styles.buttonArray}>

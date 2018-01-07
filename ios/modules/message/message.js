@@ -29,12 +29,7 @@ export default class Message extends Component {
     render() {
         const that = this
         return (
-            // <View>
-            //     <View style={{height:50}}>
-            //         <Text onPress={() => this.props.navigation.navigate('PayPage')}>
-            //             1234
-            //         </Text>
-            //     </View>
+
                 <ScrollableTabView
                     tabBarActiveTextColor={'#FF5B29'}
                     tabBarBackgroundColor={'#fff'}
@@ -47,8 +42,6 @@ export default class Message extends Component {
                     <View tabLabel="专项练习" />
                     <View tabLabel="申论" />
                 </ScrollableTabView>
-            // </View>
-
         );
     }
 }
