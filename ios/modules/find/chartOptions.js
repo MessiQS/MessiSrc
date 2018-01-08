@@ -58,16 +58,16 @@ export const newPaper = {
                 itemStyle: {
                     normal: {
                         color: '#1495EB',
-                        lineStyle:{
+                        lineStyle: {
                             color: '#1495EB'
                         }
                     }
                 },
-                smooth:false,
+                smooth: false,
                 symbol: 'none',
                 areaStyle: {
-                    normal:{
-                        color:{
+                    normal: {
+                        color: {
                             type: 'linear',
                             x: 0,
                             y: 0,
@@ -163,7 +163,7 @@ export const rememberPaper = {
                 itemStyle: {
                     normal: {
                         color: '#FF5B29',
-                        lineStyle:{
+                        lineStyle: {
                             color: '#FF5B29'
                         }
                     },
@@ -174,11 +174,11 @@ export const rememberPaper = {
                         position: 'top'
                     }
                 },
-                smooth:false,
+                smooth: false,
                 symbol: 'none',
                 areaStyle: {
-                    normal:{
-                        color:{
+                    normal: {
+                        color: {
                             type: 'linear',
                             x: 0,
                             y: 0,
@@ -200,21 +200,21 @@ export const rememberPaper = {
 }
 
 export const pieOption = {
-    
-    option :{
+
+    option: {
         animation: false,
         trigger: 'axis',
         legend: {
-            show:false
+            show: false
         },
         series: [
             {
-                hoverOffset:0,
-                type:'pie',
+                hoverOffset: 0,
+                type: 'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
-               
-                color:['#8FDA3C', '#FF5B29', '#1495EB'],
+
+                color: [getColor('#429321','#B4EC51'), getColor('#FF5B29','#FF9453'), getColor('#1495EB','#2DC7F7')],
                 label: {
                     normal: {
                         show: false,
@@ -233,15 +233,29 @@ export const pieOption = {
                         show: false
                     }
                 },
-                itemStyle: {
-
-                },
-                data:[
-                    {value:310},
-                    {value:310},
-                    {value:310}
-                ]
+                // itemStyle: {
+                //     normal: {
+                //         color: '#8FDA3C'
+                //     }
+                // }
             }
         ]
+    }
+}
+
+
+function getColor(dark,light){
+    return {
+        type: 'linear',
+        x: 0,
+        y: 0,
+        x2: 0,
+        y2: 1,
+        colorStops: [{
+            offset: 0, color:dark // 0% 处的颜色
+        }, {
+            offset: 1, color: light // 100% 处的颜色
+        }],
+        globalCoord: false // 缺省为 false
     }
 }
