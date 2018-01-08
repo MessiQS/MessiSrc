@@ -93,9 +93,6 @@ const Messi = StackNavigator({
     Login: {
         screen: Login,
     },
-    // MyTab: {
-    //     screen: MainTab,
-    // },
     Home: {
         screen: Find
     },

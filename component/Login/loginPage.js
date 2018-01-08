@@ -20,13 +20,16 @@ import SamsoButton from '../usual/button';
 import styles from "./loginPageCss";
 import realmManager from "../Realm/realmManager";
 import MessageService from "../../service/message.service";
+import Progress from "../../component/progress/progress"
 import { NavigationActions } from 'react-navigation'
 
 class LoginPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            loading: false,
+        };
     }
 
     phoneChange(account) {
@@ -175,6 +178,16 @@ class LoginPage extends React.Component {
     _sofewareAgreementClick() {
         const { navigate } = this.props.navigation;
         navigate('SoftwareAgreement', {})
+    }
+
+    _renderProgress() {
+        if (this.state.loading == true) {
+            return (
+                <Progress />
+            )
+        } else {
+            return null
+        }
     }
 
     render() {

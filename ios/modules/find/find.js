@@ -427,7 +427,7 @@ const styles = {
         fontSize: 16
     },
     rightDetail: {
-        marginTop: 19,
+        marginTop: 23,
         fontSize: 12,
         color: "#8E9091"
     },
