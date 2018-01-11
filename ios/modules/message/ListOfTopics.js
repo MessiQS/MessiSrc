@@ -36,20 +36,22 @@ export default class ListOfTopics extends React.Component {
             })
         });
         const user = realmManager.getCurrentUser();
-        HTTP.post("api/getUserBuyInfo", {
-            user_id: user.userId
-        })
-        .then(value => {
-            if (value.type) {
-                let array = value.data.buyedInfo
-                realm.write(()=> {
-                    user.examIds = JSON.stringify(array)
-                })
-            }
-        })
-        .catch(err => {
-
-        })
+        if (user) {
+            HTTP.post("api/getUserBuyInfo", {
+                user_id: user.userId
+            })
+            .then(value => {
+                if (value.type) {
+                    let array = value.data.buyedInfo
+                    realm.write(()=> {
+                        user.examIds = JSON.stringify(array)
+                    })
+                }
+            })
+            .catch(err => {
+    
+            })
+        }
     };
 
     static propTypes = {

@@ -5,7 +5,7 @@ import {
     Button,
     TextInput,
     TouchableOpacity,
-    Image,
+    ImageBackground,
     Text,
     ScrollView,
     Keyboard

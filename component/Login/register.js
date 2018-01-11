@@ -7,13 +7,12 @@ import {
     Button,
     TextInput,
     Text,
-    Image,
+    ImageBackground,
     ScrollView,
 } from 'react-native';
 import stylesContainer, { styles } from './registerCss';
 import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
-import Icon from 'react-native-vector-icons/Ionicons';
 import MD5 from 'crypto-js/md5';
 import realmManager from "../Realm/realmManager";
 import Storage from '../../service/storage';
@@ -157,10 +156,7 @@ class Register extends React.Component {
             <View style={stylesContainer.container}>
                 <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
-                        <Icon name="ios-phone-portrait-outline"
-                            size={23}
-                            style={styles.icon}
-                        />
+                        <ImageBackground style={styles.icon} resizeMode={'contain'} source={require('../../Images/phone_icon.png')}></ImageBackground>
                     </View>
                     <TextInput 
                         style={styles.textInput} 
@@ -168,15 +164,12 @@ class Register extends React.Component {
                         placeholder="请输入您的电话号码"
                         maxLength={11}
                         keyboardType={'numeric'}
-                        onChangeText={phone => this.phoneChange(phone)}></TextInput>
+                        onChangeText={phone => this.phoneChange(phone)} />
                 </View>
                 <View style={styles.bottomLine}></View>
                 <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
-                        <Icon name="ios-lock-outline"
-                            size={23}
-                            style={styles.icon}
-                        />
+                        <ImageBackground style={styles.icon} resizeMode={'contain'} source={require('../../Images/password_icon.png')}></ImageBackground>
                     </View>
                     <TextInput
                         underlineColorAndroid={'transparent'}
@@ -184,15 +177,12 @@ class Register extends React.Component {
                         placeholder="请输入您的密码"
                         secureTextEntry={true}
                         maxLength={21}
-                        onChangeText={passpord => this.passwordtChange(passpord)}></TextInput>
+                        onChangeText={passpord => this.passwordtChange(passpord)} />
                 </View>
                 <View style={styles.bottomLine}></View>
                 <View style={styles.item}>
                     <View style={styles.iconViewStyle}>
-                        <Icon name="ios-filing-outline"
-                            size={24}
-                            style={styles.icon}
-                        />
+                        <ImageBackground style={styles.icon} resizeMode={'contain'} source={require('../../Images/verti_icon.png')}></ImageBackground>
                     </View>
                     <TextInput 
                         underlineColorAndroid={'transparent'}
@@ -200,23 +190,21 @@ class Register extends React.Component {
                         placeholder="请输入验证码"
                         keyboardType={'numeric'}
                         maxLength={4}
-                        onChangeText={variCode => this.codeChange(variCode)}></TextInput>
+                        onChangeText={variCode => this.codeChange(variCode)} />
                     <ScrollView></ScrollView>
                     <TouchableOpacity onPress={this.getCode}>
-                        <View style={styles.vertificationCodeView}>
+                        <ImageBackground style={styles.vertificationCodeView} source={require('../../Images/verti_code_button.png')}>
                             <Text style={styles.vertificationCodeText}>{this.state.codeText}</Text>
-                        </View>
+                        </ImageBackground>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.bottomLineVertification}></View>
                 <View style={{ height: 56 }}></View>
-                <View style={stylesContainer.registerView}>
-                    <TouchableOpacity onPress={this._onPressButton.bind(this)}>
-                        <View style={styles.registerButton}>
-                            <Text style={styles.registerText}>注册</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={this._onPressButton.bind(this)}>
+                    <ImageBackground style={styles.registerButton} source={require('../../Images/register_button.png')}>
+                        <Text style={styles.registerText}>注册</Text>
+                    </ImageBackground>
+                </TouchableOpacity>
                 <ScrollView></ScrollView>
                 <View style={stylesContainer.agreeView}>
                     <Text style={styles.agreeBaseText}>注册即表示同意本

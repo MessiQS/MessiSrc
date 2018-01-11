@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Platform,
     TouchableOpacity,
+    ImageBackground,
     Text
 } from 'react-native';
 export default class SamsoButton extends Component {
@@ -14,32 +15,37 @@ export default class SamsoButton extends Component {
     render() {
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[styles.initView, this.props.style]}>
-                <View style={styles.initStyle}>
+                <ImageBackground style={styles.initStyle} source={require('../../Images/verti_code_button.png')}>
                     <Text style={[styles.textStyle, this.props.textStyle]}>{this.props.title}</Text>
-                </View>
+                </ImageBackground>
             </TouchableOpacity>
         )
     }
 }
 const styles = StyleSheet.create({
     initView: {
-        backgroundColor: '#FF5B29',
-        borderRadius: 5,
         ...Platform.select({
             ios: {
+                height: 60,
             },
             android: {
                 height: 60,
             }
         }),
+        borderRadius: 6,
+        overflow: 'hidden',
     },
     initStyle: {
-        justifyContent: 'center',
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        borderRadius: 6,
+        height: 60,
     },
     textStyle: {
-        lineHeight: 44,
         fontSize: 20,
-        color: '#fff'
+        color: '#fff',
+        backgroundColor: "rgba(0,0,0,0)",
     }
 })

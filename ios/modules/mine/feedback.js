@@ -47,7 +47,7 @@ export default class Feedback extends React.Component {
     }
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 {this._renderProcess()}
                 <View style={styles.question}>
                     <TextInput
@@ -76,6 +76,9 @@ export default class Feedback extends React.Component {
 }
 
 var styles = {
+    container: {
+        backgroundColor: "#F6F6F6",
+    },
     question: {
         backgroundColor: "white",
         height: 182,

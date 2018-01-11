@@ -30,7 +30,7 @@ var styles = {
         marginTop:56,
     },
     agreeView: {
-        bottom: 10,
+        bottom: 16,
         width: '100%',
     },
     agreeText: {
@@ -39,6 +39,7 @@ var styles = {
         color: '#FFA200',
     },
     agreeBaseText: {
+        color: '#041221',
         width: '100%',
         textAlign: 'center',
         fontSize: 14,

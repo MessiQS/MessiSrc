@@ -21,6 +21,7 @@ import realmManager from "../../../component/Realm/realmManager";
 import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
 import runtime from "../../../service/runtime";
+import { DBChange } from "../../../service/constant";
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -123,7 +124,7 @@ export default class Find extends Component {
 
     onMessage() {
 
-        runtime.on("database_change", () => {
+        runtime.on(DBChange, () => {
             const user = realmManager.getCurrentUser()
             let info = realmManager.getFindInfo(user.currentExamId)
             this.setState({

@@ -16,7 +16,7 @@ export default class Feedback extends React.Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView style={styles.container}>
                 <View style={styles.question}>
                     <TextInput 
                     style={styles.textInput}
@@ -43,6 +43,9 @@ export default class Feedback extends React.Component {
 }
 
 var styles = {
+    container: {
+        backgroundColor: "#F6F6F6",
+    },
     question: {
         backgroundColor: "white",
         height: 182,

@@ -22,7 +22,7 @@ import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
 import Http from '../../service/http';
 import runtime from '../../service/runtime';
-import { webURL, imageWebURL } from "../../service/constant";
+import { webURL, imageWebURL, DBChange } from "../../service/constant";
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -192,7 +192,7 @@ export default class Detail extends Component {
         });
 
         setTimeout(function(){
-            runtime.emit("database_change");
+            runtime.emit(DBChange);
         }, 1);
 
         if (option == "A") {
@@ -306,6 +306,9 @@ export default class Detail extends Component {
                 isRight: isRight
             })
         });
+        setTimeout(function(){
+            runtime.emit(DBChange);
+        }, 1);
         this.setState({
             isSelected: true,
         })
@@ -375,6 +378,7 @@ export default class Detail extends Component {
 
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
+                            console.log("detail size[0]", size[0])
                             let scale = (window.width - 60) / size[1]
                             let height = size[2] * scale
 

@@ -27,11 +27,16 @@ export default class Login extends Component {
 	_renderHeader() {
 		return (
 			<View style={styles.headerView}>
-				<Text style={styles.year}>2017</Text>
+				<Text style={styles.year}>2018</Text>
 				<Text style={styles.appName}>刷题APP</Text>
 				<Image style={styles.logo} source={require('../../Images/logo.png')} />				
 			</View>
 		)
+	}
+
+	_skip() {
+		const { navigate } = this.props.navigation;
+		navigate('Home', { name: 'Register' })
 	}
 
 	render() {
@@ -55,10 +60,12 @@ export default class Login extends Component {
 								<Text style={styles.nestedTextStyle}>注册</Text>
 							</View>
 						</Button>
-						<TouchableOpacity>
-						<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
-						</TouchableOpacity>
 					</View>
+					<TouchableOpacity onPress={() =>
+						this._skip()
+					}>
+						<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
+					</TouchableOpacity>
 				</ImageBackground>
 			</View>
 		);
@@ -121,8 +128,7 @@ var styles = StyleSheet.create({
 	},
 	registerButtonStyle: {
 		marginTop: 16,
-		backgroundColor: '#FF5B29',
-		borderColor: '#FF5B29',
+		borderColor: 'white',
 	},
 	nestedViewStyle: {
 
@@ -133,7 +139,9 @@ var styles = StyleSheet.create({
 		backgroundColor: 'rgba(0,0,0,0)',
 	},
 	skip: {
-		
+		position: 'absolute',
+		bottom: 30,
+		right: 30,
 	}
 });
 

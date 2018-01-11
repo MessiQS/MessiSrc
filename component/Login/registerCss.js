@@ -20,12 +20,14 @@ export const styles = {
     iconViewStyle: {
         marginRight: 5,
         marginLeft: 10,
-        width:23,
+        width:25,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     icon: {
+        width: 25,
+        height: 25,
         opacity: 0.7,
     },
     vertificationCodeView: {
@@ -43,13 +45,13 @@ export const styles = {
         width: '100%',
         color: 'white',
         textAlign: 'center',
+        backgroundColor: "rgba(0,0,0,0)",
     },
     registerButton: {
         justifyContent: 'center',
-        backgroundColor: '#FF5B29',
         height: 55,
-        width: 290,
-        borderRadius: 8,
+        borderRadius: 6,
+        overflow: 'hidden',
     },
     item: {
         flexDirection: 'row',
@@ -67,6 +69,7 @@ export const styles = {
         width: "60%",
     },
     registerText: {
+        backgroundColor: "rgba(0,0,0,0)",
         width: '100%',
         color: 'white',
         fontSize: 20,
@@ -97,6 +100,7 @@ export const styles = {
 };
 export default stylesContainer = StyleSheet.create({
     container:{
+        backgroundColor: 'white',
         paddingTop: 89,
         flex:1,
         paddingLeft: 48,
@@ -104,11 +108,12 @@ export default stylesContainer = StyleSheet.create({
     },
     registerView: {
         flex:2,
+        borderRadius: 6,
         // height:260,
         // flex:2,
     },
     agreeView: {
-        bottom:10,
+        bottom:16,
         width:'100%',
     }
 });
