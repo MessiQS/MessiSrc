@@ -40,7 +40,7 @@ export default class Login extends Component {
 		const { navigate } = this.props.navigation;
 
 		var account = "test"
-		var password = MD5("messi2101").toString();
+		var password = MD5("messi2101").stoString();
 		Http.post('api/freeRegistration', {
 			account: account,
 			password: password

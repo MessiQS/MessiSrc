@@ -32,21 +32,22 @@ const header = {
         alignItems: 'center',
     },
     text: {
-        fontSize: 24,
-        paddingLeft: 15,
-        flex: 7
+        fontSize: 18,
+        paddingLeft: 10,
+        flex: 7,
+        color: "#172434",
     },
     icon: {
         marginRight: 20,
-        paddingTop: 8,
-        paddingBottom: 8,
     },
     magnifier: {
         width: 18,
-        height: 17,
+        height: 18,
     },
     more: {
-        width: 20,
+        width: 22,
+        height: 44,
+        resizeMode: 'contain',
     }
 }
 var daysTransfer = {
@@ -80,9 +81,11 @@ export default class Find extends Component {
         ),
         headerRight: (
             <View style={header.header}>
-                <View style={header.icon}>
-                    <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-                </View>
+            {
+                /*<View style={header.icon}>
+                     <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
+                 </View> */
+            }
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
                     <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
@@ -255,7 +258,7 @@ export default class Find extends Component {
         newPaperOption.series[0].data = this.state.futureArray
 
         return (
-            <View style={[styles.calendarView, { marginTop: 4 }]}>
+            <View style={styles.calendarView}>
                 <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)} style={styles.chartTitle}>
                     <View style={styles.wrongContainer}>
                         <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
@@ -306,10 +309,9 @@ export default class Find extends Component {
     }
 }
 
-
 const styles = {
     container: {
-        backgroundColor: '#F1F4FB',
+        backgroundColor: '#F6F6F6',
     },
     instructions: {
         textAlign: 'center',
@@ -319,20 +321,19 @@ const styles = {
     titleContent: {
         flexDirection: "row",
         backgroundColor: "white",
-        height: 80,
-        marginBottom: 5,
+        height: 78,
     },
     arrow: {
         position: 'absolute',
         resizeMode: 'contain',
-        right: 19.6,
+        right: 10,
         width: 7.4,
-        // height: 96
     },
     titleText: {
         width: '70%',
         height: '100%',
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        marginLeft: 10,        
     },
     h2: {
         fontSize: 16,
@@ -340,12 +341,11 @@ const styles = {
         color: "#172434",
     },
     examTitle: {
-        width: '60%',
+        width: '70%',
         marginTop: 17,
-        marginLeft: 5,
     },
     examDetail: {
-        marginLeft: 5,
+
     },
     p: {
         marginTop: 5,
@@ -355,10 +355,10 @@ const styles = {
     },
     circleChart: {
         position: 'absolute',
+        top: 10,
         right: 40,
         width: 60,
         height: 60,
-        top: 10
     },
     titleIcon: {
         flex: 1,
@@ -366,58 +366,50 @@ const styles = {
         justifyContent: 'center'
     },
     calendarView: {
-        // flex: 5,
-        backgroundColor: '#F1F4FB',
-        height: clientWidth * 0.78,
         position: 'relative',
-        paddingTop: 20,
         backgroundColor: '#fff',
-        marginBottom: 8,
-        width: "100%"
+        marginTop: 3,
     },
-    chartTitle: {
-        flexDirection: "row",
-        position: "absolute",
-        width: '100%',
-        height: 55,
+    chartTitleContainer: {
+        flexDirection: "column",
         backgroundColor: "#fff",
-        left: 0,
-        top: 0,
+        height: 75,
         zIndex: 100
     },
-    chartTitleLeft: {
-        flex: 13,
-        marginTop: 10,
-        marginLeft: 5,
+    chartTopContainer: {
+        flexDirection: "row",
+        height: 48,
     },
-    chartTitleRight: {
-        position: "absolute",
-        paddingTop: 11,
-        right: 54,
+    chartBottomContainer: {
+        flexDirection: "row",
+        width: "100%",
+        zIndex: 100,
     },
     h4: {
+        marginTop: 12,
+        marginLeft: 10,
         fontSize: 16,
         fontWeight: "400",
         color: "#172434"
     },
     psmall: {
-        marginTop: 21,
+        marginTop: 9,
+        marginLeft: 35,
         fontSize: 12,
         color: "#8E9091"
     },
     rightTitle: {
+        position: "absolute",
+        top: 12,
+        right: 50,
         fontSize: 16
     },
     rightDetail: {
-        marginTop: 19,
+        position: "absolute",
+        top: 9,
+        right: 49,
         fontSize: 12,
         color: "#8E9091"
-    },
-    wrongContainer: {
-        flexDirection: "row",
-        height: 68,
-        width: '100%',
-        position: "absolute",
     },
     rightContainer: {
         flexDirection: "row",
@@ -426,28 +418,26 @@ const styles = {
         position: "absolute",
     },
     greenBlock: {
-        marginLeft: 15,
+        marginLeft: 10,
         marginTop: 23,
         width: 15,
         height: 15,
     },
     redBlock: {
-        marginLeft: 15,
-        marginTop: 12,
+        marginLeft: 10,
+        marginTop: 14,
         width: 15,
         height: 15,
     },
     blueBlock: {
-        marginLeft: 15,
+        marginLeft: 10,
         marginTop: 12,
         width: 15,
         height: 15,
     },
     separator: {
-        position: "absolute",
-        right: 15,
-        left: 15,
-        top: 38,
+        marginRight: 10,
+        marginLeft: 10,
         height: 1,
         backgroundColor: '#7A8FAC',
         zIndex: 9,

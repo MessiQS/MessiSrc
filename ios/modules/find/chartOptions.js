@@ -1,9 +1,10 @@
 export const newPaper = {
     option: {
         grid: {
-            left: '5%',
-            right: '5%',
+            left: '10',
+            right: '10',
             bottom: '3%',
+            top: '5%',
             containLabel: true
         },
         xAxis: [
@@ -37,10 +38,8 @@ export const newPaper = {
                     fontSize: 14
                 },
                 axisLabel: {
-                    textStyle: {
-                        color: '#8E9091',
-                        fontSize: 14
-                    }
+                    show: false,
+                    inside: true
                 },
                 splitLine: {
                     show: true,
@@ -97,9 +96,10 @@ export const newPaper = {
 export const rememberPaper = {
     option: {
         grid: {
-            left: '5%',
-            right: '5%',
+            left: '10',
+            right: '10',
             bottom: '3%',
+            top: '5%',
             containLabel: true
         },
         xAxis: [
@@ -107,7 +107,7 @@ export const rememberPaper = {
                 type: 'category',
                 boundaryGap: false,
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
                     show: false
@@ -120,6 +120,10 @@ export const rememberPaper = {
         ],
         yAxis: [
             {
+                axisLabel: {
+                    show: false,
+                    inside: true
+                },
                 minInterval: 1,
                 type: 'value',
                 axisLine: {
@@ -132,12 +136,12 @@ export const rememberPaper = {
                     color: "#8E9091",
                     fontSize: 14
                 },
-                axisLabel: {
-                    textStyle: {
-                        color: '#8E9091',
-                        fontSize: 14
-                    }
-                },
+                // axisLabel: {
+                //     textStyle: {
+                //         color: '#8E9091',
+                //         fontSize: 14
+                //     }
+                // },
                 splitLine: {
                     show: true,
                     lineStyle: {
@@ -159,7 +163,6 @@ export const rememberPaper = {
         series: [
             {
                 type: 'line',
-                stack: '总量',
                 itemStyle: {
                     normal: {
                         color: '#FF5B29',
@@ -193,7 +196,6 @@ export const rememberPaper = {
                         }
                     }
                 },
-                data: [0, 15, 40, 30, 80, 100]
             }
         ]
     }

@@ -11,7 +11,8 @@ import {
     TouchableOpacity,
     Text,
     Image,
-    View
+    View,
+    Vibration
 } from 'react-native';
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
@@ -24,8 +25,9 @@ import runtime from "../../../service/runtime";
 import Alert from "../../../component/progress/alert";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
+import { Dimensions } from 'react-native';
+const {height, width} = Dimensions.get('window'); 
 
-const clientWidth = 375;
 const chartArray = [1, 2];
 const header = {
     header: {
@@ -35,21 +37,23 @@ const header = {
     },
     text: {
         fontSize: 18,
-        paddingLeft: 15,
+        paddingLeft: 10,
         flex: 7,
         color: "#172434",
     },
     icon: {
         marginRight: 20,
-        paddingTop: 8,
-        paddingBottom: 8,
+        // paddingTop: 8,
+        // paddingBottom: 8,
     },
     magnifier: {
         width: 18,
         height: 18,
     },
     more: {
-        width: 20,
+        width: 22,
+        height: 44,
+        resizeMode: 'contain',
     }
 }
 var daysTransfer = {
@@ -83,9 +87,11 @@ export default class Find extends Component {
         ),
         headerRight: (
             <View style={header.header}>
-                <View style={header.icon}>
-                    <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-                </View>
+                {
+                    /*<View style={header.icon}>
+                         <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
+                     </View> */
+                }
                 <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
                     <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
@@ -120,7 +126,7 @@ export default class Find extends Component {
                 wrongLastSelectDate: "暂无数据",
                 futureArray: [0, 0, 0, 0, 0, 0],
                 beforeArray: [0, 0, 0, 0, 0, 0],
-                pieArray: [{value:1}],
+                pieArray: [{ value: 1 }],
                 showAlert: false,
             }
         }
@@ -174,9 +180,8 @@ export default class Find extends Component {
                 ]
             })
             clearPromise.then(res => {
-                    this.props.navigation.dispatch(resetAction)
-            }
-            )
+                this.props.navigation.dispatch(resetAction)
+            })
         }
     }
 
@@ -201,7 +206,7 @@ export default class Find extends Component {
         } else {
 
             const { navigate } = this.props.navigation;
-            navigate('Detail', {category: "new"})
+            navigate('Detail', { category: "new" })
         }
     }
 
@@ -221,7 +226,7 @@ export default class Find extends Component {
         } else {
 
             const { navigate } = this.props.navigation;
-            navigate('Detail', {category: "wrong"})
+            navigate('Detail', { category: "wrong" })
         }
     }
 
@@ -249,25 +254,24 @@ export default class Find extends Component {
         })
         newPaperOption.xAxis[0].data = weekArray
         newPaperOption.series[0].data = this.state.beforeArray
-
         return (
             <View style={styles.calendarView}>
-                <TouchableOpacity onPress={this.routeToNewDetail.bind(this)} style={styles.chartTitle}>
-                    <View style={styles.rightContainer}>
-                        <Image style={styles.blueBlock} source={require("../../../Images/blue_block.png")} />
-                        <View style={styles.chartTitleLeft}>
+                <View style={styles.chartTitleContainer}>
+                    <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)}>
+                        <View style={styles.chartTopContainer}>
+                            <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
                             <Text style={styles.h4}>过去5日刷题量统计</Text>
-                            <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
-                        </View>
-                        <View style={styles.separator} />
-                        <View style={styles.chartTitleRight}>
                             <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
-                            <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
+                            <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
-                        <Image style={[styles.arrow, { top: 1 }]} source={require("../../../Images/find_arrow_right.png")} />
+                    </TouchableOpacity>
+                    <View style={styles.separator} />
+                    <View style={styles.chartBottomContainer}>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
                     </View>
-                </TouchableOpacity>
-                <Echarts option={newPaperOption} height={clientWidth * 0.7} />
+                </View>
+                <Echarts option={newPaperOption} height={width * 0.6} />
             </View>
         )
     }
@@ -297,23 +301,23 @@ export default class Find extends Component {
         newPaperOption.series[0].data = this.state.futureArray
 
         return (
-            <View style={[styles.calendarView, { marginTop: 4 }]}>
-                <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)} style={styles.chartTitle}>
-                    <View style={styles.wrongContainer}>
-                        <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
-                        <View style={styles.chartTitleLeft}>
+            <View style={styles.calendarView}>
+                <View style={styles.chartTitleContainer}>
+                    <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)}>
+                        <View style={styles.chartTopContainer}>
+                            <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
                             <Text style={styles.h4}>未来5日遗忘数量统计</Text>
-                            <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
-                        </View>
-                        <View style={styles.separator} />
-                        <View style={styles.chartTitleRight}>
                             <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
-                            <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
+                            <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
-                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
+                    </TouchableOpacity>
+                    <View style={styles.separator} />
+                    <View style={styles.chartBottomContainer}>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
                     </View>
-                </TouchableOpacity>
-                <Echarts option={newPaperOption} height={clientWidth * 0.7} />
+                </View>
+                <Echarts option={newPaperOption} height={width * 0.6} />
             </View>
         )
     }
@@ -325,11 +329,11 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
-                {this.state.showAlert == true ? <Alert/> : null}
+                {this.state.showAlert == true ? <Alert /> : null}
                 <ScrollView>
                     <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
-                    <View style={styles.titleContent}>
-                        <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
+                        <View style={styles.titleContent}>
+                            <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
                             <View style={styles.titleText}>
                                 <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
                                 <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
@@ -337,7 +341,7 @@ export default class Find extends Component {
                             <View style={styles.circleChart}>
                                 <Echarts option={pieOption.option} height={60} />
                             </View>
-                            <Image style={[styles.arrow, { top: 17 }]} source={require("../../../Images/find_arrow_right.png")} />
+                            <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
                     </TouchableOpacity>
                     {this._renderGetChatNewPaper()}
@@ -350,7 +354,7 @@ export default class Find extends Component {
 
 const styles = {
     container: {
-        backgroundColor: '#F1F4FB',
+        backgroundColor: '#F6F6F6',
     },
     instructions: {
         textAlign: 'center',
@@ -360,20 +364,19 @@ const styles = {
     titleContent: {
         flexDirection: "row",
         backgroundColor: "white",
-        height: 80,
-        marginBottom: 5,
+        height: 78,
     },
     arrow: {
         position: 'absolute',
         resizeMode: 'contain',
-        right: 19.6,
+        right: 10,
         width: 7.4,
-        // height: 96
     },
     titleText: {
         width: '70%',
         height: '100%',
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        marginLeft: 10,        
     },
     h2: {
         fontSize: 16,
@@ -383,10 +386,9 @@ const styles = {
     examTitle: {
         width: '70%',
         marginTop: 17,
-        marginLeft: 5,
     },
     examDetail: {
-        marginLeft: 5,
+
     },
     p: {
         marginTop: 5,
@@ -396,10 +398,10 @@ const styles = {
     },
     circleChart: {
         position: 'absolute',
+        top: 10,
         right: 40,
         width: 60,
         height: 60,
-        top: 10
     },
     titleIcon: {
         flex: 1,
@@ -407,58 +409,50 @@ const styles = {
         justifyContent: 'center'
     },
     calendarView: {
-        // flex: 5,
-        backgroundColor: '#F1F4FB',
-        height: clientWidth * 0.78,
         position: 'relative',
-        paddingTop: 20,
         backgroundColor: '#fff',
-        marginBottom: 8,
-        width: "100%"
+        marginTop: 3,
     },
-    chartTitle: {
-        flexDirection: "row",
-        position: "absolute",
-        width: '100%',
-        height: 55,
+    chartTitleContainer: {
+        flexDirection: "column",
         backgroundColor: "#fff",
-        left: 0,
-        top: 0,
+        height: 75,
         zIndex: 100
     },
-    chartTitleLeft: {
-        flex: 13,
-        marginTop: 10,
-        marginLeft: 5,
+    chartTopContainer: {
+        flexDirection: "row",
+        height: 48,
     },
-    chartTitleRight: {
-        position: "absolute",
-        paddingTop: 11,
-        right: 54,
+    chartBottomContainer: {
+        flexDirection: "row",
+        width: "100%",
+        zIndex: 100,
     },
     h4: {
+        marginTop: 12,
+        marginLeft: 10,
         fontSize: 16,
         fontWeight: "400",
         color: "#172434"
     },
     psmall: {
-        marginTop: 21,
+        marginTop: 9,
+        marginLeft: 35,
         fontSize: 12,
         color: "#8E9091"
     },
     rightTitle: {
+        position: "absolute",
+        top: 12,
+        right: 50,
         fontSize: 16
     },
     rightDetail: {
-        marginTop: 23,
+        position: "absolute",
+        top: 9,
+        right: 49,
         fontSize: 12,
         color: "#8E9091"
-    },
-    wrongContainer: {
-        flexDirection: "row",
-        height: 68,
-        width: '100%',
-        position: "absolute",
     },
     rightContainer: {
         flexDirection: "row",
@@ -467,28 +461,26 @@ const styles = {
         position: "absolute",
     },
     greenBlock: {
-        marginLeft: 15,
+        marginLeft: 10,
         marginTop: 23,
         width: 15,
         height: 15,
     },
     redBlock: {
-        marginLeft: 15,
-        marginTop: 12,
+        marginLeft: 10,
+        marginTop: 14,
         width: 15,
         height: 15,
     },
     blueBlock: {
-        marginLeft: 15,
+        marginLeft: 10,
         marginTop: 12,
         width: 15,
         height: 15,
     },
     separator: {
-        position: "absolute",
-        right: 15,
-        left: 15,
-        top: 38,
+        marginRight: 10,
+        marginLeft: 10,
         height: 1,
         backgroundColor: '#7A8FAC',
         zIndex: 9,
