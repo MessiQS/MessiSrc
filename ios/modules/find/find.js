@@ -23,6 +23,7 @@ import realm from '../../../component/Realm/realm';
 import runtime from "../../../service/runtime";
 import Alert from "../../../component/progress/alert";
 import { DBChange } from "../../../service/constant";
+import { NavigationActions } from 'react-navigation'
 
 const clientWidth = 375;
 const chartArray = [1, 2];
@@ -155,7 +156,28 @@ export default class Find extends Component {
 
     routeToMine() {
         const { navigate } = this.props.navigation;
-        navigate('Mine', {})
+
+        const user = realmManager.getCurrentUser()
+
+        if (user) {
+
+            navigate('Mine', {})
+
+        } else {
+
+            realmManager.deleteAllRealmData()
+            let clearPromise = Storage.clearAll()
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'Login' })
+                ]
+            })
+            clearPromise.then(res => {
+                    this.props.navigation.dispatch(resetAction)
+            }
+            )
+        }
     }
 
     routeToPayPage() {

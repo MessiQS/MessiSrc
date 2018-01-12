@@ -11,6 +11,8 @@ import {
 import Button from 'apsl-react-native-button';
 import Register from './register';
 import Storage from '../../service/storage';
+import Http from "../../service/http";
+import MD5 from 'crypto-js/md5';
 
 export default class Login extends Component {
 
@@ -36,7 +38,27 @@ export default class Login extends Component {
 
 	_skip() {
 		const { navigate } = this.props.navigation;
-		navigate('Home', { name: 'Register' })
+
+		var account = "test"
+		var password = MD5("messi2101").toString();
+		Http.post('api/freeRegistration', {
+			account: account,
+			password: password
+        }, true).then(value => {
+			
+			console.log("api/freeRegistration", value);
+
+			if (value.type == "true") {
+				console.log("value.data", value.data);
+				Storage.multiSet([
+					['accountToken', value.data],
+					['account', account]
+				]);
+				navigate('Home', { name: 'Register' })
+			}
+		}).catch(err => {
+            console.log("api/getUserQuestionInfo error", err)
+        })
 	}
 
 	render() {

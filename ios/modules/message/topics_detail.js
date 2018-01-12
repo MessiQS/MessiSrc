@@ -12,9 +12,11 @@ import realm from '../../../component/Realm/realm';
 import Progress from '../../../component/progress/progress'
 import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
-import Storage from "../../../service/http";
+import Storage from "../../../service/storage";
 import runtime from "../../../service/runtime";
 import { DBChange } from "../../../service/constant";
+import { NavigationActions } from 'react-navigation'
+
 
 export default class TopicsDetail extends React.Component {
 
@@ -61,11 +63,19 @@ export default class TopicsDetail extends React.Component {
 
         const user = realmManager.getCurrentUser()
 
-        this.state = ({
-            data: array,
-            loading: false,
-            user: user,
-        })
+        if (user) {
+            this.state = ({
+                data: array,
+                loading: false,
+                user: user,
+            })
+        } else {
+
+            this.state = ({
+                data: array,
+                loading: false,
+            })
+        }
     }
 
     async _buy(item) {
@@ -151,6 +161,22 @@ export default class TopicsDetail extends React.Component {
         })
     }
 
+    _exit() {
+        const { navigate } = this.props.navigation;
+        realmManager.deleteAllRealmData()
+        let clearPromise = Storage.clearAll()
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ]
+        })
+        clearPromise.then(res => {
+                this.props.navigation.dispatch(resetAction)
+           }
+        )
+    }
+
     _renderProgress() {
         if (this.state.loading == true) {
             return (
@@ -172,7 +198,24 @@ export default class TopicsDetail extends React.Component {
 
     _renderItem(item) {
 
-        if (item.id == this.state.user.currentExamId) {
+        const { user } = this.state;
+
+        if (!user) {
+
+            return (
+                <View style={styles.itemView}>
+                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
+                    <TouchableOpacity onPress={() =>
+                        this._exit()
+                    }>
+                        <View style={styles.buyView}>
+                            <Text style={styles.buyText}>￥{item.price}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        if (item.id == user.currentExamId) {
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
@@ -183,7 +226,7 @@ export default class TopicsDetail extends React.Component {
             )
         }
 
-        const examIds = JSON.parse(this.state.user.examIds)
+        const examIds = JSON.parse(user.examIds)
         if (examIds.includes(item.id) || item.price == 0) {
             return (
                 <View style={styles.itemView}>

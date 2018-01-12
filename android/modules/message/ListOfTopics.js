@@ -47,9 +47,9 @@ export default class ListOfTopics extends React.Component {
                 })
             }
         })
-            .catch(err => {
+        .catch(err => {
 
-            })
+        })
     };
 
     static propTypes = {

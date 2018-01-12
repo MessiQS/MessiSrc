@@ -76,8 +76,6 @@ class LoginPage extends React.Component {
                     ['account', account]
                 ]);
                 Keyboard.dismiss()
-                // navigate('Home', {})
-                
 
             } catch (e) {
                 Alert('登录错误，请重试')
@@ -91,7 +89,6 @@ class LoginPage extends React.Component {
                 examIds: examIdJson
             }
             await realmManager.createUser(user)
-
             this._handleUserInfo(data.user_id)
 
             const resetAction = NavigationActions.reset({

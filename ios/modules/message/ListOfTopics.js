@@ -30,13 +30,16 @@ export default class ListOfTopics extends React.Component {
         MessageService.getPaper().then(data => {
             var papers = [];
             that.cacheData = data.data;
-            papers = that.getCurrentPaper();
+            console.log("that.cacheData", that.cacheData)
+            var papers = that.getCurrentPaper();
+            console.log("papers", papers);
             that.setState({
                 papers: papers
             })
         });
         const user = realmManager.getCurrentUser();
         if (user) {
+
             HTTP.post("api/getUserBuyInfo", {
                 user_id: user.userId
             })
