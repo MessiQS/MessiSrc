@@ -4,7 +4,8 @@ import {
     View,
     TextInput,
     Text,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity,
 } from 'react-native';
 import SamsoButton from './button';
 
@@ -12,7 +13,7 @@ import SamsoButton from './button';
 
 const textStyle = {
     code: {
-        top: 55,
+        top: 15,
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -30,6 +31,11 @@ const textStyle = {
         fontSize: 7,
         lineHeight: 7,
         color: '#FF5B29'
+    },
+    codeText: {
+
+        fontSize: 10,
+        color: '#FF5B29',
     }
 }
 export default class UserTemplate extends Component {
@@ -95,12 +101,11 @@ export default class UserTemplate extends Component {
 
         if (varicode) {
             return (
-                <SamsoButton
-                    onPress={getCode}
-                    title={varicode.title}
-                    style={textStyle.code}
-                    textStyle={textStyle.text}
-                ></SamsoButton>
+                <TouchableOpacity onPress={getCode}>
+                    <View style={textStyle.code}>
+                        <Text style={textStyle.codeText}>{varicode.title}</Text>
+                    </View>
+                </TouchableOpacity>
             )
         }
     }
