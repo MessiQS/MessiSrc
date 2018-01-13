@@ -123,7 +123,6 @@ export default class Detail extends Component {
     nextQuestion() {
 
         this._memoryModel = this._getMemoryModel()
-        console.log("nextQuestion this._memoryModel", this._memoryModel)
         if (this._memoryModel == null) {
 
             this.props.navigation.goBack()
@@ -153,6 +152,7 @@ export default class Detail extends Component {
     }
 
     _getMemoryModel() {
+
         var category = this.props.navigation.state.params.category
         return realmManager.getCurrentMemoryModel(category);
     }

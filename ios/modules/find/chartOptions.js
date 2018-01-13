@@ -1,3 +1,5 @@
+import Echarts, {echarts} from 'native-echarts';
+
 export const newPaper = {
     option: {
         grid: {
@@ -247,17 +249,26 @@ export const pieOption = {
 
 
 function getColor(dark,light){
-    return {
-        type: 'linear',
-        x: 0,
-        y: 0,
-        x2: 0,
-        y2: 1,
-        colorStops: [{
-            offset: 0, color:dark // 0% 处的颜色
-        }, {
-            offset: 1, color: light // 100% 处的颜色
-        }],
-        globalCoord: false // 缺省为 false
-    }
+    // return {
+    //     type: 'linear',
+    //     x: 0,
+    //     y: 0,
+    //     x2: 1,
+    //     y2: 1,
+    //     colorStops: [{
+    //         offset: 0, color:dark // 0% 处的颜色
+    //     }, {
+    //         offset: 1, color: light // 100% 处的颜色
+    //     }],
+    //     globalCoord: false // 缺省为 false
+    // }
+    // var echarts = new Echarts()
+    console.log("echarts.graphic", echarts.graphic)
+    return new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
+        offset: 0,
+        color: '#f7f8fa'
+    }, {
+        offset: 1,
+        color: '#cdd0d5'
+    }])
 }

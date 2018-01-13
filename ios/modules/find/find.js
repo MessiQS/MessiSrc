@@ -196,7 +196,6 @@ export default class Find extends Component {
             that.setState({
                 showAlert: true,
             })
-
             setTimeout(() => {
                 that.setState({
                     showAlert: false,
@@ -216,7 +215,6 @@ export default class Find extends Component {
             that.setState({
                 showAlert: true,
             })
-
             setTimeout(() => {
                 that.setState({
                     showAlert: false,
@@ -257,7 +255,7 @@ export default class Find extends Component {
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
-                    <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)}>
+                    <TouchableOpacity onPress={this.routeToNewDetail.bind(this)}>
                         <View style={styles.chartTopContainer}>
                             <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
                             <Text style={styles.h4}>过去5日刷题量统计</Text>

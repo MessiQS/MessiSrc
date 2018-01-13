@@ -177,14 +177,42 @@ export default class Find extends Component {
         }
     }
 
-    routeToPayPage() {
-        const { navigate } = this.props.navigation;
-        navigate('Message', {})
+    routeToNewDetail() {
+        const that = this
+        if (this.state.newQuestionCount == 0) {
+            that.setState({
+                showAlert: true,
+            })
+            setTimeout(() => {
+                that.setState({
+                    showAlert: false,
+                })
+            }, 2500)
+
+        } else {
+
+            const { navigate } = this.props.navigation;
+            navigate('Detail', { category: "new" })
+        }
     }
 
-    routeToDetail() {
-        const { navigate } = this.props.navigation;
-        navigate('Detail', {})
+    routeToWrongDetail() {
+        const that = this
+        if (this.state.wrongQuestionCount == 0) {
+            that.setState({
+                showAlert: true,
+            })
+            setTimeout(() => {
+                that.setState({
+                    showAlert: false,
+                })
+            }, 2500)
+
+        } else {
+
+            const { navigate } = this.props.navigation;
+            navigate('Detail', { category: "wrong" })
+        }
     }
 
     _renderGetChatNewPaper() {

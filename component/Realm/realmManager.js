@@ -297,7 +297,7 @@ class RealmManager {
         if (category == "wrong") {
 
             let models = realm.objects('MemoryModel')
-            .filtered("weighting < 7 && appearedSeveralTime>0", user.currentExamId)
+            .filtered("weighting<7 && appearedSeveralTime>0 && examId=$0", user.currentExamId)
             .sorted('lastBySelectedTime', false)
 
             if (models.length == 0) {
