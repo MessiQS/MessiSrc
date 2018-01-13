@@ -11,7 +11,7 @@ import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
 import { LoginItem } from '../usual/item';
-import  SamsoButton  from '../usual/button';
+import  {AccountButton}  from '../usual/button';
 import Storage from '../../service/storage';
 
 const passwordType = ['oldPassword','newPassword','checkPassword'];
@@ -105,11 +105,11 @@ class ModifyPasswordPage extends React.Component {
                             <LoginItem key={res.key} data={res}></LoginItem>
                         )
                     })}
-                    <SamsoButton
+                    <AccountButton
                         style={styles.checkViewStyle}
                         onPress={this.updatePawword.bind(this)}
                         title = '确认修改'
-                    ></SamsoButton>
+                    ></AccountButton>
                 </View>
             </View>
         );

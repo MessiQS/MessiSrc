@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';
-import SamsoButton from '../usual/button';
+import {SamsoButton} from '../usual/button';
 import styles from "./loginPageCss";
 import realmManager from "../Realm/realmManager";
 import MessageService from "../../service/message.service";
@@ -93,9 +93,9 @@ class LoginPage extends React.Component {
 
             const resetAction = NavigationActions.reset({
                 index: 1,
-                actions: [
-                  NavigationActions.navigate({ routeName: 'LoginPage' }),                
-                  NavigationActions.navigate({ routeName: 'LaunchPage' })                
+                actions: [            
+                    NavigationActions.navigate({ routeName: 'LoginPage'}),
+                  NavigationActions.navigate({ routeName: 'Home' })                
                 ]
             })
             this.props.navigation.dispatch(resetAction)
@@ -107,14 +107,17 @@ class LoginPage extends React.Component {
     };
 
     _handleUserInfo(userId) {
-
+        console.log("_handleUserInfo userId", userId)
         const that = this
         Http.get('api/getUserQuestionInfo', {
             user_id: userId,
         },true).then((value) => {
-            console.log("api/getUserQuestionInfo ", value)
             
-            that._getPaperInfo(value)
+            if (value.type == "true") {
+                that._getPaperInfo(value)
+            } else {
+                console.log("api/getUserQuestionInfo error", value)
+            }
 
         }).catch(err => {
             console.log("api/getUserQuestionInfo error", err)
@@ -208,16 +211,13 @@ class LoginPage extends React.Component {
                 {inputObjectArraty.map(res => {
                     return (<LoginItem key={res.key} data={res}></LoginItem>)
                 })}
-
-                <View style={styles.forgotButton}
-                >
+                <View style={styles.forgotButton}>
                     <Text onPress={() =>
                         navigate('FPStepOne',
                             { name: 'FPStepOne' }
                         )}
                         style={styles.forgotText}>忘记密码</Text>
                 </View>
-
                 <SamsoButton
                     style={styles.enter}
                     onPress={this.login.bind(this)}

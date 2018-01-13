@@ -378,7 +378,6 @@ export default class Detail extends Component {
 
                             let expr = /_(.*)x(.*)_/;
                             let size = url.match(expr)
-                            console.log("detail size[0]", size[0])
                             let scale = (window.width - 60) / size[1]
                             let height = size[2] * scale
 

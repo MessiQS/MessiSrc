@@ -6,7 +6,7 @@ import moment from "moment";
 class RealmManager {
 
     createQuestion(json) {
-
+        console.log("realm manager json", json);
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {

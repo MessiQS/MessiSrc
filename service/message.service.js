@@ -1,5 +1,3 @@
-import Storage from "./storage";
-import { AlertIOS } from "react-native";
 import Http from './http';
 
 export default class MessageService {

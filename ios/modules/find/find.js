@@ -92,7 +92,7 @@ export default class Find extends Component {
                          <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
                      </View> */
                 }
-                <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
+                <TouchableOpacity onPress={navigation.state.params ? navigation.state.params.route : () => ({})} style={header.icon}>
                     <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
             </View>)
@@ -100,7 +100,6 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props);
-
         const user = realmManager.getCurrentUser()
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
@@ -130,14 +129,12 @@ export default class Find extends Component {
                 showAlert: false,
             }
         }
-
         this.onMessage();
     }
 
-    componentDidMount() {
-
+    componentWillMount() {
         this.props.navigation.setParams({
-            setting: this.routeToMine.bind(this)
+            route: this.routeToMine.bind(this)
         });
     }
 

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 
-export default class SamsoButton extends Component {
+class SamsoButton extends Component {
     constructor(props) {
         super()
     }
@@ -24,6 +24,28 @@ export default class SamsoButton extends Component {
         )
     }
 }
+
+class AccountButton extends Component {
+    constructor(props) {
+        super()
+    }
+    render() {
+        return (
+            <TouchableOpacity onPress={this.props.onPress} style={[styles.initView, this.props.style]}>
+                <ImageBackground style={styles.initStyle} source={require('../../Images/register_button.png')}>
+                    <Text style={[styles.textStyle, this.props.textStyle, {fontSize: 16}]}>{this.props.title}</Text>
+                </ImageBackground>
+            </TouchableOpacity>
+        )
+    }
+}
+
+module.exports = {
+    SamsoButton,
+    AccountButton
+}
+
+
 const styles = StyleSheet.create({
     initView: {
         ...Platform.select({
@@ -46,7 +68,7 @@ const styles = StyleSheet.create({
         height: "100%",
     },
     textStyle: {
-        fontSize: 20,
+        fontSize:20,
         color: '#fff',
         backgroundColor: "rgba(0,0,0,0)",
     }

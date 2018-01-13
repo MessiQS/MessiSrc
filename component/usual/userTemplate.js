@@ -7,7 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import SamsoButton from './button';
+import {AccountButton} from './button';
 
 
 
@@ -183,11 +183,12 @@ export default class UserTemplate extends Component {
                     {this.inputRender(input)}
                     {this.isHaveVaricode()}
                 </View>
-                <SamsoButton
+                <AccountButton
                     onPress={button.onPress}
                     title={button.title}
                     style={{height: 45}}
-                ></SamsoButton>
+                    fontSize={16}
+                ></AccountButton>
             </View>
         )
     }

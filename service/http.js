@@ -33,22 +33,28 @@ export default class Http {
 
     }
 
-    static async get(api, params, hasToken) {
-        if (!params) {
+    static async get(api, query, hasToken) {
+        if (!query) {
             return;
         }
-        let url = webURL + api;;
+        let url = webURL + api;
+        let params = {
+            method: "GET"
+        }
         if (hasToken) {
-            params["account"] = await Storage.getItem("account");
-            params["token"] = await Storage.getItem("accountToken");
+            query["user_id"] = await Storage.getItem("account");
+            const token = await Storage.getItem("accountToken")
+            params['header'] =  {
+                authorization:token
+            }
         };
         // console.log(api, params, hasToken)
-        const keyArray = Object.keys(params);
+        const keyArray = Object.keys(query);
         keyArray.forEach((res, index) => {
             const condi = index === 0 ? '?' : '&';
-            url = url + condi + res + '=' + params[res];
+            url = url + condi + res + '=' + query[res];
         });
-        return fetch(url, { method: "GET" })
+        return fetch(url,params)
             .then((res) => res.json())
             .catch(err => console.log(err))
     }

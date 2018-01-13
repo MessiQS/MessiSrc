@@ -78,6 +78,7 @@ export default class Feedback extends React.Component {
 var styles = {
     container: {
         backgroundColor: "#F6F6F6",
+        height: '100%',
     },
     question: {
         backgroundColor: "white",
