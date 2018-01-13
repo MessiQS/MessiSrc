@@ -8,6 +8,8 @@ import {
     ImageBackground,
     Text
 } from 'react-native';
+
+
 export default class SamsoButton extends Component {
     constructor(props) {
         super()
@@ -15,7 +17,7 @@ export default class SamsoButton extends Component {
     render() {
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[styles.initView, this.props.style]}>
-                <ImageBackground style={styles.initStyle} source={require('../../Images/verti_code_button.png')}>
+                <ImageBackground style={styles.initStyle} source={require('../../Images/register_button.png')}>
                     <Text style={[styles.textStyle, this.props.textStyle]}>{this.props.title}</Text>
                 </ImageBackground>
             </TouchableOpacity>
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         overflow: 'hidden',
         borderRadius: 6,
-        height: 60,
+        height: "100%",
     },
     textStyle: {
         fontSize: 20,

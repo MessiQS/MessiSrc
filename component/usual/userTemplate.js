@@ -181,6 +181,7 @@ export default class UserTemplate extends Component {
                 <SamsoButton
                     onPress={button.onPress}
                     title={button.title}
+                    style={{height: 45}}
                 ></SamsoButton>
             </View>
         )

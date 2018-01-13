@@ -123,13 +123,13 @@ export const rememberPaper = {
         yAxis: [
             {
                 axisLabel: {
-                    show: false,
-                    inside: true
+                    show: true,
+                    inside: true,
                 },
                 minInterval: 1,
                 type: 'value',
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
                     show: false
@@ -138,12 +138,6 @@ export const rememberPaper = {
                     color: "#8E9091",
                     fontSize: 14
                 },
-                // axisLabel: {
-                //     textStyle: {
-                //         color: '#8E9091',
-                //         fontSize: 14
-                //     }
-                // },
                 splitLine: {
                     show: true,
                     lineStyle: {
@@ -259,15 +253,6 @@ function getColor(dark,light){
         }, {
             offset: 1, color: light // 100% 处的颜色
         }],
-        globalCoord: false // 缺省为 false
+        globalCoord: true // 缺省为 false
     }
-    // var echarts = new Echarts()
-    // console.log("echarts.graphic", echarts.graphic)
-    // return new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
-    //     offset: 0,
-    //     color: '#f7f8fa'
-    // }, {
-    //     offset: 1,
-    //     color: '#cdd0d5'
-    // }])
 }
