@@ -73,7 +73,8 @@ class LoginPage extends React.Component {
             try {
                 setToken = await Storage.multiSet([
                     ['accountToken', data.token],
-                    ['account', account]
+                    ['account', account],
+                    ['userId', data.user_id],
                 ]);
                 Keyboard.dismiss()
 
@@ -95,7 +96,7 @@ class LoginPage extends React.Component {
                 index: 1,
                 actions: [            
                     NavigationActions.navigate({ routeName: 'LoginPage'}),
-                  NavigationActions.navigate({ routeName: 'Home' })                
+                    NavigationActions.navigate({ routeName: 'Home' })                
                 ]
             })
             this.props.navigation.dispatch(resetAction)

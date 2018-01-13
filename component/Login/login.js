@@ -51,8 +51,9 @@ export default class Login extends Component {
 			if (value.type == "true") {
 				console.log("value.data", value.data);
 				Storage.multiSet([
-					['accountToken', value.data],
-					['account', account]
+					['accountToken', value.data.token],
+					['account', account],
+					['userId',  value.data.user_id]
 				]);
 				navigate('Home', { name: 'Register' })
 			}

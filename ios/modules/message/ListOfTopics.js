@@ -30,7 +30,7 @@ export default class ListOfTopics extends React.Component {
         MessageService.getPaper().then(data => {
             var papers = [];
             that.cacheData = data.data;
-            console.log("that.cacheData", that.cacheData)
+            console.log("list of topic js get paper data", data)
             var papers = that.getCurrentPaper();
             console.log("papers", papers);
             that.setState({

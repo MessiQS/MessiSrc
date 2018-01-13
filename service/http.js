@@ -17,17 +17,17 @@ export default class Http {
                     }).join('');
                 return str;
             })(paramObj);
-            console.log("body", body);
-            // console.log(api, paramObj, hasToken, url)
-            let token = await Storage.getItem("accountToken") || '';
-            params = Object.assign({
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Authorization:token,
-                },
-                body: body,
-            });
+        console.log("body", body);
+        // console.log(api, paramObj, hasToken, url)
+        let token = await Storage.getItem("accountToken") || '';
+        params = Object.assign({
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Authorization: token,
+            },
+            body: body,
+        });
         return fetch(url, params)
             .then(res => res.json())
             .catch(err => console.log(err))
@@ -43,11 +43,11 @@ export default class Http {
             method: "GET"
         }
         if (hasToken) {
-            query["user_id"] = await Storage.getItem("account");
+            query["user_id"] = await Storage.getItem("userId")
             const token = await Storage.getItem("accountToken")
-            params['header'] =  {
-                authorization:token
-            }
+            var myHeaders = new Headers();
+            myHeaders.append("authorization",token);
+            params['headers'] = myHeaders
         };
         // console.log(api, params, hasToken)
         const keyArray = Object.keys(query);
@@ -55,7 +55,8 @@ export default class Http {
             const condi = index === 0 ? '?' : '&';
             url = url + condi + res + '=' + query[res];
         });
-        return fetch(url,params)
+        console.log("static get api", params, url)
+        return fetch(url, params)
             .then((res) => res.json())
             .catch(err => console.log(err))
     }
