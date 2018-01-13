@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import Storage from '../service/storage';
 import Http from '../service/http';
+import { NavigationActions } from 'react-navigation'
 
 
 export default  class LaunchPage extends React.Component {
@@ -24,19 +25,23 @@ export default  class LaunchPage extends React.Component {
     });
 
     componentDidMount() {
-        const { navigate } = this.props.navigation;
+        // const { navigate } = this.props.navigation;
         Storage.multiGet(['accountToken', 'account']).then(({ accountToken, account }) => {
             if (accountToken && account) {
                 console.log("accountToken, account", accountToken, account)
                 return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
-                    console.log("api/checkToken", type, data)
-                    if (!type) {
-                        navigate('Login', { name: 'MainTab' })
-                        console.log("login")
-                    } else {
-                        navigate('Home', { name: 'MainTab' })
-                        console.log("MyTab")
+                    // console.log("api/checkToken", type, data)
+                    let route = 'Login';
+                    if (type) {
+                        route = 'Home'
                     }
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                          NavigationActions.navigate({ routeName: route })                
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction)
                 })
             }
             navigate('Login', { name: 'MainTab' })

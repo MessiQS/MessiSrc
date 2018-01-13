@@ -66,15 +66,13 @@ class LoginPage extends React.Component {
             "password": password
         })
         const { type, data } = loginResponse
-        console.log("api/login", type, data)
         if (type) {
             //将账号和token存到本地存储
             let setToken
             try {
                 setToken = await Storage.multiSet([
                     ['accountToken', data.token],
-                    ['account', account],
-                    ['userId', data.user_id],
+                    ['account', account]
                 ]);
                 Keyboard.dismiss()
 
@@ -93,10 +91,9 @@ class LoginPage extends React.Component {
             this._handleUserInfo(data.user_id)
 
             const resetAction = NavigationActions.reset({
-                index: 1,
-                actions: [            
-                    NavigationActions.navigate({ routeName: 'LoginPage'}),
-                    NavigationActions.navigate({ routeName: 'Home' })                
+                index: 0,
+                actions: [
+                  NavigationActions.navigate({ routeName: 'Home' })                
                 ]
             })
             this.props.navigation.dispatch(resetAction)
