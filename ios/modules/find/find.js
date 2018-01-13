@@ -87,11 +87,6 @@ export default class Find extends Component {
         ),
         headerRight: (
             <View style={header.header}>
-                {
-                    /*<View style={header.icon}>
-                         <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-                     </View> */
-                }
                 <TouchableOpacity onPress={navigation.state.params ? navigation.state.params.route : () => ({})} style={header.icon}>
                     <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
@@ -482,3 +477,10 @@ const styles = {
         opacity: 0.1,
     }
 }
+
+
+//{
+    /*<View style={header.icon}>
+         <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
+     </View> */
+//}
