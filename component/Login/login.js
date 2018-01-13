@@ -57,7 +57,7 @@ export default class Login extends Component {
 				navigate('Home', { name: 'Register' })
 			}
 		}).catch(err => {
-            console.log("api/getUserQuestionInfo error", err)
+            console.log("api/freeRegistration error", err)
         })
 	}
 

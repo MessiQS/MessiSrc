@@ -17,7 +17,7 @@ class SamsoButton extends Component {
     render() {
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[styles.initView, this.props.style]}>
-                <ImageBackground style={styles.initStyle} source={require('../../Images/register_button.png')}>
+                <ImageBackground borderRadius={6} style={styles.initStyle} source={require('../../Images/register_button.png')}>
                     <Text style={[styles.textStyle, this.props.textStyle]}>{this.props.title}</Text>
                 </ImageBackground>
             </TouchableOpacity>
@@ -32,7 +32,7 @@ class AccountButton extends Component {
     render() {
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[styles.initView, this.props.style]}>
-                <ImageBackground style={styles.initStyle} source={require('../../Images/register_button.png')}>
+                <ImageBackground borderRadius={6} style={styles.initStyle} source={require('../../Images/register_button.png')}>
                     <Text style={[styles.textStyle, this.props.textStyle, {fontSize: 16}]}>{this.props.title}</Text>
                 </ImageBackground>
             </TouchableOpacity>

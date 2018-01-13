@@ -38,7 +38,7 @@ export default class ListOfTopics extends React.Component {
         });
         const user = realmManager.getCurrentUser();
         HTTP.post("api/getUserBuyInfo", {
-            user_id: user ? user.userId : "1312"
+            user_id: user ? user.userId : ""
         }).then(value => {
             if (value.type) {
                 let array = value.buyedInfo

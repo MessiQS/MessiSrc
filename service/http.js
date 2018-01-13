@@ -17,6 +17,7 @@ export default class Http {
                     }).join('');
                 return str;
             })(paramObj);
+            console.log("body", body);
             // console.log(api, paramObj, hasToken, url)
             let token = await Storage.getItem("accountToken") || '';
             params = Object.assign({
