@@ -9,6 +9,7 @@ import {
     Text,
     ImageBackground,
     ScrollView,
+    Keyboard
 } from 'react-native';
 import stylesContainer, { styles } from './registerCss';
 import Http from '../../service/http';
@@ -16,13 +17,14 @@ import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';
 import realmManager from "../Realm/realmManager";
 import Storage from '../../service/storage';
+import { NavigationActions } from 'react-navigation'
 
 class Register extends React.Component {
 
     constructor(...props) {
         super();
-        this.state =  {
-            codeText:"获取验证码",
+        this.state = {
+            codeText: "获取验证码",
         };
     }
     async _onPressButton() {
@@ -46,42 +48,57 @@ class Register extends React.Component {
             return;
         }
         password = MD5(password).toString()
+        console.log("register.js ", account, password, vericode)
         const responseData = await Http.post('api/signin', {
             account,
             password,
-            vericode: vericode
+            vericode
         })
-        if(!!responseData.type){
-            Http.post('api/login', {
+
+        console.log("responseData", responseData)
+        if (!!responseData.type) {
+            let { type, data } = await Http.post('api/login', {
                 account,
                 password
-            }).then(({ type, data }) => {
-                const { navigate } = this.props.navigation;
-                if (type) {
-                    //将账号和token存到本地存储
-                    let setToken = Storage.multiSet([
-                        ['accountToken', data.token],
-                        ['account', account]
-                    ]);
-                    setToken.then(res => {
-                        Keyboard.dismiss()
-                        navigate('Home', {})
-                    }, err => {
-                        Alert('登录错误，请重试')
-                    })
-                    const examIdJson = JSON.stringify(data.userInfo.buyedInfo)
-                    var user = {
-                        userId: data.user_id,
-                        token: data.token,
-                        examIds: examIdJson
-                    }
-                    realmManager.createUser(user)
-    
-                } else {
-                    //此处提示错误信息
-                    Alert.alert(data);
-                }
             })
+            // .then(({ type, data }) => {
+            const { navigate } = this.props.navigation;
+            if (type) {
+                //将账号和token存到本地存储
+                let setToken = Storage.multiSet([
+                    ['accountToken', data.token],
+                    ['account', account]
+                    ['userId', data.user_id]
+                ]);
+                setToken.then(res => {
+                    Keyboard.dismiss()
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Home' })
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction)
+                }, err => {
+                    Alert('登录错误，请重试')
+                })
+                data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
+                console.log("register.js data.userInfo.buyedInfo", data.userInfo.buyedInfo)
+                let examIdJson = JSON.stringify([])
+                if (!!data.userInfo.buyedInfo) {
+                    examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+                }
+                var user = {
+                    userId: data.user_id,
+                    token: data.token,
+                    examIds: examIdJson
+                }
+                realmManager.createUser(user)
+
+            } else {
+                //此处提示错误信息
+                Alert.alert(data);
+            }
         }
 
         // Keyboard.dismiss()
@@ -105,7 +122,7 @@ class Register extends React.Component {
         })
     };
     getCode = () => {
-        if(this.state.codeText !== "获取验证码"){
+        if (this.state.codeText !== "获取验证码") {
             return;
         }
 
@@ -119,16 +136,16 @@ class Register extends React.Component {
         };
 
         const timeout = (time) => {
-            time = parseInt(time,10) - 1;
-            if(time > 0 ){
+            time = parseInt(time, 10) - 1;
+            if (time > 0) {
                 this.setState({
-                    codeText:`(${time})`
+                    codeText: `(${time})`
                 })
-                this.timeouthash = setTimeout(timeout,1000,time)
-            }else{
+                this.timeouthash = setTimeout(timeout, 1000, time)
+            } else {
                 this.timeouthash = null
                 this.setState({
-                    codeText:"获取验证码"
+                    codeText: "获取验证码"
                 })
             }
         }
@@ -140,8 +157,8 @@ class Register extends React.Component {
         })
     }
 
-    componentWillUnmount(){
-        if(this.timeouthash){
+    componentWillUnmount() {
+        if (this.timeouthash) {
             clearTimeout(this.timeouthash)
         }
     }
@@ -158,8 +175,8 @@ class Register extends React.Component {
                     <View style={styles.iconViewStyle}>
                         <ImageBackground style={styles.icon} resizeMode={'contain'} source={require('../../Images/phone_icon.png')}></ImageBackground>
                     </View>
-                    <TextInput 
-                        style={styles.textInput} 
+                    <TextInput
+                        style={styles.textInput}
                         underlineColorAndroid={'transparent'}
                         placeholder="请输入您的电话号码"
                         maxLength={11}
@@ -173,7 +190,7 @@ class Register extends React.Component {
                     </View>
                     <TextInput
                         underlineColorAndroid={'transparent'}
-                        style={styles.textInput} 
+                        style={styles.textInput}
                         placeholder="请输入您的密码"
                         secureTextEntry={true}
                         maxLength={21}
@@ -184,9 +201,9 @@ class Register extends React.Component {
                     <View style={styles.iconViewStyle}>
                         <ImageBackground style={styles.icon} resizeMode={'contain'} source={require('../../Images/verti_icon.png')}></ImageBackground>
                     </View>
-                    <TextInput 
+                    <TextInput
                         underlineColorAndroid={'transparent'}
-                        style={styles.vertiTextInput} 
+                        style={styles.vertiTextInput}
                         placeholder="请输入验证码"
                         keyboardType={'numeric'}
                         maxLength={4}

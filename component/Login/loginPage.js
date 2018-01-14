@@ -37,11 +37,13 @@ class LoginPage extends React.Component {
             account: account
         })
     }
+
     passwordtChange(password) {
         this.setState({
             password: password
         })
     }
+
     async login() {
         let { account, password } = this.state;
         const { navigate } = this.props.navigation;
@@ -72,7 +74,8 @@ class LoginPage extends React.Component {
             try {
                 setToken = await Storage.multiSet([
                     ['accountToken', data.token],
-                    ['account', account]
+                    ['account', account],
+                    ['userId', data.user_id]
                 ]);
                 Keyboard.dismiss()
 
@@ -87,6 +90,7 @@ class LoginPage extends React.Component {
                 token: data.token,
                 examIds: examIdJson
             }
+            console.log("login page user ", user)
             await realmManager.createUser(user)
             this._handleUserInfo(data.user_id)
 

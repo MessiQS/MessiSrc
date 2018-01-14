@@ -49,6 +49,7 @@ export default class Http {
             myHeaders.append("authorization",token);
             params['headers'] = myHeaders
         };
+        console.log("query", query["user_id"])
         // console.log(api, params, hasToken)
         const keyArray = Object.keys(query);
         keyArray.forEach((res, index) => {

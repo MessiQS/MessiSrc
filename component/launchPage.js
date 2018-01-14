@@ -26,11 +26,12 @@ export default  class LaunchPage extends React.Component {
 
     componentDidMount() {
         // const { navigate } = this.props.navigation;
+        // console.log("la")
         Storage.multiGet(['accountToken', 'account']).then(({ accountToken, account }) => {
             if (accountToken && account) {
                 console.log("accountToken, account", accountToken, account)
                 return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
-                    // console.log("api/checkToken", type, data)
+                    // console.log("xapi/checkToken", type, data)
                     let route = 'Login';
                     if (type) {
                         route = 'Home'
@@ -43,8 +44,18 @@ export default  class LaunchPage extends React.Component {
                     })
                     this.props.navigation.dispatch(resetAction)
                 })
+            }else{
+
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                      NavigationActions.navigate({ routeName: "Login" })                
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction)
             }
-            navigate('Login', { name: 'MainTab' })
+
+
         })
     }
 
