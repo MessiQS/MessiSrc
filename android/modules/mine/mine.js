@@ -10,7 +10,7 @@ import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../../component/usual/item'
-import realmManger from "../../../component/Realm/realmManager"
+import realmManager from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 
 var Pingpp = require('pingpp-react-native');
@@ -83,7 +83,7 @@ class Mine extends Component {
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
-        realmManger.deleteAllRealmData()
+        realmManager.deleteAllRealmData()
         let clearPromise = Storage.clearAll()
         const resetAction = NavigationActions.reset({
             index: 0,

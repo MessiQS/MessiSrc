@@ -8,4 +8,8 @@ export default class MessageService {
     static async downloadPaper(params) {
         return Http.get('api/getpaper',params,true)
     }
+
+    static async updateUserStorage() {
+        
+    }
 }
