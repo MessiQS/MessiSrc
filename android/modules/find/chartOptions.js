@@ -211,7 +211,7 @@ export const pieOption = {
                 type: 'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
-                color: ['#B4EC51', '#FF9453', '#2DC7F7'],
+                color: ['#8FDA3C', '#FF5B29', '#1495EB'],
                 label: {
                     normal: {
                         show: false,
@@ -230,28 +230,7 @@ export const pieOption = {
                         show: false
                     }
                 },
-                // itemStyle: {
-                //     normal: {
-                //         color: '#8FDA3C'
-                //     }
-                // }
             }
         ]
-    }
-}
-
-
-function getColor(dark,light){
-    return {
-        type: 'radial',
-        x: 0.5,
-        y: 0.5,
-        r: 1,
-        colorStops: [{
-            offset: 0, color:dark // 0% 处的颜色
-        }, {
-            offset: 1, color: light // 100% 处的颜色
-        }],
-        globalCoord: true // 缺省为 false
     }
 }
