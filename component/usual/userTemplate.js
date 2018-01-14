@@ -7,13 +7,13 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import {AccountButton} from './button';
+import { AccountButton } from './button';
 
 
 
 const textStyle = {
     code: {
-        top: 15,
+        top: 55,
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -33,7 +33,6 @@ const textStyle = {
         color: '#FF5B29'
     },
     codeText: {
-
         fontSize: 10,
         color: '#FF5B29',
     }
@@ -99,15 +98,11 @@ export default class UserTemplate extends Component {
             timeout(61)
         }
 
-        if (varicode) {
-            return (
-                <TouchableOpacity onPress={getCode}>
-                    <View style={textStyle.code}>
-                        <Text style={textStyle.codeText}>{varicode.title}</Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        }
+        return (
+            <TouchableOpacity onPress={getCode} style={textStyle.code}>
+                <Text style={textStyle.codeText}>{varicode.title}</Text>
+            </TouchableOpacity>
+        )
     }
 
     componentWillUnmount() {
@@ -186,13 +181,17 @@ export default class UserTemplate extends Component {
                 <AccountButton
                     onPress={button.onPress}
                     title={button.title}
-                    style={{height: 45}}
+                    style={{ height: 45 }}
                     fontSize={16}
                 ></AccountButton>
             </View>
         )
     }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
     container: {

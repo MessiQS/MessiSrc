@@ -16,8 +16,8 @@ export default class FPStepThree extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            password:undefined,
-            repeatPassword:undefined
+            password: undefined,
+            repeatPassword: undefined
         }
     }
 
@@ -28,15 +28,15 @@ export default class FPStepThree extends React.Component {
     //         alignSelf: 'center',
     //         fontSize: 20 
     //     },
-	// 	headerStyle: {
-	// 		backgroundColor: '#FFF',
+    // 	headerStyle: {
+    // 		backgroundColor: '#FFF',
     //         opacity: 1,
     //         borderBottomWidth: 0,
     //         shadowOpacity: 0.2,
     //         shadowColor: '#000',
     //         shadowOffset: {width: 0, height: 1}
-	// 	},
-	// 	headerTintColor: 'black',
+    // 	},
+    // 	headerTintColor: 'black',
     //     gesturesEnabled: true,
     //     headerLeft: (
     //         <TouchableOpacity onPress={ () => { navigation.goBack() }}>
@@ -50,18 +50,18 @@ export default class FPStepThree extends React.Component {
 
     initPassowrd(password) {
         this.setState({
-            password:password
+            password: password
         });
     };
 
     checkPassowrd(password) {
         this.setState({
-            repeatPassword:password
+            repeatPassword: password
         })
     };
 
-    updatePassword() {
-        const {repeatPassword,password} = this.state;
+    async updatePassword() {
+        const { repeatPassword, password } = this.state;
         if (repeatPassword !== password) {
             Alert.alert('两次输入不一致');
             return;
@@ -77,62 +77,67 @@ export default class FPStepThree extends React.Component {
         */
         let secretPassword = MD5(password).toString();
         const { navigate,
-                state:{
+            state: {
                     params
                 } } = this.props.navigation;
-        Http.post('api/updatepassword', {
+        const res = await Http.post('api/updatepassword', {
             account: params.account,
             password: secretPassword
-        }).then(res => {
-            if(res.type){
-            //成功后跳转
-                navigate('Login',{})
-            }else{
-            //失败后提示
-                Alert.alert(res.data);
-            }
         })
+        if (res.type) {
+            //成功后跳转
+            Alert.alert(
+                '修改密码成功',
+                '',
+                [
+                  {text: 'OK', onPress: () => navigate('Login',{})},
+                ]
+              )
+        } else {
+            //失败后提示
+            Alert.alert(res.data);
+        }
     }
     render() {
         const inputPasswors = {
             // title:{
             //     content:'请填写短信验证码'
             // },
-            text:[
+            text: [
                 {
-                    content:'新密码',
-                    style:{
-                        color:'#FF5B29'
+                    content: '新密码',
+                    style: {
+                        color: '#FF5B29'
                     }
                 },
                 {
-                    content:'确认密码',
-                    style:{
-                        color:'#FF5B29'
-                    } 
+                    content: '确认密码',
+                    style: {
+                        color: '#FF5B29'
+                    }
                 }
             ],
-            input:[
+            input: [
                 {
-                    onChangeText:this.initPassowrd.bind(this),
-                    placeholder:"请输入密码",
-                    maxLength:11,
-                    secureTextEntry:true,
+                    onChangeText: this.initPassowrd.bind(this),
+                    placeholder: "请输入密码",
+                    maxLength: 11,
+                    secureTextEntry: true,
                 },
                 {
-                    onChangeText:this.checkPassowrd.bind(this),
-                    placeholder:"请再次输入密码",
-                    maxLength:11,
-                    secureTextEntry:true,
+                    onChangeText: this.checkPassowrd.bind(this),
+                    placeholder: "请再次输入密码",
+                    maxLength: 11,
+                    secureTextEntry: true,
                 }
             ],
-            button:{
-                title:"完成",
-                onPress:this.updatePassword.bind(this)
+            button: {
+                title: "完成",
+                onPress: this.updatePassword.bind(this)
             }
         }
         return (
-            <UserTemplate data = {inputPasswors} />
+            <UserTemplate data={inputPasswors} />
         );
     }
 }

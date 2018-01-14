@@ -121,7 +121,8 @@ class Register extends React.Component {
             "vericode": vericode
         })
     };
-    getCode = () => {
+
+    getCode = async () => {
         if (this.state.codeText !== "获取验证码") {
             return;
         }
@@ -149,12 +150,14 @@ class Register extends React.Component {
                 })
             }
         }
-        Http.post('api/getcode', {
+
+        const response = await Http.post('api/getcode', {
             account: account
-        }).then(response => {
-            timeout(61)
-            console.log(response)
         })
+        timeout(61)
+        if(!response.type){
+            Alert.alert(response.data)
+        }
     }
 
     componentWillUnmount() {

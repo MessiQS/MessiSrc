@@ -26,10 +26,12 @@ export default class FPStepTwo extends Component {
             return;
         }
         const response = await Http.post('api/getcode', {
-            account: account
+            account: account,
+            isRegistered:true
         })
-        console.log(new Date().getTime())
-        console.log(response)
+        if(!response.type){
+            Alert.alert(response.data)
+        }
     }
 
     changVericode(vericode) {
