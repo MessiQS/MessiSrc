@@ -37,14 +37,12 @@ const header = {
     },
     text: {
         fontSize: 18,
-        paddingLeft: 10,
+        paddingLeft: 35,
         flex: 7,
         color: "#172434",
     },
     icon: {
         marginRight: 20,
-        // paddingTop: 8,
-        // paddingBottom: 8,
     },
     magnifier: {
         width: 18,
@@ -87,44 +85,48 @@ export default class Find extends Component {
         ),
         headerRight: (
             <View style={header.header}>
-                <TouchableOpacity onPress={navigation.state.params ? navigation.state.params.route : () => ({})} style={header.icon}>
+                <TouchableOpacity onPress={navigation.state.params ? navigation.state.params.route : () => ({})} style={header.icon} >
                     <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
-            </View>)
+            </View>
+        )
     })
 
     constructor(props) {
         super(props);
+        this._updateUI()
+        this.onMessage()
+    }
+
+    _updateUI() {
+
         const user = realmManager.getCurrentUser()
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.state = {
                 currentExam: user.currentExamTitle,
                 currentExamDetail: "历年真题",
-                newQuestionCount: info.newQuestionCount,
-                wrongQuestionCount: info.wrongQuestionCount,
-                newLastSelectDate: info.newLastSelectDate,
-                wrongLastSelectDate: info.wrongLastSelectDate,
-                futureArray: info.futureArray,
-                beforeArray: info.beforeArray,
-                pieArray: info.pieArray,
+                info: info,
                 showAlert: false,
             }
         } else {
+            let info = new Object()
+            info.newQuestionCount = "0"
+            info.wrongQuestionCount = "0"
+            info.newLastSelectDate = "暂无数据"
+            info.wrongLastSelectDate = "暂无数据"
+            info.futureArray = [0, 0, 0, 0, 0, 0]
+            info.beforeArray = [0, 0, 0, 0, 0, 0]
+            info.pieArray = [{ value: 1 }]
+            info.newAverage = 0
+            info.wrongAverage = 0
             this.state = {
                 currentExam: "当前暂无题库信息",
                 currentExamDetail: "请选择题库",
-                newQuestionCount: "0",
-                wrongQuestionCount: "0",
-                newLastSelectDate: "暂无数据",
-                wrongLastSelectDate: "暂无数据",
-                futureArray: [0, 0, 0, 0, 0, 0],
-                beforeArray: [0, 0, 0, 0, 0, 0],
-                pieArray: [{ value: 1 }],
+                info: info,
                 showAlert: false,
             }
         }
-        this.onMessage();
     }
 
     componentWillMount() {
@@ -135,20 +137,16 @@ export default class Find extends Component {
 
     onMessage() {
 
+        const that = this
         runtime.on(DBChange, () => {
-
-            const user = realmManager.getCurrentUser()
-            let info = realmManager.getFindInfo(user.currentExamId)
-            this.setState({
-                currentExam: user.currentExamTitle,
-                newQuestionCount: info.newQuestionCount,
-                wrongQuestionCount: info.wrongQuestionCount,
-                newLastSelectDate: info.newLastSelectDate,
-                wrongLastSelectDate: info.wrongLastSelectDate,
-                futureArray: info.futureArray,
-                beforeArray: info.beforeArray,
-                pieArray: info.pieArray,
-            })
+            that._updateUI()
+            // const user = realmManager.getCurrentUser()
+            // let info = realmManager.getFindInfo(user.currentExamId)
+            // this.setState({
+            //     currentExam: user.currentExamTitle,
+            //     currentExamDetail: "历年真题",
+            //     info: info,
+            // })
         })
     }
 
@@ -184,7 +182,7 @@ export default class Find extends Component {
 
     routeToNewDetail() {
         const that = this
-        if (this.state.newQuestionCount == 0) {
+        if (this.state.info.newQuestionCount == 0) {
             that.setState({
                 showAlert: true,
             })
@@ -192,7 +190,7 @@ export default class Find extends Component {
                 that.setState({
                     showAlert: false,
                 })
-            }, 2500)
+            }, 2000)
 
         } else {
 
@@ -211,7 +209,7 @@ export default class Find extends Component {
                 that.setState({
                     showAlert: false,
                 })
-            }, 2500)
+            }, 2000)
 
         } else {
 
@@ -243,7 +241,7 @@ export default class Find extends Component {
             }
         })
         newPaperOption.xAxis[0].data = weekArray
-        newPaperOption.series[0].data = this.state.beforeArray
+        newPaperOption.series[0].data = this.state.info.beforeArray
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
@@ -257,8 +255,9 @@ export default class Find extends Component {
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.newLastSelectDate}</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.newQuestionCount}</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.info.newLastSelectDate}</Text>
+                        <Text style={styles.average}>平均値:{this.state.info.newAverage}</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.info.newQuestionCount}</Text>
                     </View>
                 </View>
                 <Echarts option={newPaperOption} height={width * 0.6} />
@@ -288,7 +287,7 @@ export default class Find extends Component {
             weekArray.push(d)
         }
         newPaperOption.xAxis[0].data = weekArray
-        newPaperOption.series[0].data = this.state.futureArray
+        newPaperOption.series[0].data = this.state.info.futureArray
 
         return (
             <View style={styles.calendarView}>
@@ -303,8 +302,9 @@ export default class Find extends Component {
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.wrongLastSelectDate}</Text>
-                        <Text style={styles.rightDetail}>剩余：{this.state.wrongQuestionCount}</Text>
+                        <Text style={styles.psmall}>最后刷题日:{this.state.info.wrongLastSelectDate}</Text>
+                        <Text style={styles.average}>平均値:{this.state.info.wrongAverage}</Text>
+                        <Text style={styles.rightDetail}>剩余：{this.state.info.wrongQuestionCount}</Text>
                     </View>
                 </View>
                 <Echarts option={newPaperOption} height={width * 0.6} />
@@ -315,7 +315,7 @@ export default class Find extends Component {
     render() {
 
         const option = pieOption.option
-        option.series[0].data = this.state.pieArray
+        option.series[0].data = this.state.info.pieArray
 
         return (
             <View style={styles.container}>
@@ -345,6 +345,7 @@ export default class Find extends Component {
 const styles = {
     container: {
         backgroundColor: '#F6F6F6',
+        width: '100%'
     },
     instructions: {
         textAlign: 'center',
@@ -426,10 +427,17 @@ const styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 9,
+        marginTop: 8,
         marginLeft: 35,
         fontSize: 12,
         color: "#8E9091"
+    },
+    average: {
+        position: 'absolute',
+        top: 8,
+        left: 175,
+        fontSize: 12,
+        color: '#8E9091'
     },
     rightTitle: {
         position: "absolute",
@@ -464,7 +472,7 @@ const styles = {
     },
     blueBlock: {
         marginLeft: 10,
-        marginTop: 12,
+        marginTop: 10,
         width: 15,
         height: 15,
     },

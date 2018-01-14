@@ -388,6 +388,16 @@ class RealmManager {
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
+        var newSum = futureArray.reduce(function(a, b) { return a + b; });
+        var newAvg = newSum / futureArray.length;
+
+        object.newAverage = newAvg
+        
+        var wrongSum = beforeArray.reduce(function(a, b) { return a + b; });
+        var wrongAvg = wrongSum / beforeArray.length;
+        console.log("wrongAverage", wrongAverage)
+        object.wrongAverage = wrongAvg
+
         if (b.length != 0) {
             b.sort((a1, b1) => {
                 return b1.lastBySelectedTime - a1.lastBySelectedTime

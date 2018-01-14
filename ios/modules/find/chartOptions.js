@@ -3,8 +3,8 @@ import Echarts, {echarts} from 'native-echarts';
 export const newPaper = {
     option: {
         grid: {
-            left: '10',
-            right: '10',
+            left: '15',
+            right: '15',
             bottom: '3%',
             top: '5%',
             containLabel: true
@@ -98,8 +98,8 @@ export const newPaper = {
 export const rememberPaper = {
     option: {
         grid: {
-            left: '10',
-            right: '10',
+            left: '15',
+            right: '15',
             bottom: '3%',
             top: '5%',
             containLabel: true
@@ -123,8 +123,8 @@ export const rememberPaper = {
         yAxis: [
             {
                 axisLabel: {
-                    show: true,
-                    inside: true,
+                    show: false,
+                    inside: true
                 },
                 minInterval: 1,
                 type: 'value',
