@@ -6,6 +6,7 @@ import AccountCheck from '../../service/accountCheck';
 import Http from '../../service/http';
 import Storage from '../../service/storage';
 import UserTemplate from '../usual/userTemplate';
+import { NavigationActions } from 'react-navigation'
 
 export default class CPStepThree extends React.Component {
 
@@ -25,10 +26,14 @@ export default class CPStepThree extends React.Component {
         const response = await Http.post('api/getcode', {
             account: account
         })
+        console.log(response)
+        if (!response.type) {
+            Alert.alert(response.data)
+            return;
+        }
         this.setState({
             account: account
         })
-        console.log(response)
     }
     //输入验证码
     updateData(vericode) {
@@ -39,7 +44,7 @@ export default class CPStepThree extends React.Component {
 
     updatePhone() {
         const { account, vericode } = this.state;
-        const { navigate } = this.props.navigation;
+        const { navigate, back, dispatch } = this.props.navigation;
         //检测验证码
         Http.post('api/checkcode', {
             account: account,
@@ -53,6 +58,12 @@ export default class CPStepThree extends React.Component {
                         account: account
                     }).then(({ type, data }) => {
                         if (type) {
+                            const resetAction = NavigationActions.reset({
+                                index: 0,
+                                actions: [
+                                    NavigationActions.navigate({ routeName: 'Login' })
+                                ]
+                            })
                             Storage.setItem({
                                 key: 'account',
                                 value: account
@@ -60,8 +71,8 @@ export default class CPStepThree extends React.Component {
                             Alert.alert('提示', '更新账号成功', [
                                 {
                                     text: '确定',
-                                    onPress: async () => {
-                                        navigate('mine', { account: account })
+                                    onPress: () => {
+                                        dispatch(resetAction)
                                     }
                                 }
                             ]);
@@ -69,8 +80,8 @@ export default class CPStepThree extends React.Component {
                             Alert.alert('提示', '更新账号失败', [
                                 {
                                     text: '确定',
-                                    onPress: async () => {
-                                        navigate('mine', { account: account })
+                                    onPress: () => {
+                                        back(3)
                                     }
                                 }
                             ])

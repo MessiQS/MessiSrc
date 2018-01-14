@@ -22,6 +22,7 @@ import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
 import runtime from "../../../service/runtime";
 import { DBChange } from "../../../service/constant";
+import { NavigationActions } from 'react-navigation'
 
 const clientWidth = 375;
 const chartArray = [1, 2];

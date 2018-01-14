@@ -10,6 +10,7 @@ import Http from '../../service/http';
 import AccountCheck from '../../service/accountCheck';
 import MD5 from 'crypto-js/md5';
 import UserTemplate from '../usual/userTemplate';
+import { NavigationActions } from 'react-navigation'
 
 export default class FPStepThree extends React.Component {
 
@@ -76,7 +77,7 @@ export default class FPStepThree extends React.Component {
             时间：2017年09月26日21:32:40
         */
         let secretPassword = MD5(password).toString();
-        const { navigate,
+        const { dispatch,
             state: {
                     params
                 } } = this.props.navigation;
@@ -84,15 +85,22 @@ export default class FPStepThree extends React.Component {
             account: params.account,
             password: secretPassword
         })
+
         if (res.type) {
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'Login' })
+                ]
+            })
             //成功后跳转
             Alert.alert(
                 '修改密码成功',
                 '',
                 [
-                  {text: 'OK', onPress: () => navigate('Login',{})},
+                    { text: 'OK', onPress: () => dispatch(resetAction) },
                 ]
-              )
+            )
         } else {
             //失败后提示
             Alert.alert(res.data);
