@@ -54,9 +54,16 @@ export default class PayPage extends React.Component {
         Pingpp.createPayment(charge, function (result) {
             var res = JSON.parse(result);
             //  Http.post('api/feedback', res)
-            if (res.pay_result === "success") {
+            if (res.pay_result === "invalid") {
+                //失效
+                if (res.error_msg === "wx_app_not_installed") {
+                    //微信未安装
+                }else{
+                    //网络错误
+                }
+            } else if (res.pay_result === "success") {
                 //成功的回调函数
-            } else if (res.error_msg === "cancel") {
+            } else if (res.pay_result === "cancel") {
                 //取消的回调函数
             }
         });
