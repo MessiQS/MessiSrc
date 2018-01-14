@@ -8,7 +8,7 @@ import Http from '../service/http';
 import { NavigationActions } from 'react-navigation'
 
 
-export default  class LaunchPage extends React.Component {
+export default class LaunchPage extends React.Component {
     constructor(...props) {
         super();
         this.state = this.state || {};
@@ -39,23 +39,20 @@ export default  class LaunchPage extends React.Component {
                     const resetAction = NavigationActions.reset({
                         index: 0,
                         actions: [
-                          NavigationActions.navigate({ routeName: route })                
+                            NavigationActions.navigate({ routeName: route })
                         ]
                     })
                     this.props.navigation.dispatch(resetAction)
                 })
-            }else{
-
+            } else {
                 const resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
-                      NavigationActions.navigate({ routeName: "Login" })                
+                        NavigationActions.navigate({ routeName: "Login" })
                     ]
                 })
                 this.props.navigation.dispatch(resetAction)
             }
-
-
         })
     }
 

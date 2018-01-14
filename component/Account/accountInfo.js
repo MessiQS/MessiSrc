@@ -78,6 +78,7 @@ class AccountInfo extends React.Component {
 var styles = ({
     container: {
         backgroundColor:"#f6f6f6",
+        height: '100%',
     },
     headerView: {
         height: 45,

@@ -18,6 +18,7 @@ export default class Login extends Component {
 
 	constructor(props) {
 		super(props);
+		this.isLockPushing = false
 	}
 
 	static navigationOptions = {
@@ -26,17 +27,11 @@ export default class Login extends Component {
 		gesturesEnabled: false,
 	};
 
-	_renderHeader() {
-		return (
-			<View style={styles.headerView}>
-				<Text style={styles.year}>2018</Text>
-				<Text style={styles.appName}>刷题APP</Text>
-				<Image style={styles.logo} source={require('../../Images/logo.png')} />				
-			</View>
-		)
-	}
-
 	_skip() {
+
+		if (this._preventPushingMulitpleTimes()) {
+			return 
+		}
 		const { navigate } = this.props.navigation;
 
 		var account = "test"
@@ -62,32 +57,71 @@ export default class Login extends Component {
         })
 	}
 
-	render() {
+	_preventPushingMulitpleTimes() {
+
+        const that = this
+        if (this.isLockPushing == true) {
+            return true
+        }
+		this.isLockPushing = true
+		
+        setTimeout(() => {
+            that.isLockPushing = false
+		}, 1000);
+		
+		return false;
+	}
+
+	_navigateToLoginPage() {
+
 		const { navigate } = this.props.navigation;
+		if (this._preventPushingMulitpleTimes()) {
+			return 
+		}
+		navigate('LoginPage', { name: 'LoginPage' })
+	}
+	
+	_navigateToRegister() {
+
+		const { navigate } = this.props.navigation;
+		if (this._preventPushingMulitpleTimes()) {
+			return 
+		}
+		navigate('Register', { name: 'Register' })
+	}
+
+	_renderHeader() {
+		return (
+			<View style={styles.headerView}>
+				<Text style={styles.year}>2018</Text>
+				<Text style={styles.appName}>刷题库</Text>
+				<Image style={styles.logo} source={require('../../Images/logo.png')} />				
+			</View>
+		)
+	}
+
+	render() {
+		
 		return (
 			<View style={styles.container}>
 				<ImageBackground source={require('../../Images/login_background.png')} style={styles.backgroundImage} >
 					{this._renderHeader()}
 					<View style={styles.buttonContainer}>
-						<Button style={[styles.loginButtonStyle, styles.buttonStyle]} onPress={() =>
-							navigate('LoginPage', { name: 'LoginPage' })
-						}>
+						<Button style={[styles.loginButtonStyle, styles.buttonStyle]} onPress={this._navigateToLoginPage.bind(this)}>
 							<View style={styles.nestedViewStyle}>
 								<Text style={styles.nestedTextStyle}>登录</Text>
 							</View>
 						</Button>
-						<Button style={[styles.registerButtonStyle, styles.buttonStyle]} onPress={() =>
-							navigate('Register', { name: 'Register' })
-						}>
+						<Button style={[styles.registerButtonStyle, styles.buttonStyle]} onPress={this._navigateToRegister.bind(this)}>
 							<View style={styles.nestedViewStyle}>
 								<Text style={styles.nestedTextStyle}>注册</Text>
 							</View>
 						</Button>
 					</View>
-					<TouchableOpacity onPress={() =>
-						this._skip()
-					}>
-						<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
+					<TouchableOpacity onPress={this._skip.bind(this)}>
+						<View style={styles.skipContainer}>
+							<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
+						</View>
 					</TouchableOpacity>
 				</ImageBackground>
 			</View>
@@ -161,10 +195,19 @@ var styles = StyleSheet.create({
 		color: 'white',
 		backgroundColor: 'rgba(0,0,0,0)',
 	},
-	skip: {
+	skipContainer: {
 		position: 'absolute',
-		bottom: 30,
-		right: 30,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		bottom: 20,
+		right: 24,
+		width: 22,
+		height: 22,
+	},
+	skip: {
+		width: 9,
+		height: 6.5,
 	}
 });
 

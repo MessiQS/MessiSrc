@@ -94,6 +94,7 @@ export default class ListOfTopics extends React.Component {
     render() {
         return (
             <FlatList
+                style={styles.flatStyle}
                 data={this.state.papers}               
                 renderItem={(item)=>this._renderItemView(item)}
                 keyExtractor={(item, index) => index}
@@ -110,6 +111,10 @@ const styles = ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: 'white'
+    },
+    flatStyle: {
+        backgroundColor: '#f6f6f6',
+        height: '100%',
     },
     sectionTitleStyle: {
         marginLeft: 20,

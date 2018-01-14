@@ -20,7 +20,8 @@ export const androidItem = {
     textInView: {
         lineHeight: 46,
         fontSize: 16,
-        paddingLeft: 9
+        paddingLeft: 9,
+        color: "#172434",
     },
     spanceView: {
         height: 47,
@@ -29,7 +30,6 @@ export const androidItem = {
 };
 export const iosItem = {
     cellTitleView: {
-        // justifyContent: 'center',
         flexDirection: 'row',
     },
     leftIcon: {

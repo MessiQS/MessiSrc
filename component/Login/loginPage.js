@@ -5,7 +5,6 @@ import {
     Button,
     TextInput,
     TouchableOpacity,
-    ImageBackground,
     Text,
     ScrollView,
     Keyboard
@@ -27,6 +26,7 @@ class LoginPage extends React.Component {
 
     constructor(props) {
         super(props);
+        this.isLockPushing = false
         this.state = {
             loading: false,
         };
@@ -45,6 +45,11 @@ class LoginPage extends React.Component {
     }
 
     async login() {
+
+        if (this._preventPushingMulitpleTimes()) {
+            return 
+        }
+        
         let { account, password } = this.state;
         const { navigate } = this.props.navigation;
         if (!account) {
@@ -192,6 +197,20 @@ class LoginPage extends React.Component {
         }
     }
 
+    _preventPushingMulitpleTimes() {
+
+        const that = this
+        if (this.isLockPushing == true) {
+            return true
+        }
+		this.isLockPushing = true
+		
+        setTimeout(() => {
+            that.isLockPushing = false
+		}, 1000);
+		return false;
+	}
+ 
     render() {
         const { navigate } = this.props.navigation;
         const inputObjectArraty = [{

@@ -187,7 +187,7 @@ export default class Find extends Component {
                 that.setState({
                     showAlert: false,
                 })
-            }, 2500)
+            }, 2000)
 
         } else {
 
@@ -206,7 +206,7 @@ export default class Find extends Component {
                 that.setState({
                     showAlert: false,
                 })
-            }, 2500)
+            }, 2000)
 
         } else {
 

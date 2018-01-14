@@ -4,7 +4,8 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Platform
+    Platform,
+    ImageBackground
 } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { androidItem, iosItem } from '../usualCss/usualCss'
@@ -30,11 +31,14 @@ export default class MineListItem extends Component {
 
     hasLeftIcon() {
         if (this.props.item.leftIcon) {
-            const { type, name } = this.props.item.leftIcon;
+            const { type } = this.props.item.leftIcon;
+            console.log("source", this.props.item.leftSource);
             const Icon = IconObject[type];
-            return (<View style={styles.spanceView}>
-                <Icon name={name} size={16} style={styles.leftIcon}></Icon>
-            </View>)
+            return (
+                <View style={[styles.spanceView, mineStyles.leftIconContainer]}>
+                    <ImageBackground source={this.props.item.leftSource} style={mineStyles.leftIcon} resizeMode={'contain'} />
+                </View>
+            )
         } else {
             return (<View style={styles.spanceView}></View>)
         }
@@ -44,8 +48,8 @@ export default class MineListItem extends Component {
         if (this.props.item.rightIcon) {
             const { type, name, iconStyle } = this.props.item.rightIcon;
             const Icon = IconObject[type];
-            return (<View style={styles.spanceView}>
-                <Icon name={name} size={16} style={[styles.rightIcon, iconStyle]}></Icon>
+            return (<View style={[styles.spanceView, mineStyles.rightIconContainer]} >
+                 <ImageBackground style={mineStyles.rightIcon} source={require("../../Images/find_arrow_right.png")} />
             </View>)
         } else {
             return (<View style={styles.spanceView}></View>)
@@ -67,5 +71,31 @@ export default class MineListItem extends Component {
                 </View>
             </TouchableOpacity>
         )
+    }
+}
+
+var mineStyles = {
+
+    leftIcon: {
+        width: 18,
+        height: 18,
+
+    },
+    leftIconContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        marginRight: 6,
+    },
+    rightIcon: {
+        width: 7.4,
+        height: 12,
+
+    },
+    rightIconContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        marginLeft: 17,
     }
 }

@@ -38,8 +38,8 @@ export default class Message extends Component {
                     tabBarPosition={"overlayTop"}>
                     <ListOfTopics tabLabel="历年真题"
                         select_province={that._select_province.bind(that)} />
-                    <View tabLabel="专项练习" />
-                    <View tabLabel="申论" />
+                    <View style={styles.itemView} tabLabel="专项练习" />
+                    <View style={styles.itemView} tabLabel="申论" />
                 </ScrollableTabView>
         );
     }
@@ -58,5 +58,9 @@ var styles = ({
         fontSize: 16,
         marginTop: 15,
     },
+    itemView: {
+        backgroundColor: '#F6F6F6',
+        height: '100%'
+    }
 })
 

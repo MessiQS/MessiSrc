@@ -11,11 +11,9 @@ import {
     View,
     TouchableOpacity,
     Image,
-    Button,
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
-import Pingpay from '../../../service/pingpp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { MineListItem } from '../../../component/usual/item'
 import realmManger from "../../../component/Realm/realmManager"
@@ -23,10 +21,10 @@ import { NavigationActions } from 'react-navigation'
 
 var Pingpp = require('pingpp-react-native');
 
-const createLeftIcon = (name) => {
+const createLeftIcon = (source) => {
     return {
         type: 'SimpleLineIcons',
-        name
+        source
     }
 }
 const rightIcon = {
@@ -36,6 +34,7 @@ const rightIcon = {
         fontSize:10
     }
 }
+
 class Mine extends Component {
     constructor(props) {
         super(props);
@@ -60,6 +59,7 @@ class Mine extends Component {
             name: '账号信息',
             info: { name: 'AccountInfo' },
             leftIcon:createLeftIcon('user'),
+            leftSource: require('../../../Images/account/account_info.png'),
             rightIcon,
             tipBorder: 1
         },
@@ -68,6 +68,7 @@ class Mine extends Component {
             name: '版本更新',
             info: { account: 15895537043 },
             leftIcon:createLeftIcon('settings'),
+            leftSource: require('../../../Images/account/account_version_update.png'),
             rightIcon,
             tipBorder: 0
         }, {
@@ -75,6 +76,7 @@ class Mine extends Component {
             name: '问题反馈',
             info: { user: 'Lucy' },
             leftIcon:createLeftIcon('user-follow'),
+            leftSource: require('../../../Images/account/account_feedback.png'),
             rightIcon,
             tipBorder: 0
         }
@@ -83,24 +85,6 @@ class Mine extends Component {
     avatarClick() {
 
     };
-    //支付测试
-    async paytest() {
-        // PayService.wechatPay();
-        const response = await Pingpay.createCharge({
-            client_ip: "192.168.0.103",
-            amount: '1',
-            channel: 'wx',
-            subject: 'ss0001',
-            body: "1234"
-        });
-
-        Pingpp.createPayment({
-            "object": response.data,
-            "urlScheme": "wx8f1006588bd45d9b"
-        }, function (res, error) {
-            console.log(res, error);
-        });
-    }
 
     //退出登录
     outofLogin() {
@@ -123,18 +107,14 @@ class Mine extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.head}>
-                    <Image source={require('../../../Images/head.png')}
-                        style={styles.thumbnail} />
+                    <Image source={require('../../../Images/avatar.png')}
+                        style={styles.thumbnail}
+                        resizeMode={'contain'} />
                     <Text style={styles.phoneNumber}>
                         +86 {this.state.account}
                     </Text>
                 </View>
                 <View style={styles.tableView}>
-                    <View>
-                        <Text style={styles.itemTitle}>
-                            个人中心
-                        </Text>
-                    </View>
                     {
                         this.listItemArray.map(result => (
                         <MineListItem
@@ -143,15 +123,6 @@ class Mine extends Component {
                             key ={result.name}
                         />))
                     }
-                    <View style={styles.buttonView}>
-                        <View>
-                            <Button
-                                title="支付测试"
-                                onPress={this.paytest.bind(this)}
-                            >
-                            </Button>
-                        </View>
-                    </View>
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
                     <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>
@@ -167,7 +138,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
     },
     buttonView: {
         top: 55,
@@ -184,37 +155,37 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     phoneNumber: {
-        marginTop: 3,
+        marginTop: 42,
         fontSize: 22,
-        color: '#000',
+        color: '#172434',
     },
     thumbnail: {
         width: 110,
         height: 110,
         marginTop: 25,
-        borderRadius: 55
+        
+    },
+    tableView: {
+        position: 'absolute',
+        width: '100%',
+        top: 255,
+
     },
     head: {
-        flex: 4,
+        position: 'absolute',
+        top: 24,
         alignItems: 'center',
         width: '100%'
     },
-    tableView: {
-        // backgroundColor: '#F6F6F6',
-        width: '100%',
-        flex: 8
-    },
     exitButtonStyle: {
-        flex: 1,
+        position: 'absolute',
+        height: 53,
+        width: '100%',
+        bottom: 0,
         backgroundColor: "#FF5B29",
         flexDirection: "row",
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center",
     },
-    itemTitle: {
-        backgroundColor: "#EEF1F6",
-        fontSize: 14,
-        lineHeight: 32,
-        paddingLeft: 15,
-    }
 });
 
