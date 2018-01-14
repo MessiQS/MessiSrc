@@ -29,31 +29,37 @@ export default class MineListItem extends Component {
         this.state = props;
     }
 
-    hasLeftIcon() {
-        if (this.props.item.leftIcon) {
-            const { type } = this.props.item.leftIcon;
-            console.log("source", this.props.item.leftSource);
-            const Icon = IconObject[type];
-            return (
-                <View style={[styles.spanceView, mineStyles.leftIconContainer]}>
-                    <ImageBackground source={this.props.item.leftSource} style={mineStyles.leftIcon} resizeMode={'contain'} />
-                </View>
-            )
-        } else {
-            return (<View style={styles.spanceView}></View>)
+    _handleAction(item) {
+
+        const { navigate } = this.props.navigation;
+
+        if (item.type == "route") {
+            navigate(item.sref, item.info)
+        }
+
+        if (item.type == "alert") {
+            
         }
     }
 
-    hasRightIcon() {
-        if (this.props.item.rightIcon) {
-            const { type, name, iconStyle } = this.props.item.rightIcon;
-            const Icon = IconObject[type];
-            return (<View style={[styles.spanceView, mineStyles.rightIconContainer]} >
-                 <ImageBackground style={mineStyles.rightIcon} source={require("../../Images/find_arrow_right.png")} />
-            </View>)
-        } else {
-            return (<View style={styles.spanceView}></View>)
-        }
+    renderItem(item, index) {
+        return (
+            <TouchableOpacity key={index} onPress={() =>
+                 this._handleAction(item)
+                }>
+                <View style={styles.cellTitleView}>
+                    <View style={[styles.spanceView, mineStyles.leftIconContainer]}>
+                        <ImageBackground source={item.leftSource} style={mineStyles.leftIcon} resizeMode={'contain'} />
+                    </View>
+                    <View style={styles.text}>
+                        <Text style={styles.textInView}>{item.name}</Text>
+                    </View>
+                    <View style={[styles.spanceView, mineStyles.rightIconContainer]} >
+                        <ImageBackground style={mineStyles.rightIcon} source={require("../../../Images/find_arrow_right.png")} />
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     render() {
