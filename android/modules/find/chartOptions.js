@@ -51,7 +51,7 @@ export const newPaper = {
                     }
                 },
                 smooth:false,
-                symbol: 'none',
+                // symbol: 'none',
                 areaStyle: {
                     normal:{
                         color:{
@@ -139,7 +139,7 @@ export const rememberPaper = {
                     
                 },
                 smooth:false,
-                symbol: 'none',
+                // symbol: 'none',
                 areaStyle: {
                     normal:{
                         color:{
