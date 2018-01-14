@@ -211,8 +211,7 @@ export const pieOption = {
                 type: 'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
-
-                color: [getColor('#429321','#B4EC51'), getColor('#FF5B29','#FF9453'), getColor('#1495EB','#2DC7F7')],
+                color: ['#B4EC51', '#FF9453', '#2DC7F7'],
                 label: {
                     normal: {
                         show: false,

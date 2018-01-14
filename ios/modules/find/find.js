@@ -140,13 +140,6 @@ export default class Find extends Component {
         const that = this
         runtime.on(DBChange, () => {
             that._updateUI()
-            // const user = realmManager.getCurrentUser()
-            // let info = realmManager.getFindInfo(user.currentExamId)
-            // this.setState({
-            //     currentExam: user.currentExamTitle,
-            //     currentExamDetail: "历年真题",
-            //     info: info,
-            // })
         })
     }
 
@@ -201,7 +194,7 @@ export default class Find extends Component {
 
     routeToWrongDetail() {
         const that = this
-        if (this.state.wrongQuestionCount == 0) {
+        if (this.state.info.wrongQuestionCount == 0) {
             that.setState({
                 showAlert: true,
             })

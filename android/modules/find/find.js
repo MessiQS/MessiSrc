@@ -185,7 +185,7 @@ export default class Find extends Component {
 
     routeToNewDetail() {
         const that = this
-        if (this.state.newQuestionCount == 0) {
+        if (this.state.info.newQuestionCount == 0) {
             that.setState({
                 showAlert: true,
             })
