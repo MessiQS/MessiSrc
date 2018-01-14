@@ -30,7 +30,7 @@ export default class PureItem extends Component {
                 )}>
                 <View style={styles.cellTitleView}>
                     <Text style={styles.textInView}>{this.props.item.name}</Text>
-                    <Image source={require("../../Images/arrow_right.png")} resizeMode={"contain"} style={[styles.rightIcon]} />
+                    <Image source={require("../../Images/find_arrow_right.png")} resizeMode={"contain"} style={[styles.rightIcon]} />
                 </View>
             </TouchableOpacity>
         )
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     rightIcon:{
         position: "absolute",
         right: 20,
-        width: 4,
-        height: 7,
+        width: 7.4,
+        height: 12,
     }
 });
