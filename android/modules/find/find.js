@@ -11,7 +11,8 @@ import {
     TouchableOpacity,
     Text,
     Image,
-    View
+    View,
+    Vibration
 } from 'react-native';
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from './chartOptions';
@@ -21,10 +22,12 @@ import realmManager from "../../../component/Realm/realmManager";
 import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
 import runtime from "../../../service/runtime";
+import Alert from "../../../component/progress/alert";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
+import { Dimensions } from 'react-native';
+const {height, width} = Dimensions.get('window'); 
 
-const clientWidth = 375;
 const chartArray = [1, 2];
 const header = {
     header: {
@@ -34,7 +37,7 @@ const header = {
     },
     text: {
         fontSize: 18,
-        paddingLeft: 10,
+        paddingLeft: 35,
         flex: 7,
         color: "#172434",
     },
@@ -82,15 +85,11 @@ export default class Find extends Component {
         ),
         headerRight: (
             <View style={header.header}>
-            {
-                /*<View style={header.icon}>
-                     <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-                 </View> */
-            }
-                <TouchableOpacity onPress={navigation.state.params.setting} style={header.icon}>
+                <TouchableOpacity onPress={navigation.state.params ? navigation.state.params.route : () => ({})} style={header.icon} >
                     <Image style={header.more} source={require('../../../Images/more.png')} />
                 </TouchableOpacity>
-            </View>)
+            </View>
+        )
     })
 
     constructor(props) {
@@ -130,41 +129,31 @@ export default class Find extends Component {
         }
     }
 
+    componentWillMount() {
+        this.props.navigation.setParams({
+            route: this.routeToMine.bind(this)
+        });
+    }
+
     onMessage() {
 
         const that = this
         runtime.on(DBChange, () => {
             that._updateUI()
-            // const user = realmManager.getCurrentUser()
-            // let info = realmManager.getFindInfo(user.currentExamId)
-            // this.setState({
-            //     currentExam: user.currentExamTitle,
-            //     currentExamDetail: "历年真题",
-            //     info: info,
-            // })
         })
-    }
-
-    componentDidMount() {
-
-        this.props.navigation.setParams({
-            setting: this.routeToMine.bind(this)
-        });
-    }
-
-    componentWillMount() {
-        this.props.navigation.setParams({
-            setting: this.routeToMine.bind(this)
-        });
     }
 
     routeToMine() {
         const { navigate } = this.props.navigation;
+
         const user = realmManager.getCurrentUser()
 
         if (user) {
+
             navigate('Mine', {})
+
         } else {
+
             realmManager.deleteAllRealmData()
             let clearPromise = Storage.clearAll()
             const resetAction = NavigationActions.reset({
@@ -174,7 +163,7 @@ export default class Find extends Component {
                 ]
             })
             clearPromise.then(res => {
-                    this.props.navigation.dispatch(resetAction)
+                this.props.navigation.dispatch(resetAction)
             })
         }
     }
@@ -205,7 +194,7 @@ export default class Find extends Component {
 
     routeToWrongDetail() {
         const that = this
-        if (this.state.wrongQuestionCount == 0) {
+        if (this.state.info.wrongQuestionCount == 0) {
             that.setState({
                 showAlert: true,
             })
@@ -268,9 +257,9 @@ export default class Find extends Component {
             </View>
         )
     }
-   
+
     _renderGetChatRemember() {
-       
+
         const newPaperOption = rememberPaper.option;
         let weekArray = [{
             value: '今日',
@@ -489,3 +478,10 @@ const styles = {
         opacity: 0.1,
     }
 }
+
+
+//{
+    /*<View style={header.icon}>
+         <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
+     </View> */
+//}

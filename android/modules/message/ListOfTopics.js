@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import DictStyle from './dictStyle';
 import MessageService from "../../../service/message.service";
-import realm from '../../../component/Realm/realm';
 import realmManager from '../../../component/Realm/realmManager';
 import PropTypes from 'prop-types';
 import HTTP from '../../../service/http';
-import { TextColor } from "../../../service/constant";
-
+import realm from '../../../component/Realm/realm';
+import {TextColor} from "../../../service/constant";
 
 export default class ListOfTopics extends React.Component {
 
@@ -22,7 +21,7 @@ export default class ListOfTopics extends React.Component {
         super(props);
         this.state = {
             papers: [],
-            arrow_image_list_source: []
+            arrow_image_list_source:[]
         };
     };
 
@@ -31,33 +30,39 @@ export default class ListOfTopics extends React.Component {
         MessageService.getPaper().then(data => {
             var papers = [];
             that.cacheData = data.data;
-            papers = that.getCurrentPaper();
+            console.log("list of topic js get paper data", data)
+            var papers = that.getCurrentPaper();
+            console.log("papers", papers);
             that.setState({
                 papers: papers
             })
         });
         const user = realmManager.getCurrentUser();
-        HTTP.post("api/getUserBuyInfo", {
-            user_id: user ? user.userId : ""
-        }).then(value => {
-            if (value.type) {
-                let array = value.buyedInfo
-                realm.write(() => {
-                    user.examIds = JSON.stringify(array)
-                })
-            }
-        })
-        .catch(err => {
+        if (user) {
 
-        })
+            HTTP.post("api/getUserBuyInfo", {
+                user_id: user.userId
+            })
+            .then(value => {
+                if (value.type) {
+                    let array = value.data.buyedInfo
+                    realm.write(()=> {
+                        user.examIds = JSON.stringify(array)
+                    })
+                }
+            })
+            .catch(err => {
+    
+            })
+        }
     };
 
     static propTypes = {
         select_province: PropTypes.func,
     }
 
-    getCurrentPaper() {
-        return this.cacheData.map((res, idx) => {
+    getCurrentPaper(){
+        return this.cacheData.map( (res,idx) => {
             res.length = res.length || res.data.length;
             return res;
         })
@@ -71,12 +76,12 @@ export default class ListOfTopics extends React.Component {
         const that = this
         that.props.select_province(item);
     }
-
+    
     _renderItemView = (item) => {
         return (
             <TouchableOpacity onPress={() =>
-                this._select_province(item)
-            } >
+                        this._select_province(item)
+                    } >
                 <View style={styles.sectionViewStyle}>
                     <Text style={styles.sectionTitleStyle}>{item.item.title}</Text>
                     <Text style={styles.detailTitleStyle}>{item.item.length}套真题</Text>
@@ -90,8 +95,8 @@ export default class ListOfTopics extends React.Component {
         return (
             <FlatList
                 style={styles.flatStyle}
-                data={this.state.papers}
-                renderItem={(item) => this._renderItemView(item)}
+                data={this.state.papers}               
+                renderItem={(item)=>this._renderItemView(item)}
                 keyExtractor={(item, index) => index}
             />
         )
@@ -105,7 +110,7 @@ const styles = ({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        borderBottomWidth: 0.5,
+        backgroundColor: 'white'
     },
     flatStyle: {
         backgroundColor: '#f6f6f6',
@@ -118,9 +123,9 @@ const styles = ({
     },
     detailTitleStyle: {
         position: 'absolute',
-        left: 100,
-        color: "#172434",
-        fontSize: 16,
+        left: 110,
+        color: "#9B9B9B",
+        fontSize: 14,
     },
     arrowStyle: {
         position: 'absolute',

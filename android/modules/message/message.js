@@ -29,18 +29,18 @@ export default class Message extends Component {
     render() {
         const that = this
         return (
-            <ScrollableTabView 
-                tabBarActiveTextColor={'#FF5B29'}
-                tabBarBackgroundColor={'#fff'}
-                tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-                style={styles.scrollableTabViewStyle}
-                tabBarTextStyle={styles.tabBarTextStyle}
-                tabBarPosition={"overlayTop"}>
-                <ListOfTopics tabLabel="历年真题" 
-                              select_province={that._select_province.bind(that)}/>
-                <View tabLabel="专项练习" />
-                <View tabLabel="申论" />
-            </ScrollableTabView>
+                <ScrollableTabView
+                    tabBarActiveTextColor={'#FF5B29'}
+                    tabBarBackgroundColor={'#fff'}
+                    tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+                    style={styles.scrollableTabViewStyle}
+                    tabBarTextStyle={styles.tabBarTextStyle}
+                    tabBarPosition={"overlayTop"}>
+                    <ListOfTopics tabLabel="历年真题"
+                        select_province={that._select_province.bind(that)} />
+                    <View style={styles.itemView} tabLabel="专项练习" />
+                    <View style={styles.itemView} tabLabel="申论" />
+                </ScrollableTabView>
         );
     }
 }
@@ -48,7 +48,7 @@ export default class Message extends Component {
 var styles = ({
     tabBarUnderlineStyle: {
         backgroundColor: '#FF5B29',
-        height:2,
+        height: 2,
     },
     scrollableTabViewStyle: {
         marginTop: -10,
@@ -58,5 +58,9 @@ var styles = ({
         fontSize: 16,
         marginTop: 15,
     },
+    itemView: {
+        backgroundColor: '#F6F6F6',
+        height: '100%'
+    }
 })
 

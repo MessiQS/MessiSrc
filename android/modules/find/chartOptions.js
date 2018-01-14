@@ -1,16 +1,18 @@
+import Echarts, {echarts} from 'native-echarts';
+
 export const newPaper = {
     option: {
         grid: {
-            left: '3%',
-            right: '4%',
+            left: '15',
+            right: '15',
             bottom: '3%',
+            top: '5%',
             containLabel: true
         },
         xAxis: [
             {
                 type: 'category',
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                 axisLine: {
                     show: false
                 },
@@ -25,6 +27,7 @@ export const newPaper = {
         ],
         yAxis: [
             {
+                minInterval: 1,
                 type: 'value',
                 axisLine: {
                     show: false
@@ -35,7 +38,18 @@ export const newPaper = {
                 nameTextStyle: {
                     color: "#8E9091",
                     fontSize: 14
-                }
+                },
+                axisLabel: {
+                    show: false,
+                    inside: true
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#D8D8D8',
+                        type: 'dashed'
+                    }
+                },
             }
         ],
         series: [
@@ -45,16 +59,16 @@ export const newPaper = {
                 itemStyle: {
                     normal: {
                         color: '#1495EB',
-                        lineStyle:{
+                        lineStyle: {
                             color: '#1495EB'
                         }
                     }
                 },
-                smooth:false,
-                // symbol: 'none',
+                smooth: false,
+                symbol: 'none',
                 areaStyle: {
-                    normal:{
-                        color:{
+                    normal: {
+                        color: {
                             type: 'linear',
                             x: 0,
                             y: 0,
@@ -69,7 +83,13 @@ export const newPaper = {
                         }
                     }
                 },
-                data: [0, 15, 40, 30, 80, 50, 100]
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
+                data: [0, 15, 40, 30, 80, 50]
             }
         ]
     }
@@ -78,18 +98,18 @@ export const newPaper = {
 export const rememberPaper = {
     option: {
         grid: {
-            left: '3%',
-            right: '4%',
+            left: '15',
+            right: '15',
             bottom: '3%',
+            top: '5%',
             containLabel: true
         },
         xAxis: [
             {
                 type: 'category',
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
                     show: false
@@ -102,9 +122,14 @@ export const rememberPaper = {
         ],
         yAxis: [
             {
+                axisLabel: {
+                    show: false,
+                    inside: true
+                },
+                minInterval: 1,
                 type: 'value',
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
                     show: false
@@ -112,8 +137,14 @@ export const rememberPaper = {
                 nameTextStyle: {
                     color: "#8E9091",
                     fontSize: 14
-                }
-
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#D8D8D8',
+                        type: 'dashed'
+                    }
+                },
             }
         ],
         dataZoom: [
@@ -128,21 +159,25 @@ export const rememberPaper = {
         series: [
             {
                 type: 'line',
-                stack: '总量',
                 itemStyle: {
                     normal: {
                         color: '#FF5B29',
-                        lineStyle:{
+                        lineStyle: {
                             color: '#FF5B29'
                         }
                     },
-                    
                 },
-                smooth:false,
-                // symbol: 'none',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
+                smooth: false,
+                symbol: 'none',
                 areaStyle: {
-                    normal:{
-                        color:{
+                    normal: {
+                        color: {
                             type: 'linear',
                             x: 0,
                             y: 0,
@@ -157,27 +192,26 @@ export const rememberPaper = {
                         }
                     }
                 },
-                data: [0, 15, 40, 30, 80, 50, 100]
             }
         ]
     }
 }
 
 export const pieOption = {
-    
-    option :{
+
+    option: {
         animation: false,
         trigger: 'axis',
         legend: {
-            show:false
+            show: false
         },
         series: [
             {
-                hoverOffset:0,
-                type:'pie',
+                hoverOffset: 0,
+                type: 'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
-                color:['#8FDA3C', '#FF5B29', '#1495EB'],
+                color: ['#B4EC51', '#FF9453', '#2DC7F7'],
                 label: {
                     normal: {
                         show: false,
@@ -196,15 +230,28 @@ export const pieOption = {
                         show: false
                     }
                 },
-                itemStyle: {
-
-                },
-                data:[
-                    {value:310},
-                    {value:310},
-                    {value:310}
-                ]
+                // itemStyle: {
+                //     normal: {
+                //         color: '#8FDA3C'
+                //     }
+                // }
             }
         ]
+    }
+}
+
+
+function getColor(dark,light){
+    return {
+        type: 'radial',
+        x: 0.5,
+        y: 0.5,
+        r: 1,
+        colorStops: [{
+            offset: 0, color:dark // 0% 处的颜色
+        }, {
+            offset: 1, color: light // 100% 处的颜色
+        }],
+        globalCoord: true // 缺省为 false
     }
 }

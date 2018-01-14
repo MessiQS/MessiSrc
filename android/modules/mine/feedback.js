@@ -7,16 +7,49 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native';
+import Http from '../../../service/http'
+import ProgressView from '../../../component/progress/progress'
 
 export default class Feedback extends React.Component {
 
     constructor(props) {
-		super(props);
+        super(props);
+        this.state = {
+            content: "",
+            title: "",
+            isProcess:false
+        }
     }
-
+    changeValue($event, type) {
+        this.setState({
+            [type]: $event
+        })
+    }
+    _renderProcess(){
+        const {isProcess} = this.state
+        if(!!isProcess){
+            return (<ProgressView />)
+        }
+    }
+    async submitData() {
+        this.setState({
+            isProcess:true
+        })
+        const { title, content } = this.state
+        const response = await Http.post('api/feedback', { title, content })
+        this.setState({
+            isProcess:false
+        })
+        if (!response) {
+            Alert.alert('发送失败，请稍后重试！')
+            return
+        }
+        Alert.alert('已经收到您的反馈！')
+    }
     render() {
         return (
             <ScrollView style={styles.container}>
+            {this._renderProcess()}
                 <View style={styles.question}>
                     <TextInput 
                     style={styles.textInput}
@@ -34,9 +67,9 @@ export default class Feedback extends React.Component {
                     
                     />
                 </View>
-                <View style={styles.submit}>
+                <TouchableOpacity style={styles.submit} onPress={this.submitData.bind(this)}>
                     <Text style={styles.submitText}>提交</Text>
-                </View>
+                </TouchableOpacity>
             </ScrollView>
         )
     }

@@ -49,8 +49,9 @@ let headImage = require('../Images/head.png');
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
         color: '#172434',
-        alignSelf: 'center',
-        fontSize: 20
+        textAlign: 'center',
+        fontSize: 20,
+        alignSelf:'center'
     }
     const headerStyle = {
         backgroundColor: '#FFF',
@@ -62,7 +63,12 @@ const TabOptions = ({ title }) => {
     }
     return ({ navigation, screenProps }) => ({
         title: title || navigation.state.params.section.item.title,
-        headerTitleStyle : {textAlign: 'center',alignSelf:'center'},
+        headerTitleStyle: {
+            color: '#172434',
+            textAlign: 'center',
+            fontSize: 20,
+            alignSelf:'center'
+        },
         headerStyle,
         color: '#172434',
         gesturesEnabled: true,

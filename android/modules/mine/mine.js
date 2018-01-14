@@ -118,7 +118,7 @@ class Mine extends Component {
                         />))
                     }
                 </View>
-                <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
+                <TouchableOpacity onPress={this.outofLogin.bind(this)} style={styles.exitButtonStyle}>
                     <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>
                     <Text style={styles.outLogin}>退出登录</Text>
                 </TouchableOpacity>
@@ -139,13 +139,11 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     outLogin: {
-        lineHeight: 45,
         color: "#fff",
         paddingLeft: 5
     },
     outLoginIcon: {
         paddingTop: 3,
-        // lineHeight: 42,
         color: "#fff",
     },
     phoneNumber: {
@@ -180,8 +178,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        alignSelf: 'center'
     },
 });
-
-
 

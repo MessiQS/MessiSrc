@@ -12,15 +12,40 @@ import realm from '../../../component/Realm/realm';
 import Progress from '../../../component/progress/progress'
 import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
-import Storage from "../../../service/http";
+import Storage from "../../../service/storage";
+import runtime from "../../../service/runtime";
+import { DBChange } from "../../../service/constant";
+import { NavigationActions } from 'react-navigation'
 
 
 export default class TopicsDetail extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: navigation.state.params.section.item.title,
+        headerTitleStyle: {
+            color: '#172434',
+            alignSelf: 'center',
+            fontSize: 20
+        },
+        headerStyle: {
+            backgroundColor: '#FFF',
+            opacity: 1,
+            borderBottomWidth: 0,
+            shadowOpacity: 0.2,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 }
+        },
+        headerTintColor: 'black',
+        gesturesEnabled: true,
+        headerLeft: (
+            <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                <View style={styles.headerLeftView}>
+                    <Image style={{ width:16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
+                </View>
+            </TouchableOpacity>
+        ),
     });
-    
+
     constructor(props) {
         super(props)
 
@@ -35,88 +60,130 @@ export default class TopicsDetail extends React.Component {
             // a 必须等于 b
             return 0;
         })
+
         const user = realmManager.getCurrentUser()
 
-        this.state = ({
-            data: array,
-            loading: false,
-            user: user,
-        })
+        if (user) {
+            this.state = ({
+                data: array,
+                loading: false,
+                user: user,
+            })
+        } else {
+
+            this.state = ({
+                data: array,
+                loading: false,
+            })
+        }
     }
 
     async _buy(item) {
 
-        this.setState({
-            loading: true
-        })
-        
-        const user = realmManager.getCurrentUser()
-        const res = await HTTP.post("api/updateUserBuyInfo",{
-            "user_id":user.userId,
-            "bankname":item.id
-        })
-        console.log("res", res)
-        if (res.type == true) {
+        this.props.navigation.navigate('PayPage', item)
 
-            var examIdsjson = []
-            if (!!user.examIds) {
-                examIdsjson = JSON.parse(user.examIds)
-            }
-            examIdsjson.push(item.id)
-            try {
-                realm.write(() => {
-                    user.examIds = JSON.stringify(examIdsjson)
-                    user.currentExamId = item.id
-                    user.currentExamTitle = item.title
-                })
-            } catch (e) {
-                console.log("buy", e)
-            }
+        // this.setState({
+        //     loading: true
+        // })
+        // const user = realmManager.getCurrentUser()
+        // const res = await HTTP.post("api/updateUserBuyInfo", {
+        //     "user_id": user.userId,
+        //     "bankname": item.id
+        // })
+        // if (res.type == true) {
 
-            const json = await MessageService.downloadPaper({
-                paperId: item.id
-            });
-            const papers = await realmManager.createQuestion(json)
-            const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-            await realmManager.createExaminationPaper({
-                id: item.id,
-                title: item.title,
-                questionPapers: papers,
-                year: item.year,
-                province: item.province,
-                version: item.version,
-                purchased: true,
-                price: parseFloat(item.price),
-            })
+        //     var examIdsjson = []
+        //     if (!!user.examIds) {
+        //         examIdsjson = JSON.parse(user.examIds)
+        //     }
+        //     examIdsjson.push(item.id)
+        //     const exam = await realmManager.updateCurrentExamInfo(item)
+
+        //     const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+
+        //     if (isHavePaper == false) {
+        //         this._downloadExam(item)
+        //     }
+        // }
+
+        // setTimeout(() => {
+        //     runtime.emit(DBChange);
+        // }, 1)
+
+        // this.setState({
+        //     loading: false,
+        //     user: user,
+        // })
+    }
+
+    async _chooseExam(item) {
+
+        if (item == null) {
+            return
         }
-        
+        this.setState({
+            loading: true,
+        })
+
+        const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+
+        if (isHavePaper == false) {
+            await this._downloadExam(item)
+        }
+        let user = realmManager.updateCurrentExamInfo(item)
+
+        setTimeout(() => {
+            runtime.emit(DBChange);
+        }, 1)
+
         this.setState({
             loading: false,
             user: user,
         })
     }
 
-    _chooseExam(item) {
+    async _downloadExam(item) {
 
-        const user = realmManager.getCurrentUser()
+        const json = await MessageService.downloadPaper({
+            paperId: item.id
+        });
+        const papers = await realmManager.createQuestion(json)
+        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+        await realmManager.createExaminationPaper({
+            id: item.id,
+            title: item.title,
+            questionPapers: papers,
+            year: item.year,
+            province: item.province,
+            version: item.version,
+            purchased: true,
+            price: parseFloat(item.price),
+        })
+    }
 
-        if (!!item) {
+    _exit() {
+        const { navigate } = this.props.navigation;
+        realmManager.deleteAllRealmData()
+        let clearPromise = Storage.clearAll()
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ]
+        })
+        clearPromise.then(res => {
+                this.props.navigation.dispatch(resetAction)
+           }
+        )
+    }
 
-            try {
-                realm.write(() => {
-                    user.currentExamId = item.id
-                    user.currentExamTitle = item.title
-                })
-            } catch (e) {
-                console.log("choose", e)
-            }
-
-            this.setState({
-                user: user,
-            })
-
+    _renderProgress() {
+        if (this.state.loading == true) {
+            return (
+                <Progress />
+            )
         } else {
-            
+            return null
         }
     }
 
@@ -131,18 +198,36 @@ export default class TopicsDetail extends React.Component {
 
     _renderItem(item) {
 
-        if (item.id == this.state.user.currentExamId) {
+        const { user } = this.state;
+
+        if (!user) {
+
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
-                    <View style={[styles.buyView, {borderColor: '#DDDDDD'}]}>
-                        <Text style={[styles.buyText,{color: '#DDDDDD'}]}>选择</Text>
+                    <TouchableOpacity onPress={() =>
+                        this._exit()
+                    }>
+                        <View style={styles.buyView}>
+                            <Text style={styles.buyText}>￥{item.price}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        if (item.id == user.currentExamId) {
+            return (
+                <View style={styles.itemView}>
+                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
+                    <View style={[styles.buyView, { borderColor: '#DDDDDD' }]}>
+                        <Text style={[styles.buyText, { color: "#ddd" }]}>选择</Text>
                     </View>
                 </View>
             )
         }
 
-        if (this.state.user.examIds.includes(item.id)) {
+        const examIds = JSON.parse(user.examIds)
+        if (examIds.includes(item.id) || item.price == 0) {
             return (
                 <View style={styles.itemView}>
                     <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
@@ -173,12 +258,15 @@ export default class TopicsDetail extends React.Component {
 
     render() {
         return (
-            <FlatList
-            ListHeaderComponent={this._renderHeader()}
-            data={this.state.data}
-            keyExtractor={(item, index) => index}            
-            renderItem={({item}) => this._renderItem(item)}
-          />
+            <View>
+                {this._renderProgress()}
+                <FlatList
+                    ListHeaderComponent={this._renderHeader()}
+                    data={this.state.data}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item }) => this._renderItem(item)}
+                />
+            </View>
         )
     }
 }
@@ -193,17 +281,17 @@ var styles = ({
     },
     listHeader: {
         marginTop: 4,
-        height: 34, 
+        height: 34,
         backgroundColor: 'white'
-    },  
+    },
     listTitle: {
         marginTop: 10,
         fontSize: 12,
         color: "#9B9B9B",
-        marginLeft: 15,
+        marginLeft: 17,
     },
     bottomLine: {
-        position:"absolute",
+        position: "absolute",
         right: 15,
         left: 15,
         bottom: 1,
@@ -218,9 +306,9 @@ var styles = ({
         justifyContent: 'space-between',
     },
     itemText: {
-        marginLeft: 15,
+        marginLeft: 19,
         width: "75%",
-        fontSize: 13,
+        fontSize: 16,
     },
     buyView: {
         alignItems: 'center',

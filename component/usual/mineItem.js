@@ -86,16 +86,18 @@ var mineStyles = {
         justifyContent: "flex-end",
         alignItems: "center",
         marginRight: 6,
+        alignSelf: 'center'
     },
     rightIcon: {
         width: 7.4,
         height: 12,
-
+        
     },
     rightIconContainer: {
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
         marginLeft: 17,
+        alignSelf: 'center'
     }
 }
