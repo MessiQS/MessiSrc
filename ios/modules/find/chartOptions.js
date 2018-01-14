@@ -3,8 +3,8 @@ import Echarts, {echarts} from 'native-echarts';
 export const newPaper = {
     option: {
         grid: {
-            left: '10',
-            right: '10',
+            left: '15',
+            right: '15',
             bottom: '3%',
             top: '5%',
             containLabel: true
@@ -98,8 +98,8 @@ export const newPaper = {
 export const rememberPaper = {
     option: {
         grid: {
-            left: '10',
-            right: '10',
+            left: '15',
+            right: '15',
             bottom: '3%',
             top: '5%',
             containLabel: true
@@ -123,8 +123,8 @@ export const rememberPaper = {
         yAxis: [
             {
                 axisLabel: {
-                    show: true,
-                    inside: true,
+                    show: false,
+                    inside: true
                 },
                 minInterval: 1,
                 type: 'value',
@@ -211,8 +211,7 @@ export const pieOption = {
                 type: 'pie',
                 radius: '100%',
                 avoidLabelOverlap: false,
-
-                color: [getColor('#429321','#B4EC51'), getColor('#FF5B29','#FF9453'), getColor('#1495EB','#2DC7F7')],
+                color: ['#B4EC51', '#FF9453', '#2DC7F7'],
                 label: {
                     normal: {
                         show: false,
