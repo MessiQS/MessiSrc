@@ -44,7 +44,7 @@ export default class CPStepThree extends React.Component {
 
     updatePhone() {
         const { account, vericode } = this.state;
-        const { navigate, back, dispatch } = this.props.navigation;
+        const { navigate, dispatch } = this.props.navigation;
         //检测验证码
         Http.post('api/checkcode', {
             account: account,
@@ -81,7 +81,7 @@ export default class CPStepThree extends React.Component {
                                 {
                                     text: '确定',
                                     onPress: () => {
-                                        back(3)
+                                        dispatch(NavigationActions.back())
                                     }
                                 }
                             ])

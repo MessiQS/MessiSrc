@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
     outLoginIcon: {
         paddingTop: 3,
-        lineHeight: 42,
+        // lineHeight: 42,
         color: "#fff",
     },
     phoneNumber: {
