@@ -219,7 +219,7 @@ var styles = ({
     },
     itemText: {
         marginLeft: 15,
-        width: "80%",
+        width: "75%",
         fontSize: 13,
     },
     buyView: {

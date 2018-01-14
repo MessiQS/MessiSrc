@@ -23,7 +23,7 @@ export default class TopicsDetail extends React.Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: navigation.state.params.section.item.title,
         headerTitleStyle: {
-            color: 'black',
+            color: '#172434',
             alignSelf: 'center',
             fontSize: 20
         },
@@ -40,7 +40,7 @@ export default class TopicsDetail extends React.Component {
         headerLeft: (
             <TouchableOpacity onPress={() => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image style={{ width: 14, height: 10 }} source={require('../../../Images/back_arrow.png')} />
+                    <Image style={{ width:16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),
@@ -307,7 +307,7 @@ var styles = ({
     },
     itemText: {
         marginLeft: 19,
-        width: "80%",
+        width: "75%",
         fontSize: 16,
     },
     buyView: {
