@@ -9,6 +9,7 @@ import {
 // import { NetworkInfo } from 'react-native-network-info';
 import Pingpay from '../../service/pingpp';
 import Http from '../../service/http';
+import realmManager from "./../../component/Realm/realmManager"
 
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
@@ -58,15 +59,24 @@ export default class PayPage extends React.Component {
                 //失效
                 if (res.error_msg === "wx_app_not_installed") {
                     //微信未安装
-                }else{
+                } else {
                     //网络错误
                 }
             } else if (res.pay_result === "success") {
                 //成功的回调函数
+                this.paySuccess();
             } else if (res.pay_result === "cancel") {
                 //取消的回调函数
             }
         });
+    }
+
+    paySuccess = async () => {
+        const user = realmManager.getCurrentUser()
+        const res = await HTTP.post("api/updateUserBuyInfo", {
+            "user_id": user.userId,
+            "bankname": item.id
+        })
     }
 
     isSelectd(isSelectd) {
