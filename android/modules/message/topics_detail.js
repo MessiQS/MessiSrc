@@ -78,6 +78,8 @@ export default class TopicsDetail extends React.Component {
     }
 
     async _buy(item) {
+        const user = realmManager.getCurrentUser()
+        item.userId = user.userId
         this.props.navigation.navigate('PayPage', item)
     }
 

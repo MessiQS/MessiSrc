@@ -36,7 +36,7 @@ export default class PayPage extends React.Component {
             amount: params.price,
             channel,
             subject: params.title,
-            body: params.id
+            body: `${params.userId}_BUY_${params.id}`
         });
         //安卓系统
         const charge = JSON.stringify(response.data)
