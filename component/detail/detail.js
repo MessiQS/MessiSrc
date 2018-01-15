@@ -39,7 +39,7 @@ export default class Detail extends Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: navigation.state.params.headerTitle,
         headerTitleStyle: {
-            color: 'black',
+            color: '#172434',
             alignSelf: 'center',
             fontSize: 18
         },

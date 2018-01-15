@@ -28,7 +28,7 @@ export default class Storage {
             return AsyncStorage.multiSet(argu);
         } catch (error) {
             return {
-                type:"faul",
+                type:"fail",
                 data:"存储登录信息错误"
             };
         }
