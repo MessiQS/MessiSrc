@@ -15,7 +15,6 @@ import {
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { MineListItem } from '../../../component/usual/item'
 import realmManger from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 

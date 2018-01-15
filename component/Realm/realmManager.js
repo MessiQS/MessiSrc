@@ -114,6 +114,23 @@ class RealmManager {
         }
     }
 
+    updateUserExamIds(examIds) {
+        
+        let examIdsJSON = JSON.stringify(examIds)
+        var user = this.getCurrentUser();
+        return new Promise((resolve, reject) => {
+            try {
+                realm.write(() => {
+                    user.examIds = examIdsJSON
+                    resolve(user)
+                });
+            } catch (e) {
+                reject(e);
+                console.log("ExaminationPaper Error on update");
+            }
+        });
+    }
+
     /// 查询数据
     // 获取当前用户
     getCurrentUser() {
