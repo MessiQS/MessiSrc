@@ -148,14 +148,9 @@ class Mine extends Component {
                     </Text>
                 </View>
                 <View style={styles.tableView}>
-                    <View style={styles.itemTitleView}>
-                        <Text style={styles.itemTitle}>
-                            个人中心
-                        </Text>
-                    </View>
                     {
                         this.listItemArray.map((result, index) => (
-                            that.renderItem(result, index)
+                            this.renderItem(result, index)
                     ))}
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
@@ -241,3 +236,30 @@ const styles = StyleSheet.create({
     }
 });
 
+var mineStyles = {
+
+    leftIcon: {
+        width: 18,
+        height: 18,
+
+    },
+    leftIconContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        marginRight: 6,
+        alignSelf: 'center'
+    },
+    rightIcon: {
+        width: 7.4,
+        height: 12,
+        
+    },
+    rightIconContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        marginLeft: 17,
+        alignSelf: 'center'
+    }
+}

@@ -31,7 +31,6 @@ export const styles = {
         opacity: 0.7,
     },
     vertificationCodeView: {
-        backgroundColor: '#FF5B29',
         justifyContent: 'center',
         width: 100,
         height: 35,
@@ -39,6 +38,9 @@ export const styles = {
         marginTop: 7,
         borderRadius: 8,
         marginRight:0,
+    },
+    isValidCodeView:{
+        backgroundColor: '#ccc',
     },
     vertificationCodeText: {
         fontSize: 14,

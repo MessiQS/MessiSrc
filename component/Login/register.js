@@ -140,12 +140,14 @@ class Register extends React.Component {
             time = parseInt(time, 10) - 1;
             if (time > 0) {
                 this.setState({
+                    isPending: true,
                     codeText: `(${time})`
                 })
                 this.timeouthash = setTimeout(timeout, 1000, time)
             } else {
                 this.timeouthash = null
                 this.setState({
+                    isPending: false,
                     codeText: "获取验证码"
                 })
             }
@@ -154,12 +156,28 @@ class Register extends React.Component {
         const response = await Http.post('api/getcode', {
             account: account
         })
-        timeout(61)
-        if(!response.type){
+        if (!response.type) {
             Alert.alert(response.data)
+        }else{
+            timeout(61)
         }
     }
 
+    renderGetCode() {
+        if (this.state.isPending) {
+            return (
+                <View style={[styles.vertificationCodeView,styles.isValidCodeView]}>
+                    <Text style={styles.vertificationCodeText}>{this.state.codeText}</Text>
+                </View>
+            )
+        } else {
+            return (<TouchableOpacity onPress={this.getCode}>
+                <ImageBackground style={styles.vertificationCodeView} source={require('../../Images/verti_code_button.png')}>
+                    <Text style={styles.vertificationCodeText}>{this.state.codeText}</Text>
+                </ImageBackground>
+            </TouchableOpacity>)
+        }
+    }
     componentWillUnmount() {
         if (this.timeouthash) {
             clearTimeout(this.timeouthash)
@@ -212,11 +230,7 @@ class Register extends React.Component {
                         maxLength={4}
                         onChangeText={variCode => this.codeChange(variCode)} />
                     <ScrollView></ScrollView>
-                    <TouchableOpacity onPress={this.getCode}>
-                        <ImageBackground style={styles.vertificationCodeView} source={require('../../Images/verti_code_button.png')}>
-                            <Text style={styles.vertificationCodeText}>{this.state.codeText}</Text>
-                        </ImageBackground>
-                    </TouchableOpacity>
+                    {this.renderGetCode()}
                 </View>
                 <View style={styles.bottomLineVertification}></View>
                 <View style={{ height: 56 }}></View>

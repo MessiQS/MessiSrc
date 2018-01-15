@@ -55,7 +55,7 @@ export default class MineListItem extends Component {
                         <Text style={styles.textInView}>{item.name}</Text>
                     </View>
                     <View style={[styles.spanceView, mineStyles.rightIconContainer]} >
-                        <ImageBackground style={mineStyles.rightIcon} source={require("../../../Images/find_arrow_right.png")} />
+                        <ImageBackground style={mineStyles.rightIcon} source={require("./../../Images/find_arrow_right.png")} />
                     </View>
                 </View>
             </TouchableOpacity>
