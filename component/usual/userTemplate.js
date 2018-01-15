@@ -27,6 +27,9 @@ const textStyle = {
         height: 21,
         width: 76,
     },
+    invalidCode: {
+        borderColor: '#ccc',
+    },
     text: {
         fontSize: 7,
         lineHeight: 7,
@@ -35,6 +38,9 @@ const textStyle = {
     codeText: {
         fontSize: 10,
         color: '#FF5B29',
+    },
+    invalidCodeText: {
+        color: "#ccc",
     }
 }
 export default class UserTemplate extends Component {
@@ -64,17 +70,33 @@ export default class UserTemplate extends Component {
         }
     }
     isHaveVaricode() {
-        const { varicode } = this.state;
+        const { varicode, isPending } = this.state;
         if (!varicode) {
             return;
         }
+        if (isPending) {
+            return (
+                <View style={[textStyle.code, textStyle.invalidCode]}>
+                    <Text style={[textStyle.codeText, textStyle.invalidCodeText]}>{varicode.title}</Text>
+                </View>
+            )
+        } else {
+            return (
+                <TouchableOpacity onPress={this.getCode} style={textStyle.code}>
+                    <Text style={textStyle.codeText}>{varicode.title}</Text>
+                </TouchableOpacity>
+            )
+        }
+    }
 
+    getCode = async () => {
+        const { varicode } = this.state;
         const oldVaricode = this.props.data.varicode;
-
         const timeout = (time) => {
             time = parseInt(time, 10) - 1;
             if (time > 0) {
                 this.setState({
+                    isPending: true,//等待时间
                     varicode: {
                         ...varicode,
                         title: `(${time})`
@@ -84,25 +106,19 @@ export default class UserTemplate extends Component {
             } else {
                 this.timeouthash = null
                 this.setState({
-                    ...varicode,
-                    title: oldVaricode.title
+                    isPending: false,//正常显示状态
+                    varicode: {
+                        ...varicode,
+                        title: oldVaricode.title
+                    }
                 })
             }
         }
-
-        const getCode = async () => {
-            if (varicode.title !== oldVaricode.title) {
-                return;
-            }
-            await varicode.onPress();
-            timeout(61)
+        if (varicode.title !== oldVaricode.title) {
+            return;
         }
-
-        return (
-            <TouchableOpacity onPress={getCode} style={textStyle.code}>
-                <Text style={textStyle.codeText}>{varicode.title}</Text>
-            </TouchableOpacity>
-        )
+        await varicode.onPress();
+        timeout(61)
     }
 
     componentWillUnmount() {

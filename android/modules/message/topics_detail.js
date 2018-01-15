@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
-import realm from '../../../component/Realm/realm';
 import Progress from '../../../component/progress/progress'
 import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
@@ -79,41 +78,7 @@ export default class TopicsDetail extends React.Component {
     }
 
     async _buy(item) {
-
         this.props.navigation.navigate('PayPage', item)
-
-        // this.setState({
-        //     loading: true
-        // })
-        // const user = realmManager.getCurrentUser()
-        // const res = await HTTP.post("api/updateUserBuyInfo", {
-        //     "user_id": user.userId,
-        //     "bankname": item.id
-        // })
-        // if (res.type == true) {
-
-        //     var examIdsjson = []
-        //     if (!!user.examIds) {
-        //         examIdsjson = JSON.parse(user.examIds)
-        //     }
-        //     examIdsjson.push(item.id)
-        //     const exam = await realmManager.updateCurrentExamInfo(item)
-
-        //     const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
-
-        //     if (isHavePaper == false) {
-        //         this._downloadExam(item)
-        //     }
-        // }
-
-        // setTimeout(() => {
-        //     runtime.emit(DBChange);
-        // }, 1)
-
-        // this.setState({
-        //     loading: false,
-        //     user: user,
-        // })
     }
 
     async _chooseExam(item) {
