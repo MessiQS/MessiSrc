@@ -7,7 +7,7 @@ import Http from '../../service/http';
 import Storage from '../../service/storage';
 import UserTemplate from '../usual/userTemplate';
 import { NavigationActions } from 'react-navigation'
-
+import realmManager from '../../component/Realm/realmManager'
 export default class CPStepThree extends React.Component {
 
     constructor(props) {
@@ -58,6 +58,10 @@ export default class CPStepThree extends React.Component {
                         account: account
                     }).then(({ type, data }) => {
                         if (type) {
+
+                            realmManager.deleteAllRealmData()
+                            let clearPromise = Storage.clearAll()
+
                             const resetAction = NavigationActions.reset({
                                 index: 0,
                                 actions: [
