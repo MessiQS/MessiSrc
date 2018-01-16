@@ -118,6 +118,15 @@ class Mine extends Component {
         }
     }
 
+    _renderVersionUpdatePopupView() {
+
+        return (
+            <View style={styles.popupView}>
+                
+            </View>
+        )
+    }
+
     renderItem(item, index) {
         return (
             <TouchableOpacity key={index} onPress={() =>
@@ -219,8 +228,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
-
     cellTitleView: {
         flexDirection: 'row',
     },
@@ -245,6 +252,12 @@ const styles = StyleSheet.create({
     spanceView: {
         height: 47,
         flex: 1,
+    },
+    popupView: {
+        position: 'absolute',
+        width: 280,
+        height: 248,
+
     }
 });
 
