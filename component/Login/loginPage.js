@@ -119,7 +119,7 @@ class LoginPage extends React.Component {
         Http.get('api/getUserQuestionInfo', {
             user_id: userId,
         },true).then((value) => {
-            
+            console.log("loginPage.js value", value)
             if (value.type == "true") {
                 that._getPaperInfo(value)
             } else {

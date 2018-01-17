@@ -11,13 +11,16 @@ import {
     View,
     TouchableOpacity,
     ImageBackground,
+    ScrollView,
+    Vibration,
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { MineListItem } from '../../../component/usual/item'
 import realmManger from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
+import * as Progress from 'react-native-progress';
+import main from '../../main';
 
 var Pingpp = require('pingpp-react-native');
 
@@ -119,6 +122,56 @@ class Mine extends Component {
         }
     }
 
+    _renderVersionProgressView() {
+
+        return (
+            <View style={popupStyles.viewContainer}>
+                <ImageBackground style={popupStyles.progressViewBackground} source={require("../../../Images/popup_progress.png")} >
+                    <View style={popupStyles.progressView}>
+                        <Text style={popupStyles.progressViewTitle}>正在更新</Text>
+                        <Progress.Bar borderColor={'white'} color={'#FF5B29'} unfilledColor={'rgba(255,198,180,.35)'} style={popupStyles.progress} height={2} progress={0.3} width={280} borderRadius={0} />
+                        <Text style={popupStyles.progressNumber}>55%</Text>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top:1,right:26}]}>
+                                <Text style={popupStyles.button}>取消更新</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </ImageBackground>
+            </View>
+        )
+    }
+
+    _renderVersionUpdatePopupView() {
+
+        return (
+            <View style={popupStyles.viewContainer}>
+                <ImageBackground style={popupStyles.viewBackground} source={require("../../../Images/popup.png")} >
+                    <View style={popupStyles.view}>
+                        <Text style={popupStyles.viewTitle}>发现新版本</Text>
+                        <ScrollView style={popupStyles.scroll}>
+                            <Text style={popupStyles.versionInfo}>版本：1.21 大小：40.2M</Text>
+                            <Text style={popupStyles.versionInfo}>时间：2018/01/10</Text>
+                            <Text style={popupStyles.versionInfo}>本次更新：</Text>
+                            <Text style={popupStyles.versionInfo}>1. UI改动。</Text>
+                            <Text style={popupStyles.versionInfo}>2. 修复BUG若干。</Text>
+                        </ScrollView>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top: 164, right:90}]}>
+                                <Text style={popupStyles.button}>稍后安装</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top: 164, right:8}]}>
+                                <Text style={popupStyles.button}>立刻安装</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </ImageBackground>
+            </View>
+        )
+    }
+
     renderItem(item, index) {
         return (
             <TouchableOpacity key={index} onPress={() =>
@@ -188,7 +241,7 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     phoneNumber: {
-        marginTop: 42,
+        marginTop: 30,
         fontSize: 22,
         color: '#172434',
     },
@@ -220,8 +273,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
-
     cellTitleView: {
         flexDirection: 'row',
     },
@@ -246,8 +297,85 @@ const styles = StyleSheet.create({
     spanceView: {
         height: 47,
         flex: 1,
-    }
+    },
 });
+
+var popupStyles = {
+
+    scroll: {
+        position: 'absolute',
+        top: 61,
+        height:140,
+        width: '100%',
+    },
+    versionInfo: {
+        marginLeft: 24,
+        marginLeft: 24,
+        color: 'rgba(0,0,0,.54)',
+        fontSize:16,
+    },
+    buttonContainer: {
+        position: "absolute",
+        width: 75,
+        height: 36,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    button: {
+        color: '#FF5B29',
+        fontSize: 14,
+    },
+    viewTitle: {
+        fontSize: 20,
+        marginTop: 21, 
+        marginLeft: 24,
+    },
+    view: {
+        marginTop: 24,
+        marginLeft: 24,
+        width: 280,
+        height: 248,
+    },
+    viewBackground: {
+        width: 328,
+        height: 320,
+    },
+    viewContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        width: "100%",
+        height: "100%",
+        top: -32,
+        zIndex: 99,
+    },
+
+    progressViewBackground: {
+        width: 382,
+        height: 217,
+    },
+    progressView: {
+        marginLeft:23.5,
+        marginTop: 24,
+        width: 335,
+        height: 145,
+    },
+    progressViewTitle: {
+        fontSize: 20,
+        marginTop: 19, 
+        marginLeft: 28,
+    },
+    progress: {
+        marginLeft: 28,
+        marginTop: 25,
+    },
+    progressNumber: {
+        fontSize: 16,
+        color: 'rgba(0,0,0,.54)',
+        marginLeft: 28,
+        marginTop: 10,
+    }
+}
 
 var mineStyles = {
 

@@ -48,14 +48,12 @@ class Register extends React.Component {
             return;
         }
         password = MD5(password).toString()
-        console.log("register.js ", account, password, vericode)
         const responseData = await Http.post('api/signin', {
             account,
             password,
             vericode
         })
 
-        console.log("responseData", responseData)
         if (!!responseData.type) {
             let { type, data } = await Http.post('api/login', {
                 account,
@@ -83,7 +81,6 @@ class Register extends React.Component {
                     Alert('登录错误，请重试')
                 })
                 data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
-                console.log("register.js data.userInfo.buyedInfo", data.userInfo.buyedInfo)
                 let examIdJson = JSON.stringify([])
                 if (!!data.userInfo.buyedInfo) {
                     examIdJson = JSON.stringify(data.userInfo.buyedInfo)

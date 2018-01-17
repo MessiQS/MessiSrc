@@ -11,28 +11,33 @@ import {
     View,
     TouchableOpacity,
     ImageBackground,
+    ScrollView,
+    Vibration,
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { MineListItem } from '../../../component/usual/item'
-import realmManager from "../../../component/Realm/realmManager"
+import realmManger from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
+import * as Progress from 'react-native-progress';
+import main from '../../main';
 
+var Pingpp = require('pingpp-react-native');
 
-const createLeftIcon = (name) => {
+const createLeftIcon = (source) => {
     return {
         type: 'SimpleLineIcons',
-        name
+        source
     }
 }
 const rightIcon = {
     type: 'SimpleLineIcons',
     name: 'arrow-right',
-    iconStyle: {
-        fontSize: 10
+    iconStyle:{
+        fontSize:10
     }
 }
+
 class Mine extends Component {
     constructor(props) {
         super(props);
@@ -90,7 +95,7 @@ class Mine extends Component {
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
-        realmManager.deleteAllRealmData()
+        realmManger.deleteAllRealmData()
         let clearPromise = Storage.clearAll()
         const resetAction = NavigationActions.reset({
             index: 0,
@@ -98,10 +103,10 @@ class Mine extends Component {
                 NavigationActions.navigate({ routeName: 'Login' })
             ]
         })
-
         clearPromise.then(res => {
-            this.props.navigation.dispatch(resetAction)
-        })
+                this.props.navigation.dispatch(resetAction)
+           }
+        )
     }
 
     _handleAction(item) {
@@ -115,6 +120,56 @@ class Mine extends Component {
         if (item.type == "alert") {
             
         }
+    }
+
+    _renderVersionProgressView() {
+
+        return (
+            <View style={popupStyles.viewContainer}>
+                <ImageBackground style={popupStyles.progressViewBackground} source={require("../../../Images/popup_progress.png")} >
+                    <View style={popupStyles.progressView}>
+                        <Text style={popupStyles.progressViewTitle}>正在更新</Text>
+                        <Progress.Bar borderColor={'white'} color={'#FF5B29'} unfilledColor={'rgba(255,198,180,.35)'} style={popupStyles.progress} height={2} progress={0.3} width={280} borderRadius={0} />
+                        <Text style={popupStyles.progressNumber}>55%</Text>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top:1,right:26}]}>
+                                <Text style={popupStyles.button}>取消更新</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </ImageBackground>
+            </View>
+        )
+    }
+
+    _renderVersionUpdatePopupView() {
+
+        return (
+            <View style={popupStyles.viewContainer}>
+                <ImageBackground style={popupStyles.viewBackground} source={require("../../../Images/popup.png")} >
+                    <View style={popupStyles.view}>
+                        <Text style={popupStyles.viewTitle}>发现新版本</Text>
+                        <ScrollView style={popupStyles.scroll}>
+                            <Text style={popupStyles.versionInfo}>版本：1.21 大小：40.2M</Text>
+                            <Text style={popupStyles.versionInfo}>时间：2018/01/10</Text>
+                            <Text style={popupStyles.versionInfo}>本次更新：</Text>
+                            <Text style={popupStyles.versionInfo}>1. UI改动。</Text>
+                            <Text style={popupStyles.versionInfo}>2. 修复BUG若干。</Text>
+                        </ScrollView>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top: 164, right:90}]}>
+                                <Text style={popupStyles.button}>稍后安装</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top: 164, right:8}]}>
+                                <Text style={popupStyles.button}>立刻安装</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </ImageBackground>
+            </View>
+        )
     }
 
     renderItem(item, index) {
@@ -138,11 +193,13 @@ class Mine extends Component {
     }
 
     render() {
+        const that = this
         return (
             <View style={styles.container}>
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}
-                        style={styles.thumbnail} />
+                        style={styles.thumbnail}
+                        resizeMode={'contain'} />
                     <Text style={styles.phoneNumber}>
                         +86 {this.state.account}
                     </Text>
@@ -150,7 +207,7 @@ class Mine extends Component {
                 <View style={styles.tableView}>
                     {
                         this.listItemArray.map((result, index) => (
-                            this.renderItem(result, index)
+                            that.renderItem(result, index)
                     ))}
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
@@ -167,48 +224,55 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#f6f6f6',
+        backgroundColor: 'white',
     },
     buttonView: {
         top: 55,
         alignItems: 'center'
     },
     outLogin: {
-        fontSize: 16,
+        lineHeight: 45,
         color: "#fff",
         paddingLeft: 5
     },
     outLoginIcon: {
+        paddingTop: 3,
+        lineHeight: 42,
         color: "#fff",
     },
     phoneNumber: {
-        marginTop: 3,
+        marginTop: 30,
         fontSize: 22,
-        color: '#000',
+        color: '#172434',
     },
     thumbnail: {
         width: 110,
         height: 110,
         marginTop: 25,
-        borderRadius: 55
+        
+    },
+    tableView: {
+        position: 'absolute',
+        width: '100%',
+        top: 255,
+
     },
     head: {
-        flex: 4,
+        position: 'absolute',
+        top: 24,
         alignItems: 'center',
         width: '100%'
     },
-    tableView: {
-        width: '100%',
-        flex: 8
-    },
     exitButtonStyle: {
-        flex: 1,
+        position: 'absolute',
+        height: 53,
+        width: '100%',
+        bottom: 0,
         backgroundColor: "#FF5B29",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
     },
-
     cellTitleView: {
         flexDirection: 'row',
     },
@@ -233,8 +297,85 @@ const styles = StyleSheet.create({
     spanceView: {
         height: 47,
         flex: 1,
-    }
+    },
 });
+
+var popupStyles = {
+
+    scroll: {
+        position: 'absolute',
+        top: 61,
+        height:140,
+        width: '100%',
+    },
+    versionInfo: {
+        marginLeft: 24,
+        marginLeft: 24,
+        color: 'rgba(0,0,0,.54)',
+        fontSize:16,
+    },
+    buttonContainer: {
+        position: "absolute",
+        width: 75,
+        height: 36,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    button: {
+        color: '#FF5B29',
+        fontSize: 14,
+    },
+    viewTitle: {
+        fontSize: 20,
+        marginTop: 21, 
+        marginLeft: 24,
+    },
+    view: {
+        marginTop: 24,
+        marginLeft: 24,
+        width: 280,
+        height: 248,
+    },
+    viewBackground: {
+        width: 328,
+        height: 320,
+    },
+    viewContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        width: "100%",
+        height: "100%",
+        top: -32,
+        zIndex: 99,
+    },
+
+    progressViewBackground: {
+        width: 382,
+        height: 217,
+    },
+    progressView: {
+        marginLeft:23.5,
+        marginTop: 24,
+        width: 335,
+        height: 145,
+    },
+    progressViewTitle: {
+        fontSize: 20,
+        marginTop: 19, 
+        marginLeft: 28,
+    },
+    progress: {
+        marginLeft: 28,
+        marginTop: 25,
+    },
+    progressNumber: {
+        fontSize: 16,
+        color: 'rgba(0,0,0,.54)',
+        marginLeft: 28,
+        marginTop: 10,
+    }
+}
 
 var mineStyles = {
 
