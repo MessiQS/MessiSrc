@@ -11,6 +11,7 @@ import {
 import Button from 'apsl-react-native-button';
 import Register from './register';
 import Storage from '../../service/storage';
+import realmManager from '../../component/Realm/realmManager';
 import Http from "../../service/http";
 import MD5 from 'crypto-js/md5';
 
@@ -33,7 +34,9 @@ export default class Login extends Component {
 			return 
 		}
 		const { navigate } = this.props.navigation;
-
+		realmManger.deleteAllRealmData()
+		let clearPromise = Storage.clearAll()
+		
 		var account = "test"
 		var password = MD5("messi2101").toString();
 		Http.post('api/freeRegistration', {
@@ -41,10 +44,7 @@ export default class Login extends Component {
 			password: password
         }, true).then(value => {
 			
-			console.log("api/freeRegistration", value);
-
 			if (value.type == "true") {
-				console.log("value.data", value.data);
 				Storage.multiSet([
 					['accountToken', value.data.token],
 					['account', account],

@@ -17,8 +17,6 @@ export default class Http {
                     }).join('');
                 return str;
             })(paramObj);
-        console.log("body", body);
-        // console.log(api, paramObj, hasToken, url)
         let token = await Storage.getItem("accountToken") || '';
         params = Object.assign({
             method: 'POST',
@@ -49,8 +47,6 @@ export default class Http {
             myHeaders.append("authorization",token);
             params['headers'] = myHeaders
         };
-        console.log("query", query["user_id"])
-        // console.log(api, params, hasToken)
         const keyArray = Object.keys(query);
         keyArray.forEach((res, index) => {
             const condi = index === 0 ? '?' : '&';

@@ -188,9 +188,9 @@ export default class Detail extends Component {
         const newWeighting = this._memoryModel.weighting + score
         realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
         .then(model => {
-            // setTimeout(() => {
+            setTimeout(() => {
                 runtime.emit(DBChange);
-            // }, 150);
+            }, 1);
         })
         .catch(e => {
             console.log("detail.js updateMemoryModel error", e)

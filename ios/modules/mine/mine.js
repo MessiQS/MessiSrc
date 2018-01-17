@@ -196,7 +196,6 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
-                {this._renderVersionProgressView()}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}
                         style={styles.thumbnail}
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     phoneNumber: {
-        marginTop: 42,
+        marginTop: 30,
         fontSize: 22,
         color: '#172434',
     },

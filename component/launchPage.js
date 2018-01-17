@@ -25,13 +25,9 @@ export default class LaunchPage extends React.Component {
     });
 
     componentDidMount() {
-        // const { navigate } = this.props.navigation;
-        // console.log("la")
         Storage.multiGet(['accountToken', 'account']).then(({ accountToken, account }) => {
             if (accountToken && account) {
-                console.log("accountToken, account", accountToken, account)
                 return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
-                    // console.log("xapi/checkToken", type, data)
                     let route = 'Login';
                     if (type) {
                         route = 'Home'
