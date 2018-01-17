@@ -24,7 +24,6 @@ export default class PayPage extends React.Component {
         this.state = {
             channel: "alipay"
         };
-
     }
 
     //支付测试
@@ -77,6 +76,16 @@ export default class PayPage extends React.Component {
             "user_id": user.userId,
             "bankname": item.id
         })
+        if (res.type == true) {
+
+            if (!!user.examIds) {
+                examIdsjson = JSON.parse(user.examIds)
+            }
+            examIdsjson.push(item.id)
+            realmManager.updateUserExamIds(updateUserExamIds)
+        }
+
+
     }
 
     isSelectd(isSelectd) {
