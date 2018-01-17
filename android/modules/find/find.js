@@ -15,7 +15,7 @@ import {
     Vibration
 } from 'react-native';
 import Echarts from 'native-echarts';
-import { newPaper, pieOption, rememberPaper } from './chartOptions';
+import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import moment from 'moment';
 import realmManager from "../../../component/Realm/realmManager";
@@ -94,11 +94,11 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props);
-        this._updateUI()
+        this._prepareUI()
         this.onMessage()
     }
 
-    _updateUI() {
+    _prepareUI() {
 
         const user = realmManager.getCurrentUser()
         if (user && user.currentExamId) {
@@ -129,10 +129,41 @@ export default class Find extends Component {
         }
     }
 
+    _updateUI() {
+
+        const user = realmManager.getCurrentUser()
+        if (user && user.currentExamId) {
+            let info = realmManager.getFindInfo(user.currentExamId)
+            this.setState ({
+                currentExam: user.currentExamTitle,
+                currentExamDetail: "历年真题",
+                info: info,
+            })
+        } else {
+            let info = new Object()
+            info.newQuestionCount = "0"
+            info.wrongQuestionCount = "0"
+            info.newLastSelectDate = "暂无数据"
+            info.wrongLastSelectDate = "暂无数据"
+            info.futureArray = [0, 0, 0, 0, 0, 0]
+            info.beforeArray = [0, 0, 0, 0, 0, 0]
+            info.pieArray = [{ value: 1 }]
+            info.newAverage = 0
+            info.wrongAverage = 0
+            this.setState ({
+                currentExam: "当前暂无题库信息",
+                currentExamDetail: "请选择题库",
+                info: info,
+            })
+        }
+    }
+
     componentWillMount() {
-        this.props.navigation.setParams({
-            route: this.routeToMine.bind(this)
-        });
+        setTimeout(() => {
+            this.props.navigation.setParams({
+                route: this.routeToMine.bind(this)
+            });
+        }, 1);
     }
 
     onMessage() {

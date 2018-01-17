@@ -178,22 +178,23 @@ export default class Detail extends Component {
         }
 
         const type = isRight == true ? "right" : "wrong"
-        const newWeighting = this._memoryModel.weighting + score
-        this._sendUpdateInfoCache(type, newWeighting)
-        var time = new Date()
-        realm.write(() => {
-            this._memoryModel.weighting = newWeighting
-            this._memoryModel.appearedSeveralTime += 1
-            this._memoryModel.lastBySelectedTime = time.getTime()
-            this._memoryModel.records.push({
-                select: option,
-                isRight: isRight
-            })
-        });
+        var record = {
+            select: option,
+            isRight: isRight
+        }
 
-        setTimeout(function(){
-            runtime.emit(DBChange);
-        }, 1);
+        this._sendUpdateInfoCache(type, newWeighting)
+        
+        const newWeighting = this._memoryModel.weighting + score
+        realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
+        .then(model => {
+            // setTimeout(() => {
+                runtime.emit(DBChange);
+            // }, 150);
+        })
+        .catch(e => {
+            console.log("detail.js updateMemoryModel error", e)
+        })        
 
         if (option == "A") {
             this.setState({
@@ -296,19 +297,21 @@ export default class Detail extends Component {
             score = 7 - this._memoryModel.appearedSeveralTime
             score = Math.max(1, score)
         }
+        var record = {
+            select: sortedSelection,
+            isRight: isRight
+        }
 
-        realm.write(() => {
-            this._memoryModel.weighting = this._memoryModel.weighting + score
-            this._memoryModel.appearedSeveralTime += 1
-            this._memoryModel.lastBySelectedTime = Date.parse(new Date())
-            this._memoryModel.records.push({
-                select: sortedSelection,
-                isRight: isRight
-            })
-        });
-        setTimeout(function(){
-            runtime.emit(DBChange);
-        }, 1);
+        const newWeighting = this._memoryModel.weighting + score
+        realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
+        .then(model => {
+            setTimeout(function(){
+                runtime.emit(DBChange);
+            }, 1);
+        })
+        .catch(e => {
+            console.log("detail.js updateMemoryModel error", e)
+        }) 
         this.setState({
             isSelected: true,
         })

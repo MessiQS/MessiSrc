@@ -65,7 +65,7 @@ export const newPaper = {
                     }
                 },
                 smooth: false,
-                symbol: 'none',
+                symbolSize: 6,
                 areaStyle: {
                     normal: {
                         color: {
@@ -174,7 +174,7 @@ export const rememberPaper = {
                     }
                 },
                 smooth: false,
-                symbol: 'none',
+                symbolSize: 6,
                 areaStyle: {
                     normal: {
                         color: {

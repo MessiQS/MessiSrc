@@ -131,6 +131,26 @@ class RealmManager {
         });
     }
 
+    updateMemoryModel(model, record, newWeighting) {
+
+        var time = new Date()
+
+        return new Promise((resolve, reject) => {
+            try {
+                realm.write(() => {
+                    model.weighting = newWeighting
+                    model.appearedSeveralTime += 1
+                    model.lastBySelectedTime = time.getTime()
+                    model.records.push(record)
+                    resolve(model)
+                });
+            } catch (e) {
+                reject(e);
+                console.log("ExaminationPaper Error on update");
+            }
+        });
+    }
+
     /// 查询数据
     // 获取当前用户
     getCurrentUser() {
@@ -358,11 +378,11 @@ class RealmManager {
 
         var futureArray = []
         futureArray.push(x + y)
-        futureArray.push(x + (0.6 * y))
-        futureArray.push(x + (0.45 * y))
-        futureArray.push(x + (0.36 * y))
-        futureArray.push(x + (0.34 * y))
-        futureArray.push(x + (0.28 * y))
+        futureArray.push(Math.round(x + (0.6 * y)))
+        futureArray.push(Math.round(x + (0.45 * y)))
+        futureArray.push(Math.round(x + (0.36 * y)))
+        futureArray.push(Math.round(x + (0.34 * y)))
+        futureArray.push(Math.round(x + (0.28 * y)))
 
         object.futureArray = futureArray
 
@@ -408,12 +428,11 @@ class RealmManager {
         var newSum = futureArray.reduce(function(a, b) { return a + b; });
         var newAvg = newSum / futureArray.length;
 
-        object.newAverage = newAvg
+        object.newAverage = Math.round(newAvg)
         
         var wrongSum = beforeArray.reduce(function(a, b) { return a + b; });
         var wrongAvg = wrongSum / beforeArray.length;
-        console.log("wrongAverage", wrongAverage)
-        object.wrongAverage = wrongAvg
+        object.wrongAverage = Math.round(wrongAvg)
 
         if (b.length != 0) {
             b.sort((a1, b1) => {

@@ -15,7 +15,6 @@ import {
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { MineListItem } from '../../../component/usual/item'
 import realmManager from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 
@@ -148,9 +147,14 @@ class Mine extends Component {
                     </Text>
                 </View>
                 <View style={styles.tableView}>
+                    <View style={styles.itemTitleView}>
+                        <Text style={styles.itemTitle}>
+                            个人中心
+                        </Text>
+                    </View>
                     {
                         this.listItemArray.map((result, index) => (
-                            this.renderItem(result, index)
+                            that.renderItem(result, index)
                     ))}
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
@@ -236,30 +240,3 @@ const styles = StyleSheet.create({
     }
 });
 
-var mineStyles = {
-
-    leftIcon: {
-        width: 18,
-        height: 18,
-
-    },
-    leftIconContainer: {
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        marginRight: 6,
-        alignSelf: 'center'
-    },
-    rightIcon: {
-        width: 7.4,
-        height: 12,
-        
-    },
-    rightIconContainer: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        marginLeft: 17,
-        alignSelf: 'center'
-    }
-}
