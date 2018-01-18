@@ -149,6 +149,8 @@ export default class Detail extends Component {
                 D_Status: ItemStatus.NORMAL,
             })
         }
+        console.log(this._memoryModel)
+        
     }
 
     _getMemoryModel() {
@@ -518,7 +520,7 @@ var styles = StyleSheet.create({
     questionText: {
         color: '#172434',
         fontSize: 16,
-        lineHeight: 20,
+        lineHeight: 25,
     },
     questionImage: {
         width: '100%',

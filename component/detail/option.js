@@ -83,7 +83,7 @@ export default class Option extends React.Component {
             return styles.background
         }
         if (status == "error") {
-            return null
+            return styles.background
         }
         return null
     }
@@ -126,6 +126,7 @@ export default class Option extends React.Component {
         return (
             <View style={[styles.answerItem, this._afterSelectBackgroundView()]} >
                 <Image
+                    resizeMode={'contain'}
                     style={styles.icon}
                     source={this._selectIcon()}
                 />
@@ -133,12 +134,9 @@ export default class Option extends React.Component {
                     {
                         splits.map((content, index) => {
                             if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-                                console.log("option.js, content ", content)
                                 let url = this._handleImageURL(content)
-                                console.log("option.js url", url)
                                 let expr = /\/(.*)_(.*)x(.*)_/;
                                 let size = url.match(expr)
-                                console.log("option.js size", size)
                                 const scale = 0.3
                                 let width = size[2] * scale /// cannot read 2 TODO
                                 let height = size[3] * scale
@@ -177,9 +175,10 @@ export default class Option extends React.Component {
 
 var styles = StyleSheet.create({
     icon: {
-        margin: 10,
+        marginRight: 10,
+        marginLeft: 10,
         width: 23,
-        height: 23,
+        height: '100%',
     },
     answerItem: {
         flex: 1,
@@ -188,6 +187,8 @@ var styles = StyleSheet.create({
         alignItems: 'flex-start',
         paddingLeft: 19,
         paddingRight: 29,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     detailOptionView: {
         flex: 1,
@@ -196,13 +197,12 @@ var styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     detailOptionText: {
-        marginTop: 12,
-        lineHeight: 20,
+        lineHeight: 25,
         fontSize: 18,
         color: "#172434",
     },
     background: {
-        backgroundColor: "#D8D8D8"
+        backgroundColor: "rgba(216, 216, 216, .3)"
     },
     optionImage: {
         marginTop: 10,
