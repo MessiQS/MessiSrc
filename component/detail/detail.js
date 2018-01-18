@@ -516,6 +516,7 @@ var styles = StyleSheet.create({
         marginTop: 17,
         marginRight: 20,
         marginLeft: 20,
+        marginBottom: 20,
     },
     questionText: {
         color: '#172434',
