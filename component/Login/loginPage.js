@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Text,
     ScrollView,
-    Keyboard
+    Keyboard,
+    NativeModules
 } from 'react-native';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
@@ -21,6 +22,9 @@ import realmManager from "../Realm/realmManager";
 import MessageService from "../../service/message.service";
 import Progress from "../../component/progress/progress"
 import { NavigationActions } from 'react-navigation'
+
+var RechargeVC = NativeModules.RechargeVC;
+
 
 class LoginPage extends React.Component {
 
@@ -45,6 +49,9 @@ class LoginPage extends React.Component {
     }
 
     async login() {
+
+        console.log("RechargeVC.buy()", RechargeVC)
+        RechargeVC.buyExample("name")
 
         if (this._preventPushingMulitpleTimes()) {
             return 
@@ -72,6 +79,7 @@ class LoginPage extends React.Component {
             "account": account,
             "password": password
         })
+        console.log("loginResponse.type", loginResponse)
         const { type, data } = loginResponse
         if (type) {
             //将账号和token存到本地存储
@@ -90,6 +98,7 @@ class LoginPage extends React.Component {
             }
             data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
             var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+            console.log("loginPage.js examIdJson", examIdJson);
             var user = {
                 userId: data.user_id,
                 token: data.token,

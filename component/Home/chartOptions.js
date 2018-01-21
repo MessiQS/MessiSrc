@@ -6,7 +6,7 @@ export const newPaper = {
             left: '15',
             right: '15',
             bottom: '3%',
-            top: '5%',
+            top: '8%',
             containLabel: true
         },
         xAxis: [
@@ -101,7 +101,7 @@ export const rememberPaper = {
             left: '15',
             right: '15',
             bottom: '3%',
-            top: '5%',
+            top: '8%',
             containLabel: true
         },
         xAxis: [

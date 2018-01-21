@@ -451,14 +451,14 @@ const styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 8,
+        marginTop: 12,
         marginLeft: 35,
         fontSize: 12,
         color: "#8E9091"
     },
     average: {
         position: 'absolute',
-        top: 8,
+        top: 12,
         left: 175,
         fontSize: 12,
         color: '#8E9091'
@@ -471,7 +471,7 @@ const styles = {
     },
     rightDetail: {
         position: "absolute",
-        top: 9,
+        top: 12,
         right: 49,
         fontSize: 12,
         color: "#8E9091"

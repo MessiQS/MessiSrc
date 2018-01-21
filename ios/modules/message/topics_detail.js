@@ -5,6 +5,7 @@ import {
     View,
     TouchableOpacity,
     FlatList,
+    NativeModules
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
@@ -17,6 +18,7 @@ import runtime from "../../../service/runtime";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 
+var RechargeVC = NativeModules.RechargeVC;
 
 export default class TopicsDetail extends React.Component {
 
