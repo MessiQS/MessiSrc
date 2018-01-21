@@ -5,11 +5,13 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
+    Alert
 } from 'react-native';
 // import { NetworkInfo } from 'react-native-network-info';
 import Pingpay from '../../service/pingpp';
 import Http from '../../service/http';
 import realmManager from "./../../component/Realm/realmManager"
+import runtime from '../../service/runtime'
 
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
@@ -51,9 +53,9 @@ export default class PayPage extends React.Component {
 
 
         //安卓
-        Pingpp.createPayment(charge, function (result) {
+        Pingpp.createPayment(charge, (result) => {
             var res = JSON.parse(result);
-            //  Http.post('api/feedback', res)
+            Http.post('api/feedback', res)
             if (res.pay_result === "invalid") {
                 //失效
                 if (res.error_msg === "wx_app_not_installed") {
@@ -72,20 +74,19 @@ export default class PayPage extends React.Component {
 
     paySuccess = async () => {
         const user = realmManager.getCurrentUser()
-        const res = await HTTP.post("api/updateUserBuyInfo", {
-            "user_id": user.userId,
-            "bankname": item.id
+        const { userId } = user
+        const { goBack } = this.props.navigation
+
+        const res = await Http.post("api/getUserBuyInfo", {
+            "user_id": userId
         })
+
         if (res.type == true) {
-
-            if (!!user.examIds) {
-                examIdsjson = JSON.parse(user.examIds)
-            }
-            examIdsjson.push(item.id)
-            realmManager.updateUserExamIds(updateUserExamIds)
+            let array = res.data.buyedInfo
+            await realmManager.updateUserExamIds(array)
+            runtime.emit('updatePaperInfo')
+            goBack();
         }
-
-
     }
 
     isSelectd(isSelectd) {

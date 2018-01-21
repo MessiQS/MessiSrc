@@ -39,7 +39,7 @@ export default class TopicsDetail extends React.Component {
         headerLeft: (
             <TouchableOpacity onPress={() => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image style={{ width:16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
+                    <Image style={{ width: 16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),
@@ -75,6 +75,16 @@ export default class TopicsDetail extends React.Component {
                 loading: false,
             })
         }
+
+    }
+
+    componentDidMount() {
+        runtime.on('updatePaperInfo', () => {
+            const user = realmManager.getCurrentUser()
+            this.setState({
+                user,
+            })
+        })
     }
 
     async _buy(item) {
@@ -139,8 +149,8 @@ export default class TopicsDetail extends React.Component {
             ]
         })
         clearPromise.then(res => {
-                this.props.navigation.dispatch(resetAction)
-           }
+            this.props.navigation.dispatch(resetAction)
+        }
         )
     }
 
