@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component, version } from 'react';
 import {
     StyleSheet,
     Text,
@@ -21,6 +21,8 @@ import realmManger from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 import * as Progress from 'react-native-progress';
 import main from '../../main';
+import Http from '../../../service/http';
+import MessageService from '../../../service/message.service';
 
 var Pingpp = require('pingpp-react-native');
 
@@ -42,7 +44,8 @@ class Mine extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            navigation: props.navigation
+            navigation: props.navigation,
+            showVersionInfo: false,
         }
         Storage.getItem('account').then(res => {
             this.setState({
@@ -109,7 +112,7 @@ class Mine extends Component {
         )
     }
 
-    _handleAction(item) {
+    async _handleAction(item) {
 
         const { navigate } = this.props.navigation;
 
@@ -118,8 +121,33 @@ class Mine extends Component {
         }
 
         if (item.type == "alert") {
-            
+            let versionInfoResponse = await MessageService.getUpdateInfo();
+            if (versionInfoResponse.type == true) {
+                let versionInfo = versionInfoResponse.data
+                let date = versionInfo.date
+                let size = versionInfo.size
+                let updateInfo = versionInfo.updateInfo
+                console.log("versionInfo", versionInfo)
+                this.setState({
+                    showVersionInfo: true,
+                    versionInfo: versionInfo
+                })
+
+            } else {
+
+            }
         }
+    }
+
+    _cancelInstall() {
+
+        this.setState({
+            showVersionInfo: false
+        })
+    }
+
+    _beginInstall() {
+
     }
 
     _renderVersionProgressView() {
@@ -144,19 +172,25 @@ class Mine extends Component {
 
     _renderVersionUpdatePopupView() {
 
+        const that = this
+        const versionInfo = this.state.versionInfo;
+        
         return (
             <View style={popupStyles.viewContainer}>
                 <ImageBackground style={popupStyles.viewBackground} source={require("../../../Images/popup.png")} >
                     <View style={popupStyles.view}>
                         <Text style={popupStyles.viewTitle}>发现新版本</Text>
                         <ScrollView style={popupStyles.scroll}>
-                            <Text style={popupStyles.versionInfo}>版本：1.21 大小：40.2M</Text>
-                            <Text style={popupStyles.versionInfo}>时间：2018/01/10</Text>
+                            <Text style={popupStyles.versionInfo}>版本：{versionInfo.version} 大小：{versionInfo.size}</Text>
+                            <Text style={popupStyles.versionInfo}>时间：{versionInfo.date}</Text>
                             <Text style={popupStyles.versionInfo}>本次更新：</Text>
-                            <Text style={popupStyles.versionInfo}>1. UI改动。</Text>
-                            <Text style={popupStyles.versionInfo}>2. 修复BUG若干。</Text>
+                            {
+                                versionInfo.updateInfo.map((res, index) => {
+                                    return <Text key={index} style={popupStyles.versionInfo}>{index+1}. {res}</Text>
+                                })
+                            }
                         </ScrollView>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this._cancelInstall.bind(this)}>
                             <View style={[popupStyles.buttonContainer, {top: 164, right:90}]}>
                                 <Text style={popupStyles.button}>稍后安装</Text>
                             </View>
@@ -196,6 +230,7 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
+                {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : false}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}
                         style={styles.thumbnail}
@@ -208,7 +243,8 @@ class Mine extends Component {
                     {
                         this.listItemArray.map((result, index) => (
                             that.renderItem(result, index)
-                    ))}
+                        ))
+                    }
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
                     <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>

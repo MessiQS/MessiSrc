@@ -1,7 +1,7 @@
 import Http from './http';
 
 export default class MessageService {
-    static async getPaper(params) {
+    static async getPaper() {
         return Http.get('api/papertype',{},true);
     }
     
@@ -11,5 +11,10 @@ export default class MessageService {
 
     static async updateUserStorage() {
         
+    }
+
+    static async getUpdateInfo() {
+
+        return Http.get('api/getUpdate',{},true)
     }
 }

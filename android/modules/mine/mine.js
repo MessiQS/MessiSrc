@@ -21,6 +21,7 @@ import realmManger from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 import * as Progress from 'react-native-progress';
 import main from '../../main';
+import MessageService from '../../../service/message.service';
 
 var Pingpp = require('pingpp-react-native');
 
@@ -118,7 +119,21 @@ class Mine extends Component {
         }
 
         if (item.type == "alert") {
-            
+            let versionInfoResponse = await MessageService.getUpdateInfo();
+            if (versionInfoResponse.type == true) {
+                let versionInfo = versionInfoResponse.data
+                let date = versionInfo.date
+                let size = versionInfo.size
+                let updateInfo = versionInfo.updateInfo
+                console.log("versionInfo", versionInfo)
+                this.setState({
+                    showVersionInfo: true,
+                    versionInfo: versionInfo
+                })
+
+            } else {
+
+            }
         }
     }
 
@@ -144,17 +159,22 @@ class Mine extends Component {
 
     _renderVersionUpdatePopupView() {
 
+        const versionInfo = this.state.versionInfo;
+
         return (
             <View style={popupStyles.viewContainer}>
                 <ImageBackground style={popupStyles.viewBackground} source={require("../../../Images/popup.png")} >
                     <View style={popupStyles.view}>
                         <Text style={popupStyles.viewTitle}>发现新版本</Text>
                         <ScrollView style={popupStyles.scroll}>
-                            <Text style={popupStyles.versionInfo}>版本：1.21 大小：40.2M</Text>
-                            <Text style={popupStyles.versionInfo}>时间：2018/01/10</Text>
+                            <Text style={popupStyles.versionInfo}>版本：{versionInfo.version} 大小：{versionInfo.size}</Text>
+                            <Text style={popupStyles.versionInfo}>时间：{versionInfo.date}</Text>
                             <Text style={popupStyles.versionInfo}>本次更新：</Text>
-                            <Text style={popupStyles.versionInfo}>1. UI改动。</Text>
-                            <Text style={popupStyles.versionInfo}>2. 修复BUG若干。</Text>
+                            {
+                                versionInfo.updateInfo.map((res, index) => {
+                                    return <Text key={index} style={popupStyles.versionInfo}>{index+1}. {res}</Text>
+                                })
+                            }
                         </ScrollView>
                         <TouchableOpacity>
                             <View style={[popupStyles.buttonContainer, {top: 164, right:90}]}>
