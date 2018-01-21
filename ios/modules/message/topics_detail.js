@@ -51,6 +51,8 @@ export default class TopicsDetail extends React.Component {
     constructor(props) {
         super(props)
 
+        this.isLockPushing = false
+
         const array = this.props.navigation.state.params.section.item.data
         array.sort((a, b) => {
             if (a.title > b.title) {
@@ -81,6 +83,10 @@ export default class TopicsDetail extends React.Component {
     }
 
     async _buy(item) {
+
+        if (this._preventPushingMulitpleTimes()) {
+            return 
+        }
 
         this.props.navigation.navigate('PayPage', item)
 
@@ -178,6 +184,20 @@ export default class TopicsDetail extends React.Component {
            }
         )
     }
+
+    _preventPushingMulitpleTimes() {
+
+        const that = this
+        if (this.isLockPushing == true) {
+            return true
+        }
+		this.isLockPushing = true
+		
+        setTimeout(() => {
+            that.isLockPushing = false
+		}, 1000);
+		return false;
+	}
 
     _renderProgress() {
         if (this.state.loading == true) {
