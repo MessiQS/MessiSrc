@@ -24,8 +24,8 @@ import main from '../../main';
 import Http from '../../../service/http';
 import MessageService from '../../../service/message.service';
 import Alert from '../../../component/progress/alert';
+import { appVersion } from "../../../service/constant";
 
-let pkg = require('../../../../package.json');
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (source) => {
@@ -131,7 +131,7 @@ class Mine extends Component {
                 let date = versionInfo.date
                 let size = versionInfo.size
                 let updateInfo = versionInfo.updateInfo
-                if (pkg.version != versionInfo.version) {
+                if (appVersion != versionInfo.version) {
                     this.setState({
                         showVersionInfo: true,
                         versionInfo: versionInfo

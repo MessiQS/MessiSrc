@@ -23,6 +23,7 @@ import { NavigationActions } from 'react-navigation'
 import * as Progress from 'react-native-progress';
 import main from '../../main';
 import MessageService from '../../../service/message.service';
+import { appVersion } from "../../../service/constant";
 
 var Pingpp = require('pingpp-react-native');
 
@@ -127,8 +128,7 @@ class Mine extends Component {
                 let date = versionInfo.date
                 let size = versionInfo.size
                 let updateInfo = versionInfo.updateInfo
-                if (true) {
-                    // if (pkg.version != versionInfo.version) {
+                if (appVersion != versionInfo.version) {
                     this.setState({
                         showVersionInfo: true,
                         versionInfo: versionInfo
