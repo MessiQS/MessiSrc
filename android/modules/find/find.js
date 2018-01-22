@@ -96,6 +96,7 @@ export default class Find extends Component {
         super(props);
         this._prepareUI()
         this.onMessage()
+        this.isUpdateChart = false
     }
 
     _prepareUI() {
@@ -132,6 +133,12 @@ export default class Find extends Component {
     _updateUI() {
 
         const user = realmManager.getCurrentUser()
+        const that = this
+        this.isUpdateChart = true
+        setTimeout(() => {
+            that.isUpdateChart = false
+        }, 1000);
+
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.setState ({
@@ -145,8 +152,8 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [0, 0, 0, 0, 0, 0]
-            info.beforeArray = [0, 0, 0, 0, 0, 0]
+            info.futureArray = [3, 3, 3, 3, 3, 3]
+            info.beforeArray = [3, 3, 3, 3, 3, 3]
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
@@ -176,7 +183,6 @@ export default class Find extends Component {
 
     routeToMine() {
         const { navigate } = this.props.navigation;
-
         const user = realmManager.getCurrentUser()
 
         if (user) {
@@ -243,7 +249,7 @@ export default class Find extends Component {
     }
 
     _renderGetChatNewPaper() {
-        const newPaperOption = newPaper.option;
+        let newPaperOption = newPaper.option;
 
         let weekArray = []
         for (var i = 5; i > 0; i--) {
@@ -264,18 +270,33 @@ export default class Find extends Component {
                 color: '#172434'
             }
         })
-        newPaperOption.xAxis[0].data = weekArray
-        newPaperOption.series[0].data = this.state.info.beforeArray
+        if (this.isUpdateChart) {
+
+            newPaperOption = {
+                ...newPaperOption,
+                xAxis:[{
+                    ...newPaperOption.xAxis[0],
+                    data:weekArray
+                }],
+                series:[{
+                    ...newPaperOption.series[0],
+                    data:this.state.info.beforeArray
+                }]
+            }
+
+        } else {
+
+            newPaperOption.xAxis[0].data = weekArray
+            newPaperOption.series[0].data = this.state.info.beforeArray
+        }
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
-                    <TouchableOpacity onPress={this.routeToNewDetail.bind(this)}>
-                        <View style={styles.chartTopContainer}>
-                            <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
-                            <Text style={styles.h4}>过去5日刷题量统计</Text>
-                            <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
-                            <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
-                        </View>
+                    <TouchableOpacity style={styles.chartTopContainer} onPress={this.routeToNewDetail.bind(this)}>
+                        <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
+                        <Text style={styles.h4}>过去5日刷题量统计</Text>
+                        <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
+                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
@@ -291,7 +312,7 @@ export default class Find extends Component {
 
     _renderGetChatRemember() {
 
-        const newPaperOption = rememberPaper.option;
+        let newPaperOption = rememberPaper.option;
         let weekArray = [{
             value: '今日',
             textStyle: {
@@ -310,19 +331,31 @@ export default class Find extends Component {
             }
             weekArray.push(d)
         }
-        newPaperOption.xAxis[0].data = weekArray
-        newPaperOption.series[0].data = this.state.info.futureArray
+        if (this.isUpdateChart) {
+            newPaperOption = {
+                ...newPaperOption,
+                xAxis:[{
+                    ...newPaperOption.xAxis[0],
+                    data:weekArray
+                }],
+                series:[{
+                    ...newPaperOption.series[0],
+                    data:this.state.info.futureArray
+                }]
+            }
+        } else {
+            newPaperOption.xAxis[0].data = weekArray
+            newPaperOption.series[0].data = this.state.info.futureArray
+        }
 
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
-                    <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)}>
-                        <View style={styles.chartTopContainer}>
-                            <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
-                            <Text style={styles.h4}>未来5日遗忘数量统计</Text>
-                            <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
-                            <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
-                        </View>
+                    <TouchableOpacity style={styles.chartTopContainer} onPress={this.routeToWrongDetail.bind(this)}>
+                        <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
+                        <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                        <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
+                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
@@ -338,25 +371,35 @@ export default class Find extends Component {
 
     render() {
 
-        const option = pieOption.option
-        option.series[0].data = this.state.info.pieArray
+        let option = pieOption.option
 
+        if (this.isUpdateChart) {
+
+            option = {
+                ...option,
+                series:[{
+                    ...option.series[0],
+                    data:this.state.info.pieArray
+                }]
+            }
+
+        } else {
+            option.series[0].data = this.state.info.pieArray
+        }
         return (
             <View style={styles.container}>
                 {this.state.showAlert == true ? <Alert content="当前没有可刷题目" /> : null}
                 <ScrollView>
-                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
-                        <View style={styles.titleContent}>
-                            <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
-                            <View style={styles.titleText}>
-                                <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
-                                <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
-                            </View>
-                            <View style={styles.circleChart}>
-                                <Echarts option={pieOption.option} height={60} />
-                            </View>
-                            <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
+                    <TouchableOpacity style={styles.titleContent} onPress={this.routeToPayPage.bind(this)} >
+                        <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
+                        <View style={styles.titleText}>
+                            <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
+                            <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
                         </View>
+                        <View style={styles.circleChart}>
+                            <Echarts option={option} height={60} />
+                        </View>
+                        <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}
@@ -432,12 +475,13 @@ const styles = {
     chartTitleContainer: {
         flexDirection: "column",
         backgroundColor: "#fff",
-        height: 75,
+        height: 78,
         zIndex: 100
     },
     chartTopContainer: {
         flexDirection: "row",
         height: 48,
+        zIndex: 100
     },
     chartBottomContainer: {
         flexDirection: "row",
@@ -464,8 +508,8 @@ const styles = {
         left: 175,
         fontSize: 12,
         color: '#8E9091',
-        backgroundColor: 'rgba(0,0,0,0)'
-        
+        backgroundColor: 'rgba(0,0,0,0)',
+        zIndex:1
     },
     rightTitle: {
         position: "absolute",

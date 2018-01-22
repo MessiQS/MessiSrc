@@ -183,7 +183,6 @@ export default class Find extends Component {
 
     routeToMine() {
         const { navigate } = this.props.navigation;
-
         const user = realmManager.getCurrentUser()
 
         if (user) {
@@ -381,8 +380,21 @@ export default class Find extends Component {
 
     render() {
 
-        const option = pieOption.option
-        option.series[0].data = this.state.info.pieArray
+        let option = pieOption.option
+
+        if (this.isUpdateChart) {
+
+            option = {
+                ...option,
+                series:[{
+                    ...option.series[0],
+                    data:this.state.info.pieArray
+                }]
+            }
+
+        } else {
+            option.series[0].data = this.state.info.pieArray
+        }
 
         return (
             <View style={styles.container}>
@@ -396,7 +408,7 @@ export default class Find extends Component {
                                 <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
                             </View>
                             <View style={styles.circleChart}>
-                                <Echarts option={pieOption.option} height={60} />
+                                <Echarts option={option} height={60} />
                             </View>
                             <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
