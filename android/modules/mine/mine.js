@@ -13,7 +13,6 @@ import {
     ImageBackground,
     ScrollView,
     Vibration,
-    Linking
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
@@ -35,8 +34,8 @@ const createLeftIcon = (source) => {
 const rightIcon = {
     type: 'SimpleLineIcons',
     name: 'arrow-right',
-    iconStyle: {
-        fontSize: 10
+    iconStyle:{
+        fontSize:10
     }
 }
 
@@ -63,7 +62,7 @@ class Mine extends Component {
             sref: 'AccountInfo',
             name: '账号信息',
             info: { name: 'AccountInfo' },
-            leftIcon: createLeftIcon('user'),
+            leftIcon:createLeftIcon('user'),
             leftSource: require('../../../Images/account/account_info.png'),
             rightIcon,
             tipBorder: 1,
@@ -73,7 +72,7 @@ class Mine extends Component {
             sref: 'CPStepThree',
             name: '版本更新',
             info: { account: 15895537043 },
-            leftIcon: createLeftIcon('settings'),
+            leftIcon:createLeftIcon('settings'),
             leftSource: require('../../../Images/account/account_version_update.png'),
             rightIcon,
             tipBorder: 0,
@@ -82,7 +81,7 @@ class Mine extends Component {
             sref: 'Feedback',
             name: '问题反馈',
             info: { user: 'Lucy' },
-            leftIcon: createLeftIcon('user-follow'),
+            leftIcon:createLeftIcon('user-follow'),
             leftSource: require('../../../Images/account/account_feedback.png'),
             rightIcon,
             tipBorder: 0,
@@ -106,8 +105,8 @@ class Mine extends Component {
             ]
         })
         clearPromise.then(res => {
-            this.props.navigation.dispatch(resetAction)
-        }
+                this.props.navigation.dispatch(resetAction)
+           }
         )
     }
 
@@ -127,15 +126,14 @@ class Mine extends Component {
                 let date = versionInfo.date
                 let size = versionInfo.size
                 let updateInfo = versionInfo.updateInfo
-                if (true) {
-                    // if (pkg.version != versionInfo.version) {
+                if (pkg.version != versionInfo.version) {
                     this.setState({
                         showVersionInfo: true,
                         versionInfo: versionInfo
                     })
-                }
-                return;
-            }
+                } 
+                return ;
+            } 
 
             this.setState({
                 showVersionAlert: true
@@ -159,7 +157,7 @@ class Mine extends Component {
                         <Progress.Bar borderColor={'white'} color={'#FF5B29'} unfilledColor={'rgba(255,198,180,.35)'} style={popupStyles.progress} height={2} progress={0.3} width={280} borderRadius={0} />
                         <Text style={popupStyles.progressNumber}>55%</Text>
                         <TouchableOpacity>
-                            <View style={[popupStyles.buttonContainer, { top: 1, right: 26 }]}>
+                            <View style={[popupStyles.buttonContainer, {top:1,right:26}]}>
                                 <Text style={popupStyles.button}>取消更新</Text>
                             </View>
                         </TouchableOpacity>
@@ -168,15 +166,7 @@ class Mine extends Component {
             </View>
         )
     }
-    downloadNow = (url) => {
-        Linking.canOpenURL(url).then(supported => {
-            if (!supported) {
-                console.log('Can\'t handle url: ' + url);
-            } else {
-                return Linking.openURL(url);
-            }
-        }).catch(err => console.error('An error occurred', err));
-    }
+
     _renderVersionUpdatePopupView() {
 
         const versionInfo = this.state.versionInfo;
@@ -192,15 +182,19 @@ class Mine extends Component {
                             <Text style={popupStyles.versionInfo}>本次更新：</Text>
                             {
                                 versionInfo.updateInfo.map((res, index) => {
-                                    return <Text key={index} style={popupStyles.versionInfo}>{index + 1}. {res}</Text>
+                                    return <Text key={index} style={popupStyles.versionInfo}>{index+1}. {res}</Text>
                                 })
                             }
                         </ScrollView>
-                        <TouchableOpacity style={[popupStyles.buttonContainer, { top: 164, right: 90 }]}>
-                            <Text style={popupStyles.button}>稍后安装</Text>
+                        <TouchableOpacity onPress={this._cancelInstall.bind(this)}>
+                            <View style={[popupStyles.buttonContainer, {top: 164, right:90}]}>
+                                <Text style={popupStyles.button}>稍后安装</Text>
+                            </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.downloadNow(versionInfo.url)} style={[popupStyles.buttonContainer, { top: 164, right: 8 }]} >
-                            <Text style={popupStyles.button}>立刻安装</Text>
+                        <TouchableOpacity>
+                            <View style={[popupStyles.buttonContainer, {top: 164, right:8}]}>
+                                <Text style={popupStyles.button}>立刻安装</Text>
+                            </View>
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>
@@ -211,8 +205,8 @@ class Mine extends Component {
     renderItem(item, index) {
         return (
             <TouchableOpacity key={index} onPress={() =>
-                this._handleAction(item)
-            }>
+                 this._handleAction(item)
+                }>
                 <View style={styles.cellTitleView}>
                     <View style={[styles.spanceView, mineStyles.leftIconContainer]}>
                         <ImageBackground source={item.leftSource} style={mineStyles.leftIcon} resizeMode={'contain'} />
@@ -246,7 +240,7 @@ class Mine extends Component {
                     {
                         this.listItemArray.map((result, index) => (
                             that.renderItem(result, index)
-                        ))}
+                    ))}
                 </View>
                 <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
                     <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>
@@ -287,7 +281,7 @@ const styles = StyleSheet.create({
         width: 110,
         height: 110,
         marginTop: 25,
-
+        
     },
     tableView: {
         position: 'absolute',
@@ -343,14 +337,14 @@ var popupStyles = {
     scroll: {
         position: 'absolute',
         top: 61,
-        height: 140,
+        height:140,
         width: '100%',
     },
     versionInfo: {
         marginLeft: 24,
         marginLeft: 24,
         color: 'rgba(0,0,0,.54)',
-        fontSize: 16,
+        fontSize:16,
     },
     buttonContainer: {
         position: "absolute",
@@ -365,7 +359,7 @@ var popupStyles = {
     },
     viewTitle: {
         fontSize: 20,
-        marginTop: 21,
+        marginTop: 21, 
         marginLeft: 24,
     },
     view: {
@@ -393,14 +387,14 @@ var popupStyles = {
         height: 217,
     },
     progressView: {
-        marginLeft: 23.5,
+        marginLeft:23.5,
         marginTop: 24,
         width: 335,
         height: 145,
     },
     progressViewTitle: {
         fontSize: 20,
-        marginTop: 19,
+        marginTop: 19, 
         marginLeft: 28,
     },
     progress: {
@@ -432,7 +426,7 @@ var mineStyles = {
     rightIcon: {
         width: 7.4,
         height: 12,
-
+        
     },
     rightIconContainer: {
         flexDirection: "row",
