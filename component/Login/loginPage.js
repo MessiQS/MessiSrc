@@ -50,9 +50,6 @@ class LoginPage extends React.Component {
         if (this._preventPushingMulitpleTimes()) {
             return 
         }
-        realmManager.deleteAllRealmData()
-        let clearPromise = await Storage.clearAll()
-
 
         let { account, password } = this.state;
         const { navigate } = this.props.navigation;

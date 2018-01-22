@@ -486,8 +486,16 @@ class RealmManager {
 
     deleteAllRealmData() {
 
-        realm.write(() => {
-            realm.deleteAll();
+        return new Promise((resolve, reject) => {
+            try {
+                realm.write(() => {
+                    realm.deleteAll();
+                    resolve()
+                });
+            } catch (e) {
+                reject(e);
+                console.log("ExaminationPaper Error on update");
+            }
         });
     }
 

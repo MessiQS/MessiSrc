@@ -96,19 +96,32 @@ class Mine extends Component {
     };
 
     //退出登录
-    outofLogin() {
-        const { navigate } = this.props.navigation;
-        realmManger.deleteAllRealmData()
-        let clearPromise = Storage.clearAll()
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Login' })
-            ]
-        })
-        clearPromise.then(res => {
-            this.props.navigation.dispatch(resetAction)
-        }
+    outLoginButtonClick() {
+
+        const that = this
+        Alert.alert(
+            '确定退出吗?',
+            '',
+            [
+              {text: '确定', onPress: async () => {
+                console.log("_outloginAction")
+                const { navigate } = that.props.navigation;
+                await realmManager.deleteAllRealmData()
+                await Storage.clearAll()
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Login' })
+                    ]
+                })
+                // clearPromise.then(res => {
+                    that.props.navigation.dispatch(resetAction)
+                //    }
+                // )
+              }},
+              {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            ],
+            { cancelable: true }
         )
     }
 
@@ -256,7 +269,7 @@ class Mine extends Component {
                             that.renderItem(result, index)
                         ))}
                 </View>
-                <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outofLogin.bind(this)} >
+                <TouchableOpacity style={styles.exitButtonStyle} onPress={this.outLoginButtonClick.bind(this)} >
                     <Icon name={'ios-log-out'} size={20} style={styles.outLoginIcon}></Icon>
                     <Text style={styles.outLogin}>退出登录</Text>
                 </TouchableOpacity>
