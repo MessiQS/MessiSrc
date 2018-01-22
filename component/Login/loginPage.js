@@ -23,9 +23,6 @@ import MessageService from "../../service/message.service";
 import Progress from "../../component/progress/progress"
 import { NavigationActions } from 'react-navigation'
 
-var RechargeVC = NativeModules.RechargeVC;
-
-
 class LoginPage extends React.Component {
 
     constructor(props) {
@@ -50,13 +47,13 @@ class LoginPage extends React.Component {
 
     async login() {
 
-        console.log("RechargeVC.buy()", RechargeVC)
-        RechargeVC.buyExample("name")
-
         if (this._preventPushingMulitpleTimes()) {
             return 
         }
-        
+        realmManager.deleteAllRealmData()
+        let clearPromise = await Storage.clearAll()
+
+
         let { account, password } = this.state;
         const { navigate } = this.props.navigation;
         if (!account) {

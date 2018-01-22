@@ -96,7 +96,7 @@ export default class Find extends Component {
         super(props);
         this._prepareUI()
         this.onMessage()
-        
+        this.isUpdateChart = false
     }
 
     _prepareUI() {
@@ -116,9 +116,9 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [0, 0, 0, 0, 0, 0]
-            info.beforeArray = [0, 0, 0, 0, 0, 0]
-            info.pieArray = [{ value: 1 }]
+            info.futureArray = [3, 3, 3, 3, 3, 3]   
+            info.beforeArray = [3, 3, 3, 3, 3, 3]
+            info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
             this.state = {
@@ -133,6 +133,12 @@ export default class Find extends Component {
     _updateUI() {
 
         const user = realmManager.getCurrentUser()
+        const that = this
+        this.isUpdateChart = true
+        setTimeout(() => {
+            that.isUpdateChart = false
+        }, 1000);
+
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
             this.setState ({
@@ -146,9 +152,9 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [0, 0, 0, 0, 0, 0]
-            info.beforeArray = [0, 0, 0, 0, 0, 0]
-            info.pieArray = [{ value: 1 }]
+            info.futureArray = [3, 3, 3, 3, 3, 3]
+            info.beforeArray = [3, 3, 3, 3, 3, 3]
+            info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
             this.setState ({
@@ -266,17 +272,28 @@ export default class Find extends Component {
                 color: '#172434'
             }
         })
-        newPaperOption = {
-            ...newPaperOption,
-            xAxis:[{
-                ...newPaperOption.xAxis[0],
-                data:weekArray
-            }],
-            series:[{
-                ...newPaperOption.series[0],
-                data:this.state.info.beforeArray
-            }]
+
+        if (this.isUpdateChart) {
+
+            newPaperOption = {
+                ...newPaperOption,
+                xAxis:[{
+                    ...newPaperOption.xAxis[0],
+                    data:weekArray
+                }],
+                series:[{
+                    ...newPaperOption.series[0],
+                    data:this.state.info.beforeArray
+                }]
+            }
+
+        } else {
+
+            newPaperOption.xAxis[0].data = weekArray
+            newPaperOption.series[0].data = this.state.info.beforeArray
         }
+
+
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
@@ -322,16 +339,21 @@ export default class Find extends Component {
             weekArray.push(d)
         }
 
-        newPaperOption = {
-            ...newPaperOption,
-            xAxis:[{
-                ...newPaperOption.xAxis[0],
-                data:weekArray
-            }],
-            series:[{
-                ...newPaperOption.series[0],
-                data:this.state.info.futureArray
-            }]
+        if (this.isUpdateChart) {
+            newPaperOption = {
+                ...newPaperOption,
+                xAxis:[{
+                    ...newPaperOption.xAxis[0],
+                    data:weekArray
+                }],
+                series:[{
+                    ...newPaperOption.series[0],
+                    data:this.state.info.futureArray
+                }]
+            }
+        } else {
+            newPaperOption.xAxis[0].data = weekArray
+            newPaperOption.series[0].data = this.state.info.futureArray
         }
 
         return (
@@ -364,7 +386,7 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
-                {this.state.showAlert == true ? <Alert /> : null}
+                {this.state.showAlert == true ? <Alert content="当前没有可刷题目" /> : null}
                 <ScrollView>
                     <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.titleContent}>
@@ -472,17 +494,20 @@ const styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 12,
+        marginTop: 14,
         marginLeft: 35,
         fontSize: 12,
-        color: "#8E9091"
+        color: "#8E9091",
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     average: {
         position: 'absolute',
-        top: 12,
+        top: 14,
         left: 175,
         fontSize: 12,
-        color: '#8E9091'
+        color: '#8E9091',
+        backgroundColor: 'rgba(0,0,0,0)'
+        
     },
     rightTitle: {
         position: "absolute",
@@ -492,10 +517,11 @@ const styles = {
     },
     rightDetail: {
         position: "absolute",
-        top: 12,
+        top: 14,
         right: 49,
         fontSize: 12,
-        color: "#8E9091"
+        color: "#8E9091",
+        backgroundColor: 'rgba(0,0,0,0)'        
     },
     rightContainer: {
         flexDirection: "row",
@@ -505,7 +531,7 @@ const styles = {
     },
     greenBlock: {
         marginLeft: 10,
-        marginTop: 23,
+        marginTop: 31.5,
         width: 15,
         height: 15,
     },
@@ -530,10 +556,3 @@ const styles = {
         opacity: 0.1,
     }
 }
-
-
-//{
-    /*<View style={header.icon}>
-         <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-     </View> */
-//}

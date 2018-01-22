@@ -46,7 +46,6 @@ export default class ListOfTopics extends React.Component {
             .then(value => {
                 if (value.type) {
                     let array = value.data.buyedInfo
-                    console.log("ListOfTopic.js api/getUserBuyInfo value.data.buyedInfo", value.data.buyedInfo)
                     realm.write(()=> {
                         user.examIds = JSON.stringify(array)
                     })

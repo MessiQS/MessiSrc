@@ -17,13 +17,15 @@ import {
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import realmManger from "../../../component/Realm/realmManager"
+import realmManager from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 import * as Progress from 'react-native-progress';
 import main from '../../main';
 import Http from '../../../service/http';
 import MessageService from '../../../service/message.service';
+import Alert from '../../../component/progress/alert';
 
+let pkg = require('../../../../package.json');
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (source) => {
@@ -46,6 +48,7 @@ class Mine extends Component {
         this.state = {
             navigation: props.navigation,
             showVersionInfo: false,
+            showVersionAlert: false,
         }
         Storage.getItem('account').then(res => {
             this.setState({
@@ -98,7 +101,7 @@ class Mine extends Component {
     //退出登录
     outofLogin() {
         const { navigate } = this.props.navigation;
-        realmManger.deleteAllRealmData()
+        realmManager.deleteAllRealmData()
         let clearPromise = Storage.clearAll()
         const resetAction = NavigationActions.reset({
             index: 0,
@@ -114,6 +117,7 @@ class Mine extends Component {
 
     async _handleAction(item) {
 
+        const that = this
         const { navigate } = this.props.navigation;
 
         if (item.type == "route") {
@@ -127,15 +131,24 @@ class Mine extends Component {
                 let date = versionInfo.date
                 let size = versionInfo.size
                 let updateInfo = versionInfo.updateInfo
-                console.log("versionInfo", versionInfo)
-                this.setState({
-                    showVersionInfo: true,
-                    versionInfo: versionInfo
+                if (pkg.version != versionInfo.version) {
+                    this.setState({
+                        showVersionInfo: true,
+                        versionInfo: versionInfo
+                    })
+                } 
+                return ;
+            } 
+
+            this.setState({
+                showVersionAlert: true
+            })
+
+            setTimeout(() => {
+                that.setState({
+                    showVersionAlert: false,
                 })
-
-            } else {
-
-            }
+            }, 2000)
         }
     }
 
@@ -172,7 +185,6 @@ class Mine extends Component {
 
     _renderVersionUpdatePopupView() {
 
-        const that = this
         const versionInfo = this.state.versionInfo;
         
         return (
@@ -230,7 +242,8 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
-                {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : false}
+                {this.state.showVersionAlert == true ? <Alert content="当前为最新版本" /> : null}
+                {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : null}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}
                         style={styles.thumbnail}

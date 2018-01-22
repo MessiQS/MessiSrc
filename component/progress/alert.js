@@ -14,7 +14,7 @@ export default class Alert extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.alertView}>
-                    <Text style={styles.alertText}>当前没有可刷题目</Text>
+                    <Text style={styles.alertText}>{this.props.content}</Text>
                 </View>
             </View>
         )
@@ -39,6 +39,7 @@ var styles = {
         borderRadius: 10,
     },
     alertText: {
+        color: 'white',
         fontSize: 12,
     }
 }

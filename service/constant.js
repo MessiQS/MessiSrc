@@ -5,4 +5,4 @@ export const webURL = "https://shuatiapp.cn/"
 
 export const imageWebURL = "https://shuatiapp.cn"
 
-
+export const version = "1.0.0"

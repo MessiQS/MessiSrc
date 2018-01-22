@@ -28,14 +28,12 @@ export default class Login extends Component {
 		gesturesEnabled: false,
 	};
 
-	_skip() {
+	async _skip() {
 
 		if (this._preventPushingMulitpleTimes()) {
 			return 
 		}
 		const { navigate } = this.props.navigation;
-		realmManger.deleteAllRealmData()
-		let clearPromise = Storage.clearAll()
 		
 		var account = "test"
 		var password = MD5("messi2101").toString();

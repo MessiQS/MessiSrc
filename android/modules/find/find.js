@@ -117,7 +117,7 @@ export default class Find extends Component {
             info.wrongLastSelectDate = "暂无数据"
             info.futureArray = [0, 0, 0, 0, 0, 0]
             info.beforeArray = [0, 0, 0, 0, 0, 0]
-            info.pieArray = [{ value: 1 }]
+            info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
             this.state = {
@@ -147,7 +147,7 @@ export default class Find extends Component {
             info.wrongLastSelectDate = "暂无数据"
             info.futureArray = [0, 0, 0, 0, 0, 0]
             info.beforeArray = [0, 0, 0, 0, 0, 0]
-            info.pieArray = [{ value: 1 }]
+            info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
             this.setState ({
@@ -343,7 +343,7 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
-                {this.state.showAlert == true ? <Alert /> : null}
+                {this.state.showAlert == true ? <Alert content="当前没有可刷题目" /> : null}
                 <ScrollView>
                     <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
                         <View style={styles.titleContent}>
@@ -365,6 +365,7 @@ export default class Find extends Component {
         );
     }
 }
+
 
 const styles = {
     container: {
@@ -451,17 +452,20 @@ const styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 12,
+        marginTop: 14,
         marginLeft: 35,
         fontSize: 12,
-        color: "#8E9091"
+        color: "#8E9091",
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     average: {
         position: 'absolute',
-        top: 12,
+        top: 14,
         left: 175,
         fontSize: 12,
-        color: '#8E9091'
+        color: '#8E9091',
+        backgroundColor: 'rgba(0,0,0,0)'
+        
     },
     rightTitle: {
         position: "absolute",
@@ -471,10 +475,11 @@ const styles = {
     },
     rightDetail: {
         position: "absolute",
-        top: 12,
+        top: 14,
         right: 49,
         fontSize: 12,
-        color: "#8E9091"
+        color: "#8E9091",
+        backgroundColor: 'rgba(0,0,0,0)'        
     },
     rightContainer: {
         flexDirection: "row",
@@ -484,7 +489,7 @@ const styles = {
     },
     greenBlock: {
         marginLeft: 10,
-        marginTop: 23,
+        marginTop: 31.5,
         width: 15,
         height: 15,
     },
@@ -509,10 +514,3 @@ const styles = {
         opacity: 0.1,
     }
 }
-
-
-//{
-    /*<View style={header.icon}>
-         <Image style={header.magnifier} source={require('../../../Images/magnifier.png')} />
-     </View> */
-//}
