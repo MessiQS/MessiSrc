@@ -186,7 +186,7 @@ class Mine extends Component {
                                 })
                             }
                         </ScrollView>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this._cancelInstall.bind(this)}>
                             <View style={[popupStyles.buttonContainer, {top: 164, right:90}]}>
                                 <Text style={popupStyles.button}>稍后安装</Text>
                             </View>
