@@ -20,6 +20,7 @@ import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
 import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
+import QuestionFeedback from "./question_feedfack";
 import Http from '../../service/http';
 import runtime from '../../service/runtime';
 import { webURL, imageWebURL, DBChange } from "../../service/constant";
@@ -353,6 +354,16 @@ export default class Detail extends Component {
         }
     }
 
+    _renderQuestionFeedback() {
+        if (this.state.isSelected) {
+            return (
+                <QuestionFeedback detail={this.state.detail.questionPaper} />
+            );
+        } else {
+            return null;
+        }
+    }
+
     _filterTag(str) {
 
         let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
@@ -473,6 +484,7 @@ export default class Detail extends Component {
                     {this._renderQuestion2(str1)}
                     {this._renderOptionForm()}
                     {this._renderAnalysis()}
+                    {this._renderQuestionFeedback()}
                 </ScrollView>
             </View>
         )

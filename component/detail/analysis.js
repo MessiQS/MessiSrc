@@ -16,8 +16,6 @@ export default class Analysis extends React.Component {
 
     static propTypes = {
         detail: PropTypes.object,
-        isSelected: PropTypes.bool,
-        selectedOption: PropTypes.string
     }
 
     _handleImageURL(content) {
@@ -25,7 +23,7 @@ export default class Analysis extends React.Component {
         var re2 = /\/.*?\.(?:png|jpg)/gm;
         let suffixUrl = re2.exec(content)
         let sufUrl = suffixUrl[0]
-     
+        
         return imageWebURL + sufUrl
     }
 
@@ -108,7 +106,7 @@ var styles = StyleSheet.create ({
         marginTop:35,
         marginRight: 44,
         marginLeft: 44,
-        marginBottom: 44,
+        marginBottom: 84,
         fontSize:16,
         lineHeight: 20,
     },
