@@ -22,8 +22,8 @@ export default class Message extends Component {
 
     _select_province(section) {
 
-        const { navigate } = this.props.navigation;
-        navigate('TopicsDetail', { section: section })
+        const { state, navigate } = this.props.navigation;
+        navigate('TopicsDetail', { section: section, go_back_key: state.key })
     }
 
     render() {

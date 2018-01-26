@@ -101,6 +101,8 @@ export default class TopicsDetail extends React.Component {
 
     async _chooseExam(item) {
 
+        const { navigate } = this.props.navigation;
+
         if (item == null) {
             return
         }
@@ -118,11 +120,14 @@ export default class TopicsDetail extends React.Component {
         setTimeout(() => {
             runtime.emit(DBChange);
         }, 1)
-
         this.setState({
             loading: false,
             user: user,
         })
+
+        const { state, goBack } = this.props.navigation;    
+        const params = state.params || {};
+        goBack(params.go_back_key);
     }
 
     async _downloadExam(item) {

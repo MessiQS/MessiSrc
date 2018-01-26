@@ -148,6 +148,10 @@ export default class TopicsDetail extends React.Component {
             loading: false,
             user: user,
         })
+
+        const { state, goBack } = this.props.navigation;    
+        const params = state.params || {};
+        goBack(params.go_back_key);
     }
 
     async _downloadExam(item) {
