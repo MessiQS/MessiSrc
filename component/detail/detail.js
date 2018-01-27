@@ -86,7 +86,8 @@ export default class Detail extends Component {
 
         var category = this.state.detail.questionPaper.category
         if (this.state.detail.questionPaper.subject == "不定项" ||
-            this.state.detail.questionPaper.question.indexOf("不定项选择") !== -1) {
+            this.state.detail.questionPaper.question.indexOf("不定项选择") !== -1 || 
+            this.state.detail.questionPaper.subject == "多选") {
                 category = category + "（多选）"
             }
 
@@ -132,7 +133,8 @@ export default class Detail extends Component {
 
             var category = this._memoryModel.questionPaper.category
             if (this._memoryModel.questionPaper.subject == "不定项" ||
-                this._memoryModel.questionPaper.question.indexOf("不定项选择") !== -1) {
+                this._memoryModel.questionPaper.question.indexOf("不定项选择") !== -1 || 
+                this.state.detail.questionPaper.subject.indexOf("多选") !== -1) {
                 category = category + "（多选）"
             }
             this.props.navigation.setParams({
@@ -151,7 +153,6 @@ export default class Detail extends Component {
             })
         }
         console.log(this._memoryModel)
-        
     }
 
     _getMemoryModel() {
@@ -427,7 +428,8 @@ export default class Detail extends Component {
         const { detail, isSelected, selectedOption } = this.state
 
         if (detail.questionPaper.subject == "不定项" ||
-            detail.questionPaper.question.indexOf("不定项选择") !== -1) {
+            detail.questionPaper.question.indexOf("不定项选择") !== -1 || 
+            detail.questionPaper.subject.indexOf("多选") !== -1) {
 
             return (
                 <MultipleOptionForm

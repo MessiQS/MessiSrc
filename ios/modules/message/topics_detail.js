@@ -144,14 +144,19 @@ export default class TopicsDetail extends React.Component {
             runtime.emit(DBChange);
         }, 1)
 
-        this.setState({
-            loading: false,
-            user: user,
-        })
+        
+        setTimeout(() => {
+            this.setState({
+                loading: false,
+                user: user,
+            })
 
-        const { state, goBack } = this.props.navigation;    
-        const params = state.params || {};
-        goBack(params.go_back_key);
+            
+            const { state, goBack } = this.props.navigation;    
+            const params = state.params || {};
+            goBack(params.go_back_key);
+        }, 1000)
+        
     }
 
     async _downloadExam(item) {
