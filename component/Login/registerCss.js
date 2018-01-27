@@ -18,7 +18,7 @@ export const styles = {
         height: 48,
     },
     iconViewStyle: {
-        marginRight: 5,
+        marginRight: 10,
         marginLeft: 10,
         width:25,
         flexDirection: 'row',
@@ -59,7 +59,7 @@ export const styles = {
         flexDirection: 'row',
         marginTop: 15,
         marginBottom: 0,
-        height: 50,
+        height: 43,
     },
     bottomLine: {
         height:1,
@@ -95,9 +95,11 @@ export const styles = {
     },
     textInput: {
         width: "100%",
+        fontSize:14
     },
     vertiTextInput: {
         width: "50%",
+        fontSize:14
     }
 };
 export default stylesContainer = StyleSheet.create({

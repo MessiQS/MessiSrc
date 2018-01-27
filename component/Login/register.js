@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
     Alert,
     View,
@@ -10,43 +10,45 @@ import {
     ImageBackground,
     ScrollView,
     Keyboard
-} from 'react-native';
-import stylesContainer, { styles } from './registerCss';
-import Http from '../../service/http';
-import AccountCheck from '../../service/accountCheck';
-import MD5 from 'crypto-js/md5';
-import realmManager from "../Realm/realmManager";
-import Storage from '../../service/storage';
+} from 'react-native'
+import stylesContainer, { styles } from './registerCss'
+import Http from '../../service/http'
+import AccountCheck from '../../service/accountCheck'
+import MD5 from 'crypto-js/md5'
+import realmManager from "../Realm/realmManager"
+import Storage from '../../service/storage'
 import { NavigationActions } from 'react-navigation'
 
 class Register extends React.Component {
 
     constructor(...props) {
-        super();
+        super()
         this.state = {
             codeText: "获取验证码",
-        };
+        }
     }
+
     async _onPressButton() {
-        let { account, password, phone, vericode } = this.state;
+        let { account, password, phone, vericode } = this.state
         if (!account) {
             Alert.alert('请输入账号')
-            return;
+            return
         } else if (!password) {
             Alert.alert('请输入密码')
-            return;
+            return
         } else if (!vericode) {
             Alert.alert('请输入验证码')
-            return;
-        };
+            return
+        }
         if (!AccountCheck.isValidPhoneNumber(account)) {
-            Alert.alert('账号格式错误', '请输入11位手机号码');
-            return;
+            Alert.alert('账号格式错误', '请输入11位手机号码')
+            return
         }
         if (!AccountCheck.isValidPassword(password)) {
-            Alert.alert('密码格式错误', '请输入6-20位字母数字组合，不包含特殊字符');
-            return;
+            Alert.alert('密码格式错误', '请输入6-20位字母数字组合，不包含特殊字符')
+            return
         }
+
         password = MD5(password).toString()
         const responseData = await Http.post('api/signin', {
             account,
@@ -54,20 +56,45 @@ class Register extends React.Component {
             vericode
         })
 
+        if (responseData.type == false) {
+
+            Alert.alert(responseData.data)
+            return
+        }
+
         if (!!responseData.type) {
             let { type, data } = await Http.post('api/login', {
                 account,
                 password
             })
-            // .then(({ type, data }) => {
-            const { navigate } = this.props.navigation;
+
+            if (type == false) {
+                //此处提示错误信息
+                Alert.alert(data)
+                return
+            }
+
+            console.log("register.js api/login type, data", type, data, account)
+            const { navigate } = this.props.navigation
             if (type) {
                 //将账号和token存到本地存储
                 let setToken = Storage.multiSet([
                     ['accountToken', data.token],
                     ['account', account]
                     ['userId', data.user_id]
-                ]);
+                ])
+
+                console.log("setToken", setToken)
+                var emptyArray = []
+                let examIdJson = JSON.stringify(emptyArray)
+                var user = {
+                    userId: data.user_id,
+                    token: data.token,
+                    examIds: examIdJson
+                }
+                await realmManager.createUser(user)
+                console.log("register.js realmManager.createUser(user)", user)
+
                 setToken.then(res => {
                     Keyboard.dismiss()
                     const resetAction = NavigationActions.reset({
@@ -78,35 +105,36 @@ class Register extends React.Component {
                     })
                     this.props.navigation.dispatch(resetAction)
                 }, err => {
-                    Alert('登录错误，请重试')
+                    Alert('注册错误，请重试')
                 })
-                data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
-                let examIdJson = JSON.stringify([])
-                if (!!data.userInfo.buyedInfo) {
-                    examIdJson = JSON.stringify(data.userInfo.buyedInfo)
-                }
-                var user = {
-                    userId: data.user_id,
-                    token: data.token,
-                    examIds: examIdJson
-                }
-                realmManager.createUser(user)
-
-            } else {
-                //此处提示错误信息
-                Alert.alert(data);
             }
         }
+    }
 
-        // Keyboard.dismiss()
-    };
+    _handleUserInfo(userId) {
+        console.log("_handleUserInfo userId", userId)
+        const that = this
+        Http.get('api/getUserQuestionInfo', {
+            user_id: userId,
+        }, true).then((value) => {
+            console.log("loginPage.js value", value)
+            if (value.type == "true") {
+                that._getPaperInfo(value)
+            } else {
+                console.log("api/getUserQuestionInfo error", value)
+            }
+        }).catch(err => {
+            console.log("api/getUserQuestionInfo error", err)
+        })
+    }
+
     //电话号码改变
     phoneChange(phone) {
         this.setState({
             "account": phone,
             "phone": phone
         })
-    };
+    }
     //密码
     passwordtChange(password) {
         this.setState({
@@ -117,24 +145,24 @@ class Register extends React.Component {
         this.setState({
             "vericode": vericode
         })
-    };
+    }
 
     getCode = async () => {
         if (this.state.codeText !== "获取验证码") {
-            return;
+            return
         }
 
-        let { account } = this.state;
+        let { account } = this.state
         if (!account) {
             Alert.alert('请输入账号')
-            return;
+            return
         } else if (!AccountCheck.isValidPhoneNumber(account)) {
-            Alert.alert('账号格式错误', '请输入11位手机号码');
-            return;
-        };
+            Alert.alert('账号格式错误', '请输入11位手机号码')
+            return
+        }
 
         const timeout = (time) => {
-            time = parseInt(time, 10) - 1;
+            time = parseInt(time, 10) - 1
             if (time > 0) {
                 this.setState({
                     isPending: true,
@@ -155,7 +183,7 @@ class Register extends React.Component {
         })
         if (!response.type) {
             Alert.alert(response.data)
-        }else{
+        } else {
             timeout(61)
         }
     }
@@ -163,7 +191,7 @@ class Register extends React.Component {
     renderGetCode() {
         if (this.state.isPending) {
             return (
-                <View style={[styles.vertificationCodeView,styles.isValidCodeView]}>
+                <View style={[styles.vertificationCodeView, styles.isValidCodeView]}>
                     <Text style={styles.vertificationCodeText}>{this.state.codeText}</Text>
                 </View>
             )
@@ -182,7 +210,7 @@ class Register extends React.Component {
     }
 
     _sofewareAgreementClick() {
-        const { navigate } = this.props.navigation;
+        const { navigate } = this.props.navigation
         navigate('SoftwareAgreement', {})
     }
 
@@ -243,8 +271,8 @@ class Register extends React.Component {
                     </Text>
                 </View>
             </View>
-        );
+        )
     }
 }
 
-export default Register;
+export default Register

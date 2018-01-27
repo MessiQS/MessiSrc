@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
     Image,
     Text,
@@ -6,38 +6,38 @@ import {
     TouchableOpacity,
     ScrollView,
     FlatList
-} from 'react-native';
-import DictStyle from './dictStyle';
-import MessageService from "../../../service/message.service";
-import realmManager from '../../../component/Realm/realmManager';
-import PropTypes from 'prop-types';
-import HTTP from '../../../service/http';
-import realm from '../../../component/Realm/realm';
-import {TextColor} from "../../../service/constant";
+} from 'react-native'
+import DictStyle from './dictStyle'
+import MessageService from "../../../service/message.service"
+import realmManager from '../../../component/Realm/realmManager'
+import PropTypes from 'prop-types'
+import HTTP from '../../../service/http'
+import realm from '../../../component/Realm/realm'
+import {TextColor} from "../../../service/constant"
 
 export default class ListOfTopics extends React.Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             papers: [],
             arrow_image_list_source:[]
-        };
-    };
+        }
+    }
 
     componentDidMount() {
         const that = this
         MessageService.getPaper().then(data => {
-            var papers = [];
-            that.cacheData = data.data;
+            var papers = []
+            that.cacheData = data.data
             console.log("list of topic js get paper data", data)
-            var papers = that.getCurrentPaper();
-            console.log("papers", papers);
+            var papers = that.getCurrentPaper()
+            console.log("papers", papers)
             that.setState({
                 papers: papers
             })
-        });
-        const user = realmManager.getCurrentUser();
+        })
+        const user = realmManager.getCurrentUser()
         if (user) {
 
             HTTP.post("api/getUserBuyInfo", {
@@ -57,7 +57,7 @@ export default class ListOfTopics extends React.Component {
     
             })
         }
-    };
+    }
 
     static propTypes = {
         select_province: PropTypes.func,
@@ -65,18 +65,18 @@ export default class ListOfTopics extends React.Component {
 
     getCurrentPaper(){
         return this.cacheData.map( (res,idx) => {
-            res.length = res.length || res.data.length;
-            return res;
+            res.length = res.length || res.data.length
+            return res
         })
-    };
+    }
 
     getKeyByValue(object, value) {
-        return Object.keys(object).find(key => object[key] === value);
+        return Object.keys(object).find(key => object[key] === value)
     }
 
     _select_province(item) {
         const that = this
-        that.props.select_province(item);
+        that.props.select_province(item)
     }
     
     _renderItemView = (item) => {
@@ -90,7 +90,7 @@ export default class ListOfTopics extends React.Component {
                     <Image style={styles.arrowStyle} source={require('../../../Images/find_arrow_right.png')} ></Image>
                 </View>
             </TouchableOpacity>
-        );
+        )
     }
 
     render() {

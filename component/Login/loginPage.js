@@ -128,7 +128,6 @@ class LoginPage extends React.Component {
             } else {
                 console.log("api/getUserQuestionInfo error", value)
             }
-
         }).catch(err => {
             console.log("api/getUserQuestionInfo error", err)
         })
