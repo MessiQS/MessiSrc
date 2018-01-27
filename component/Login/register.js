@@ -73,42 +73,65 @@ class Register extends React.Component {
                 Alert.alert(data)
                 return
             }
-
-            console.log("register.js api/login type, data", type, data, account)
+            
             const { navigate } = this.props.navigation
             if (type) {
                 //将账号和token存到本地存储
-                let setToken = Storage.multiSet([
+                await Storage.multiSet([
                     ['accountToken', data.token],
-                    ['account', account]
+                    ['account', account],
                     ['userId', data.user_id]
-                ])
+                ]);
 
-                console.log("setToken", setToken)
-                var emptyArray = []
-                let examIdJson = JSON.stringify(emptyArray)
+                let examIdJson = JSON.stringify([])
                 var user = {
                     userId: data.user_id,
                     token: data.token,
                     examIds: examIdJson
                 }
                 await realmManager.createUser(user)
-                console.log("register.js realmManager.createUser(user)", user)
-
-                setToken.then(res => {
-                    Keyboard.dismiss()
-                    const resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Home' })
-                        ]
-                    })
-                    this.props.navigation.dispatch(resetAction)
-                }, err => {
-                    Alert('注册错误，请重试')
+                Keyboard.dismiss()
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Home' })
+                    ]
                 })
+                this.props.navigation.dispatch(resetAction)
             }
         }
+
+        // /********************************** */
+        // //将账号和token存到本地存储
+        // let setToken = await Storage.multiSet([
+        //     ['accountToken', "111"],
+        //     ['account', "183715873321"],
+        //     ['userId',  "ss00001"]
+        // ]);
+
+        // // console.log("setToken", setToken)
+        // var emptyArray = []
+        // let examIdJson = JSON.stringify(emptyArray)
+        // var user = {
+        //     userId: "1774088",
+        //     token: "1774088",
+        //     examIds: examIdJson
+        // }
+        // await realmManager.createUser(user)
+        // console.log("register.js realmManager.createUser(user)", user)
+
+        // // setToken.then(res => {
+        //     Keyboard.dismiss()
+        //     const resetAction = NavigationActions.reset({
+        //         index: 0,
+        //         actions: [
+        //             NavigationActions.navigate({ routeName: 'Home' })
+        //         ]
+        //     })
+        //     this.props.navigation.dispatch(resetAction)
+        // // }, err => {
+        // //     Alert('注册错误，请重试')
+        // // })
     }
 
     _handleUserInfo(userId) {

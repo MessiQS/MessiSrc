@@ -165,6 +165,13 @@ export default class Find extends Component {
         }
     }
 
+    _isShowEmptyData() {
+
+        const { info } = this.state
+
+
+    }
+
     componentWillMount() {
         setTimeout(() => {
             this.props.navigation.setParams({
@@ -251,7 +258,6 @@ export default class Find extends Component {
     _renderGetChatNewPaper() {
 
         let newPaperOption = newPaper.option;
-
         let weekArray = []
         for (var i = 5; i > 0; i--) {
             let day = moment().subtract(i, 'days').format('dddd')
@@ -336,6 +342,11 @@ export default class Find extends Component {
                 }
             }
             weekArray.push(d)
+        }
+        
+        if (this._isShowEmptyData()) {
+
+            
         }
 
         if (this.isUpdateChart) {
