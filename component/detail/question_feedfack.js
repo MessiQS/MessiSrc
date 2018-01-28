@@ -59,8 +59,7 @@ export default class QuestionFeedback extends React.Component {
                     
                 }
             },
-        ],
-     );
+        ]);
 
         MessageService.wrongFeedback(params)
         .then( value => {

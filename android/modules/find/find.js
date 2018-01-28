@@ -248,6 +248,17 @@ export default class Find extends Component {
         }
     }
 
+    _isShowEmptyData() {
+
+        const { info } = this.state
+
+        if (info.futureArray.toString() == [0, 0, 0, 0, 0, 0].toString() &&
+            info.beforeArray.toString() == [0, 0, 0, 0, 0, 0].toString()) {
+            return true
+        }
+        return false
+    }
+
     _renderGetChatNewPaper() {
         let newPaperOption = newPaper.option;
 
@@ -289,6 +300,20 @@ export default class Find extends Component {
             newPaperOption.xAxis[0].data = weekArray
             newPaperOption.series[0].data = this.state.info.beforeArray
         }
+
+        /// 空数组，显示特殊化
+        if (this._isShowEmptyData()) {
+
+            newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
+            newPaperOption.series[0].label.normal.show = false
+            newPaperOption.series[0].symbolSize = 0
+
+        } else {
+            
+            newPaperOption.series[0].label.normal.show = true
+            newPaperOption.series[0].symbolSize = 6
+        }
+
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
@@ -346,6 +371,19 @@ export default class Find extends Component {
         } else {
             newPaperOption.xAxis[0].data = weekArray
             newPaperOption.series[0].data = this.state.info.futureArray
+        }
+
+        /// 空数组，显示特殊化
+        if (this._isShowEmptyData()) {
+
+            newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
+            newPaperOption.series[0].label.normal.show = false
+            newPaperOption.series[0].symbolSize = 0
+
+        } else {
+            
+            newPaperOption.series[0].label.normal.show = true
+            newPaperOption.series[0].symbolSize = 6
         }
 
         return (

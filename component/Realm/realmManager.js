@@ -425,14 +425,15 @@ class RealmManager {
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
+        var wrongSum = beforeArray.reduce(function(a, b) { return a + b; });
+        var wrongAvg = wrongSum / beforeArray.length;
+
+        object.newAverage = Math.round(wrongAvg)
+
         var newSum = futureArray.reduce(function(a, b) { return a + b; });
         var newAvg = newSum / futureArray.length;
 
-        object.newAverage = Math.round(newAvg)
-        
-        var wrongSum = beforeArray.reduce(function(a, b) { return a + b; });
-        var wrongAvg = wrongSum / beforeArray.length;
-        object.wrongAverage = Math.round(wrongAvg)
+        object.wrongAverage = Math.round(newAvg)
 
         if (b.length != 0) {
             b.sort((a1, b1) => {

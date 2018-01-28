@@ -116,8 +116,8 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [3, 3, 3, 3, 3, 3]   
-            info.beforeArray = [3, 3, 3, 3, 3, 3]
+            info.futureArray = [0, 0, 0, 0, 0, 0]   
+            info.beforeArray = [0, 0, 0, 0, 0, 0]
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
@@ -152,8 +152,8 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [3, 3, 3, 3, 3, 3]
-            info.beforeArray = [3, 3, 3, 3, 3, 3]
+            info.futureArray = [0, 0, 0, 0, 0, 0]
+            info.beforeArray = [0, 0, 0, 0, 0, 0]
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
@@ -169,7 +169,11 @@ export default class Find extends Component {
 
         const { info } = this.state
 
-
+        if (info.futureArray.toString() == [0, 0, 0, 0, 0, 0].toString() &&
+            info.beforeArray.toString() == [0, 0, 0, 0, 0, 0].toString()) {
+            return true
+        }
+        return false
     }
 
     componentWillMount() {
@@ -298,6 +302,18 @@ export default class Find extends Component {
             newPaperOption.series[0].data = this.state.info.beforeArray
         }
 
+        /// 空数组，显示特殊化
+        if (this._isShowEmptyData()) {
+
+            newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
+            newPaperOption.series[0].label.normal.show = false
+            newPaperOption.series[0].symbolSize = 0
+
+        } else {
+
+            newPaperOption.series[0].label.normal.show = true
+            newPaperOption.series[0].symbolSize = 6
+        }
 
         return (
             <View style={styles.calendarView}>
@@ -305,7 +321,7 @@ export default class Find extends Component {
                     <TouchableOpacity onPress={this.routeToNewDetail.bind(this)}>
                         <View style={styles.chartTopContainer}>
                             <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
-                            <Text style={styles.h4}>过去5日刷题量统计</Text>
+                            <Text style={styles.h4}>过去5日刷题数量统计</Text>
                             <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
                             <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
@@ -344,11 +360,6 @@ export default class Find extends Component {
             weekArray.push(d)
         }
         
-        if (this._isShowEmptyData()) {
-
-            
-        }
-
         if (this.isUpdateChart) {
             newPaperOption = {
                 ...newPaperOption,
@@ -366,13 +377,26 @@ export default class Find extends Component {
             newPaperOption.series[0].data = this.state.info.futureArray
         }
 
+        /// 空数组，显示特殊化
+        if (this._isShowEmptyData()) {
+
+            newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
+            newPaperOption.series[0].label.normal.show = false
+            newPaperOption.series[0].symbolSize = 0
+
+        } else {
+
+            newPaperOption.series[0].label.normal.show = true
+            newPaperOption.series[0].symbolSize = 6
+        }
+
         return (
             <View style={styles.calendarView}>
                 <View style={styles.chartTitleContainer}>
                     <TouchableOpacity onPress={this.routeToWrongDetail.bind(this)}>
                         <View style={styles.chartTopContainer}>
                             <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
-                            <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                            <Text style={styles.h4}>未来5日遗忘数量预测</Text>
                             <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
                             <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                         </View>
