@@ -14,7 +14,18 @@ export default class MessageService {
     }
 
     static async getUpdateInfo() {
-
         return Http.get('api/getUpdate',{},true)
+    }
+
+    /**
+     * 
+     * @param {*} params 
+     *  title,
+        id,
+        question_number,
+        user_id
+     */
+    static async wrongFeedback(params) {
+        return Http.post('api/wrongFeedBack', params, true);
     }
 }

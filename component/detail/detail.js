@@ -358,7 +358,7 @@ export default class Detail extends Component {
     _renderQuestionFeedback() {
         if (this.state.isSelected) {
             return (
-                <QuestionFeedback detail={this.state.detail.questionPaper} />
+                <QuestionFeedback detail={this.state.detail} />
             );
         } else {
             return null;
