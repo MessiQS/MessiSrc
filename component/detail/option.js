@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { webURL, imageWebURL } from "../../service/constant"
+import OptionController from './option.controller'
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
 
@@ -113,87 +114,58 @@ export default class Option extends React.Component {
         return null
     }
     _renderOptionView(str) {
-
         let regex = /<img/g
         let splits = str.split(regex)
+        const scale = 0.3
 
-        const _handleImageURL = (content) => {
-
-            var re2 = /\/.*?\.(?:png|jpg)/gm;
-            let suffixUrl = re2.exec(content)
-
-            return imageWebURL + suffixUrl
-        }
-        //获取属性中的wdith 和 height
-        getAttr = (str) => {
-            let widthReg = /width=[\'\"]?([^\'\"]*)[\'\"]?/i,
-                heightReg = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
-            let widthStr = str.match(widthReg),
-                heightStr = str.match(heightReg);
-            let obj = {}
-            if(!!widthStr){
-                obj['width'] = widthStr[1]
-            }
-            if(!!heightStr){
-                obj['height'] = heightStr[1]
-            }
-            return obj
-
-        }
-        //获取style 属性
-        const getStyle = (str) => {
-            let styleReg = /style=[\'\"]?([^\'\"]*)[\'\"]?/i;
-            let styleStr = str.match(styleReg);
-            let obj = {}
-            if (!!styleStr) {
-                //可能在style里
-                let styleArr = styleStr[1].split(';')
-                styleArr.forEach(res => {
-                    if (([], res.split(':'))[0].indexOf('width') >= 0) {
-                        obj['width'] = ([], res.split(':'))[1]
-                    }
-                    if (([], res.split(':'))[0].indexOf('height') >= 0) {
-                        obj['height'] = ([], res.split(':'))[1]
-                    }
-                })
-            }
-            return obj
-        }
         const renderContent = () => {
+            //没有图片
+            if (splits.length === 1 && str.indexOf('img') < 0) {
+                return <Text style={[styles.detailOptionText, this._afterSelectText()]}>{str}</Text>
+            }
             //单图情况
-            if (splits.length === 2 && !splits[0]) {
-                let url = _handleImageURL(splits[1])
-                let styleObj = getStyle(str)
-                let attrObj = getAttr(str)
-                
-                let width, height;
-
+            if (splits.length === 1 && str.indexOf('img') >= 0 || splits.length === 2 && !splits[0].trim()) {
+                let trueStr = splits.length === 1 && str.indexOf('img') >= 0 ? splits[0] : splits[1]
+                let url = OptionController._handleImageURL(trueStr)
+                let styleObj = OptionController.getStyle(str)
+                let attrObj = OptionController.getAttr(str)
                 let expr = /\/(.*)_(.*)x(.*)_/;
                 let size = url.match(expr)
-                const scale = 0.3
-                width = attrObj.width || styleObj.width || size[2] * scale /// cannot read 2 TODO
-                height = attrObj.height || styleObj.height || size[3] * scale
-                return (<Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />)
+                let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
+                return (<Image style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />)
             }
             //文字与图嵌套
+            let optionArray = [],
+                count = 0;
+                
+            splits.forEach((result, index) => {
+                if (result.indexOf('/>') >= 0) {
+                    let imgArr = result.split('/>')
+                    if (!!imgArr[1]) {
+                        optionArray[index] = imgArr
+                    } else {
+                        splits[index] = imgArr[0]
+                    }
+                }
+            })
+            optionArray.forEach((result, index) => {
+                splits.splice(index, 1 + count, ...result)
+                count++
+            })
+
             return splits.map((content, index) => {
                 if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                    let url = OptionController._handleImageURL(content)
 
+                    let styleObj = OptionController.getStyle(content)
+                    let attrObj = OptionController.getAttr(content)
 
-                    let url = _handleImageURL(content)
                     let expr = /\/(.*)_(.*)x(.*)_/;
                     let size = url.match(expr)
-                    const scale = 0.3
-                    let width = size[2] * scale /// cannot read 2 TODO
-                    let height = size[3] * scale
-
-                    if (size[1].search("formula")) {
-                        width = size[2] * (23 / size[3])
-                        height = 23
-                    }
+                    let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
 
                     return (
-                        <Image key={index} style={[styles.optionImage, { width: width, height: height }]} resizeMode={'contain'} source={{ uri: url }} />
+                        <Image key={index} style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
                     )
                 } else {
                     return (
@@ -260,6 +232,6 @@ var styles = StyleSheet.create({
         backgroundColor: "rgba(216, 216, 216, .3)"
     },
     optionImage: {
-        marginTop: 10,
+        marginTop: -10,
     },
 })
