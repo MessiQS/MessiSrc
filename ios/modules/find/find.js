@@ -95,8 +95,11 @@ export default class Find extends Component {
     constructor(props) {
         super(props);
         this._prepareUI()
-        this.onMessage()
         this.isUpdateChart = false
+    }
+
+    componentDidMount() {
+        this.onMessage()
     }
 
     _prepareUI() {

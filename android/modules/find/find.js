@@ -95,8 +95,11 @@ export default class Find extends Component {
     constructor(props) {
         super(props);
         this._prepareUI()
-        this.onMessage()
         this.isUpdateChart = false
+    }
+
+    componentDidMount() {
+        this.onMessage()
     }
 
     _prepareUI() {
@@ -319,7 +322,7 @@ export default class Find extends Component {
                 <View style={styles.chartTitleContainer}>
                     <TouchableOpacity style={styles.chartTopContainer} onPress={this.routeToNewDetail.bind(this)}>
                         <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
-                        <Text style={styles.h4}>过去5日刷题量统计</Text>
+                        <Text style={styles.h4}>过去5日刷题数量统计</Text>
                         <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
                         <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
@@ -391,7 +394,7 @@ export default class Find extends Component {
                 <View style={styles.chartTitleContainer}>
                     <TouchableOpacity style={styles.chartTopContainer} onPress={this.routeToWrongDetail.bind(this)}>
                         <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
-                        <Text style={styles.h4}>未来5日遗忘数量统计</Text>
+                        <Text style={styles.h4}>未来5日遗忘数量预测</Text>
                         <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
                         <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
