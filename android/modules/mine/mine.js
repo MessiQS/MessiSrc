@@ -13,12 +13,13 @@ import {
     ImageBackground,
     ScrollView,
     Vibration,
-    Linking
+    Linking,
+    Alert
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import realmManger from "../../../component/Realm/realmManager"
+import realmManager from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 import * as Progress from 'react-native-progress';
 import main from '../../main';

@@ -116,10 +116,8 @@ export default class Login extends Component {
 							</View>
 						</Button>
 					</View>
-					<TouchableOpacity onPress={this._skip.bind(this)}>
-						<View style={styles.skipContainer}>
+					<TouchableOpacity onPress={this._skip.bind(this)} style={styles.skipContainer}>
 							<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
-						</View>
 					</TouchableOpacity>
 				</ImageBackground>
 			</View>
