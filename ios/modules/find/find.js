@@ -262,6 +262,40 @@ export default class Find extends Component {
         }
     }
 
+    _renderTopView() {
+
+        let option = pieOption.option
+
+        if (this.isUpdateChart) {
+
+            option = {
+                ...option,
+                series:[{
+                    ...option.series[0],
+                    data:this.state.info.pieArray
+                }]
+            }
+
+        } else {
+            option.series[0].data = this.state.info.pieArray
+        }
+        return (
+            <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
+                <View style={styles.titleContent}>
+                    <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
+                    <View style={styles.titleText}>
+                        <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
+                        <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
+                    </View>
+                    <View style={styles.circleChart}>
+                        <Echarts option={option} width={60} height={60} />
+                    </View>
+                    <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     _renderGetChatNewPaper() {
 
         let newPaperOption = newPaper.option;
@@ -418,39 +452,11 @@ export default class Find extends Component {
 
     render() {
 
-        let option = pieOption.option
-
-        if (this.isUpdateChart) {
-
-            option = {
-                ...option,
-                series:[{
-                    ...option.series[0],
-                    data:this.state.info.pieArray
-                }]
-            }
-
-        } else {
-            option.series[0].data = this.state.info.pieArray
-        }
-
         return (
             <View style={styles.container}>
                 {this.state.showAlert == true ? <Alert content="当前没有可刷题目" /> : null}
                 <ScrollView>
-                    <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
-                        <View style={styles.titleContent}>
-                            <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
-                            <View style={styles.titleText}>
-                                <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
-                                <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
-                            </View>
-                            <View style={styles.circleChart}>
-                                <Echarts option={option} height={60} />
-                            </View>
-                            <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
-                        </View>
-                    </TouchableOpacity>
+                    {this._renderTopView()}
                     {this._renderGetChatNewPaper()}
                     {this._renderGetChatRemember()}
                 </ScrollView>
@@ -477,7 +483,7 @@ const styles = {
     arrow: {
         position: 'absolute',
         resizeMode: 'contain',
-        right: 10,
+        right: 18.8,
         width: 7.4,
     },
     titleText: {
@@ -492,7 +498,7 @@ const styles = {
         color: "#172434",
     },
     examTitle: {
-        width: '70%',
+        width: width - 140,
         marginTop: 17,
     },
     examDetail: {

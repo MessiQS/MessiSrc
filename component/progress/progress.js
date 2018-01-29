@@ -14,7 +14,7 @@ export default class ProgressView extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.progressView}>
-                   <Progress.Circle size={30} indeterminate={true} />
+                   <Progress.Circle color={'#FF5B29'} size={30} indeterminate={true} />
                 </View>
             </View>
         )
