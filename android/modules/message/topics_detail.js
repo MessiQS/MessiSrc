@@ -263,7 +263,7 @@ export default class TopicsDetail extends React.Component {
 
     render() {
         return (
-            <View>
+            <View styles={styles.container}>
                 {this._renderProgress()}
                 <FlatList
                     ListHeaderComponent={this._renderHeader()}
@@ -277,6 +277,9 @@ export default class TopicsDetail extends React.Component {
 }
 
 var styles = ({
+    container: {
+        height: '100%'
+    },
     headerLeftView: {
         left: 10,
         justifyContent: 'center',
