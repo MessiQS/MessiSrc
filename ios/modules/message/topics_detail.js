@@ -18,7 +18,7 @@ import runtime from "../../../service/runtime";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 
-var RechargeVC = NativeModules.RechargeVC;
+var STRIAPManager = NativeModules.STRIAPManager;
 
 export default class TopicsDetail extends React.Component {
 
@@ -88,40 +88,7 @@ export default class TopicsDetail extends React.Component {
             return 
         }
 
-        this.props.navigation.navigate('PayPage', item)
-
-        // this.setState({
-        //     loading: true
-        // })
-        // const user = realmManager.getCurrentUser()
-        // const res = await HTTP.post("api/updateUserBuyInfo", {
-        //     "user_id": user.userId,
-        //     "bankname": item.id
-        // })
-        // if (res.type == true) {
-
-        //     var examIdsjson = []
-        //     if (!!user.examIds) {
-        //         examIdsjson = JSON.parse(user.examIds)
-        //     }
-        //     examIdsjson.push(item.id)
-        //     const exam = await realmManager.updateCurrentExamInfo(item)
-
-        //     const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
-
-        //     if (isHavePaper == false) {
-        //         this._downloadExam(item)
-        //     }
-        // }
-
-        // setTimeout(() => {
-        //     runtime.emit(DBChange);
-        // }, 1)
-
-        // this.setState({
-        //     loading: false,
-        //     user: user,
-        // })
+        STRIAPManager.buy("")
     }
 
     async _chooseExam(item) {

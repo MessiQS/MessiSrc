@@ -468,7 +468,8 @@ export default class Find extends Component {
 const styles = {
     container: {
         backgroundColor: '#F6F6F6',
-        width: '100%'
+        width: '100%',
+        height: '100%'
     },
     instructions: {
         textAlign: 'center',
