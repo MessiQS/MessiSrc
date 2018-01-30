@@ -63,13 +63,13 @@ export default class OptionController {
 
     static setStyle(attr, style, size, scale) {
         let obj = {}
-        obj.height = attr['height'] || style['height'] || size[3] * scale
+        obj.height = parseInt(attr['height'] || style['height'] || size[3] * scale, 10)
 
         if (attr['width'] === 'auto' || style['width'] === 'auto') {
             obj.width = obj.height / size[3] * size[2]
             return obj
         }
-        obj.width = attr['width'] || style['width'] || size[2] * scale
+        obj.width = parseInt(attr['width'] || style['width'] || size[2] * scale, 10)
         return obj
     }
 

@@ -24,6 +24,7 @@ import QuestionFeedback from "./question_feedfack";
 import Http from '../../service/http';
 import runtime from '../../service/runtime';
 import { webURL, imageWebURL, DBChange } from "../../service/constant";
+import OptionController from './option.controller'
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -86,10 +87,10 @@ export default class Detail extends Component {
 
         var category = this.state.detail.questionPaper.category
         if (this.state.detail.questionPaper.subject == "不定项" ||
-            this.state.detail.questionPaper.question.indexOf("不定项选择") !== -1 || 
+            this.state.detail.questionPaper.question.indexOf("不定项选择") !== -1 ||
             this.state.detail.questionPaper.subject == "多选") {
-                category = category + "（多选）"
-            }
+            category = category + "（多选）"
+        }
 
         this.props.navigation.setParams({
             headerTitle: category,
@@ -118,7 +119,7 @@ export default class Detail extends Component {
         var re2 = /\/.*?\.(?:png|jpg)/gm;
         let suffixUrl = re2.exec(content)
         let sufUrl = suffixUrl[0]
-        
+
         return imageWebURL + sufUrl
     }
 
@@ -133,7 +134,7 @@ export default class Detail extends Component {
 
             var category = this._memoryModel.questionPaper.category
             if (this._memoryModel.questionPaper.subject == "不定项" ||
-                this._memoryModel.questionPaper.question.indexOf("不定项选择") !== -1 || 
+                this._memoryModel.questionPaper.question.indexOf("不定项选择") !== -1 ||
                 this.state.detail.questionPaper.subject.indexOf("多选") !== -1) {
                 category = category + "（多选）"
             }
@@ -141,7 +142,7 @@ export default class Detail extends Component {
                 headerTitle: category,
                 nextButtonDisable: true,
             });
-    
+
             this.setState({
                 detail: this._memoryModel,
                 isSelected: false,
@@ -188,17 +189,17 @@ export default class Detail extends Component {
         }
 
         this._sendUpdateInfoCache(type, newWeighting)
-        
+
         const newWeighting = this._memoryModel.weighting + score
         realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
-        .then(model => {
-            setTimeout(() => {
-                runtime.emit(DBChange);
-            }, 1);
-        })
-        .catch(e => {
-            console.log("detail.js updateMemoryModel error", e)
-        })        
+            .then(model => {
+                setTimeout(() => {
+                    runtime.emit(DBChange);
+                }, 1);
+            })
+            .catch(e => {
+                console.log("detail.js updateMemoryModel error", e)
+            })
 
         if (option == "A") {
             this.setState({
@@ -308,14 +309,14 @@ export default class Detail extends Component {
 
         const newWeighting = this._memoryModel.weighting + score
         realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
-        .then(model => {
-            setTimeout(function(){
-                runtime.emit(DBChange);
-            }, 1);
-        })
-        .catch(e => {
-            console.log("detail.js updateMemoryModel error", e)
-        }) 
+            .then(model => {
+                setTimeout(function () {
+                    runtime.emit(DBChange);
+                }, 1);
+            })
+            .catch(e => {
+                console.log("detail.js updateMemoryModel error", e)
+            })
         this.setState({
             isSelected: true,
         })
@@ -384,33 +385,69 @@ export default class Detail extends Component {
         let filterStr = this._filterTag(str)
         let regex = /<img/g
         let splits = filterStr.split(regex)
+        const scale = 0.9
 
+        const _afterSelectText = () => {
+
+            const { status, selection } = this.props
+            if (status == "normal") { }
+            if (status == "selected") { }
+            if (status == "right") {
+                return { color: "#8FDA3C" }
+            }
+            if (status == "error") {
+                return { color: "#FF5B29" }
+            }
+            return null
+        }
+        const renderContent = () => {
+            //没有图片
+            if (splits.length === 1 && filterStr.indexOf('img') < 0) {
+                return <Text style={[styles.analysis, _afterSelectText()]}>{filterStr}</Text>
+            }
+            //文字与图嵌套
+            let optionArray = [],
+                count = 0;
+
+            splits.forEach((result, index) => {
+                if (result.indexOf('/>') >= 0) {
+                    let imgArr = result.split('/>')
+                    if (!!imgArr[1]) {
+                        optionArray[index] = imgArr
+                    } else {
+                        splits[index] = imgArr[0]
+                    }
+                }
+            })
+            optionArray.forEach((result, index) => {
+                splits.splice(index, 1 + count, ...result)
+                count++
+            })
+            console.log(splits)
+            return splits.map((content, index) => {
+                if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
+                    let url = OptionController._handleImageURL(content)
+
+                    let styleObj = OptionController.getStyle(content)
+                    let attrObj = OptionController.getAttr(content)
+
+                    let expr = /\/(.*)_(.*)x(.*)_/;
+                    let size = url.match(expr)
+                    let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
+                    const { width, height } = OptionController.setStyleForAnalysis(styleFromCulti)
+                    return (
+                        <Image key={index} style={[styles.questionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
+                    )
+                } else {
+                    return (
+                        <Text key={index} style={[styles.questionText, styles.analysisTextInline, _afterSelectText()]}>{content}</Text>
+                    )
+                }
+            })
+        }
         return (
             <View style={styles.questionView}>
-                {
-                    splits.map((content, index) => {
-                        if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
-
-                            const url = this._handleImageURL(content)
-
-                            let expr = /_(.*)x(.*)_/;
-                            let size = url.match(expr)
-                            let scale = (window.width - 60) / size[1]
-                            let height = size[2] * scale
-
-                            return (
-                                <Image key={index} style={[styles.questionImage, { height: height }]} resizeMode={'contain'} source={{ uri: url }} />
-                            )
-                        } else {
-                            if (content.length > 0) {
-                                return (
-                                    <Text key={index} style={styles.questionText}>{content}</Text>
-                                )
-                            }
-                            return null
-                        }
-                    })
-                }
+                {renderContent()}
             </View>
         )
     }
@@ -428,7 +465,7 @@ export default class Detail extends Component {
         const { detail, isSelected, selectedOption } = this.state
 
         if (detail.questionPaper.subject == "不定项" ||
-            detail.questionPaper.question.indexOf("不定项选择") !== -1 || 
+            detail.questionPaper.question.indexOf("不定项选择") !== -1 ||
             detail.questionPaper.subject.indexOf("多选") !== -1) {
 
             return (
@@ -531,16 +568,19 @@ var styles = StyleSheet.create({
         marginRight: 20,
         marginLeft: 20,
         marginBottom: 20,
+        flexDirection:"row",
+        width:"95%",
+        flexWrap:"wrap"
     },
     questionText: {
         color: '#172434',
         fontSize: 16,
         lineHeight: 25,
     },
-    questionImage: {
-        width: '100%',
-        height: '100%',
-    },
+    // questionImage: {
+    //     width: '100%',
+    //     height: '100%',
+    // },
     separatorLine: {
         height: 1,
         backgroundColor: '#979797',
