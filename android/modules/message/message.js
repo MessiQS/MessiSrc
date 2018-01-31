@@ -10,7 +10,7 @@ import {
     Text,
     View
 } from 'react-native';
-import ListOfTopics from './ListOfTopics.js'
+import ListOfTopics from './ListOfTopics'
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
@@ -18,10 +18,15 @@ export default class Message extends Component {
 
     constructor(props) {
         super(props);
+        this.isLockPushing = false
     };
 
     _select_province(section) {
 
+        if (this._preventPushingMulitpleTimes()) {
+            return 
+        }
+        
         const { state, navigate } = this.props.navigation;
         navigate('TopicsDetail', { section: section, go_back_key: state.key })
     }
@@ -43,6 +48,20 @@ export default class Message extends Component {
                 </ScrollableTabView>
         );
     }
+
+    _preventPushingMulitpleTimes() {
+
+        const that = this
+        if (this.isLockPushing == true) {
+            return true
+        }
+		this.isLockPushing = true
+		
+        setTimeout(() => {
+            that.isLockPushing = false
+		}, 1000);
+		return false;
+	}
 }
 
 var styles = ({
