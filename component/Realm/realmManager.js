@@ -1,27 +1,27 @@
-'use strict';
+'use strict'
 
-import realm from './realm';
-import moment from "moment";
+import realm from './realm'
+import moment from "moment"
 
 class RealmManager {
 
     createQuestion(json) {
-        console.log("realm manager json", json);
+        console.log("realm manager json", json)
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
                     let questions = []
                     json.data.forEach(function (value, index) {
 
-                        let question = realm.create('QuestionPaper', value);
+                        let question = realm.create('QuestionPaper', value)
                         questions.push(question)
                     })
                     console.log("QuestionPaper save success")
                     resolve(questions)
-                });
+                })
             } catch (e) {
-                console.log("QuestionPaper Error on creation" + e);
-                reject(e);
+                console.log("QuestionPaper Error on creation" + e)
+                reject(e)
             }
         })
     }
@@ -33,11 +33,11 @@ class RealmManager {
             try {
                 realm.write(() => {
 
-                    let exam = realm.create('ExaminationPaper', examinationPaper);
+                    let exam = realm.create('ExaminationPaper', examinationPaper)
                     resolve(exam)
-                });
+                })
             } catch (e) {
-                console.log("ExaminationPaper Error on creation", e);
+                console.log("ExaminationPaper Error on creation", e)
                 reject(e)
             }
         })
@@ -47,12 +47,12 @@ class RealmManager {
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
-                    realm.create('User', user);
-                    resolve();
-                });
+                    realm.create('User', user)
+                    resolve()
+                })
             } catch (e) {
-                console.log("User Error on creation", e);
-                reject(e);
+                console.log("User Error on creation", e)
+                reject(e)
             }
         })
     }
@@ -79,7 +79,7 @@ class RealmManager {
 
             } catch (e) {
                 reject("FAIL" + e)
-                console.log("MemoryModel Error on creation");
+                console.log("MemoryModel Error on creation")
             }
         })
 
@@ -90,10 +90,10 @@ class RealmManager {
 
         try {
             realm.write(() => {
-                realm.create('Schedule', schedule);
-            });
+                realm.create('Schedule', schedule)
+            })
         } catch (e) {
-            console.log("Schedule Error on creation");
+            console.log("Schedule Error on creation")
         }
     }
 
@@ -103,32 +103,32 @@ class RealmManager {
     // 更新试卷
     updateExaminationPaper(newExaminationPaper) {
 
-        let oldExaminationPaper = realm.objectForPrimaryKey('ExaminationPaper', newExaminationPaper.id);
+        let oldExaminationPaper = realm.objectForPrimaryKey('ExaminationPaper', newExaminationPaper.id)
 
         try {
             realm.write(() => {
-                oldExaminationPaper = newExaminationPaper;
-            });
+                oldExaminationPaper = newExaminationPaper
+            })
         } catch (e) {
-            console.log("ExaminationPaper Error on update");
+            console.log("ExaminationPaper Error on update")
         }
     }
 
     updateUserExamIds(examIds) {
         
         let examIdsJSON = JSON.stringify(examIds)
-        var user = this.getCurrentUser();
+        var user = this.getCurrentUser()
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
                     user.examIds = examIdsJSON
                     resolve(user)
-                });
+                })
             } catch (e) {
-                reject(e);
-                console.log("ExaminationPaper Error on update");
+                reject(e)
+                console.log("ExaminationPaper Error on update")
             }
-        });
+        })
     }
 
     updateMemoryModel(model, record, newWeighting) {
@@ -143,28 +143,39 @@ class RealmManager {
                     model.lastBySelectedTime = time.getTime()
                     model.records.push(record)
                     resolve(model)
-                });
+                })
             } catch (e) {
-                reject(e);
-                console.log("ExaminationPaper Error on update");
+                reject(e)
+                console.log("ExaminationPaper Error on update")
             }
-        });
+        })
     }
 
     /// 查询数据
     // 获取当前用户
     getCurrentUser() {
 
-        let users = realm.objects('User');
+        let users = realm.objects('User')
         if (users.length == 0) {
-            return null;
+            return null
         } else {
-            return users[0];
+            return users[0]
+        }
+    }
+
+    getAllExams() {
+
+        let exams = realm.objects('ExaminationPaper')
+        console.log("realmManager.js get all exams", exams)
+        if (exams.length == 0) {
+            return null
+        } else {
+            return exams
         }
     }
 
     isHaveExamiationPaper(id) {
-        let examinationPaper = realm.objectForPrimaryKey('ExaminationPaper', id);
+        let examinationPaper = realm.objectForPrimaryKey('ExaminationPaper', id)
         console.log("isHaveExamiationPaper", id)
         if (examinationPaper) {
             return true
@@ -175,7 +186,7 @@ class RealmManager {
 
     saveMemoryModelsByExamData(examData, examId) {
 
-        console.log("save memory models by exam data ", examData, examId);
+        console.log("save memory models by exam data ", examData, examId)
         const that = this
         return new Promise((resolve, reject) => {
             try {
@@ -186,7 +197,7 @@ class RealmManager {
                         if (model.examId == examData[key].bankname &&
                             model.questionPaper.question_number == examData[key].qname) {
                             console.log("examData[key], model", examData[key], model)
-                            that._saveMemoryData(examData[key], model);
+                            that._saveMemoryData(examData[key], model)
                         }
                     }
                 })
@@ -195,19 +206,34 @@ class RealmManager {
 
                     
                 //     // for (let questionModel of examData) {
-                //     //     console.log("question model", questionModel);
+                //     //     console.log("question model", questionModel)
                 //     // }
 
                 //     // if (model.examId == examData.bankname && model.questionPaper.question_number == examData.qname) {
-                //     //     that._saveMemoryData(examData);
+                //     //     that._saveMemoryData(examData)
                 //     // }
                 // }
 
             } catch (e) {
-                console.log("ExaminationPaper Error on creation", e);
+                console.log("ExaminationPaper Error on creation", e)
                 reject(e)
             }
         })
+    }
+
+    updateCurrentExamInfo(item) {
+
+        const user = this.getCurrentUser()
+
+        try {
+            realm.write(() => {
+                user.currentExamId = item.id
+                user.currentExamTitle = item.title
+            })
+        } catch (e) {
+            console.log("choose", e)
+        }
+        return user
     }
 
     _saveMemoryData(questionData, memoryModel) {
@@ -230,15 +256,15 @@ class RealmManager {
                     isRight: false
                 })
             }
-            console.log("save memory data", memoryModel);
-        });
+            console.log("save memory data", memoryModel)
+        })
     }
 
 
     // 通过id获取指定试卷
     getExaminationPaper(id) {
 
-        let examinationPaper = realm.objectForPrimaryKey('ExaminationPaper', id);
+        let examinationPaper = realm.objectForPrimaryKey('ExaminationPaper', id)
 
         if (examinationPaper) {
             return examinationPaper
@@ -249,20 +275,20 @@ class RealmManager {
 
     getScheduleBySpecialDate(date) {
 
-        let schedule = realm.objects('Schedule').filtered('date=' + date)[0];
+        let schedule = realm.objects('Schedule').filtered('date=' + date)[0]
 
         if (schedule.length == 0) {
 
-            console.log("getScheduleBySpecialDate: schedule is empty");
+            console.log("getScheduleBySpecialDate: schedule is empty")
             return null
         }
 
-        return schedule;
+        return schedule
     }
 
     getTodaySchedule() {
 
-        let schedules = realm.objects('Schedule').filtered('date=' + date)[0];
+        let schedules = realm.objects('Schedule').filtered('date=' + date)[0]
 
         return schedules
     }
@@ -271,27 +297,12 @@ class RealmManager {
 
     }
 
-    updateCurrentExamInfo(item) {
-
-        const user = this.getCurrentUser()
-
-        try {
-            realm.write(() => {
-                user.currentExamId = item.id
-                user.currentExamTitle = item.title
-            })
-        } catch (e) {
-            console.log("choose", e)
-        }
-        return user
-    }
-
     getRandomPaper() {
 
-        let exams = realm.objects('QuestionPaper');
+        let exams = realm.objects('QuestionPaper')
         if (exams.length == 0) {
 
-            console.log("QuestionPaper: schedule is empty");
+            console.log("QuestionPaper: schedule is empty")
             return null
         }
         return exams
@@ -319,7 +330,7 @@ class RealmManager {
 
     getCurrentMemoryModel(category) {
 
-        let user = this.getCurrentUser();
+        let user = this.getCurrentUser()
         if (category == "new") {
             let models = realm.objects('MemoryModel')
             .filtered("appearedSeveralTime=0 && examId=$0", user.currentExamId)
@@ -327,7 +338,7 @@ class RealmManager {
 
             if (models.length == 0) {
                 console.log("Memory Models is empty")
-                return null;
+                return null
             }
             return models[0]
         } 
@@ -339,7 +350,7 @@ class RealmManager {
 
             if (models.length == 0) {
                 console.log("Memory Models is empty")
-                return null;
+                return null
             }
             return models[0]
         }
@@ -347,14 +358,14 @@ class RealmManager {
 
     getNewQuestionCount() {
 
-        let models = realm.objects('MemoryModel').filtered('appearedSeveralTime=0');
+        let models = realm.objects('MemoryModel').filtered('appearedSeveralTime=0')
 
         return models.length
     }
 
     getWrongQuestionCount() {
 
-        let models = realm.objects('MemoryModel').filtered('appearedSeveralTime>0 && weighting<7');
+        let models = realm.objects('MemoryModel').filtered('appearedSeveralTime>0 && weighting<7')
 
         return models.length
     }
@@ -425,13 +436,13 @@ class RealmManager {
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
-        var wrongSum = beforeArray.reduce(function(a, b) { return a + b; });
-        var wrongAvg = wrongSum / beforeArray.length;
+        var wrongSum = beforeArray.reduce(function(a, b) { return a + b })
+        var wrongAvg = wrongSum / beforeArray.length
 
         object.newAverage = Math.round(wrongAvg)
 
-        var newSum = futureArray.reduce(function(a, b) { return a + b; });
-        var newAvg = newSum / futureArray.length;
+        var newSum = futureArray.reduce(function(a, b) { return a + b })
+        var newAvg = newSum / futureArray.length
 
         object.wrongAverage = Math.round(newAvg)
 
@@ -452,7 +463,7 @@ class RealmManager {
             object.wrongLastSelectDate = this.getDateFormat(date)
         }
 
-        object.pieArray = [{ value: x }, { value: object.wrongQuestionCount }, { value: a.length }];
+        object.pieArray = [{ value: x }, { value: object.wrongQuestionCount }, { value: a.length }]
 
         return object
     }
@@ -482,7 +493,7 @@ class RealmManager {
 
                 return diff_3 + "年前"
             },
-        });
+        })
     }
 
     deleteAllRealmData() {
@@ -490,21 +501,21 @@ class RealmManager {
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
-                    realm.deleteAll();
+                    realm.deleteAll()
                     resolve()
-                });
+                })
             } catch (e) {
-                reject(e);
-                console.log("ExaminationPaper Error on update");
+                reject(e)
+                console.log("ExaminationPaper Error on update")
             }
-        });
+        })
     }
 
     uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8)
+            return v.toString(16)
+        })
     }
 }
 

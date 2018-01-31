@@ -26,17 +26,19 @@ export default class ListOfTopics extends React.Component {
     };
 
     componentDidMount() {
+
         const that = this
         MessageService.getPaper().then(data => {
             var papers = [];
             that.cacheData = data.data;
             console.log("list of topic js get paper data", data)
             var papers = that.getCurrentPaper();
-            console.log("papers", papers);
+            that.updateExamIfNeed(papers)
             that.setState({
                 papers: papers
             })
         });
+
         const user = realmManager.getCurrentUser();
         if (user) {
 
@@ -59,6 +61,14 @@ export default class ListOfTopics extends React.Component {
 
     static propTypes = {
         select_province: PropTypes.func,
+    }
+
+    updateExamIfNeed(papers) {
+        console.log("papers", papers);
+        let exams = realmManager.getAllExams();
+
+        
+
     }
 
     getCurrentPaper(){

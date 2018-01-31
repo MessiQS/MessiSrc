@@ -439,9 +439,11 @@ export default class Detail extends Component {
                     let size = url.match(expr)
                     let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
                     const { width, height } = OptionController.setStyleForAnalysis(styleFromCulti)
-                    console.log("uri", url)
+                    /// 当图片宽度小于屏幕的0.7倍，不可点击放大
+                    let disabled = width < (window.width * 0.7) ? true : false
+
                     return (
-                        <TouchableOpacity key={index} onPress={() => {
+                        <TouchableOpacity key={index} disabled={disabled} onPress={() => {
                             this.selectedImageURL = url
                             this.setState({
                                 showImageDetail: true
