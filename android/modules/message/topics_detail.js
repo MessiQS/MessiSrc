@@ -263,7 +263,7 @@ export default class TopicsDetail extends React.Component {
 
     render() {
         return (
-            <View styles={styles.container}>
+            <View style={styles.container}>
                 {this._renderProgress()}
                 <FlatList
                     ListHeaderComponent={this._renderHeader()}

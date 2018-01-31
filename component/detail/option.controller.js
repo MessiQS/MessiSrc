@@ -1,4 +1,5 @@
 import { webURL, imageWebURL } from "../../service/constant"
+import { Dimensions } from 'react-native';
 
 function changeEm(str) {
     if (str.indexOf("em") >= 0) {
@@ -62,13 +63,29 @@ export default class OptionController {
 
     static setStyle(attr, style, size, scale) {
         let obj = {}
-        obj.height = attr['height'] || style['height'] || size[3] * scale
+        obj.height = parseInt(attr['height'] || style['height'] || size[3] * scale, 10)
 
         if (attr['width'] === 'auto' || style['width'] === 'auto') {
-            obj.width = obj.height/size[3] * size[2]
+            obj.width = obj.height / size[3] * size[2]
             return obj
         }
-        obj.width = attr['width'] || style['width'] || size[2] * scale
+        obj.width = parseInt(attr['width'] || style['width'] || size[2] * scale, 10)
         return obj
+    }
+
+    static setStyleForAnalysis({ width, height }) {
+        const window = Dimensions.get('window');
+        let returnWidth = width,
+            returnHeight = height;
+
+        if (width > (window.width - 60)) {
+            returnWidth = window.width - 60
+            returnHeight = returnWidth / width * height
+        }
+
+        return {
+            width: returnWidth,
+            height: returnHeight
+        }
     }
 }
