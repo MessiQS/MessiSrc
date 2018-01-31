@@ -118,10 +118,7 @@ class Mine extends Component {
                         NavigationActions.navigate({ routeName: 'Login' })
                     ]
                 })
-                // clearPromise.then(res => {
-                    that.props.navigation.dispatch(resetAction)
-                //    }
-                // )
+                that.props.navigation.dispatch(resetAction)
               }},
               {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
             ],

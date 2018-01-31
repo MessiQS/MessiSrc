@@ -407,7 +407,7 @@ export default class Detail extends Component {
         const renderContent = () => {
             //没有图片
             if (splits.length === 1 && filterStr.indexOf('img') < 0) {
-                return <Text style={[styles.analysis, _afterSelectText()]}>{filterStr}</Text>
+                return <Text style={[styles.questionText, _afterSelectText()]}>{filterStr}</Text>
             }
             //文字与图嵌套
             let optionArray = [],

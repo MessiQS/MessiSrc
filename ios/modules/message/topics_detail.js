@@ -119,19 +119,15 @@ export default class TopicsDetail extends React.Component {
             runtime.emit(DBChange);
         }, 1)
 
-        
         setTimeout(() => {
             this.setState({
                 loading: false,
                 user: user,
             })
-
-            
             const { state, goBack } = this.props.navigation;    
             const params = state.params || {};
             goBack(params.go_back_key);
         }, 1000)
-        
     }
 
     async _downloadExam(item) {
@@ -141,7 +137,7 @@ export default class TopicsDetail extends React.Component {
         });
         const papers = await realmManager.createQuestion(json)
         const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        await realmManager.createExaminationPaper({
+        let exam = await realmManager.createExaminationPaper({
             id: item.id,
             title: item.title,
             questionPapers: papers,
@@ -151,6 +147,7 @@ export default class TopicsDetail extends React.Component {
             purchased: true,
             price: parseFloat(item.price),
         })
+        console.log("topic_detail.js exam", exam)
     }
 
     _exit() {
