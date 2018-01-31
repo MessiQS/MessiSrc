@@ -18,7 +18,7 @@ import Mine from './modules/mine/mine';
 import SoftwareAgreement from './modules/mine/software_agreement';
 import Feedback from './modules/mine/feedback';
 import Find from './modules/find/find';
-import Message from '../component/message/message';//选题
+import Message from './modules/message/message';//选题
 import Account from '../component/MineMenu/account';
 import Update from '../component/MineMenu/update';
 import Request from '../component/MineMenu/request';

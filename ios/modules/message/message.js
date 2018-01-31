@@ -10,7 +10,7 @@ import {
     Text,
     View
 } from 'react-native';
-import ListOfTopics from '../../ios/modules/message/ListOfTopics'
+import ListOfTopics from './ListOfTopics'
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
