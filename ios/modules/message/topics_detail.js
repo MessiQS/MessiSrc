@@ -89,6 +89,14 @@ export default class TopicsDetail extends React.Component {
         }
 
         STRIAPManager.buy("")
+        // HTTP.post('api/applePay', {
+        //     receipt
+        // }, true).then( value => {
+        //     console.log("api/applePay value", value)
+        // }).catch (err => {
+        //     console.log("api/applePay err", err)
+        // })
+
     }
 
     async _chooseExam(item) {
