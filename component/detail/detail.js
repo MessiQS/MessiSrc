@@ -13,7 +13,8 @@ import {
     TouchableOpacity,
     ScrollView,
     Platform,
-    Button
+    Button,
+    Modal
 } from 'react-native';
 import realmManager from "../Realm/realmManager";
 import realm from '../Realm/realm';
@@ -25,6 +26,7 @@ import Http from '../../service/http';
 import runtime from '../../service/runtime';
 import { webURL, imageWebURL, DBChange } from "../../service/constant";
 import OptionController from './option.controller'
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -102,6 +104,7 @@ export default class Detail extends Component {
     constructor(props) {
         super(props);
         this._memoryModel = this._getMemoryModel()
+        this.selectedImageURL = null
         this.state = {
             detail: this._memoryModel,
             isSelected: false,
@@ -110,6 +113,7 @@ export default class Detail extends Component {
             B_Status: ItemStatus.NORMAL,
             C_Status: ItemStatus.NORMAL,
             D_Status: ItemStatus.NORMAL,
+            showImageDetail: false,
         }
         console.log(this._memoryModel)
     }
@@ -435,8 +439,16 @@ export default class Detail extends Component {
                     let size = url.match(expr)
                     let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
                     const { width, height } = OptionController.setStyleForAnalysis(styleFromCulti)
+                    console.log("uri", url)
                     return (
-                        <Image key={index} style={[styles.questionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
+                        <TouchableOpacity key={index} onPress={() => {
+                            this.selectedImageURL = url
+                            this.setState({
+                                showImageDetail: true
+                            })
+                        }}>
+                            <Image style={[styles.questionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
+                        </TouchableOpacity>
                     )
                 } else {
                     return (
@@ -497,6 +509,21 @@ export default class Detail extends Component {
         }
     }
 
+    renderImageDetail() {
+
+        let url = "https://shuatiapp.cn/images/7ec08470a0be5b70/normal_700x457_137618c5cb793ae.png"
+        console.log("showImageDetail", this.state.showImageDetail)
+        return (
+            <Modal visible={this.state.showImageDetail} transparent={true}>
+                <ImageViewer imageUrls={[{ url: this.selectedImageURL }]} onClick={()=>{
+                    this.setState({
+                        showImageDetail: false
+                    })
+                }}/>
+            </Modal>
+        )
+    }
+
     render() {
 
         const { detail } = this.state
@@ -520,6 +547,7 @@ export default class Detail extends Component {
                 </View>
                 <View style={styles.separatorLine}></View>
                 <ScrollView style={styles.bottomContent}>
+                    {this.renderImageDetail()}
                     {this._renderQuestion2(str1)}
                     {this._renderOptionForm()}
                     {this._renderAnalysis()}
@@ -568,9 +596,9 @@ var styles = StyleSheet.create({
         marginRight: 20,
         marginLeft: 20,
         marginBottom: 20,
-        flexDirection:"row",
-        width:"95%",
-        flexWrap:"wrap"
+        flexDirection: "row",
+        width: "95%",
+        flexWrap: "wrap"
     },
     questionText: {
         color: '#172434',
