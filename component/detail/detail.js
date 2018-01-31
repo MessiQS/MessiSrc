@@ -372,16 +372,7 @@ export default class Detail extends Component {
 
     _filterTag(str) {
 
-        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
-        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
-        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-        filterStr = filterStr.replace(/<span style=\"color: #46a546;\">/g, "")
-        filterStr = filterStr.replace(/<\/span>/g, "")
-        if (filterStr[0] == " ") {
-            filterStr = filterStr.replace(" ", "")
-        }
-
-        return filterStr
+        return str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
     }
 
     _renderQuestion(str) {

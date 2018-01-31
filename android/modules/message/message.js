@@ -34,18 +34,18 @@ export default class Message extends Component {
     render() {
         const that = this
         return (
-                <ScrollableTabView
-                    tabBarActiveTextColor={'#FF5B29'}
-                    tabBarBackgroundColor={'#fff'}
-                    tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-                    style={styles.scrollableTabViewStyle}
-                    tabBarTextStyle={styles.tabBarTextStyle}
-                    tabBarPosition={"overlayTop"}>
-                    <ListOfTopics tabLabel="历年真题"
-                        select_province={that._select_province.bind(that)} />
-                    <View style={styles.itemView} tabLabel="专项练习" />
-                    <View style={styles.itemView} tabLabel="申论" />
-                </ScrollableTabView>
+            <ScrollableTabView
+                tabBarActiveTextColor={'#FF5B29'}
+                tabBarBackgroundColor={'#fff'}
+                tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+                style={styles.scrollableTabViewStyle}
+                tabBarTextStyle={styles.tabBarTextStyle}
+                tabBarPosition={"overlayTop"}>
+                <ListOfTopics tabLabel="历年真题"
+                    select_province={that._select_province.bind(that)} />
+                <View style={styles.itemView} tabLabel="专项练习" />
+                <View style={styles.itemView} tabLabel="申论" />
+            </ScrollableTabView>
         );
     }
 

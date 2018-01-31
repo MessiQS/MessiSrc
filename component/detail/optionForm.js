@@ -33,21 +33,7 @@ export default class OptionForm extends React.Component {
 
     _filterTag(str) {
 
-        let filterStr = str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
-        filterStr = filterStr.replace(/<p style=\"display: inline;\">/g, "").replace(/<\/p>/g, "")
-        filterStr = filterStr.replace(/<p class=\"item-p\">/g, "")
-        if (filterStr[0] == " ") {
-            filterStr = filterStr.replace(" ", "")
-        }
-        // let re = /.\/(.*)files/g;
-        // let results = re.exec(filterStr);
-        // let img = "";
-        // if (results) {
-        //     img = results[0].replace("./", "")
-        //     filterStr = filterStr.replace(img, key[img])
-        // }
-
-        return filterStr
+        return str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
     }
 
     _showTitle() {

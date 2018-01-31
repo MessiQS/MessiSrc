@@ -60,7 +60,7 @@ export default class ListOfTopics extends React.Component {
         }
     }
 
-    updateExamIfNeed(papers) {
+    async updateExamIfNeed(papers) {
         let exams = realmManager.getAllExams();
         if (exams) {
             /// 遍历本地试卷
@@ -70,11 +70,20 @@ export default class ListOfTopics extends React.Component {
                     
                     if (exam.province == provinceInfo.province) {
 
-                        provinceInfo.data.forEach(value => {
+                        provinceInfo.data.forEach(async value => {
                             if (value.id == exam.id && value.version != exam.version) {
                                 console.log("province info", value)
+                                const json = await MessageService.downloadPaper({
+                                    paperId: value.id
+                                });
+                                console.log("list of topic js json", json)
+                                if (json.type == "true") {
 
-                            }
+                                    await realmManager.updateExaminationPaper(value, json.data)
+                                }
+
+
+                            }   
                         })
                     }
                 });

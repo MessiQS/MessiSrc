@@ -101,17 +101,57 @@ class RealmManager {
     /// 更新
 
     // 更新试卷
-    updateExaminationPaper(newExaminationPaper) {
+    updateExaminationPaper(exam, newExams) {
 
-        let oldExaminationPaper = realm.objectForPrimaryKey('ExaminationPaper', newExaminationPaper.id)
+        let examWithPapers = realm.objectForPrimaryKey('ExaminationPaper', exam.id)
 
-        try {
-            realm.write(() => {
-                oldExaminationPaper = newExaminationPaper
-            })
-        } catch (e) {
-            console.log("ExaminationPaper Error on update")
-        }
+        console.log("updateExaminationPaper begin")
+        
+        return new Promise((resolve, reject) => {
+
+            try {
+                realm.beginTransaction()
+                examWithPapers.year = exam.year
+                examWithPapers.title = exam.title
+                examWithPapers.province = exam.province
+                examWithPapers.version = exam.version
+                examWithPapers.price = parseFloat(exam.price)
+
+               
+                newExams.forEach( newQuestion => {
+                    examWithPapers.questionPaper.forEach(question => {
+                        if (question.id == newQuestion.id) {
+                            question.analysis = newQuestion.analysis
+                            question.answer = newQuestion.answer
+                            question.category = newQuestion.category
+                            question.created_at = newQuestion.created_at
+                            question.updated_at = newQuestion.updated_at
+                            question.question_number = newQuestion.question_number
+                            question.option_A = newQuestion.option_A
+                            question.option_B = newQuestion.option_B
+                            question.option_C = newQuestion.option_C
+                            question.option_D = newQuestion.option_D
+                            question.province = newQuestion.province
+                            question.question = newQuestion.question
+                            question.subject = newQuestion.subject
+                            question.title = newQuestion.title
+                            question.question_point = newQuestion.question_point
+                            question.question_material = newQuestion.question_material
+                        }
+                    })
+                })
+                
+
+                realm.commitTransaction()
+
+                resolve(examWithPapers)
+                console.log("updateExaminationPaper end")
+
+            } catch (e) {
+                reject(e)
+                console.log("ExaminationPaper Error on update")
+            }
+        })
     }
 
     updateUserExamIds(examIds) {
@@ -147,6 +187,29 @@ class RealmManager {
             } catch (e) {
                 reject(e)
                 console.log("ExaminationPaper Error on update")
+            }
+        })
+    }
+
+    updateQuestions(json) {
+
+        return new Promise((resolve, reject) => {
+            try {
+
+                realm.beginTransaction()
+                let questions = []
+                json.data.forEach(function (value, index) {
+
+                    let question = realm.create('QuestionPaper', value)
+                    questions.push(question)
+                })
+                console.log("QuestionPaper save success")
+                resolve(questions)
+                realm.commitTransaction()
+
+            } catch (e) {
+                console.log("QuestionPaper Error on creation" + e)
+                reject(e)
             }
         })
     }
@@ -201,18 +264,6 @@ class RealmManager {
                         }
                     }
                 })
-
-                // for(let model of memoryModels) {
-
-                    
-                //     // for (let questionModel of examData) {
-                //     //     console.log("question model", questionModel)
-                //     // }
-
-                //     // if (model.examId == examData.bankname && model.questionPaper.question_number == examData.qname) {
-                //     //     that._saveMemoryData(examData)
-                //     // }
-                // }
 
             } catch (e) {
                 console.log("ExaminationPaper Error on creation", e)
