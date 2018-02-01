@@ -24,11 +24,15 @@ export default class Message extends Component {
     _select_province(section) {
 
         if (this._preventPushingMulitpleTimes()) {
-            return 
+            return
         }
-        
+
         const { state, navigate } = this.props.navigation;
-        navigate('TopicsDetail', { section: section, go_back_key: state.key })
+        navigate('TopicsDetail', {
+            section: section,
+            go_back_key: state.key,
+            callback: state.params.callback
+        })
     }
 
     render() {
@@ -55,13 +59,13 @@ export default class Message extends Component {
         if (this.isLockPushing == true) {
             return true
         }
-		this.isLockPushing = true
-		
+        this.isLockPushing = true
+
         setTimeout(() => {
             that.isLockPushing = false
-		}, 1000);
-		return false;
-	}
+        }, 1000);
+        return false;
+    }
 }
 
 var styles = ({

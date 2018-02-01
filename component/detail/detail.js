@@ -70,7 +70,10 @@ export default class Detail extends Component {
         ),
         headerLeft: (
             Platform.OS == "ios" ? (
-                <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                <TouchableOpacity onPress={() => {
+                    navigation.state.params.callback()
+                    navigation.goBack()
+                }}>
                     <View style={{
                         left: 10,
                         justifyContent: 'center',
@@ -521,11 +524,11 @@ export default class Detail extends Component {
         console.log("showImageDetail", this.state.showImageDetail)
         return (
             <Modal visible={this.state.showImageDetail} transparent={true}>
-                <ImageViewer imageUrls={[{ url: this.selectedImageURL }]} onClick={()=>{
+                <ImageViewer imageUrls={[{ url: this.selectedImageURL }]} onClick={() => {
                     this.setState({
                         showImageDetail: false
                     })
-                }}/>
+                }} />
             </Modal>
         )
     }

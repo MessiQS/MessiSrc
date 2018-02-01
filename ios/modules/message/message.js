@@ -24,28 +24,32 @@ export default class Message extends Component {
     _select_province(section) {
 
         if (this._preventPushingMulitpleTimes()) {
-            return 
+            return
         }
-        
+
         const { state, navigate } = this.props.navigation;
-        navigate('TopicsDetail', { section: section, go_back_key: state.key })
+        navigate('TopicsDetail', {
+            section: section,
+            go_back_key: state.key,
+            callback: state.params.callback
+        })
     }
 
     render() {
         const that = this
         return (
-                <ScrollableTabView
-                    tabBarActiveTextColor={'#FF5B29'}
-                    tabBarBackgroundColor={'#fff'}
-                    tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-                    style={styles.scrollableTabViewStyle}
-                    tabBarTextStyle={styles.tabBarTextStyle}
-                    tabBarPosition={"overlayTop"}>
-                    <ListOfTopics tabLabel="历年真题"
-                        select_province={that._select_province.bind(that)} />
-                    <View style={styles.itemView} tabLabel="专项练习" />
-                    <View style={styles.itemView} tabLabel="申论" />
-                </ScrollableTabView>
+            <ScrollableTabView
+                tabBarActiveTextColor={'#FF5B29'}
+                tabBarBackgroundColor={'#fff'}
+                tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+                style={styles.scrollableTabViewStyle}
+                tabBarTextStyle={styles.tabBarTextStyle}
+                tabBarPosition={"overlayTop"}>
+                <ListOfTopics tabLabel="历年真题"
+                    select_province={that._select_province.bind(that)} />
+                <View style={styles.itemView} tabLabel="专项练习" />
+                <View style={styles.itemView} tabLabel="申论" />
+            </ScrollableTabView>
         );
     }
 
@@ -55,13 +59,13 @@ export default class Message extends Component {
         if (this.isLockPushing == true) {
             return true
         }
-		this.isLockPushing = true
-		
+        this.isLockPushing = true
+
         setTimeout(() => {
             that.isLockPushing = false
-		}, 1000);
-		return false;
-	}
+        }, 1000);
+        return false;
+    }
 }
 
 var styles = ({

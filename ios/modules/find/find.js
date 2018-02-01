@@ -99,7 +99,7 @@ export default class Find extends Component {
     }
 
     componentDidMount() {
-        this.onMessage()
+        // this.onMessage()
     }
 
     _prepareUI() {
@@ -221,7 +221,11 @@ export default class Find extends Component {
 
     routeToPayPage() {
         const { navigate } = this.props.navigation;
-        navigate('Message', {})
+        navigate('Message', {
+            callback:(data) => {
+                this._updateUI()
+            }
+        })
     }
 
     routeToNewDetail() {

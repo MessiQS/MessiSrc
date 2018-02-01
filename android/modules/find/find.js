@@ -26,7 +26,7 @@ import Alert from "../../../component/progress/alert";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 import { Dimensions } from 'react-native';
-const {height, width} = Dimensions.get('window'); 
+const { height, width } = Dimensions.get('window');
 
 const chartArray = [1, 2];
 const header = {
@@ -99,7 +99,7 @@ export default class Find extends Component {
     }
 
     componentDidMount() {
-        this.onMessage()
+        // this.onMessage()
     }
 
     _prepareUI() {
@@ -144,7 +144,7 @@ export default class Find extends Component {
 
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
-            this.setState ({
+            this.setState({
                 currentExam: user.currentExamTitle,
                 currentExamDetail: "历年真题",
                 info: info,
@@ -160,7 +160,7 @@ export default class Find extends Component {
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
-            this.setState ({
+            this.setState({
                 currentExam: "当前暂无题库信息",
                 currentExamDetail: "请选择题库",
                 info: info,
@@ -210,7 +210,11 @@ export default class Find extends Component {
 
     routeToPayPage() {
         const { navigate } = this.props.navigation;
-        navigate('Message', {})
+        navigate('Message', {
+            callback: (data) => {
+                this._updateUI()
+            }
+        })
     }
 
     routeToNewDetail() {
@@ -228,7 +232,12 @@ export default class Find extends Component {
         } else {
 
             const { navigate } = this.props.navigation;
-            navigate('Detail', { category: "new" })
+            navigate('Detail', {
+                category: "new",
+                callback: (data) => {
+                    this._updateUI()
+                }
+            })
         }
     }
 
@@ -247,7 +256,12 @@ export default class Find extends Component {
         } else {
 
             const { navigate } = this.props.navigation;
-            navigate('Detail', { category: "wrong" })
+            navigate('Detail', {
+                category: "wrong", 
+                callback: (data) => {
+                    this._updateUI()
+                }
+            })
         }
     }
 
@@ -270,9 +284,9 @@ export default class Find extends Component {
 
             option = {
                 ...option,
-                series:[{
+                series: [{
                     ...option.series[0],
-                    data:this.state.info.pieArray
+                    data: this.state.info.pieArray
                 }]
             }
 
@@ -322,13 +336,13 @@ export default class Find extends Component {
 
             newPaperOption = {
                 ...newPaperOption,
-                xAxis:[{
+                xAxis: [{
                     ...newPaperOption.xAxis[0],
-                    data:weekArray
+                    data: weekArray
                 }],
-                series:[{
+                series: [{
                     ...newPaperOption.series[0],
-                    data:this.state.info.beforeArray
+                    data: this.state.info.beforeArray
                 }]
             }
 
@@ -346,7 +360,7 @@ export default class Find extends Component {
             newPaperOption.series[0].symbolSize = 0
 
         } else {
-            
+
             newPaperOption.series[0].label.normal.show = true
             newPaperOption.series[0].symbolSize = 6
         }
@@ -396,13 +410,13 @@ export default class Find extends Component {
         if (this.isUpdateChart) {
             newPaperOption = {
                 ...newPaperOption,
-                xAxis:[{
+                xAxis: [{
                     ...newPaperOption.xAxis[0],
-                    data:weekArray
+                    data: weekArray
                 }],
-                series:[{
+                series: [{
                     ...newPaperOption.series[0],
-                    data:this.state.info.futureArray
+                    data: this.state.info.futureArray
                 }]
             }
         } else {
@@ -418,7 +432,7 @@ export default class Find extends Component {
             newPaperOption.series[0].symbolSize = 0
 
         } else {
-            
+
             newPaperOption.series[0].label.normal.show = true
             newPaperOption.series[0].symbolSize = 6
         }
@@ -486,7 +500,7 @@ const styles = {
         width: '70%',
         height: '100%',
         backgroundColor: "#fff",
-        marginLeft: 10,        
+        marginLeft: 10,
     },
     h2: {
         fontSize: 16,
@@ -560,7 +574,7 @@ const styles = {
         fontSize: 12,
         color: '#8E9091',
         backgroundColor: 'rgba(0,0,0,0)',
-        zIndex:1
+        zIndex: 1
     },
     rightTitle: {
         position: "absolute",
@@ -574,7 +588,7 @@ const styles = {
         right: 49,
         fontSize: 12,
         color: "#8E9091",
-        backgroundColor: 'rgba(0,0,0,0)'        
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     rightContainer: {
         flexDirection: "row",

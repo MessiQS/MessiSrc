@@ -118,10 +118,6 @@ export default class TopicsDetail extends React.Component {
         let user = realmManager.updateCurrentExamInfo(item)
 
         setTimeout(() => {
-            runtime.emit(DBChange);
-        }, 1)
-
-        setTimeout(() => {
             this.setState({
                 loading: false,
                 user: user,
@@ -129,6 +125,7 @@ export default class TopicsDetail extends React.Component {
             
             const { state, goBack } = this.props.navigation;    
             const params = state.params || {};
+            params.callback('data')
             goBack(params.go_back_key);
         }, 1000)
     }
