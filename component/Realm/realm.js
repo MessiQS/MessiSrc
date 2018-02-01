@@ -17,7 +17,7 @@ QuestionPaper.schema = {
         category: 'string',                                      /// 题目类型: "资料分析"  "常识判断" "言语理解与表达"  "数量关系" "判断推理"
         created_at: 'string',                                    /// 创建时间 时间戳
         updated_at: 'string',                                    /// 更新时间 "yyyy-MM-DD hh-mm-ss"
-        question_number: 'string',                               /// 题号
+        question_number: 'int',                                  /// 题号
         option_A: { type: 'string', optional: true },            /// 选项 A
         option_B: { type: 'string', optional: true },            /// 选项 B
         option_C: { type: 'string', optional: true },            /// 选项 C
@@ -27,7 +27,7 @@ QuestionPaper.schema = {
         subject: { type: 'string', optional: true },             /// 类型 '单选题'
         title: 'string',                                         /// 试卷名称 "2004年国家(A卷)《行测》真题"
         question_point: { type: 'string', optional: true },      /// 考点 '历史类' '语义分析' "对应关系,同一关系"
-        question_material: { type: 'string', optional: true },     /// 材料
+        question_material: { type: 'string', optional: true },   /// 材料
     }
 }
 

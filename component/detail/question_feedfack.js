@@ -33,7 +33,7 @@ export default class QuestionFeedback extends React.Component {
         let params = {
             title: detail.questionPaper.title,
             id:detail.questionPaper.id,
-            question_number: detail.questionPaper.question_number,
+            question_number: detail.questionPaper.question_number.toString(),
             user_id: user.userId,
         }
 
@@ -119,7 +119,7 @@ var styles = StyleSheet.create ({
         marginBottom: 30,
         borderColor: "rgba(0,0,0,.75)",
         borderWidth: 1,
-        width: 100,
+        width: 90,
         height: 24,
         justifyContent: 'center',
         alignItems: 'center',
@@ -134,7 +134,7 @@ var styles = StyleSheet.create ({
         marginBottom: 30,
         borderColor: 'rgba(151,151,151, .6)',
         borderWidth: 1,
-        width: 100,
+        width: 90,
         height: 24,
         justifyContent: 'center',
         alignItems: 'center',

@@ -68,10 +68,7 @@ class LoginPage extends React.Component {
             Alert.alert('密码格式错误', '请输入6-20位密码，不包含特殊字符');
             return;
         };
-
-        await realmManager.deleteAllRealmData()
-        await Storage.clearAll()
-
+        
         password = MD5(password).toString();
         const loginResponse = await Http.post('api/login', {
             "account": account,
@@ -127,7 +124,7 @@ class LoginPage extends React.Component {
             user_id: userId,
         },true).then((value) => {
             console.log("loginPage.js value", value)
-            if (value.type == "true") {
+            if (value.type == true) {
                 that._getPaperInfo(value)
             } else {
                 console.log("api/getUserQuestionInfo error", value)
@@ -161,20 +158,23 @@ class LoginPage extends React.Component {
         const json = await MessageService.downloadPaper({
             paperId: item.id
         });
-        const papers = await realmManager.createQuestion(json)
-        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        console.log("login page ", memoryModels);
-        await realmManager.createExaminationPaper({
-            id: item.id,
-            title: item.title,
-            questionPapers: papers,
-            year: item.year,
-            province: item.province,
-            version: item.version,
-            purchased: true,
-            price: parseFloat(item.price),
-        })
-        console.log("_downloadExam", item)
+        if (json.type == true) {
+
+            const papers = await realmManager.createQuestion(json)
+            const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+            console.log("login page ", memoryModels);
+            await realmManager.createExaminationPaper({
+                id: item.id,
+                title: item.title,
+                questionPapers: papers,
+                year: item.year,
+                province: item.province,
+                version: item.version,
+                purchased: true,
+                price: parseFloat(item.price),
+            })
+            console.log("_downloadExam", item)
+        }
     }
 
     async _handleMemoryModels(userInfo) {

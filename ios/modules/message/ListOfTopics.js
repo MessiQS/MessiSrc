@@ -75,9 +75,9 @@ export default class ListOfTopics extends React.Component {
                                 const json = await MessageService.downloadPaper({
                                     paperId: value.id
                                 })
-                                
+
                                 console.log("list of topic js json", json)
-                                if (json.type == "true") {
+                                if (json.type == true) {
 
                                     await realmManager.updateExaminationPaper(value, json.data)
                                 }
@@ -87,15 +87,6 @@ export default class ListOfTopics extends React.Component {
                 });
             })
         }
-
-
-        // papers.forEach(provinceInfo => {
-        //     // console.log("provinceInfo", provinceInfo)
-        //     provinceInfo.data.forEach(exam => {
-                
-        //     })
-        // });
-
     }
 
     static propTypes = {

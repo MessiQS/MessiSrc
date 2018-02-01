@@ -5,6 +5,7 @@ import {
     View,
     TouchableOpacity,
     FlatList,
+    Alert
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
@@ -76,7 +77,6 @@ export default class TopicsDetail extends React.Component {
                 loading: false,
             })
         }
-
     }
 
     componentDidMount() {
@@ -138,18 +138,25 @@ export default class TopicsDetail extends React.Component {
         const json = await MessageService.downloadPaper({
             paperId: item.id
         });
-        const papers = await realmManager.createQuestion(json)
-        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        await realmManager.createExaminationPaper({
-            id: item.id,
-            title: item.title,
-            questionPapers: papers,
-            year: item.year,
-            province: item.province,
-            version: item.version,
-            purchased: true,
-            price: parseFloat(item.price),
-        })
+
+        if (json.type == true) {
+            const papers = await realmManager.createQuestion(json)
+            const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+            await realmManager.createExaminationPaper({
+                id: item.id,
+                title: item.title,
+                questionPapers: papers,
+                year: item.year,
+                province: item.province,
+                version: item.version,
+                purchased: true,
+                price: parseFloat(item.price),
+            })
+
+        } else {
+
+            Alert.alert('下载失败，请稍后重试')
+        }
     }
 
     _exit() {

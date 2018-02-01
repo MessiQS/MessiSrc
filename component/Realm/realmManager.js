@@ -2,6 +2,7 @@
 
 import realm from './realm'
 import moment from "moment"
+import index from 'react-native-image-zoom-viewer';
 
 class RealmManager {
 
@@ -99,7 +100,6 @@ class RealmManager {
 
 
     /// 更新
-
     // 更新试卷
     updateExaminationPaper(exam, newExams) {
 
@@ -118,30 +118,36 @@ class RealmManager {
                     examWithPapers.version = exam.version
                     examWithPapers.price = parseFloat(exam.price)
 
-                    
-                    newExams.forEach( newQuestion => {
-                        examWithPapers.questionPapers.forEach(question => {
-                            if (question.id == newQuestion.id) {
-                                question.analysis = newQuestion.analysis
-                                question.answer = newQuestion.answer
-                                question.category = newQuestion.category
-                                question.created_at = newQuestion.created_at
-                                question.updated_at = newQuestion.updated_at
-                                question.question_number = newQuestion.question_number
-                                question.option_A = newQuestion.option_A
-                                question.option_B = newQuestion.option_B
-                                question.option_C = newQuestion.option_C
-                                question.option_D = newQuestion.option_D
-                                question.province = newQuestion.province
-                                question.question = newQuestion.question
-                                question.subject = newQuestion.subject
-                                question.title = newQuestion.title
-                                question.question_point = newQuestion.question_point
-                                question.question_material = newQuestion.question_material
+                    examWithPapers.questionPapers.sorted("question_number")
+                    console.log("realmManager.js examWithPapers.questionPapers after sort ", examWithPapers.questionPapers)
+
+                    if (newExams.length == examWithPapers.questionPapers.length) {
+                        newExams.forEach((newQuestion, index, array) => {
+
+                            if (examWithPapers.questionPapers[index].id == newQuestion.id) {
+                                examWithPapers.questionPapers[index].analysis = newQuestion.analysis
+                                examWithPapers.questionPapers[index].answer = newQuestion.answer
+                                examWithPapers.questionPapers[index].category = newQuestion.category
+                                examWithPapers.questionPapers[index].created_at = newQuestion.created_at
+                                examWithPapers.questionPapers[index].updated_at = newQuestion.updated_at
+                                examWithPapers.questionPapers[index].question_number = newQuestion.question_number
+                                examWithPapers.questionPapers[index].option_A = newQuestion.option_A
+                                examWithPapers.questionPapers[index].option_B = newQuestion.option_B
+                                examWithPapers.questionPapers[index].option_C = newQuestion.option_C
+                                examWithPapers.questionPapers[index].option_D = newQuestion.option_D
+                                examWithPapers.questionPapers[index].province = newQuestion.province
+                                examWithPapers.questionPapers[index].question = newQuestion.question
+                                examWithPapers.questionPapers[index].subject = newQuestion.subject
+                                examWithPapers.questionPapers[index].title = newQuestion.title
+                                examWithPapers.questionPapers[index].question_point = newQuestion.question_point
+                                examWithPapers.questionPapers[index].question_material = newQuestion.question_material
                             }
                         })
-                    })
-
+                    } else {
+                        
+                    }
+                    
+                    console.log("realmManager examWithPapers 2 ", examWithPapers)
                     resolve(examWithPapers)
                     console.log("updateExaminationPaper end")
                 })
@@ -257,7 +263,7 @@ class RealmManager {
 
                     for (let key in examData) {
                         if (model.examId == examData[key].bankname &&
-                            model.questionPaper.question_number == examData[key].qname) {
+                            model.questionPaper.question_number.toString() == examData[key].qname) {
                             console.log("examData[key], model", examData[key], model)
                             that._saveMemoryData(examData[key], model)
                         }

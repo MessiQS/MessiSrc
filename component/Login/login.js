@@ -42,7 +42,7 @@ export default class Login extends Component {
 			password: password
         }, true).then(value => {
 			
-			if (value.type == "true") {
+			if (value.type == true) {
 				Storage.multiSet([
 					['accountToken', value.data.token],
 					['account', account],

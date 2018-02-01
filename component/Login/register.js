@@ -141,7 +141,7 @@ class Register extends React.Component {
             user_id: userId,
         }, true).then((value) => {
             console.log("register.js value", value)
-            if (value.type == "true") {
+            if (value.type == true) {
                 that._getPaperInfo(value)
             } else {
                 console.log("api/getUserQuestionInfo error", value)
