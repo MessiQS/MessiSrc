@@ -113,13 +113,33 @@ class LoginPage extends React.Component {
             }
             console.log("login page user ", user)
             await realmManager.createUser(user)
-            let value = await this._handleUserInfo(data.user_id)
+            let userInfo = await this._handleUserInfo(data.user_id)
 
-            if (value.type == true) {
-                await that._handlePaperInfo(value.data)
-            } else {
-                console.log("api/getUserQuestionInfo error", value)
+            if (userInfo.type == false) {
+                console.log("api/getUserQuestionInfo error", userInfo)
+                Alert('登录错误，请重试')
+                return 
+            } 
+            let paperInfo = await that._handlePaperInfo(userInfo.data)
+
+            if (paperInfo.type == false) {
+                console.log("api/getSinglePaperInfo error", paperInfo);
+                Alert('登录错误，请重试')
+                return 
             }
+
+            for (let item of paperInfo.data) {
+
+                console.log("api/ get single page info ", item)
+                await that._downloadExam(item)
+            }
+            console.log("login page paperInfo", paperInfo)
+
+            that._handleMemoryModels(userInfo);
+            console.log("loginpage.js _handleMemoryModels end")
+            that.setState({
+                loading: false
+            })
 
             const resetAction = NavigationActions.reset({
                 index: 0,
@@ -132,10 +152,10 @@ class LoginPage extends React.Component {
         } else {
             //此处提示错误信息
             Alert.alert(data);
+            this.setState({
+                loading: false
+            })
         }
-        this.setState({
-            loading: false
-        })
     };
 
     async _handleUserInfo(userId) {
@@ -157,15 +177,6 @@ class LoginPage extends React.Component {
         },true)
 
         return value
-
-        console.log("api/getSinglePaperInfo", value);
-
-        for (let item of value.data) {
-
-            console.log("api/ get single page info ", item)
-            await that._downloadExam(item)
-        }
-        await that._handleMemoryModels(userInfo);
     }
 
     async _downloadExam(item) {
@@ -175,6 +186,7 @@ class LoginPage extends React.Component {
         });
         if (json.type == true) {
 
+            console.log('login page.js _downloadExam', json)
             const papers = await realmManager.createQuestion(json)
             const memoryModels = await realmManager.createMemoryModels(papers, item.id)
             console.log("login page ", memoryModels);
@@ -196,9 +208,12 @@ class LoginPage extends React.Component {
 
         console.log("_handleMemoryModels", userInfo)
         const that = this
-        for (let key in userInfo) {
-            console.log("userInfo[key]", userInfo[key])
-            await realmManager.saveMemoryModelsByExamData(userInfo[key], key);
+        let keys = Object.keys(userInfo.data)
+        console.log("keys", keys)
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i]
+            console.log("userInfo.data[key], key", userInfo.data[key], key)
+            realmManager.saveMemoryModelsByExamData(userInfo.data[key], key);
         }
     }
 

@@ -258,13 +258,13 @@ class RealmManager {
             try {
                 var memoryModels = that.getMemoryModelsByExam(examId)
                 if (memoryModels) {
-                    memoryModels.forEach((model) => {
+                    memoryModels.forEach( async (model) => {
     
                         for (let key in examData) {
                             if (model.examId == examData[key].bankname &&
                                 model.questionPaper.question_number == examData[key].qname) {
                                 console.log("examData[key], model", examData[key], model)
-                                that._saveMemoryData(examData[key], model)
+                                await that._saveMemoryData(examData[key], model)
                             }
                         }
                     })
@@ -275,21 +275,6 @@ class RealmManager {
                 reject(e)
             }
         })
-    }
-
-    updateCurrentExamInfo(item) {
-
-        const user = this.getCurrentUser()
-
-        try {
-            realm.write(() => {
-                user.currentExamId = item.id
-                user.currentExamTitle = item.title
-            })
-        } catch (e) {
-            console.log("choose", e)
-        }
-        return user
     }
 
     _saveMemoryData(questionData, memoryModel) {
@@ -310,6 +295,21 @@ class RealmManager {
                 reject(e)
             }
         })
+    }
+
+    updateCurrentExamInfo(item) {
+
+        const user = this.getCurrentUser()
+
+        try {
+            realm.write(() => {
+                user.currentExamId = item.id
+                user.currentExamTitle = item.title
+            })
+        } catch (e) {
+            console.log("choose", e)
+        }
+        return user
     }
 
     // 通过id获取指定试卷
