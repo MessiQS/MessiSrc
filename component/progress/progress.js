@@ -2,6 +2,7 @@ import * as Progress from 'react-native-progress';
 import React, { Component } from 'react';
 import {
     View,
+    Modal
 } from 'react-native';
 
 export default class ProgressView extends React.Component {
@@ -12,11 +13,14 @@ export default class ProgressView extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.progressView}>
-                   <Progress.Circle color={'#FF5B29'} size={30} indeterminate={true} />
+            <Modal visible={true} transparent={true}>
+                <View style={styles.container}>
+                    <View style={styles.progressView}>
+                    <Progress.Circle color={'#FF5B29'} size={30} indeterminate={true} />
+                    </View>
                 </View>
-            </View>
+            </Modal>
+
         )
     }
 }

@@ -257,16 +257,18 @@ class RealmManager {
         return new Promise((resolve, reject) => {
             try {
                 var memoryModels = that.getMemoryModelsByExam(examId)
-                memoryModels.forEach((model) => {
-
-                    for (let key in examData) {
-                        if (model.examId == examData[key].bankname &&
-                            model.questionPaper.question_number == examData[key].qname) {
-                            console.log("examData[key], model", examData[key], model)
-                            that._saveMemoryData(examData[key], model)
+                if (memoryModels) {
+                    memoryModels.forEach((model) => {
+    
+                        for (let key in examData) {
+                            if (model.examId == examData[key].bankname &&
+                                model.questionPaper.question_number == examData[key].qname) {
+                                console.log("examData[key], model", examData[key], model)
+                                that._saveMemoryData(examData[key], model)
+                            }
                         }
-                    }
-                })
+                    })
+                }
 
             } catch (e) {
                 console.log("saveMemoryModelsByExamData Error on update", e)

@@ -8,7 +8,8 @@ import {
     Text,
     ScrollView,
     Keyboard,
-    NativeModules
+    NativeModules,
+    Modal
 } from 'react-native';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
@@ -23,6 +24,7 @@ import MessageService from "../../service/message.service";
 import Progress from "../../component/progress/progress"
 import { NavigationActions } from 'react-navigation'
 
+
 class LoginPage extends React.Component {
 
     constructor(props) {
@@ -31,6 +33,12 @@ class LoginPage extends React.Component {
         this.state = {
             loading: false,
         };
+    }
+
+    componentDidMount() {
+
+        // realmManager.deleteAllRealmData()
+        // Storage.clearAll()   
     }
 
     phoneChange(account) {
@@ -53,6 +61,7 @@ class LoginPage extends React.Component {
 
         let { account, password } = this.state;
         const { navigate } = this.props.navigation;
+        const that = this
         if (!account) {
             Alert.alert('请输入账号');
             return;
@@ -69,12 +78,15 @@ class LoginPage extends React.Component {
             return;
         };
         
+        this.setState({
+            loading: true
+        })
+
         password = MD5(password).toString();
         const loginResponse = await Http.post('api/login', {
             "account": account,
             "password": password
         })
-        console.log("loginResponse.type", loginResponse)
         const { type, data } = loginResponse
         if (type) {
             //将账号和token存到本地存储
@@ -101,7 +113,13 @@ class LoginPage extends React.Component {
             }
             console.log("login page user ", user)
             await realmManager.createUser(user)
-            this._handleUserInfo(data.user_id)
+            let value = await this._handleUserInfo(data.user_id)
+
+            if (value.type == true) {
+                await that._handlePaperInfo(value.data)
+            } else {
+                console.log("api/getUserQuestionInfo error", value)
+            }
 
             const resetAction = NavigationActions.reset({
                 index: 0,
@@ -115,23 +133,19 @@ class LoginPage extends React.Component {
             //此处提示错误信息
             Alert.alert(data);
         }
+        this.setState({
+            loading: false
+        })
     };
 
-    _handleUserInfo(userId) {
+    async _handleUserInfo(userId) {
         console.log("_handleUserInfo userId", userId)
         const that = this
-        Http.get('api/getUserQuestionInfo', {
+        let value = await Http.get('api/getUserQuestionInfo', {
             user_id: userId,
-        },true).then((value) => {
-            console.log("loginPage.js value", value)
-            if (value.type == true) {
-                that._handlePaperInfo(value.data)
-            } else {
-                console.log("api/getUserQuestionInfo error", value)
-            }
-        }).catch(err => {
-            console.log("api/getUserQuestionInfo error", err)
-        })
+        },true)
+
+        return value
     }
 
     async _handlePaperInfo(userInfo) {
@@ -141,6 +155,8 @@ class LoginPage extends React.Component {
         const value = await Http.get('api/getSinglePaperInfo', {
             paperId: keys
         },true)
+
+        return value
 
         console.log("api/getSinglePaperInfo", value);
 
@@ -182,23 +198,13 @@ class LoginPage extends React.Component {
         const that = this
         for (let key in userInfo) {
             console.log("userInfo[key]", userInfo[key])
-            realmManager.saveMemoryModelsByExamData(userInfo[key], key);
+            await realmManager.saveMemoryModelsByExamData(userInfo[key], key);
         }
     }
 
     _sofewareAgreementClick() {
         const { navigate } = this.props.navigation;
         navigate('SoftwareAgreement', {})
-    }
-
-    _renderProgress() {
-        if (this.state.loading == true) {
-            return (
-                <Progress />
-            )
-        } else {
-            return null
-        }
     }
 
     _preventPushingMulitpleTimes() {
@@ -213,7 +219,17 @@ class LoginPage extends React.Component {
             that.isLockPushing = false
 		}, 1000);
 		return false;
-	}
+    }
+    
+    _renderProgress() {
+        if (this.state.loading == true) {
+            return (
+                <Progress />
+            )
+        } else {
+            return null
+        }
+    }
  
     render() {
         const { navigate } = this.props.navigation;
@@ -232,7 +248,9 @@ class LoginPage extends React.Component {
             key: 'loginPage1'
         }]
         return (
+            
             <View style={styles.container}>
+                {this._renderProgress()}
                 {inputObjectArraty.map(res => {
                     return (<LoginItem key={res.key} data={res}></LoginItem>)
                 })}

@@ -5,7 +5,9 @@ var styles = {
         paddingTop: 69,
         flex: 1,
         paddingHorizontal: 48,
-        backgroundColor: "white"
+        backgroundColor: "white",
+        height: "100%",
+        width: "100%"
     },
     headerLeftView: {
         left: 10,
