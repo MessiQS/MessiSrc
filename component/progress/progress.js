@@ -13,7 +13,7 @@ export default class ProgressView extends React.Component {
 
     render() {
         return (
-            <Modal visible={true} transparent={true}>
+            <Modal visible={true} transparent={true} onRequestClose={() => {}}>
                 <View style={styles.container}>
                     <View style={styles.progressView}>
                     <Progress.Circle color={'#FF5B29'} size={30} indeterminate={true} />
