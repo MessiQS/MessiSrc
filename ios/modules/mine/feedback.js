@@ -45,7 +45,7 @@ export default class Feedback extends React.Component {
         this.setState({
             isProcess: false
         })
-        if (!response) {
+        if (response.type == false) {
             Alert.alert('发送失败，请稍后重试！')
             return
         }

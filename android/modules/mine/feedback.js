@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Http from '../../../service/http'
 import ProgressView from '../../../component/progress/progress'
+import realmManager from '../../../component/Realm/realmManager';
 
 export default class Feedback extends React.Component {
 
@@ -42,10 +43,11 @@ export default class Feedback extends React.Component {
         let user_id = user.userId
 
         const response = await Http.post('api/feedback', { user_id, title, content }, true)
+        console.log("feedback.js response", response)
         this.setState({
             isProcess: false
         })
-        if (!response) {
+        if (response.type == false) {
             Alert.alert('发送失败，请稍后重试！')
             return
         }
@@ -70,6 +72,8 @@ export default class Feedback extends React.Component {
                     underlineColorAndroid={'transparent'}
                     maxLength={100}
                     multiline = {true}                    
+                    onChangeText={($event) => { this.changeValue($event, 'content') }}
+
                     />
                 </View>
                 <View style={styles.email}>
@@ -77,7 +81,8 @@ export default class Feedback extends React.Component {
                     style={styles.textInput}
                     placeholder="电子邮箱"
                     underlineColorAndroid={'transparent'}
-                    
+                    onChangeText={($event) => { this.changeValue($event, 'title') }}
+
                     />
                 </View>
                 <TouchableOpacity style={styles.submit} onPress={this.submitData.bind(this)}>
