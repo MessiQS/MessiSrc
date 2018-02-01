@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Http from '../../../service/http'
 import ProgressView from '../../../component/progress/progress'
+import realmManager from '../../../component/Realm/realmManager';
 export default class Feedback extends React.Component {
 
     constructor(props) {
@@ -16,7 +17,7 @@ export default class Feedback extends React.Component {
         this.state = {
             content: "",
             title: "",
-            isProcess:false
+            isProcess: false
         }
     }
     changeValue($event, type) {
@@ -24,27 +25,41 @@ export default class Feedback extends React.Component {
             [type]: $event
         })
     }
-    _renderProcess(){
-        const {isProcess} = this.state
-        if(!!isProcess){
+    _renderProcess() {
+        const { isProcess } = this.state
+        if (!!isProcess) {
             return (<ProgressView />)
         }
     }
     async submitData() {
         this.setState({
-            isProcess:true
+            isProcess: true
         })
         const { title, content } = this.state
-        const response = await Http.post('api/feedback', { title, content })
+
+        console.log("feedback.js title content", title, content)
+        let user = realmManager.getCurrentUser()
+        let user_id = user.userId
+
+        const response = await Http.post('api/feedback', { user_id, title, content }, true)
         this.setState({
-            isProcess:false
+            isProcess: false
         })
         if (!response) {
             Alert.alert('发送失败，请稍后重试！')
             return
         }
-        Alert.alert('已经收到您的反馈！')
+
+        Alert.alert('已经收到您的反馈！', '', [
+            {
+                text: '确定',
+                onPress: async () => {
+                    this.props.navigation.goBack()
+                }
+            },
+        ],);
     }
+
     render() {
         return (
             <View style={styles.container}>

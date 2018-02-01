@@ -106,7 +106,7 @@ class RealmManager {
         let examWithPapers = realm.objectForPrimaryKey('ExaminationPaper', exam.id)
 
         console.log("updateExaminationPaper begin")
-        
+
         return new Promise((resolve, reject) => {
 
             try {
@@ -117,9 +117,7 @@ class RealmManager {
                     examWithPapers.province = exam.province
                     examWithPapers.version = exam.version
                     examWithPapers.price = parseFloat(exam.price)
-
                     examWithPapers.questionPapers.sorted("question_number")
-                    console.log("realmManager.js examWithPapers.questionPapers after sort ", examWithPapers.questionPapers)
 
                     if (newExams.length == examWithPapers.questionPapers.length) {
                         newExams.forEach((newQuestion, index, array) => {
@@ -144,23 +142,20 @@ class RealmManager {
                             }
                         })
                     } else {
-                        
+
                     }
-                    
-                    console.log("realmManager examWithPapers 2 ", examWithPapers)
+
                     resolve(examWithPapers)
-                    console.log("updateExaminationPaper end")
                 })
 
             } catch (e) {
                 reject(e)
-                console.log("ExaminationPaper Error on update")
             }
         })
     }
 
     updateUserExamIds(examIds) {
-        
+
         let examIdsJSON = JSON.stringify(examIds)
         var user = this.getCurrentUser()
         return new Promise((resolve, reject) => {
@@ -184,6 +179,9 @@ class RealmManager {
             try {
                 realm.write(() => {
                     model.weighting = newWeighting
+                    if (model.appearedSeveralTime == 0) {
+                        model.firstBySelectedTime = time.getTime()
+                    }
                     model.appearedSeveralTime += 1
                     model.lastBySelectedTime = time.getTime()
                     model.records.push(record)
@@ -263,7 +261,7 @@ class RealmManager {
 
                     for (let key in examData) {
                         if (model.examId == examData[key].bankname &&
-                            model.questionPaper.question_number.toString() == examData[key].qname) {
+                            model.questionPaper.question_number == examData[key].qname) {
                             console.log("examData[key], model", examData[key], model)
                             that._saveMemoryData(examData[key], model)
                         }
@@ -271,7 +269,7 @@ class RealmManager {
                 })
 
             } catch (e) {
-                console.log("ExaminationPaper Error on creation", e)
+                console.log("saveMemoryModelsByExamData Error on update", e)
                 reject(e)
             }
         })
@@ -293,29 +291,24 @@ class RealmManager {
     }
 
     _saveMemoryData(questionData, memoryModel) {
+        console.log("realmManager.js questionData, memoryModel", questionData, memoryModel)
+        return new Promise((resolve, reject) => {
+            try {
 
-        realm.write(() => {
-            memoryModel.weighting = questionData.weighted
-            memoryModel.appearedSeveralTime = questionData.right + questionData.wrong
-            memoryModel.lastBySelectedTime = parseInt(questionData.dateTime)
-
-            for (let rightTime = 0; rightTime < questionData.right; rightTime++) {
-
-                memoryModel.records.push({
-                    isRight: true
+                realm.write(() => {
+                    memoryModel.weighting = questionData.weighted
+                    memoryModel.appearedSeveralTime = questionData.record.length
+                    memoryModel.lastBySelectedTime = questionData.lastDateTime
+                    memoryModel.firstBySelectedTime = questionData.firstDateTime
+                    memoryModel.records = questionData.record
+                    console.log("save memory data", memoryModel)
                 })
+            } catch (e) {
+                console.log("ExaminationPaper Error on creation", e)
+                reject(e)
             }
-
-            for (let wrongTime = 0; wrongTime < questionData.wrong; wrongTime++) {
-
-                memoryModel.records.push({
-                    isRight: false
-                })
-            }
-            console.log("save memory data", memoryModel)
         })
     }
-
 
     // 通过id获取指定试卷
     getExaminationPaper(id) {
@@ -389,20 +382,20 @@ class RealmManager {
         let user = this.getCurrentUser()
         if (category == "new") {
             let models = realm.objects('MemoryModel')
-            .filtered("appearedSeveralTime=0 && examId=$0", user.currentExamId)
-            .sorted('lastBySelectedTime', false)
+                .filtered("appearedSeveralTime=0 && examId=$0", user.currentExamId)
+                .sorted('lastBySelectedTime', false)
 
             if (models.length == 0) {
                 console.log("Memory Models is empty")
                 return null
             }
             return models[0]
-        } 
+        }
         if (category == "wrong") {
 
             let models = realm.objects('MemoryModel')
-            .filtered("weighting<7 && appearedSeveralTime>0 && examId=$0", user.currentExamId)
-            .sorted('lastBySelectedTime', false)
+                .filtered("weighting<7 && appearedSeveralTime>0 && examId=$0", user.currentExamId)
+                .sorted('lastBySelectedTime', false)
 
             if (models.length == 0) {
                 console.log("Memory Models is empty")
@@ -458,15 +451,15 @@ class RealmManager {
 
 
         /// 五天前
-        var before_5 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay)).length
+        var before_5 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay)).length
         beforeArray.push(before_5)
-        var before_4 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - 3 * oneDay), (timeStamp - 4 * oneDay)).length
+        var before_4 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', (timeStamp - 3 * oneDay), (timeStamp - 4 * oneDay)).length
         beforeArray.push(before_4)
-        var before_3 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - 2 * oneDay), (timeStamp - 3 * oneDay)).length
+        var before_3 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', (timeStamp - 2 * oneDay), (timeStamp - 3 * oneDay)).length
         beforeArray.push(before_3)
-        var before_2 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', (timeStamp - oneDay), (timeStamp - 2 * oneDay)).length
+        var before_2 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', (timeStamp - oneDay), (timeStamp - 2 * oneDay)).length
         beforeArray.push(before_2)
-        var before_1 = models.filtered('lastBySelectedTime<$0&&lastBySelectedTime>$1', timeStamp, (timeStamp - oneDay)).length
+        var before_1 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', timeStamp, (timeStamp - oneDay)).length
         beforeArray.push(before_1)
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
@@ -492,22 +485,22 @@ class RealmManager {
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
-        var wrongSum = beforeArray.reduce(function(a, b) { return a + b })
+        var wrongSum = beforeArray.reduce(function (a, b) { return a + b })
         var wrongAvg = wrongSum / beforeArray.length
 
         object.newAverage = Math.round(wrongAvg)
 
-        var newSum = futureArray.reduce(function(a, b) { return a + b })
+        var newSum = futureArray.reduce(function (a, b) { return a + b })
         var newAvg = newSum / futureArray.length
 
         object.wrongAverage = Math.round(newAvg)
 
         if (b.length != 0) {
             b.sort((a1, b1) => {
-                return b1.lastBySelectedTime - a1.lastBySelectedTime
+                return b1.firstBySelectedTime - a1.firstBySelectedTime
             })
             var model = b[0]
-            var date = new Date(model.lastBySelectedTime)
+            var date = new Date(model.firstBySelectedTime)
             object.newLastSelectDate = this.getDateFormat(date)
         }
         if (c.length != 0) {

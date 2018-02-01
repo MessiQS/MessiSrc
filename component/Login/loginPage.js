@@ -125,7 +125,7 @@ class LoginPage extends React.Component {
         },true).then((value) => {
             console.log("loginPage.js value", value)
             if (value.type == true) {
-                that._getPaperInfo(value)
+                that._handlePaperInfo(value.data)
             } else {
                 console.log("api/getUserQuestionInfo error", value)
             }
@@ -134,9 +134,9 @@ class LoginPage extends React.Component {
         })
     }
 
-    async _getPaperInfo(userInfo) {
+    async _handlePaperInfo(userInfo) {
         const that = this
-        var keys = Object.keys(userInfo.data)
+        var keys = Object.keys(userInfo)
         console.log("keys", keys)
         const value = await Http.get('api/getSinglePaperInfo', {
             paperId: keys
@@ -150,7 +150,6 @@ class LoginPage extends React.Component {
             await that._downloadExam(item)
         }
         await that._handleMemoryModels(userInfo);
-
     }
 
     async _downloadExam(item) {
@@ -178,13 +177,12 @@ class LoginPage extends React.Component {
     }
 
     async _handleMemoryModels(userInfo) {
+
         console.log("_handleMemoryModels", userInfo)
         const that = this
-
-        for (let key in userInfo.data) {
-
-            console.log("userInfo.data[key]", userInfo.data[key])
-            realmManager.saveMemoryModelsByExamData(userInfo.data[key], key);
+        for (let key in userInfo) {
+            console.log("userInfo[key]", userInfo[key])
+            realmManager.saveMemoryModelsByExamData(userInfo[key], key);
         }
     }
 

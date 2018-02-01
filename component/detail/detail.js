@@ -172,7 +172,7 @@ export default class Detail extends Component {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    _select(option) {
+    async _select(option) {
 
         let score = 0
         let itemStatus = ItemStatus.NORMAL
@@ -192,18 +192,14 @@ export default class Detail extends Component {
             isRight: isRight
         }
 
-        this._sendUpdateInfoCache(type, newWeighting)
-
         const newWeighting = this._memoryModel.weighting + score
-        realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
-            .then(model => {
-                setTimeout(() => {
-                    runtime.emit(DBChange);
-                }, 1);
-            })
-            .catch(e => {
-                console.log("detail.js updateMemoryModel error", e)
-            })
+        let model = await realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
+
+        this._sendUpdateInfoCache(type, model)
+
+        setTimeout(() => {
+            runtime.emit(DBChange);
+        }, 1);
 
         if (option == "A") {
             this.setState({
@@ -330,18 +326,35 @@ export default class Detail extends Component {
     }
 
     /// 更新服务端试卷信息
-    _sendUpdateInfoCache(type, weighted) {
+    _sendUpdateInfoCache(type, model) {
 
         var user = realmManager.getCurrentUser()
-        var timestamp = Date.parse(new Date())
+
+        let records = []
+
+        model.records.forEach(value => {
+            let record = {
+                time: value.time,
+                isRight: value.isRight,
+                select: value.select
+            }
+            records.push(record)
+        })
+        console.log("detail.js _sendUpdateInfoCache ", records)
+
         var param = {
             user_id: user.userId,
             bankname: user.currentExamId,
-            qname: this._memoryModel.questionPaper.question_number.toString(),
+            qname: model.questionPaper.question_number,
             type: type,
-            weighted: weighted,
-            dateTime: timestamp
+            weighted: model.weighting,
+            lastDateTime: model.lastBySelectedTime,
+            record: JSON.stringify(records),
+            firstDateTime: model.firstBySelectedTime,
         }
+
+        console.log("detail.js _sendUpdateInfoCache param", param)
+
         Http.post('api/getUpdateInfoCache', param).then(res => {
             console.log("api/getUpdateInfoCache", res)
         }).catch(err => {

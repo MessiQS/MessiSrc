@@ -97,6 +97,7 @@ MemoryModel.schema = {
         weighting: { type: 'float', default: 0 },                       /// 加权分数, 初始化为 0
         appearedSeveralTime: { type: 'int', default: 0 },               /// 出现次数, 初始化为 0
         lastBySelectedTime: { type: 'int', default: 0 },                /// 上一次被选择时间，初始化为 0
+        firstBySelectedTime: { type: 'int', default: 0 },               /// 首次选择的时间
         records: { type: 'list', objectType: 'MemoryRecordModel' },     /// 答题记录
         examId: "string",                                               /// 试卷的Id
     }

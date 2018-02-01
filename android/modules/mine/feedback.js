@@ -33,18 +33,31 @@ export default class Feedback extends React.Component {
     }
     async submitData() {
         this.setState({
-            isProcess:true
+            isProcess: true
         })
         const { title, content } = this.state
-        const response = await Http.post('api/feedback', { title, content })
+
+        console.log("feedback.js title content", title, content)
+        let user = realmManager.getCurrentUser()
+        let user_id = user.userId
+
+        const response = await Http.post('api/feedback', { user_id, title, content }, true)
         this.setState({
-            isProcess:false
+            isProcess: false
         })
         if (!response) {
             Alert.alert('发送失败，请稍后重试！')
             return
         }
-        Alert.alert('已经收到您的反馈！')
+
+        Alert.alert('已经收到您的反馈！', '', [
+            {
+                text: '确定',
+                onPress: async () => {
+                    this.props.navigation.goBack()
+                }
+            },
+        ],);
     }
     render() {
         return (
