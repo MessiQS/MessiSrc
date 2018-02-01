@@ -47,8 +47,6 @@ export default class ListOfTopics extends React.Component {
             .then(value => {
                 if (value.type) {
                     let array = value.data.buyedInfo
-                    console.log("ListOfTopic.js api/getUserBuyInfo value.data.buyedInfo", value.data.buyedInfo)
-
                     realm.write(()=> {
                         user.examIds = JSON.stringify(array)
                     })
@@ -61,7 +59,7 @@ export default class ListOfTopics extends React.Component {
     }
 
     async updateExamIfNeed(papers) {
-        let exams = realmManager.getAllExams();
+        let exams = realmManager.getAllExams()
         if (exams) {
             /// 遍历本地试卷
             exams.forEach(exam => {
@@ -72,17 +70,17 @@ export default class ListOfTopics extends React.Component {
 
                         provinceInfo.data.forEach(async value => {
                             if (value.id == exam.id && value.version != exam.version) {
+
                                 console.log("province info", value)
                                 const json = await MessageService.downloadPaper({
                                     paperId: value.id
-                                });
+                                })
+                                
                                 console.log("list of topic js json", json)
                                 if (json.type == "true") {
 
                                     await realmManager.updateExaminationPaper(value, json.data)
                                 }
-
-
                             }   
                         })
                     }

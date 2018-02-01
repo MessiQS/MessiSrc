@@ -590,7 +590,6 @@ var styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 20,
         flexDirection: "row",
-        width: "95%",
         flexWrap: "wrap"
     },
     questionText: {
@@ -598,10 +597,6 @@ var styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 25,
     },
-    // questionImage: {
-    //     width: '100%',
-    //     height: '100%',
-    // },
     separatorLine: {
         height: 1,
         backgroundColor: '#979797',
