@@ -259,10 +259,10 @@ class RealmManager {
                 var memoryModels = that.getMemoryModelsByExam(examId)
                 if (memoryModels) {
                     memoryModels.forEach( async (model) => {
-    
+                        
                         for (let key in examData) {
-                            if (model.examId == examData[key].bankname &&
-                                model.questionPaper.question_number == examData[key].qname) {
+                            if (model.examId == examData[key].paper_id &&
+                                model.questionPaper.question_number == examData[key].question_number) {
                                 console.log("examData[key], model", examData[key], model)
                                 await that._saveMemoryData(examData[key], model)
                             }
@@ -281,13 +281,14 @@ class RealmManager {
         console.log("realmManager.js questionData, memoryModel", questionData, memoryModel)
         return new Promise((resolve, reject) => {
             try {
+                let record = JSON.parse(questionData.record)
 
                 realm.write(() => {
                     memoryModel.weighting = questionData.weighted
-                    memoryModel.appearedSeveralTime = questionData.record.length
+                    memoryModel.appearedSeveralTime = record.length
                     memoryModel.lastBySelectedTime = questionData.lastDateTime
                     memoryModel.firstBySelectedTime = questionData.firstDateTime
-                    memoryModel.records = questionData.record
+                    memoryModel.records = record
                     console.log("save memory data", memoryModel)
                 })
             } catch (e) {

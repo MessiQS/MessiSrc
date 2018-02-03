@@ -188,8 +188,6 @@ export default class Detail extends Component {
         } else {
             itemStatus = ItemStatus.ERROR
         }
-
-        const type = isRight == true ? "right" : "wrong"
         var record = {
             select: option,
             isRight: isRight
@@ -198,7 +196,7 @@ export default class Detail extends Component {
         const newWeighting = this._memoryModel.weighting + score
         let model = await realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
 
-        this._sendUpdateInfoCache(type, model)
+        this._sendUpdateInfoCache(isRight, model)
 
         setTimeout(() => {
             runtime.emit(DBChange);
@@ -329,7 +327,7 @@ export default class Detail extends Component {
     }
 
     /// 更新服务端试卷信息
-    _sendUpdateInfoCache(type, model) {
+    _sendUpdateInfoCache(isRight, model) {
 
         var user = realmManager.getCurrentUser()
 
@@ -347,13 +345,21 @@ export default class Detail extends Component {
 
         var param = {
             user_id: user.userId,
-            bankname: user.currentExamId,
-            qname: model.questionPaper.question_number,
-            type: type,
+            paper_id: user.currentExamId,
+            question_id: model.questionPaper.id,
+            question_number: model.questionPaper.question_number,
             weighted: model.weighting,
             lastDateTime: model.lastBySelectedTime,
             record: JSON.stringify(records),
             firstDateTime: model.firstBySelectedTime,
+        }
+
+        if (isRight == true) {
+            param.correct = "1"
+            param.wrong = "0"
+        } else {
+            param.correct = "0"
+            param.wrong = "1"
         }
 
         console.log("detail.js _sendUpdateInfoCache param", param)

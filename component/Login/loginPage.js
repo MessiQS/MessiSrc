@@ -114,6 +114,7 @@ class LoginPage extends React.Component {
             console.log("login page user ", user)
             await realmManager.createUser(user)
             let userInfo = await this._handleUserInfo(data.user_id)
+            console.log("loginPage.js userInfo", userInfo)
 
             if (userInfo.type == false) {
                 console.log("api/getUserQuestionInfo error", userInfo)
@@ -121,7 +122,8 @@ class LoginPage extends React.Component {
                 return 
             } 
             let paperInfo = await that._handlePaperInfo(userInfo.data)
-
+            console.log("login page paperInfo", paperInfo)
+            
             if (paperInfo.type == false) {
                 console.log("api/getSinglePaperInfo error", paperInfo);
                 Alert('登录错误，请重试')
@@ -133,7 +135,6 @@ class LoginPage extends React.Component {
                 console.log("api/ get single page info ", item)
                 await that._downloadExam(item)
             }
-            console.log("login page paperInfo", paperInfo)
 
             that._handleMemoryModels(userInfo);
             console.log("loginpage.js _handleMemoryModels end")
@@ -171,7 +172,7 @@ class LoginPage extends React.Component {
     async _handlePaperInfo(userInfo) {
         const that = this
         var keys = Object.keys(userInfo)
-        console.log("keys", keys)
+        console.log("loginPage.js keys", keys)
         const value = await Http.get('api/getSinglePaperInfo', {
             paperId: keys
         },true)

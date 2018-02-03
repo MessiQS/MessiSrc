@@ -64,6 +64,10 @@ var daysTransfer = {
     'Saturday': '周六'
 }
 
+var space = {
+    
+}
+
 export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
