@@ -70,7 +70,7 @@ class ModifyPasswordPage extends React.Component {
                     Alert.alert('提示', '修改密码失败', [
                         {
                             text: '确定',
-                            onPress: async () => {
+                        onPress: async () => {
                                 this.props.navigation.goBack()                                
                             }
                         }

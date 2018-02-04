@@ -87,6 +87,9 @@ class LoginPage extends React.Component {
             "account": account,
             "password": password
         })
+
+        console.log("loginPage.js loginResponse", loginResponse)
+        
         const { type, data } = loginResponse
         if (type) {
             //将账号和token存到本地存储
@@ -120,8 +123,18 @@ class LoginPage extends React.Component {
                 console.log("api/getUserQuestionInfo error", userInfo)
                 Alert('登录错误，请重试')
                 return 
-            } 
-            let paperInfo = await that._handlePaperInfo(userInfo.data)
+            }
+            
+            if (Object.keys(userInfo.data.lastPaperInfo).length !== 0) {
+
+                let item = {
+                    id: userInfo.data.lastPaperInfo.id,
+                    title: userInfo.data.lastPaperInfo.title 
+                }
+                realmManager.updateCurrentExamInfo(item)
+            }
+
+            let paperInfo = await that._handlePaperInfo(userInfo.data.userQuestionInfo)
             console.log("login page paperInfo", paperInfo)
             
             if (paperInfo.type == false) {
@@ -169,9 +182,9 @@ class LoginPage extends React.Component {
         return value
     }
 
-    async _handlePaperInfo(userInfo) {
+    async _handlePaperInfo(examInfo) {
         const that = this
-        var keys = Object.keys(userInfo)
+        var keys = Object.keys(examInfo)
         console.log("loginPage.js keys", keys)
         const value = await Http.get('api/getSinglePaperInfo', {
             paperId: keys
@@ -209,12 +222,14 @@ class LoginPage extends React.Component {
 
         console.log("_handleMemoryModels", userInfo)
         const that = this
-        let keys = Object.keys(userInfo.data)
+        let keys = Object.keys(userInfo.data.userQuestionInfo)
         console.log("keys", keys)
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i]
-            console.log("userInfo.data[key], key", userInfo.data[key], key)
-            realmManager.saveMemoryModelsByExamData(userInfo.data[key], key);
+            console.log("userInfo.data.userQuestionInfo", userInfo.data.userQuestionInfo)
+
+            let data = userInfo.data.userQuestionInfo
+            realmManager.saveMemoryModelsByExamData(userInfo.data.userQuestionInfo[key], key);
         }
     }
 

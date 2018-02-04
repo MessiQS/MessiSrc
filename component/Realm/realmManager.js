@@ -48,8 +48,8 @@ class RealmManager {
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
-                    realm.create('User', user)
-                    resolve()
+                    let rmUser = realm.create('User', user)
+                    resolve(rmUser)
                 })
             } catch (e) {
                 console.log("User Error on creation", e)

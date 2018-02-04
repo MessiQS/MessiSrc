@@ -103,7 +103,7 @@ export default class Find extends Component {
     }
 
     componentDidMount() {
-        // this.onMessage()
+
     }
 
     _prepareUI() {
@@ -189,14 +189,6 @@ export default class Find extends Component {
                 route: this.routeToMine.bind(this)
             });
         }, 1);
-    }
-
-    onMessage() {
-
-        const that = this
-        runtime.on(DBChange, () => {
-            that._updateUI()
-        })
     }
 
     routeToMine() {

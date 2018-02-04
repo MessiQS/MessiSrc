@@ -14,6 +14,7 @@ import {
     ScrollView,
     Vibration,
     Linking,
+    Alert
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
