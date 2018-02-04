@@ -535,7 +535,7 @@ const styles = {
     calendarView: {
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop: 3,
+        marginTop: (height - 64 - 78 - (2*304)) / 3,
     },
     chartTitleContainer: {
         flexDirection: "column",
