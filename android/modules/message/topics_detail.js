@@ -143,59 +143,35 @@ export default class TopicsDetail extends React.Component {
         }
 
         const papers = await realmManager.createQuestion(json)
-        console.log("topics_detail.js papers", papers)
         /////////////////// 佩奇 看这里 ////////////
         let recordResponse = await MessageService.getSpecialRecordByPaperId(item.id)
-        console.log("topics_detail.js record", recordResponse)
         if (recordResponse.type == true && Object.keys(recordResponse.data) !== 0) {
-
-
-
-        } else {
-
-            /// 如果之前没有做过试题 数据
-            const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-            await realmManager.createExaminationPaper({
-                id: item.id,
-                title: item.title,
-                questionPapers: papers,
-                year: item.year,
-                province: item.province,
-                version: item.version,
-                purchased: true,
-                price: parseFloat(item.price),
-            })
+            await this._handleMemoryModels(recordResponse.data)
         }
-
-        // const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        //     await realmManager.createExaminationPaper({
-        //         id: item.id,
-        //         title: item.title,
-        //         questionPapers: papers,
-        //         year: item.year,
-        //         province: item.province,
-        //         version: item.version,
-        //         purchased: true,
-        //         price: parseFloat(item.price),
-        //     })
+        /// 如果之前没有做过试题 数据
+        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+        await realmManager.createExaminationPaper({
+            id: item.id,
+            title: item.title,
+            questionPapers: papers,
+            year: item.year,
+            province: item.province,
+            version: item.version,
+            purchased: true,
+            price: parseFloat(item.price),
+        })
     }
 
     /**
      * 这个是原来登录里面处理已有用户数据的代码
      * @param {*} userInfo 
      */
-    async _handleMemoryModels(userInfo) {
-
-        console.log("_handleMemoryModels", userInfo)
-        const that = this
-        let keys = Object.keys(userInfo.data.userQuestionInfo)
+    async _handleMemoryModels(userQuestionInfo) {
+        let keys = Object.keys(userQuestionInfo)
         console.log("keys", keys)
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i]
-            console.log("userInfo.data.userQuestionInfo", userInfo.data.userQuestionInfo)
-
-            let data = userInfo.data.userQuestionInfo
-            realmManager.saveMemoryModelsByExamData(userInfo.data.userQuestionInfo[key], key);
+            realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
         }
     }
 

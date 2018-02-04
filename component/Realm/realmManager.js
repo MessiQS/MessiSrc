@@ -250,6 +250,15 @@ class RealmManager {
         }
     }
 
+    isHaveQuestionInfo(id){
+        let examinationPaper = realm.objectForPrimaryKey('QuestionPaper', id)
+        if (examinationPaper) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     saveMemoryModelsByExamData(examData, examId) {
 
         console.log("save memory models by exam data ", examData, examId)
