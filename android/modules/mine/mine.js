@@ -150,7 +150,8 @@ class Mine extends Component {
                     alertInfo: versionInfoResponse.data
                 })
 
-                setTimeout(() => {
+                this.timeout = setTimeout(() => {
+                    this.timeout = null
                     this.setState({
                         showVersionAlert: false,
                     })
@@ -158,7 +159,12 @@ class Mine extends Component {
             }
         }
     }
-
+    componentWillUnmount(){
+        if(this.timeout){
+            clearTimeout(this.timeout)
+            this.timeout = null
+        }
+    }
     _renderVersionProgressView() {
 
         return (

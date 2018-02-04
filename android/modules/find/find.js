@@ -98,10 +98,6 @@ export default class Find extends Component {
         this.isUpdateChart = false
     }
 
-    componentDidMount() {
-        // this.onMessage()
-    }
-
     _prepareUI() {
 
         const user = realmManager.getCurrentUser()
@@ -168,7 +164,7 @@ export default class Find extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         setTimeout(() => {
             this.props.navigation.setParams({
                 route: this.routeToMine.bind(this)
