@@ -253,7 +253,7 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
-                {this.state.showVersionAlert == true AlertView content="当前为最新版本" /> : null}
+                {this.state.showVersionAlert == true ? <AlertView content="当前为最新版本" /> : null}
                 {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : null}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}
