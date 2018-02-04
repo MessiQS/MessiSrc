@@ -482,6 +482,7 @@ const styles = {
         marginBottom: 5,
     },
     titleContent: {
+        marginTop: Math.max((height - 64 - 78 - (2*304)) / 3, 3),        
         flexDirection: "row",
         backgroundColor: "white",
         height: 78,
