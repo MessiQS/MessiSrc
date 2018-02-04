@@ -24,7 +24,7 @@ import * as Progress from 'react-native-progress';
 import main from '../../main';
 import Http from '../../../service/http';
 import MessageService from '../../../service/message.service';
-import * as CustomAlert from '../../../component/progress/alert';
+import AlertView from '../../../component/progress/alert';
 import { appVersion } from "../../../service/constant";
 
 var Pingpp = require('pingpp-react-native');
@@ -253,7 +253,7 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
-                {this.state.showVersionAlert == true ? <CustomAlert content="当前为最新版本" /> : null}
+                {this.state.showVersionAlert == true AlertView content="当前为最新版本" /> : null}
                 {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : null}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}

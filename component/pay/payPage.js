@@ -11,7 +11,7 @@ import Pingpay from '../../service/pingpp';
 import Http from '../../service/http';
 import realmManager from "./../../component/Realm/realmManager"
 import runtime from '../../service/runtime'
-import Alert from "../../component/progress/alert";
+import AlertView from "../../component/progress/alert";
 
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
@@ -115,7 +115,7 @@ export default class PayPage extends React.Component {
         const { price } = params
         return (
             <View style={styles.container}>
-                {this.state.showAlert == true ? <Alert content="支付成功！" /> : null}
+                {this.state.showAlert == true ? <AlertView content="支付成功！" /> : null}
                 <View style={styles.headerView}>
                     <Text style={styles.headerTitleText}>支付金额</Text>
                     <Text style={styles.headerPriceText}>¥ {price}</Text>

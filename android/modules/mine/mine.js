@@ -24,7 +24,7 @@ import * as Progress from 'react-native-progress';
 import main from '../../main';
 import MessageService from '../../../service/message.service';
 import { appVersion } from "../../../service/constant";
-import Alert from '../../../component/progress/alert'
+import AlertView from '../../../component/progress/alert'
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (source) => {
@@ -249,7 +249,7 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
-                {this.state.showVersionAlert == true ? <Alert content={this.state.alertInfo} /> : null}
+                {this.state.showVersionAlert == true ? <AlertView content={this.state.alertInfo} /> : null}
                 {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : null}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}

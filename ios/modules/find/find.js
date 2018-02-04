@@ -22,7 +22,7 @@ import realmManager from "../../../component/Realm/realmManager";
 import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
 import runtime from "../../../service/runtime";
-import Alert from "../../../component/progress/alert";
+import AlertView from "../../../component/progress/alert";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 import { Dimensions } from 'react-native';
@@ -462,7 +462,7 @@ export default class Find extends Component {
 
         return (
             <View style={styles.container}>
-                {this.state.showAlert == true ? <Alert content="当前没有可刷题目" /> : null}
+                {this.state.showAlert == true ? <AlertView content="当前没有可刷题目" /> : null}
                 <ScrollView>
                     {this._renderTopView()}
                     {this._renderGetChatNewPaper()}
