@@ -79,23 +79,24 @@ export default class TopicsDetail extends React.Component {
         }
     }
 
-    componentDidMount() {
-        runtime.on('updatePaperInfo', () => {
-            const user = realmManager.getCurrentUser()
-            this.setState({
-                user,
-            })
-        })
-    }
+    // componentDidMount() {
+    //     runtime.on('updatePaperInfo', 
+    // }
 
     async _buy(item) {
-        
+
         if (this._preventPushingMulitpleTimes()) {
-            return 
+            return
         }
 
         const user = realmManager.getCurrentUser()
         item.userId = user.userId
+        item.callback = () => {
+            let updaterUser = realmManager.getCurrentUser()
+            this.setState({
+                user: updaterUser
+            })
+        }
         this.props.navigation.navigate('PayPage', item)
     }
 
@@ -122,8 +123,8 @@ export default class TopicsDetail extends React.Component {
                 loading: false,
                 user: user,
             })
-            
-            const { state, goBack } = this.props.navigation;    
+
+            const { state, goBack } = this.props.navigation;
             const params = state.params || {};
             params.callback('data')
             goBack(params.go_back_key);
@@ -178,13 +179,13 @@ export default class TopicsDetail extends React.Component {
         if (this.isLockPushing == true) {
             return true
         }
-		this.isLockPushing = true
-		
+        this.isLockPushing = true
+
         setTimeout(() => {
             that.isLockPushing = false
-		}, 1000);
-		return false;
-	}
+        }, 1000);
+        return false;
+    }
 
     _renderProgress() {
         if (this.state.loading == true) {

@@ -372,12 +372,12 @@ export default class Find extends Component {
                         <Image style={styles.redBlock} source={require("../../../Images/blue_block.png")} />
                         <Text style={styles.h4}>过去5日刷题数量统计</Text>
                         <Text style={[styles.rightTitle, { color: "#1495EB" }]}>刷新题</Text>
-                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
+                        <Image style={[styles.arrow, { top: 6 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.info.newLastSelectDate}</Text>
-                        <Text style={styles.average}>平均値:{this.state.info.newAverage}</Text>
+                        <Text style={styles.psmall}>最后刷题日：{this.state.info.newLastSelectDate}</Text>
+                        <Text style={styles.average}>平均値：{this.state.info.newAverage}</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.info.newQuestionCount}</Text>
                     </View>
                 </View>
@@ -444,12 +444,12 @@ export default class Find extends Component {
                         <Image style={styles.redBlock} source={require("../../../Images/red_block.png")} />
                         <Text style={styles.h4}>未来5日遗忘数量预测</Text>
                         <Text style={[styles.rightTitle, { color: "#FF5B29" }]}>刷错题</Text>
-                        <Image style={[styles.arrow, { top: 2 }]} source={require("../../../Images/find_arrow_right.png")} />
+                        <Image style={[styles.arrow, { top: 6 }]} source={require("../../../Images/find_arrow_right.png")} />
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.info.wrongLastSelectDate}</Text>
-                        <Text style={styles.average}>平均値:{this.state.info.wrongAverage}</Text>
+                        <Text style={styles.psmall}>最后刷题日：{this.state.info.wrongLastSelectDate}</Text>
+                        <Text style={styles.average}>平均値：{this.state.info.wrongAverage}</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.info.wrongQuestionCount}</Text>
                     </View>
                 </View>
@@ -570,7 +570,7 @@ const styles = {
     average: {
         position: 'absolute',
         top: 14,
-        left: 175,
+        left: 190,
         fontSize: 12,
         color: '#8E9091',
         backgroundColor: 'rgba(0,0,0,0)',
@@ -604,13 +604,7 @@ const styles = {
     },
     redBlock: {
         marginLeft: 10,
-        marginTop: 14,
-        width: 15,
-        height: 15,
-    },
-    blueBlock: {
-        marginLeft: 10,
-        marginTop: 10,
+        marginTop: 16,
         width: 15,
         height: 15,
     },

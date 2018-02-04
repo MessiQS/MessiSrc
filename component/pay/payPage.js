@@ -5,13 +5,13 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
-    Alert
 } from 'react-native';
 // import { NetworkInfo } from 'react-native-network-info';
 import Pingpay from '../../service/pingpp';
 import Http from '../../service/http';
 import realmManager from "./../../component/Realm/realmManager"
 import runtime from '../../service/runtime'
+import Alert from "../../component/progress/alert";
 
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
@@ -35,6 +35,7 @@ export default class PayPage extends React.Component {
         const response = await Pingpay.createCharge({
             client_ip: "192.168.0.103",
             amount: params.price,
+            paper_id: params.id,
             channel,
             subject: params.title,
             body: `${params.userId}_BUY_${params.id}`
@@ -75,8 +76,21 @@ export default class PayPage extends React.Component {
     paySuccess = async () => {
         const user = realmManager.getCurrentUser()
         const { userId } = user
-        const { goBack } = this.props.navigation
-
+        const { goBack, state: { params } } = this.props.navigation
+        const sleep = (time) => {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve();
+                }, time);
+            })
+        };
+        this.setState({
+            showAlert: true,
+        })
+        await sleep(1000)
+        this.setState({
+            showAlert: false,
+        })
         const res = await Http.post("api/getUserBuyInfo", {
             "user_id": userId
         })
@@ -84,7 +98,7 @@ export default class PayPage extends React.Component {
         if (res.type == true) {
             let array = res.data.buyedInfo
             await realmManager.updateUserExamIds(array)
-            runtime.emit('updatePaperInfo')
+            params.callback()
             goBack();
         }
     }
@@ -101,6 +115,7 @@ export default class PayPage extends React.Component {
         const { price } = params
         return (
             <View style={styles.container}>
+                {this.state.showAlert == true ? <Alert content="支付成功！" /> : null}
                 <View style={styles.headerView}>
                     <Text style={styles.headerTitleText}>支付金额</Text>
                     <Text style={styles.headerPriceText}>¥ {price}</Text>
