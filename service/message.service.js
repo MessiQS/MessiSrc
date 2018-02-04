@@ -13,8 +13,10 @@ export default class MessageService {
         
     }
 
-    static async getUpdateInfo() {
-        return Http.get('api/getUpdate',{},true)
+    static async getUpdateInfo(version) {
+        return Http.get('api/getUpdate',{
+            version
+        },true)
     }
 
     /**

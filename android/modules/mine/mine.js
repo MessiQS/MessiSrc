@@ -14,7 +14,6 @@ import {
     ScrollView,
     Vibration,
     Linking,
-    Alert
 } from 'react-native';
 import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
@@ -25,7 +24,7 @@ import * as Progress from 'react-native-progress';
 import main from '../../main';
 import MessageService from '../../../service/message.service';
 import { appVersion } from "../../../service/constant";
-
+import Alert from '../../../component/progress/alert'
 var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (source) => {
@@ -104,29 +103,31 @@ class Mine extends Component {
             '确定退出吗?',
             '',
             [
-              {text: '确定', onPress: async () => {
-                console.log("_outloginAction")
-                const { navigate } = that.props.navigation;
-                await realmManager.deleteAllRealmData()
-                await Storage.clearAll()
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Login' })
-                    ]
-                })
-                // clearPromise.then(res => {
-                    that.props.navigation.dispatch(resetAction)
-                //    }
-                // )
-              }},
-              {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {
+                    text: '确定', onPress: async () => {
+                        console.log("_outloginAction")
+                        const { navigate } = that.props.navigation;
+                        await realmManager.deleteAllRealmData()
+                        await Storage.clearAll()
+                        const resetAction = NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'Login' })
+                            ]
+                        })
+                        // clearPromise.then(res => {
+                        that.props.navigation.dispatch(resetAction)
+                        //    }
+                        // )
+                    }
+                },
+                { text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             ],
             { cancelable: true }
         )
     }
 
-    async _handleAction(item) {
+    _handleAction = async (item) => {
 
         const that = this
         const { navigate } = this.props.navigation;
@@ -134,32 +135,26 @@ class Mine extends Component {
         if (item.type == "route") {
             navigate(item.sref, item.info)
         }
-
         if (item.type == "alert") {
-            let versionInfoResponse = await MessageService.getUpdateInfo();
-            if (versionInfoResponse.type == true) {
-                let versionInfo = versionInfoResponse.data
-                let date = versionInfo.date
-                let size = versionInfo.size
-                let updateInfo = versionInfo.updateInfo
-                if (appVersion != versionInfo.version) {
-                    this.setState({
-                        showVersionInfo: true,
-                        versionInfo: versionInfo
-                    })
-                }
-                return;
-            }
-
-            this.setState({
-                showVersionAlert: true
-            })
-
-            setTimeout(() => {
-                that.setState({
-                    showVersionAlert: false,
+            let versionInfoResponse = await MessageService.getUpdateInfo(appVersion);
+            if (versionInfoResponse.type) {
+                this.setState({
+                    showVersionInfo: true,
+                    versionInfo: versionInfoResponse.data
                 })
-            }, 2000)
+                return true
+            } else {
+                this.setState({
+                    showVersionAlert: true,
+                    alertInfo: versionInfoResponse.data
+                })
+
+                setTimeout(() => {
+                    this.setState({
+                        showVersionAlert: false,
+                    })
+                }, 2000)
+            }
         }
     }
 
@@ -209,7 +204,7 @@ class Mine extends Component {
             <View style={popupStyles.viewContainer}>
                 <ImageBackground style={popupStyles.viewBackground} source={require("../../../Images/popup.png")} >
                     <View style={popupStyles.view}>
-                        <Text style={popupStyles.viewTitle}>发现新版本</Text> 
+                        <Text style={popupStyles.viewTitle}>发现新版本</Text>
                         <ScrollView style={popupStyles.scroll}>
                             <Text style={popupStyles.versionInfo}>版本：{versionInfo.version} 大小：{versionInfo.size}</Text>
                             <Text style={popupStyles.versionInfo}>时间：{versionInfo.date}</Text>
@@ -254,7 +249,7 @@ class Mine extends Component {
         const that = this
         return (
             <View style={styles.container}>
-                {this.state.showVersionAlert == true ? <Alert content="当前为最新版本" /> : null}
+                {this.state.showVersionAlert == true ? <Alert content={this.state.alertInfo} /> : null}
                 {this.state.showVersionInfo == true ? this._renderVersionUpdatePopupView() : null}
                 <View style={styles.head}>
                     <ImageBackground source={require('../../../Images/avatar.png')}
