@@ -170,10 +170,12 @@ class LoginPage extends React.Component {
 
         } else {
             //此处提示错误信息
-            Alert.alert(data);
-            this.setState({
+            that.setState({
                 loading: false
             })
+            setTimeout(() => {
+                Alert.alert(data);
+            }, 100)
         }
     };
 
