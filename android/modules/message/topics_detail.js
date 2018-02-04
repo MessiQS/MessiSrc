@@ -145,9 +145,7 @@ export default class TopicsDetail extends React.Component {
         const papers = await realmManager.createQuestion(json)
         /////////////////// 佩奇 看这里 ////////////
         let recordResponse = await MessageService.getSpecialRecordByPaperId(item.id)
-        if (recordResponse.type == true && Object.keys(recordResponse.data) !== 0) {
-            await this._handleMemoryModels(recordResponse.data)
-        }
+        console.log(recordResponse)
         /// 如果之前没有做过试题 数据
         const memoryModels = await realmManager.createMemoryModels(papers, item.id)
         await realmManager.createExaminationPaper({
@@ -160,6 +158,9 @@ export default class TopicsDetail extends React.Component {
             purchased: true,
             price: parseFloat(item.price),
         })
+        if (recordResponse.type == true && Object.keys(recordResponse.data) !== 0) {
+            await this._handleMemoryModels(recordResponse.data)
+        }
     }
 
     /**
@@ -168,7 +169,6 @@ export default class TopicsDetail extends React.Component {
      */
     async _handleMemoryModels(userQuestionInfo) {
         let keys = Object.keys(userQuestionInfo)
-        console.log("keys", keys)
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i]
             realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);

@@ -93,7 +93,7 @@ export default class Login extends Component {
 			<View style={styles.headerView}>
 				<Text style={styles.year}>2018</Text>
 				<Text style={styles.appName}>刷题库</Text>
-				<Image style={styles.logo} source={require('../../Images/logo.png')} />				
+				{/* <Image style={styles.logo} source={require('../../Images/logo.png')} />				 */}
 			</View>
 		)
 	}

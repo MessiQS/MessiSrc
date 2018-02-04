@@ -39,13 +39,13 @@ class ModifyPasswordPage extends React.Component {
         let isValid = true;
         if (this[passwordType[1]] !== this[passwordType[2]]) {
             isValid = false;
-            Alert, alert('错误', '确认两次输入相同');
+            Alert, alert('两次密码输入不同');
             return;
         }
         passwordType.some(res => {
             if (!AccountCheck.isValidPassword(this[res])) {
                 isValid = false;
-                Alert.alert(strArr[res] + '格式错误', '请输入6-21位字母与数字');
+                Alert.alert(strArr[res] + '格式错误，请输入6-21位字母与数字');
                 return true;
             }
         });

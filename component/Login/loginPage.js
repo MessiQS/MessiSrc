@@ -224,14 +224,9 @@ class LoginPage extends React.Component {
     }
 
     async _handleMemoryModels(userQuestionInfo) {
-
-        const that = this
         let keys = Object.keys(userQuestionInfo)
-        console.log("keys", keys)
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i]
-            console.log("userInfo.data.userQuestionInfo", userQuestionInfo)
-
             realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
         }
     }
