@@ -12,13 +12,14 @@ export default class Pingpay {
         *   subject 商品名称 暂定为 该套题的 SPid
         *   body 商品描述信息
         */
-        const { client_ip, amount, channel, subject, body } = data;
-        const resposne = await Http.post('api/createcharge',{
+        const { client_ip, amount, channel, subject, body, paper_id } = data;
+        const resposne = await Http.post('api/createcharge', {
             client_ip,
             amount,
             channel,
             subject,
             body,
+            paper_id
         });
         return resposne;
     }

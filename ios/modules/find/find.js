@@ -373,8 +373,8 @@ export default class Find extends Component {
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.info.newLastSelectDate}</Text>
-                        <Text style={styles.average}>平均値:{this.state.info.newAverage}</Text>
+                        <Text style={styles.psmall}>最后刷题日：{this.state.info.newLastSelectDate}</Text>
+                        <Text style={styles.average}>平均値：{this.state.info.newAverage}</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.info.newQuestionCount}</Text>
                     </View>
                 </View>
@@ -448,8 +448,8 @@ export default class Find extends Component {
                     </TouchableOpacity>
                     <View style={styles.separator} />
                     <View style={styles.chartBottomContainer}>
-                        <Text style={styles.psmall}>最后刷题日:{this.state.info.wrongLastSelectDate}</Text>
-                        <Text style={styles.average}>平均値:{this.state.info.wrongAverage}</Text>
+                        <Text style={styles.psmall}>最后刷题日：{this.state.info.wrongLastSelectDate}</Text>
+                        <Text style={styles.average}>平均値：{this.state.info.wrongAverage}</Text>
                         <Text style={styles.rightDetail}>剩余：{this.state.info.wrongQuestionCount}</Text>
                     </View>
                 </View>
