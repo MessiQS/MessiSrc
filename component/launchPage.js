@@ -6,6 +6,7 @@ import {
 import Storage from '../service/storage';
 import Http from '../service/http';
 import { NavigationActions } from 'react-navigation'
+import realmManager from "../component/Realm/realmManager"
 
 
 export default class LaunchPage extends React.Component {
@@ -41,6 +42,11 @@ export default class LaunchPage extends React.Component {
                     this.props.navigation.dispatch(resetAction)
                 })
             } else {
+
+                realmManager.deleteAllRealmData()
+                Storage.clearAll()
+
+
                 const resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
