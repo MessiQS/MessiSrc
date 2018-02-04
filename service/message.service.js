@@ -1,4 +1,5 @@
 import Http from './http';
+import realmManager from '../component/Realm/realmManager'
 
 export default class MessageService {
     static async getPaper() {
@@ -17,6 +18,14 @@ export default class MessageService {
         return Http.get('api/getUpdate',{
             version
         },true)
+    }
+
+    static async getSpecialRecordByPaperId(paperId) {
+
+        console.log("message.service.js paper_id", paperId)
+        return Http.get('api/getQuestionInfoByPaperid',{
+            paper_id: paperId
+        }, true)
     }
 
     /**
