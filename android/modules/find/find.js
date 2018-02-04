@@ -17,7 +17,7 @@ import {
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import moment from 'moment';
+import moment, { max } from 'moment';
 import realmManager from "../../../component/Realm/realmManager";
 import Storage from "../../../service/storage";
 import realm from '../../../component/Realm/realm';
@@ -535,7 +535,7 @@ const styles = {
     calendarView: {
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop: 3,
+        marginTop: Math.max((height - 64 - 78 - (2*304)) / 3, 3),
     },
     chartTitleContainer: {
         flexDirection: "column",

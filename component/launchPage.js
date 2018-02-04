@@ -26,12 +26,16 @@ export default class LaunchPage extends React.Component {
     });
 
     componentDidMount() {
-        Storage.multiGet(['accountToken', 'account']).then(({ accountToken, account }) => {
+        const that = this
+        Storage.multiGet(['accountToken', 'account']).then(async({ accountToken, account } ) => {
             if (accountToken && account) {
                 return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
                     let route = 'Login';
                     if (type) {
                         route = 'Home'
+                    } else {
+                        realmManager.deleteAllRealmData()                
+                        Storage.clearAll()
                     }
                     const resetAction = NavigationActions.reset({
                         index: 0,
@@ -45,17 +49,19 @@ export default class LaunchPage extends React.Component {
 
                 realmManager.deleteAllRealmData()
                 Storage.clearAll()
-
-
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: "Login" })
-                    ]
-                })
-                this.props.navigation.dispatch(resetAction)
+                that.navigateToLogin()
             }
         })
+    }
+
+    navigateToLogin() {
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: "Login" })
+            ]
+        })
+        this.props.navigation.dispatch(resetAction)
     }
 
     render() {
