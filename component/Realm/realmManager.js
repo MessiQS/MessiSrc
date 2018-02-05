@@ -443,7 +443,7 @@ class RealmManager {
 
         var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
         console.log("timeStamp", timeStamp)
-        var todayNumber = models.filtered('firstBySelectedTime>$0', timeStamp).length
+        
         var finishedModels = models.filtered('weighting>=7 && appearedSeveralTime > 0')
         var unfishedModels = models.filtered('weighting<7 && appearedSeveralTime > 0')
         var x = finishedModels.length
@@ -474,6 +474,7 @@ class RealmManager {
         beforeArray.push(before_2)
         var before_1 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', timeStamp, (timeStamp - oneDay)).length
         beforeArray.push(before_1)
+        var todayNumber = models.filtered('firstBySelectedTime>$0', timeStamp).length
         beforeArray.push(todayNumber)
         object.beforeArray = beforeArray
 
