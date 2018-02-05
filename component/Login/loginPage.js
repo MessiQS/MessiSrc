@@ -83,6 +83,7 @@ class LoginPage extends React.Component {
         })
 
         password = MD5(password).toString();
+        console.log("account", account, "password", password)
         const loginResponse = await Http.post('api/login', {
             "account": account,
             "password": password

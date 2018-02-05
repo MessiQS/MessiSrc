@@ -174,6 +174,7 @@ class RealmManager {
     updateMemoryModel(model, record, newWeighting) {
 
         var time = new Date()
+        console.log(" time.getTime()",  time.getTime())
 
         return new Promise((resolve, reject) => {
             try {
@@ -441,7 +442,7 @@ class RealmManager {
 
         let models = realm.objects("MemoryModel").filtered("examId=$0", examId)
 
-        var timeStamp = new Date(new Date().setHours(0, 0, 0, 0)) / 1000
+        var timeStamp = parseInt(new Date().setHours(0, 0, 0, 0))
         console.log("timeStamp", timeStamp)
         
         var finishedModels = models.filtered('weighting>=7 && appearedSeveralTime > 0')
@@ -461,7 +462,6 @@ class RealmManager {
 
         var beforeArray = []
         var oneDay = 24 * 60 * 60
-
 
         /// 五天前
         var before_5 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay)).length
