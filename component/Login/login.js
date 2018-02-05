@@ -91,9 +91,7 @@ export default class Login extends Component {
 	_renderHeader() {
 		return (
 			<View style={styles.headerView}>
-				<Text style={styles.year}>2018</Text>
-				<Text style={styles.appName}>刷题库</Text>
-				{/* <Image style={styles.logo} source={require('../../Images/logo.png')} />				 */}
+				<Text style={styles.appName}>刷题</Text>
 			</View>
 		)
 	}
