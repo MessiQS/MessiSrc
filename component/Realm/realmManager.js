@@ -435,7 +435,7 @@ class RealmManager {
     getFindInfo(examId) {
 
         if (examId == '') {
-            return
+            return {}
         }
 
         let object = new Object()
@@ -461,7 +461,7 @@ class RealmManager {
         object.futureArray = futureArray
 
         var beforeArray = []
-        var oneDay = 24 * 60 * 60
+        var oneDay = 24 * 60 * 60 * 1000
 
         /// 五天前
         var before_5 = models.filtered('firstBySelectedTime<$0&&firstBySelectedTime>$1', (timeStamp - 4 * oneDay), (timeStamp - 5 * oneDay)).length
