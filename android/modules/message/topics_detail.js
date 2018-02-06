@@ -126,7 +126,6 @@ export default class TopicsDetail extends React.Component {
 
             const { state, goBack } = this.props.navigation;
             const params = state.params || {};
-            params.callback('data')
             goBack(params.go_back_key);
         }, 1000)
     }
@@ -145,7 +144,6 @@ export default class TopicsDetail extends React.Component {
         const papers = await realmManager.createQuestion(json)
         /////////////////// 佩奇 看这里 ////////////
         let recordResponse = await MessageService.getSpecialRecordByPaperId(item.id)
-        console.log(recordResponse)
         /// 如果之前没有做过试题 数据
         const memoryModels = await realmManager.createMemoryModels(papers, item.id)
         await realmManager.createExaminationPaper({

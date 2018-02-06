@@ -96,6 +96,10 @@ export default class Find extends Component {
         super(props);
         this._prepareUI()
         this.isUpdateChart = false
+
+        runtime.on('find_update_state',() => {
+            this._updateUI()
+        })
     }
 
     _prepareUI() {
@@ -172,14 +176,6 @@ export default class Find extends Component {
         }, 1);
     }
 
-    onMessage() {
-
-        const that = this
-        runtime.on(DBChange, () => {
-            that._updateUI()
-        })
-    }
-
     routeToMine() {
         const { navigate } = this.props.navigation;
         const user = realmManager.getCurrentUser()
@@ -206,11 +202,7 @@ export default class Find extends Component {
 
     routeToPayPage() {
         const { navigate } = this.props.navigation;
-        navigate('Message', {
-            callback: (data) => {
-                this._updateUI()
-            }
-        })
+        navigate('Message', {})
     }
 
     routeToNewDetail() {
@@ -229,10 +221,7 @@ export default class Find extends Component {
 
             const { navigate } = this.props.navigation;
             navigate('Detail', {
-                category: "new",
-                callback: (data) => {
-                    this._updateUI()
-                }
+                category: "new"
             })
         }
     }
@@ -253,10 +242,7 @@ export default class Find extends Component {
 
             const { navigate } = this.props.navigation;
             navigate('Detail', {
-                category: "wrong", 
-                callback: (data) => {
-                    this._updateUI()
-                }
+                category: "wrong"
             })
         }
     }

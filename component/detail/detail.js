@@ -69,22 +69,21 @@ export default class Detail extends Component {
             </TouchableOpacity>
         ),
         headerLeft: (
-            // Platform.OS == "ios" ? (
-            <TouchableOpacity onPress={() => {
-                navigation.state.params.callback()
-                navigation.goBack()
-            }}>
-                <View style={{
-                    left: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: 44,
-                    height: 44,
+            Platform.OS == "ios" ? (
+                <TouchableOpacity onPress={() => {
+                    navigation.goBack()
                 }}>
-                    <Image style={{ width: 16, height: 16 }} source={require('../../Images/back_arrow.png')} />
-                </View>
-            </TouchableOpacity>
-            // ) : navigation.state.params.headerLeft
+                    <View style={{
+                        left: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: 44,
+                        height: 44,
+                    }}>
+                        <Image style={{ width: 16, height: 16 }} source={require('../../Images/back_arrow.png')} />
+                    </View>
+                </TouchableOpacity>
+            ) : navigation.state.params.headerLeft
         ),
     });
 
@@ -529,7 +528,7 @@ export default class Detail extends Component {
         let url = "https://shuatiapp.cn/images/7ec08470a0be5b70/normal_700x457_137618c5cb793ae.png"
         console.log("showImageDetail", this.state.showImageDetail)
         return (
-            <Modal visible={this.state.showImageDetail} transparent={true} onRequestClose={() => {}}>
+            <Modal visible={this.state.showImageDetail} transparent={true} onRequestClose={() => { }}>
                 <ImageViewer imageUrls={[{ url: this.selectedImageURL }]} onClick={() => {
                     this.setState({
                         showImageDetail: false

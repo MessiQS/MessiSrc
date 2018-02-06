@@ -31,7 +31,6 @@ export default class Message extends Component {
         navigate('TopicsDetail', {
             section: section,
             go_back_key: state.key,
-            callback: state.params.callback
         })
     }
 

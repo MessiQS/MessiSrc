@@ -40,6 +40,9 @@ import FPStepThree from '../component/forgetPassword/stepThree';
 import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage';
 
+
+import runtime from "../service/runtime";
+
 let bookIcon = require('../Images/book.png');
 let questionIcon = require('../Images/question.png');
 let chartIcon = require('../Images/chart.png');
@@ -195,5 +198,25 @@ const Messi = StackNavigator({
         })
     }
 })
+function getCurrentRouteName(navigationState) {
+    if (!navigationState) {
+      return null;
+    }
+    const route = navigationState.routes[navigationState.index];
+    // dive into nested navigators
+    if (route.routes) {
+      return getCurrentRouteName(route);
+    }
+    return route.routeName;
+  }
 
-export default Messi;
+export default () => (<Messi 
+    onNavigationStateChange = {(prevState, currentState) => {
+      const currentScreen = getCurrentRouteName(currentState);
+      const prevScreen = getCurrentRouteName(prevState);
+      const uodateNameArray = ['TopicsDetail','Detail']
+      if(currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0){
+        runtime.emit('find_update_state')
+      }
+    }}
+    />);
