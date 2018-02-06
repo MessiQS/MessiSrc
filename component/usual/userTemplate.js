@@ -6,6 +6,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
+    Platform
 } from 'react-native';
 import { AccountButton } from './button';
 
@@ -241,9 +242,17 @@ const styles = StyleSheet.create({
     passwordInputStyle: {
         width: "100%",
         paddingBottom: 0,
-        paddingTop: 3,
+        ...Platform.select({
+            ios: {
+                paddingTop: 3,
+                lineHeight: 29,
+            },
+            android: {
+                paddingTop: 6,
+                lineHeight: 19,
+            }
+        }),
         fontSize: 14,
-        lineHeight: 29,
         justifyContent: 'center',
         marginLeft: 16,
     },

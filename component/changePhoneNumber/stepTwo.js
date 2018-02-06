@@ -41,7 +41,8 @@ export default class CPStepTwo extends React.Component {
             input: {
                 onChangeText: this.updateDate.bind(this),
                 placeholder: "请输入手机号码",
-                maxLength: 11
+                maxLength: 11,
+                secureTextEntry:false
             },
             button: {
                 title: "下一步",
