@@ -100,10 +100,10 @@ export default class Find extends Component {
         super(props);
         this._prepareUI()
         this.isUpdateChart = false
-    }
 
-    componentDidMount() {
-
+        runtime.on('find_update_state',() => {
+            this._updateUI()
+        })
     }
 
     _prepareUI() {
@@ -477,6 +477,7 @@ const styles = {
         marginBottom: 5,
     },
     titleContent: {
+        marginTop: Math.min(Math.max((height - 64 - 78 - (2*304)) / 3, 3), 10),         
         flexDirection: "row",
         backgroundColor: "white",
         height: 78,
@@ -526,7 +527,7 @@ const styles = {
     calendarView: {
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop: 3,
+        marginTop: Math.min(Math.max((height - 64 - 78 - (2*304)) / 3, 3), 10), 
     },
     chartTitleContainer: {
         flexDirection: "column",

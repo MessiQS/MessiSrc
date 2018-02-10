@@ -205,4 +205,26 @@ const Messi = StackNavigator({
     }
 })
 
-export default Messi;
+function getCurrentRouteName(navigationState) {
+    if (!navigationState) {
+        return null;
+    }
+    const route = navigationState.routes[navigationState.index];
+    // dive into nested navigators
+    if (route.routes) {
+        return getCurrentRouteName(route);
+    }
+    return route.routeName;
+}
+
+export default () => (<Messi
+    onNavigationStateChange={(prevState, currentState) => {
+        const currentScreen = getCurrentRouteName(currentState);
+        const prevScreen = getCurrentRouteName(prevState);
+        const uodateNameArray = ['TopicsDetail', 'Detail']
+        if (currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0) {
+            runtime.emit('find_update_state')
+        }
+    }}
+/>);
+
