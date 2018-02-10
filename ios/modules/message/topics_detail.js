@@ -88,15 +88,34 @@ export default class TopicsDetail extends React.Component {
             return 
         }
 
-        STRIAPManager.buy("")
-        // HTTP.post('api/applePay', {
-        //     receipt
-        // }, true).then( value => {
-        //     console.log("api/applePay value", value)
-        // }).catch (err => {
-        //     console.log("api/applePay err", err)
-        // })
+        this.setState({
+            loading: true,
+        })
 
+        let user = realmManager.getCurrentUser()
+
+        var param = {
+            user_id: user.userId,
+            paper_id: item.id
+        }
+        let token = await Storage.getItem("accountToken") || '';
+
+        STRIAPManager.buyWithToken(token, param, async (response) => {
+            console.log("response", response)
+            if (response.type == true) {
+
+                let newUser = await realmManager.addUserExamId(item.id)
+
+                this.setState({
+                    user: newUser,
+                    loading: false,
+                })
+            } else {
+                this.setState({
+                    loading: false,
+                })
+            }
+        })
     }
 
     async _chooseExam(item) {

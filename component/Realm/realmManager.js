@@ -171,6 +171,25 @@ class RealmManager {
         })
     }
 
+    addUserExamId(examId) {
+        
+        var user = this.getCurrentUser()
+        let examIds = JSON.parse(user.examIds)
+        examIds.push(examId)
+        let examIdsJSON = JSON.stringify(examIds)
+        return new Promise((resolve, reject) => {
+            try {
+                realm.write(() => {
+                    user.examIds = examIdsJSON
+                    resolve(user)
+                })
+            } catch (e) {
+                reject(e)
+                console.log("ExaminationPaper Error on update")
+            }
+        })
+    }
+
     updateMemoryModel(model, record, newWeighting) {
 
         var time = new Date()
