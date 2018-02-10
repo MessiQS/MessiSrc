@@ -41,6 +41,9 @@ import FPStepThree from '../component/forgetPassword/stepThree';
 import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage';
 
+import runtime from "../service/runtime";
+
+
 let bookIcon = require('../Images/book.png');
 let questionIcon = require('../Images/question.png');
 let chartIcon = require('../Images/chart.png');
