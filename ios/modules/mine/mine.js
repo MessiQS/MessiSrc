@@ -75,15 +75,6 @@ class Mine extends Component {
             type: "route"
         },
         {
-            sref: 'CPStepThree',
-            name: '版本更新',
-            info: { account: 15895537043 },
-            leftIcon:createLeftIcon('settings'),
-            leftSource: require('../../../Images/account/account_version_update.png'),
-            rightIcon,
-            tipBorder: 0,
-            type: "alert"
-        }, {
             sref: 'Feedback',
             name: '问题反馈',
             info: { user: 'Lucy' },

@@ -4,7 +4,7 @@ import {
     View,
     Text
 } from 'react-native';
-export default class Alert extends React.Component {
+export default class AlertView extends React.Component {
 
     constructor(props) {
         super(props)

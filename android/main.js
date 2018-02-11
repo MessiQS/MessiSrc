@@ -54,7 +54,7 @@ const TabOptions = ({ title }) => {
         color: '#172434',
         textAlign: 'center',
         fontSize: 20,
-        alignSelf:'center'
+        alignSelf: 'center'
     }
     const headerStyle = {
         backgroundColor: '#FFF',
@@ -70,7 +70,7 @@ const TabOptions = ({ title }) => {
             color: '#172434',
             textAlign: 'center',
             fontSize: 20,
-            alignSelf:'center'
+            alignSelf: 'center'
         },
         headerStyle,
         color: '#172434',
@@ -106,7 +106,7 @@ const Messi = StackNavigator({
         navigationOptions: TabOptions({
             title: '题库选择'
         }),
-        mood:"modal",        
+        mood: "modal",
     },
     Request: {
         screen: Request,
@@ -200,23 +200,23 @@ const Messi = StackNavigator({
 })
 function getCurrentRouteName(navigationState) {
     if (!navigationState) {
-      return null;
+        return null;
     }
     const route = navigationState.routes[navigationState.index];
     // dive into nested navigators
     if (route.routes) {
-      return getCurrentRouteName(route);
+        return getCurrentRouteName(route);
     }
     return route.routeName;
-  }
+}
 
-export default () => (<Messi 
-    onNavigationStateChange = {(prevState, currentState) => {
-      const currentScreen = getCurrentRouteName(currentState);
-      const prevScreen = getCurrentRouteName(prevState);
-      const uodateNameArray = ['TopicsDetail','Detail']
-      if(currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0){
-        runtime.emit('find_update_state')
-      }
+export default () => (<Messi
+    onNavigationStateChange={(prevState, currentState) => {
+        const currentScreen = getCurrentRouteName(currentState);
+        const prevScreen = getCurrentRouteName(prevState);
+        const uodateNameArray = ['TopicsDetail', 'Detail']
+        if (currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0) {
+            runtime.emit('find_update_state')
+        }
     }}
-    />);
+/>);

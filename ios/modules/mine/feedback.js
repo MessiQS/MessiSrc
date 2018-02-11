@@ -27,8 +27,10 @@ export default class Feedback extends React.Component {
     }
     _renderProcess() {
         const { isProcess } = this.state
-        if (!!isProcess) {
+        if (isProcess == true) {
             return (<ProgressView />)
+        } else {
+            return null
         }
     }
     async submitData() {
@@ -38,15 +40,20 @@ export default class Feedback extends React.Component {
         const { title, content } = this.state
 
         console.log("feedback.js title content", title, content)
+
         let user = realmManager.getCurrentUser()
         let user_id = user.userId
 
         const response = await Http.post('api/feedback', { user_id, title, content }, true)
-        this.setState({
-            isProcess: false
-        })
+        console.log("api/feedback", response)
+        
         if (response.type == false) {
-            Alert.alert('发送失败，请稍后重试！')
+            Alert.alert(response.data)
+            setTimeout(() => {
+                this.setState({
+                    isProcess: false
+                })
+            }, 1000);
             return
         }
 
@@ -54,6 +61,9 @@ export default class Feedback extends React.Component {
             {
                 text: '确定',
                 onPress: async () => {
+                    this.setState({
+                        isProcess: false
+                    })
                     this.props.navigation.goBack()
                 }
             },
