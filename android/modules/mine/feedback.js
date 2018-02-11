@@ -30,6 +30,8 @@ export default class Feedback extends React.Component {
         const {isProcess} = this.state
         if(!!isProcess){
             return (<ProgressView />)
+        } else {
+            return null
         }
     }
     async submitData() {

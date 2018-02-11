@@ -12,7 +12,8 @@ import {
     Text,
     Image,
     View,
-    Vibration
+    Animated,
+    Easing,
 } from 'react-native';
 import Echarts from 'native-echarts';
 import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions';
@@ -116,6 +117,7 @@ export default class Find extends Component {
                 currentExamDetail: "历年真题",
                 info: info,
                 showAlert: false,
+                fadeInOpacity: new Animated.Value(1),
             }
         } else {
             let info = new Object()
@@ -133,6 +135,7 @@ export default class Find extends Component {
                 currentExamDetail: "请选择题库",
                 info: info,
                 showAlert: false,
+                fadeInOpacity: new Animated.Value(1),                
             }
         }
     }
@@ -151,7 +154,9 @@ export default class Find extends Component {
             this.setState ({
                 currentExam: user.currentExamTitle,
                 currentExamDetail: "历年真题",
+                fadeInOpacity: new Animated.Value(0.01),                
                 info: info,
+                
             })
         } else {
             let info = new Object()
@@ -167,9 +172,24 @@ export default class Find extends Component {
             this.setState ({
                 currentExam: "当前暂无题库信息",
                 currentExamDetail: "请选择题库",
+                fadeInOpacity: new Animated.Value(0.01),                
                 info: info,
             })
         }
+
+        Animated.timing(this.state.fadeInOpacity, {
+            toValue: 0.001, // 目标值
+            duration: 200, // 动画时间
+            easing: Easing.ease, // 缓动函数
+        }).start(() => this.showAnimate());
+    }
+
+    showAnimate() {
+        Animated.timing(this.state.fadeInOpacity, {
+            toValue: 1, // 目标值
+            duration: 1500, // 动画时间
+            easing: Easing.ease, // 缓动函数
+        }).start()
     }
 
     _isShowEmptyData() {
@@ -279,6 +299,7 @@ export default class Find extends Component {
         } else {
             option.series[0].data = this.state.info.pieArray
         }
+
         return (
             <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
                 <View style={styles.titleContent}>
@@ -287,9 +308,11 @@ export default class Find extends Component {
                         <Text numberOfLines={1} style={[styles.h2, styles.examTitle]}>{this.state.currentExam}</Text>
                         <Text style={[styles.p, styles.examDetail]}>{this.state.currentExamDetail}</Text>
                     </View>
-                    <View style={styles.circleChart}>
+                    <Animated.View style={[styles.circleChart, {
+                        opacity: this.state.fadeInOpacity
+                    }]}>
                         <Echarts option={option} width={60} height={60} />
-                    </View>
+                    </Animated.View>
                     <Image style={[styles.arrow, { top: 23 }]} source={require("../../../Images/find_arrow_right.png")} />
                 </View>
             </TouchableOpacity>
@@ -370,7 +393,11 @@ export default class Find extends Component {
                         <Text style={styles.rightDetail}>剩余：{this.state.info.newQuestionCount}</Text>
                     </View>
                 </View>
-                <Echarts option={newPaperOption} height={width * 0.6} />
+                <Animated.View style = {{
+                    opacity: this.state.fadeInOpacity
+                }}>
+                    <Echarts option={newPaperOption} height={width * 0.6} />
+                </Animated.View>
             </View>
         )
     }
@@ -445,7 +472,11 @@ export default class Find extends Component {
                         <Text style={styles.rightDetail}>剩余：{this.state.info.wrongQuestionCount}</Text>
                     </View>
                 </View>
-                <Echarts option={newPaperOption} height={width * 0.6} />
+                <Animated.View style = {{
+                    opacity: this.state.fadeInOpacity
+                }}>
+                    <Echarts option={newPaperOption} height={width * 0.6} />
+                </Animated.View>
             </View>
         )
     }

@@ -11,8 +11,6 @@ export default class ProgressView extends React.Component {
         super()
     }
 
-    
-
     render() {
         return (
             <Modal visible={true} transparent={true} onRequestClose={() => {}}>

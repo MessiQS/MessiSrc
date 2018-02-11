@@ -52,7 +52,6 @@ export default class TopicsDetail extends React.Component {
         super(props)
 
         this.isLockPushing = false
-
         const array = this.props.navigation.state.params.section.item.data
         array.sort((a, b) => {
             if (a.title > b.title) {
@@ -74,7 +73,6 @@ export default class TopicsDetail extends React.Component {
                 user: user,
             })
         } else {
-
             this.state = ({
                 data: array,
                 loading: false,
@@ -105,7 +103,6 @@ export default class TopicsDetail extends React.Component {
             if (response.type == true) {
 
                 let newUser = await realmManager.addUserExamId(item.id)
-
                 this.setState({
                     user: newUser,
                     loading: false,
