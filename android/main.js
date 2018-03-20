@@ -40,6 +40,8 @@ import FPStepThree from '../component/forgetPassword/stepThree';
 import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage';
 
+import Classification from '../Modules/Classification/classification';
+
 
 import runtime from "../service/runtime";
 
@@ -195,6 +197,12 @@ const Messi = StackNavigator({
         screen: Feedback,
         navigationOptions: TabOptions({
             title: '问题反馈'
+        })
+    },
+    Classification: {
+        screen:Classification,
+        navigationOptions: TabOptions({
+            title: '选择考试'
         })
     }
 })

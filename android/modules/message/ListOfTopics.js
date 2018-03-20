@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import HTTP from '../../../service/http';
 import realm from '../../../component/Realm/realm';
 import {TextColor} from "../../../service/constant";
+import {appVersion} from "../../../service/constant"
 
 export default class ListOfTopics extends React.Component {
 
@@ -28,7 +29,10 @@ export default class ListOfTopics extends React.Component {
     componentDidMount() {
 
         const that = this
-        MessageService.getPaper().then(data => {
+        MessageService.getPaper({
+            system:"Android",
+            version: appVersion           
+        }).then(data => {
             var papers = [];
             that.cacheData = data.data;
             var papers = that.getCurrentPaper();

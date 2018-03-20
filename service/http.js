@@ -1,6 +1,5 @@
 
 import Storage from "./storage";
-import { AlertIOS } from "react-native";
 import { webURL } from "./constant";
 
 export default class Http {

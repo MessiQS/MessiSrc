@@ -5,11 +5,10 @@ import {
     View,
     TouchableOpacity,
     FlatList,
-    NativeModules
+    Alert
 } from 'react-native';
 import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
-import realm from '../../../component/Realm/realm';
 import Progress from '../../../component/progress/progress'
 import HTTP from "../../../service/http"
 import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
@@ -18,7 +17,6 @@ import runtime from "../../../service/runtime";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 
-var STRIAPManager = NativeModules.STRIAPManager;
 
 export default class TopicsDetail extends React.Component {
 
@@ -42,7 +40,7 @@ export default class TopicsDetail extends React.Component {
         headerLeft: (
             <TouchableOpacity onPress={() => { navigation.goBack() }}>
                 <View style={styles.headerLeftView}>
-                    <Image style={{ width:16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
+                    <Image style={{ width: 16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
                 </View>
             </TouchableOpacity>
         ),
@@ -73,6 +71,7 @@ export default class TopicsDetail extends React.Component {
                 user: user,
             })
         } else {
+
             this.state = ({
                 data: array,
                 loading: false,
@@ -80,42 +79,30 @@ export default class TopicsDetail extends React.Component {
         }
     }
 
+    // componentDidMount() {
+    //     runtime.on('updatePaperInfo', 
+    // }
+
     async _buy(item) {
 
         if (this._preventPushingMulitpleTimes()) {
-            return 
+            return
         }
 
-        this.setState({
-            loading: true,
-        })
-
-        let user = realmManager.getCurrentUser()
-
-        var param = {
-            user_id: user.userId,
-            paper_id: item.id
+        const user = realmManager.getCurrentUser()
+        item.userId = user.userId
+        item.callback = () => {
+            let updaterUser = realmManager.getCurrentUser()
+            this.setState({
+                user: updaterUser
+            })
         }
-        let token = await Storage.getItem("accountToken") || '';
-
-        STRIAPManager.buyWithToken(token, param, async (response) => {
-            console.log("response", response)
-            if (response.type == true) {
-
-                let newUser = await realmManager.addUserExamId(item.id)
-                this.setState({
-                    user: newUser,
-                    loading: false,
-                })
-            } else {
-                this.setState({
-                    loading: false,
-                })
-            }
-        })
+        this.props.navigation.navigate('PayPage', item)
     }
 
     async _chooseExam(item) {
+
+        const { navigate } = this.props.navigation;
 
         if (item == null) {
             return
@@ -136,9 +123,9 @@ export default class TopicsDetail extends React.Component {
                 loading: false,
                 user: user,
             })
-            const { state, goBack } = this.props.navigation;    
+
+            const { state, goBack } = this.props.navigation;
             const params = state.params || {};
-            params.callback('data')
             goBack(params.go_back_key);
         }, 1000)
     }
@@ -148,9 +135,18 @@ export default class TopicsDetail extends React.Component {
         const json = await MessageService.downloadPaper({
             paperId: item.id
         });
+
+        if (json.type == false) {
+            Alert.alert('下载失败，请稍后重试')
+            return
+        }
+
         const papers = await realmManager.createQuestion(json)
+        /////////////////// 佩奇 看这里 ////////////
+        let recordResponse = await MessageService.getSpecialRecordByPaperId(item.id)
+        /// 如果之前没有做过试题 数据
         const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        let exam = await realmManager.createExaminationPaper({
+        await realmManager.createExaminationPaper({
             id: item.id,
             title: item.title,
             questionPapers: papers,
@@ -160,8 +156,23 @@ export default class TopicsDetail extends React.Component {
             purchased: true,
             price: parseFloat(item.price),
         })
-        console.log("topic_detail.js exam", exam)
+        if (recordResponse.type == true && Object.keys(recordResponse.data) !== 0) {
+            await this._handleMemoryModels(recordResponse.data)
+        }
     }
+
+    /**
+     * 这个是原来登录里面处理已有用户数据的代码
+     * @param {*} userInfo 
+     */
+    async _handleMemoryModels(userQuestionInfo) {
+        let keys = Object.keys(userQuestionInfo)
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i]
+            realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
+        }
+    }
+
 
     _exit() {
         const { navigate } = this.props.navigation;
@@ -174,8 +185,8 @@ export default class TopicsDetail extends React.Component {
             ]
         })
         clearPromise.then(res => {
-                this.props.navigation.dispatch(resetAction)
-           }
+            this.props.navigation.dispatch(resetAction)
+        }
         )
     }
 
@@ -185,13 +196,13 @@ export default class TopicsDetail extends React.Component {
         if (this.isLockPushing == true) {
             return true
         }
-		this.isLockPushing = true
-		
+        this.isLockPushing = true
+
         setTimeout(() => {
             that.isLockPushing = false
-		}, 1000);
-		return false;
-	}
+        }, 1000);
+        return false;
+    }
 
     _renderProgress() {
         if (this.state.loading == true) {

@@ -43,6 +43,7 @@ import LaunchPage from '../component/launchPage';
 
 import runtime from "../service/runtime";
 
+import Classification from "../Modules/Classification/classification";
 
 let bookIcon = require('../Images/book.png');
 let questionIcon = require('../Images/question.png');
@@ -204,6 +205,12 @@ const Messi = StackNavigator({
         screen: Feedback,
         navigationOptions: TabOptions({
             title: '问题反馈'
+        })
+    },
+    Classification: {
+        screen:Classification,
+        navigationOptions: TabOptions({
+            title: '选择考试'
         })
     }
 })

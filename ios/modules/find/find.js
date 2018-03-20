@@ -237,11 +237,12 @@ export default class Find extends Component {
 
     routeToPayPage() {
         const { navigate } = this.props.navigation;
-        navigate('Message', {
-            callback:(data) => {
-                this._updateUI()
-            }
-        })
+        navigate('Classification', {})
+        // navigate('Message', {
+        //     callback:(data) => {
+        //         this._updateUI()
+        //     }
+        // })
     }
 
     routeToNewDetail() {
@@ -285,6 +286,10 @@ export default class Find extends Component {
     _renderTopView() {
 
         let option = pieOption.option
+
+        let option_json = JSON.stringify(option)
+        console.log("option_json.length", option_json.length)
+
 
         if (this.isUpdateChart) {
 

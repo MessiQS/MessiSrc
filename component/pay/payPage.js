@@ -5,6 +5,8 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
+    Platform,
+    Alert,
 } from 'react-native';
 // import { NetworkInfo } from 'react-native-network-info';
 import Pingpay from '../../service/pingpp';
@@ -12,6 +14,7 @@ import Http from '../../service/http';
 import realmManager from "./../../component/Realm/realmManager"
 import runtime from '../../service/runtime'
 import AlertView from "../../component/progress/alert";
+
 
 // const WeChat = require('react-native-wechat');
 const Dimensions = require('Dimensions');
@@ -31,6 +34,7 @@ export default class PayPage extends React.Component {
     //支付测试
     paytest = async () => {
         const { state: { params } } = this.props.navigation
+        const that = this
         const { channel } = this.state
         const response = await Pingpay.createCharge({
             client_ip: "192.168.0.103",
@@ -44,33 +48,43 @@ export default class PayPage extends React.Component {
         const charge = JSON.stringify(response.data)
         //苹果系统直接用data
 
-        //ios
-        // Pingpp.createPayment({
-        //     "object": response.data,
-        //     "urlScheme": "wx8f1006588bd45d9b"
-        // }, function (res, error) {
-        //     console.log(res, error);
-        // });
+        if (Platform.OS === 'ios') {
 
-
-        //安卓
-        Pingpp.createPayment(charge, (result) => {
-            var res = JSON.parse(result);
-            Http.post('api/feedback', res)
-            if (res.pay_result === "invalid") {
-                //失效
-                if (res.error_msg === "wx_app_not_installed") {
-                    //微信未安装
+            Pingpp.createPayment({
+                "object": response.data,
+                "urlScheme": "wx8f1006588bd45d9b"
+            }, function (result, error) {
+                console.log(result, error);
+                if (result == "success") {
+                    that.paySuccess();
                 } else {
-                    //网络错误
+                    that.payFail()
                 }
-            } else if (res.pay_result === "success") {
-                //成功的回调函数
-                this.paySuccess();
-            } else if (res.pay_result === "cancel") {
-                //取消的回调函数
-            }
-        });
+            });
+            Pingpp.setDebugModel(true);  
+
+        } else {
+
+            //安卓
+            Pingpp.createPayment(charge, (result) => {
+                var res = JSON.parse(result);
+                if (res.pay_result === "invalid") {
+                    //失效
+                    if (res.error_msg === "wx_app_not_installed") {
+                        //微信未安装
+                    } else {
+                        //网络错误
+                    }
+                } else if (res.pay_result === "success") {
+                    //成功的回调函数
+                    this.paySuccess();
+                } else if (res.pay_result === "cancel") {
+                    //取消的回调函数
+                    this.payFail()
+                    
+                }
+            });
+        }
     }
 
     paySuccess = async () => {
@@ -101,6 +115,11 @@ export default class PayPage extends React.Component {
             params.callback()
             goBack();
         }
+    }
+
+    payFail = async () => {
+
+        Alert.alert("支付失败！")
     }
 
     isSelectd(isSelectd) {

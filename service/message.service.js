@@ -2,28 +2,27 @@ import Http from './http';
 import realmManager from '../component/Realm/realmManager'
 
 export default class MessageService {
-    static async getPaper() {
-        return Http.get('api/papertype',{},true);
-    }
     
+    static async getPaper(params) {
+        return Http.get('api/papertype', params, true);
+    }
+
     static async downloadPaper(params) {
-        return Http.get('api/getpaper',params,true)
+        return Http.get('api/getpaper', params, true)
     }
 
     static async updateUserStorage() {
-        
+
     }
 
     static async getUpdateInfo(version) {
-        return Http.get('api/getUpdate',{
+        return Http.get('api/getUpdate', {
             version
-        },true)
+        }, true)
     }
 
     static async getSpecialRecordByPaperId(paperId) {
-
-        console.log("message.service.js paper_id", paperId)
-        return Http.get('api/getQuestionInfoByPaperid',{
+        return Http.get('api/getQuestionInfoByPaperid', {
             paper_id: paperId
         }, true)
     }

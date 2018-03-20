@@ -1,5 +1,3 @@
-import Echarts, {echarts} from 'native-echarts';
-
 export const newPaper = {
     option: {
         grid: {
