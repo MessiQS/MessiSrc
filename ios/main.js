@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
     AppRegistry,
     StyleSheet,
@@ -12,44 +12,45 @@ import {
     TouchableOpacity,
     View,
     Image
-} from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
+} from 'react-native'
+import { TabNavigator, StackNavigator } from "react-navigation"
 
-import Mine from './modules/mine/mine';
-import SoftwareAgreement from './modules/mine/software_agreement';
-import Feedback from './modules/mine/feedback';
-import Find from './modules/find/find';
-import Message from './modules/message/message';//选题
-import Account from '../component/MineMenu/account';
-import Update from '../component/MineMenu/update';
-import Request from '../component/MineMenu/request';
-import Detail from '../component/detail/detail';
+import Mine from './modules/mine/mine'
+import SoftwareAgreement from './modules/mine/software_agreement'
+import Feedback from './modules/mine/feedback'
+import Find from './modules/find/find'
+import Message from './modules/message/message'//选题
+import Account from '../component/MineMenu/account'
+import Update from '../component/MineMenu/update'
+import Request from '../component/MineMenu/request'
+import Detail from '../component/detail/detail'
 import TopicsDetail from "./modules/message/topics_detail"
-import Register from '../component/Login/register';
-import Login from '../component/Login/login';
-import LoginPage from '../component/Login/loginPage';
-import AccountInfo from '../component/Account/accountInfo';
-import ModifyPasswordPage from '../component/Account/modifyPasswordPage';
+import Register from '../component/Login/register'
+import Login from '../component/Login/login'
+import LoginPage from '../component/Login/loginPage'
+import AccountInfo from '../component/Account/accountInfo'
+import ModifyPasswordPage from '../component/Account/modifyPasswordPage'
 //cps changePhoneNumber
-import CPStepOne from '../component/changePhoneNumber/stepOne';
-import CPStepTwo from '../component/changePhoneNumber/stepTwo';
-import CPStepThree from '../component/changePhoneNumber/stepThree';
+import CPStepOne from '../component/changePhoneNumber/stepOne'
+import CPStepTwo from '../component/changePhoneNumber/stepTwo'
+import CPStepThree from '../component/changePhoneNumber/stepThree'
 //fps forgotPassword
-import FPStepOne from '../component/forgetPassword/stepOne';
-import FPStepTwo from '../component/forgetPassword/stepTwo';
-import FPStepThree from '../component/forgetPassword/stepThree';
+import FPStepOne from '../component/forgetPassword/stepOne'
+import FPStepTwo from '../component/forgetPassword/stepTwo'
+import FPStepThree from '../component/forgetPassword/stepThree'
 import PayPage from '../component/pay/payPage'
-import LaunchPage from '../component/launchPage';
+import LaunchPage from '../component/launchPage'
 
-import runtime from "../service/runtime";
+import runtime from "../service/runtime"
 
-import Classification from "../Modules/Classification/classification";
+import Classification from "../Modules/Classification/classification"
+import DrivingTestChoice from "../Modules/Choose/driving_test_choice"
 
-let bookIcon = require('../Images/book.png');
-let questionIcon = require('../Images/question.png');
-let chartIcon = require('../Images/chart.png');
-let mineIcon = require('../Images/mine.png');
-let headImage = require('../Images/head.png');
+let bookIcon = require('../Images/book.png')
+let questionIcon = require('../Images/question.png')
+let chartIcon = require('../Images/chart.png')
+let mineIcon = require('../Images/mine.png')
+let headImage = require('../Images/head.png')
 
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
@@ -212,29 +213,35 @@ const Messi = StackNavigator({
         navigationOptions: TabOptions({
             title: '选择考试'
         })
+    },
+    DrivingTestChoice: {
+        screen:DrivingTestChoice, 
+        navigationOptions: TabOptions({
+            title: '选择题库'
+        })
     }
 })
 
 function getCurrentRouteName(navigationState) {
     if (!navigationState) {
-        return null;
+        return null
     }
-    const route = navigationState.routes[navigationState.index];
+    const route = navigationState.routes[navigationState.index]
     // dive into nested navigators
     if (route.routes) {
-        return getCurrentRouteName(route);
+        return getCurrentRouteName(route)
     }
-    return route.routeName;
+    return route.routeName
 }
 
 export default () => (<Messi
     onNavigationStateChange={(prevState, currentState) => {
-        const currentScreen = getCurrentRouteName(currentState);
-        const prevScreen = getCurrentRouteName(prevState);
+        const currentScreen = getCurrentRouteName(currentState)
+        const prevScreen = getCurrentRouteName(prevState)
         const uodateNameArray = ['TopicsDetail', 'Detail']
         if (currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0) {
             runtime.emit('find_update_state')
         }
     }}
-/>);
+/>)
 

@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
     StyleSheet,
     ScrollView,
@@ -14,22 +14,22 @@ import {
     View,
     Animated,
     Easing,
-} from 'react-native';
-import Echarts from 'native-echarts';
-import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import moment from 'moment';
-import realmManager from "../../../component/Realm/realmManager";
-import Storage from "../../../service/storage";
-import realm from '../../../component/Realm/realm';
-import runtime from "../../../service/runtime";
-import AlertView from "../../../component/progress/alert";
-import { DBChange } from "../../../service/constant";
+} from 'react-native'
+import Echarts from 'native-echarts'
+import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions'
+import Icon from 'react-native-vector-icons/SimpleLineIcons'
+import moment from 'moment'
+import realmManager from "../../../component/Realm/realmManager"
+import Storage from "../../../service/storage"
+import realm from '../../../component/Realm/realm'
+import runtime from "../../../service/runtime"
+import AlertView from "../../../component/progress/alert"
+import { DBChange } from "../../../service/constant"
 import { NavigationActions } from 'react-navigation'
-import { Dimensions } from 'react-native';
-const {height, width} = Dimensions.get('window'); 
+import { Dimensions } from 'react-native'
+const {height, width} = Dimensions.get('window') 
 
-const chartArray = [1, 2];
+const chartArray = [1, 2]
 const header = {
     header: {
         flexDirection: "row",
@@ -98,7 +98,7 @@ export default class Find extends Component {
     })
 
     constructor(props) {
-        super(props);
+        super(props)
         this._prepareUI()
         this.isUpdateChart = false
 
@@ -147,7 +147,7 @@ export default class Find extends Component {
         this.isUpdateChart = true
         setTimeout(() => {
             that.isUpdateChart = false
-        }, 1000);
+        }, 1000)
 
         if (user && user.currentExamId) {
             let info = realmManager.getFindInfo(user.currentExamId)
@@ -181,7 +181,7 @@ export default class Find extends Component {
             toValue: 0.001, // 目标值
             duration: 200, // 动画时间
             easing: Easing.ease, // 缓动函数
-        }).start(() => this.showAnimate());
+        }).start(() => this.showAnimate())
     }
 
     showAnimate() {
@@ -207,12 +207,12 @@ export default class Find extends Component {
         setTimeout(() => {
             this.props.navigation.setParams({
                 route: this.routeToMine.bind(this)
-            });
-        }, 1);
+            })
+        }, 1)
     }
 
     routeToMine() {
-        const { navigate } = this.props.navigation;
+        const { navigate } = this.props.navigation
         const user = realmManager.getCurrentUser()
 
         if (user) {
@@ -236,7 +236,7 @@ export default class Find extends Component {
     }
 
     routeToPayPage() {
-        const { navigate } = this.props.navigation;
+        const { navigate } = this.props.navigation
         navigate('Classification', {})
         // navigate('Message', {
         //     callback:(data) => {
@@ -259,7 +259,7 @@ export default class Find extends Component {
 
         } else {
 
-            const { navigate } = this.props.navigation;
+            const { navigate } = this.props.navigation
             navigate('Detail', { category: "new" })
         }
     }
@@ -278,7 +278,7 @@ export default class Find extends Component {
 
         } else {
 
-            const { navigate } = this.props.navigation;
+            const { navigate } = this.props.navigation
             navigate('Detail', { category: "wrong" })
         }
     }
@@ -326,7 +326,7 @@ export default class Find extends Component {
 
     _renderGetChatNewPaper() {
 
-        let newPaperOption = newPaper.option;
+        let newPaperOption = newPaper.option
         let weekArray = []
         for (var i = 5; i > 0; i--) {
             let day = moment().subtract(i, 'days').format('dddd')
@@ -409,7 +409,7 @@ export default class Find extends Component {
 
     _renderGetChatRemember() {
 
-        let newPaperOption = rememberPaper.option;
+        let newPaperOption = rememberPaper.option
         let weekArray = [{
             value: '今日',
             textStyle: {
@@ -497,7 +497,7 @@ export default class Find extends Component {
                     {this._renderGetChatRemember()}
                 </ScrollView>
             </View>
-        );
+        )
     }
 }
 

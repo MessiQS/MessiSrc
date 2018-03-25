@@ -41,6 +41,7 @@ import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage';
 
 import Classification from '../Modules/Classification/classification';
+import DrivingTestChoice from "../Modules/Choose/driving_test_choice";
 
 
 import runtime from "../service/runtime";
@@ -203,6 +204,12 @@ const Messi = StackNavigator({
         screen:Classification,
         navigationOptions: TabOptions({
             title: '选择考试'
+        })
+    },
+    DrivingTestChoice: {
+        screen:DrivingTestChoice, 
+        navigationOptions: TabOptions({
+            title: '选择题库'
         })
     }
 })

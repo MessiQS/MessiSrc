@@ -19,7 +19,7 @@ export default class Classification extends React.Component {
                 navigate: "Message"
             }, {
                 title: "驾驶员考试",
-                navigate: ""                
+                navigate: "DrivingTestChoice"                
             }
         ]
 
@@ -40,7 +40,6 @@ export default class Classification extends React.Component {
 
     _renderItemView = (item) => {
 
-        console.log("item", item)
         return (
             <TouchableOpacity onPress={() =>
                 this._select_classification(item)
@@ -56,6 +55,7 @@ export default class Classification extends React.Component {
     _select_classification(item) {
 
         const { state, navigate } = this.props.navigation;
+        console.log("item", item)
         navigate(item.item.navigate, {
             go_back_key: state.key,
         })

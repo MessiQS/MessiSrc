@@ -27,6 +27,10 @@ export default class MessageService {
         }, true)
     }
 
+    static async getPaperByType(params) {
+        return Http.get('api/getPaperTypeByType', params, true)        
+    }
+
     /**
      * 
      * @param {*} params 

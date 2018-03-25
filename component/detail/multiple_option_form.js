@@ -84,42 +84,35 @@ export default class MultipleOptionForm extends React.Component {
         }
     }
 
+    _renderOption(selection, option, status, isSelected) {
+
+        if (option.lenght == 0) {
+            return null
+        }
+        return (
+            <MultipleOption option_Text={this._filterTag(option)}
+                    multipleSelect={this._multipleSelect.bind(this)}
+                    selection={selection}
+                    isSelected={isSelected}
+                    detail={detail}
+                    status={status}
+                />
+        )
+    }
+
     render() {
+        const that = this
         const { detail, isSelected, A_Status, B_Status, C_Status, D_Status } = this.props;
 
         return (
             <View style={styles.content}>
                 <View style={styles.answerTitleView}>
-                    {this._showTitle()}
+                    {that._showTitle()}
                 </View>
-                <MultipleOption option_Text={this._filterTag(detail.option_A)}
-                    multipleSelect={this._multipleSelect.bind(this)}
-                    selection={"A"}
-                    isSelected={isSelected}
-                    detail={detail}
-                    status={A_Status}
-                />
-                <MultipleOption option_Text={this._filterTag(detail.option_B)}
-                    multipleSelect={this._multipleSelect.bind(this)}
-                    selection={"B"}
-                    isSelected={isSelected}
-                    detail={detail}
-                    status={B_Status}
-                />
-                <MultipleOption option_Text={this._filterTag(detail.option_C)}
-                    multipleSelect={this._multipleSelect.bind(this)}
-                    selection={"C"}
-                    isSelected={isSelected}
-                    detail={detail}
-                    status={C_Status}
-                />
-                <MultipleOption option_Text={this._filterTag(detail.option_D)}
-                    multipleSelect={this._multipleSelect.bind(this)}
-                    selection={"D"}
-                    isSelected={isSelected}
-                    detail={detail}
-                    status={D_Status}
-                />
+                {that._renderOption("A", detail.option_A, A_Status, isSelected)}
+                {that._renderOption("B", detail.option_B, B_Status, isSelected)}
+                {that._renderOption("C", detail.option_C, C_Status, isSelected)}
+                {that._renderOption("D", detail.option_D, D_Status, isSelected)}
             </View>
         );
     }

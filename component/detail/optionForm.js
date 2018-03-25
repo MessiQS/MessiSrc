@@ -57,38 +57,35 @@ export default class OptionForm extends React.Component {
         return null;
     }
 
+
+    _renderOption(selection, option, status, isSelected) {
+
+        if (option.lenght == 0) {
+            return null
+        }
+        return (
+            <Option option_Text={this._filterTag(option)}
+                    select={this._select.bind(this)}
+                    selection={selection}
+                    isSelected={isSelected}
+                    status={status}
+                />
+        )
+    }
+
     render() {
+        const that = this
         const { detail, isSelected, A_Status, B_Status, C_Status, D_Status } = this.props;
 
         return (
             <View style={styles.content}>
                 <View style={styles.answerTitleView}>
-                    {this._showTitle()}
+                    {that._showTitle()}
                 </View>
-                <Option option_Text={this._filterTag(detail.option_A)}
-                    select={this._select.bind(this)}
-                    selection={"A"}
-                    isSelected={isSelected}
-                    status={A_Status}
-                />
-                <Option option_Text={this._filterTag(detail.option_B)}
-                    select={this._select.bind(this)}
-                    selection={"B"}
-                    isSelected={isSelected}
-                    status={B_Status}
-                />
-                <Option option_Text={this._filterTag(detail.option_C)}
-                    select={this._select.bind(this)}
-                    selection={"C"}
-                    isSelected={isSelected}
-                    status={C_Status}
-                />
-                <Option option_Text={this._filterTag(detail.option_D)}
-                    select={this._select.bind(this)}
-                    selection={"D"}
-                    isSelected={isSelected}
-                    status={D_Status}
-                />
+                {that._renderOption("A", detail.option_A, A_Status, isSelected)}
+                {that._renderOption("B", detail.option_B, B_Status, isSelected)}
+                {that._renderOption("C", detail.option_C, C_Status, isSelected)}
+                {that._renderOption("D", detail.option_D, D_Status, isSelected)}
             </View>
         );
     }

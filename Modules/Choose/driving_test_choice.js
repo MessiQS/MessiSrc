@@ -1,104 +1,85 @@
-import React, { Component } from 'react';
+
+'use strict';
+
+const React = require('react');
+const ReactNative = require('react-native');
 import {
-    Image,
     Text,
     View,
+    SectionList,
     TouchableOpacity,
-    FlatList,
-    Alert
+    Alert,
 } from 'react-native';
-import MessageService from "../../../service/message.service"
-import realmManager from "../../../component/Realm/realmManager"
-import Progress from '../../../component/progress/progress'
-import HTTP from "../../../service/http"
-import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
-import Storage from "../../../service/storage";
-import runtime from "../../../service/runtime";
-import { DBChange } from "../../../service/constant";
-import { NavigationActions } from 'react-navigation'
-import paperManager from "../../../service/paper_manager"
+import MessageService from "../../service/message.service"
+import { appVersion } from "../../service/constant"
+import HTTP from "../../service/http"
+import realmManager from '../../component/Realm/realmManager'
+import Progress from '../../component/progress/progress'
+import paperManager from "../../service/paper_manager"
 
 
-export default class TopicsDetail extends React.Component {
+const VIEWABILITY_CONFIG = {
+    minimumViewTime: 3000,
+    viewAreaCoveragePercentThreshold: 100,
+    waitForInteraction: true,
+}
 
-    static navigationOptions = ({ navigation, screenProps }) => ({
-        title: navigation.state.params.section.item.title,
-        headerTitleStyle: {
-            color: '#172434',
-            alignSelf: 'center',
-            fontSize: 20
-        },
-        headerStyle: {
-            backgroundColor: '#FFF',
-            opacity: 1,
-            borderBottomWidth: 0,
-            shadowOpacity: 0.2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 }
-        },
-        headerTintColor: 'black',
-        gesturesEnabled: true,
-        headerLeft: (
-            <TouchableOpacity onPress={() => { navigation.goBack() }}>
-                <View style={styles.headerLeftView}>
-                    <Image style={{ width: 16, height: 16 }} source={require('../../../Images/back_arrow.png')} />
-                </View>
-            </TouchableOpacity>
-        ),
-    });
+export default class DrivingTestChoice extends React.Component {
 
     constructor(props) {
-        super(props)
-
-        this.isLockPushing = false
-        const array = this.props.navigation.state.params.section.item.data
-        array.sort((a, b) => {
-            if (a.title > b.title) {
-                return -1;
-            }
-            if (a.title < b.title) {
-                return 1;
-            }
-            // a 必须等于 b
-            return 0;
-        })
+        super(props);
 
         const user = realmManager.getCurrentUser()
-
-        if (user) {
-            this.state = ({
-                data: array,
-                loading: false,
-                user: user,
-            })
-        } else {
-
-            this.state = ({
-                data: array,
-                loading: false,
-            })
+        this.state = {
+            user: user,
+            papers: [],
+            loading: false
         }
     }
 
-    async _buy(item) {
+    componentDidMount() {
 
-        if (this._preventPushingMulitpleTimes()) {
-            return
-        }
+        const that = this
+        MessageService.getPaperByType({
+            version: appVersion,
+            system: "IOS",
+            type: "driver",
+        }).then(result => {
+            console.log(result)
+            // var papers = []
+            // that.cacheData = data.data
+            // console.log("list of topic js get paper data", data)
+            // var papers = that.getCurrentPaper()
+            // that.updateExamIfNeed(papers)
+            // console.log("papers", papers)
+            that.setState({
+                papers: result.data
+            })
+        })
 
         const user = realmManager.getCurrentUser()
-        item.userId = user.userId
-        item.callback = () => {
-            let updaterUser = realmManager.getCurrentUser()
-            this.setState({
-                user: updaterUser
-            })
+        if (user) {
+
+            HTTP.post("api/getUserBuyInfo", {
+                    user_id: user.userId
+                })
+                .then(value => {
+                    if (value.type) {
+                        let array = value.data.buyedInfo
+                        realm.write(() => {
+                            user.examIds = JSON.stringify(array)
+                        })
+                    }
+                })
+                .catch(err => {
+
+                })
         }
-        this.props.navigation.navigate('PayPage', item)
     }
 
     async _chooseExam(item) {
 
+        console.log("item", item)
         const { navigate } = this.props.navigation;
 
         if (item == null) {
@@ -147,20 +128,6 @@ export default class TopicsDetail extends React.Component {
         )
     }
 
-    _preventPushingMulitpleTimes() {
-
-        const that = this
-        if (this.isLockPushing == true) {
-            return true
-        }
-        this.isLockPushing = true
-
-        setTimeout(() => {
-            that.isLockPushing = false
-        }, 1000);
-        return false;
-    }
-
     _renderProgress() {
         if (this.state.loading == true) {
             return (
@@ -171,24 +138,16 @@ export default class TopicsDetail extends React.Component {
         }
     }
 
-    _renderHeader() {
-        return (
-            <View style={styles.listHeader}>
-                <Text style={styles.listTitle}>{this.state.data.length}套真题</Text>
-                <View style={styles.bottomLine}></View>
-            </View>
-        )
-    }
-
     _renderItem(item) {
 
         const { user } = this.state;
+        const that = this
 
         if (!user) {
 
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>《{item.title}》</Text>
                     <TouchableOpacity onPress={() =>
                         this._exit()
                     }>
@@ -202,7 +161,7 @@ export default class TopicsDetail extends React.Component {
         if (item.id == user.currentExamId) {
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>《{item.title}》</Text>
                     <View style={[styles.buyView, { borderColor: '#DDDDDD' }]}>
                         <Text style={[styles.buyText, { color: "#ddd" }]}>选择</Text>
                     </View>
@@ -214,9 +173,9 @@ export default class TopicsDetail extends React.Component {
         if (examIds.includes(item.id) || item.price == 0) {
             return (
                 <View style={styles.itemView}>
-                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
+                    <Text style={styles.itemText} numberOfLines={1}>《{item.title}》</Text>
                     <TouchableOpacity onPress={() =>
-                        this._chooseExam(item)
+                        that._chooseExam(item)
                     }>
                         <View style={styles.buyView}>
                             <Text style={styles.buyText}>选择</Text>
@@ -228,7 +187,7 @@ export default class TopicsDetail extends React.Component {
 
         return (
             <View style={styles.itemView}>
-                <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
+                <Text style={styles.itemText} numberOfLines={1}>《{item.title}》</Text>
                 <TouchableOpacity onPress={() =>
                     this._buy(item)
                 }>
@@ -240,31 +199,41 @@ export default class TopicsDetail extends React.Component {
         )
     }
 
+    _renderSectionHeader(section) {
+
+        return (
+
+            <View style={styles.listHeader}>
+                <Text style={styles.listTitle}>{section.title}</Text>
+                <View style={styles.bottomLine}></View>
+            </View>
+        )
+    }
+
+    _extraUniqueKey(item, index) {
+        return "index" + index + item;
+    }
+
     render() {
+
         return (
             <View style={styles.container}>
                 {this._renderProgress()}
-                <FlatList
-                    ListHeaderComponent={this._renderHeader()}
-                    data={this.state.data}
-                    keyExtractor={(item, index) => index}
+                <SectionList
                     renderItem={({ item }) => this._renderItem(item)}
+                    renderSectionHeader={({ section }) => this._renderSectionHeader(section)}
+                    sections={this.state.papers}
+                    viewabilityConfig={VIEWABILITY_CONFIG}
+                    keyExtractor={this._extraUniqueKey}// 每个item的key
                 />
             </View>
         )
     }
 }
 
-var styles = ({
+var styles = {
     container: {
         height: '100%'
-    },
-    headerLeftView: {
-        left: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 44,
-        height: 44,
     },
     listHeader: {
         marginTop: 4,
@@ -311,4 +280,6 @@ var styles = ({
         color: "#FF5B29",
         fontSize: 12,
     }
-})
+}
+
+

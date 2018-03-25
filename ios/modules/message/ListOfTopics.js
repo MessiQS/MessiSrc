@@ -15,6 +15,8 @@ import HTTP from '../../../service/http'
 import realm from '../../../component/Realm/realm'
 import {TextColor} from "../../../service/constant"
 import {appVersion} from "../../../service/constant"
+import paperManager from "../../../service/paper_manager"
+
 
 export default class ListOfTopics extends React.Component {
 
@@ -36,7 +38,7 @@ export default class ListOfTopics extends React.Component {
             that.cacheData = data.data
             console.log("list of topic js get paper data", data)
             var papers = that.getCurrentPaper()
-            that.updateExamIfNeed(papers)
+            paperManager.updateExamIfNeed(papers)
             console.log("papers", papers)
             that.setState({
                 papers: papers
@@ -58,37 +60,6 @@ export default class ListOfTopics extends React.Component {
             })
             .catch(err => {
     
-            })
-        }
-    }
-
-    async updateExamIfNeed(papers) {
-        let exams = realmManager.getAllExams()
-        if (exams) {
-            /// 遍历本地试卷
-            exams.forEach(exam => {
-                /// 遍历所有试卷信息
-                papers.forEach(provinceInfo => {
-                    
-                    if (exam.province == provinceInfo.province) {
-
-                        provinceInfo.data.forEach(async value => {
-                            if (value.id == exam.id && value.version != exam.version) {
-
-                                console.log("province info", value)
-                                const json = await MessageService.downloadPaper({
-                                    paperId: value.id
-                                })
-
-                                console.log("list of topic js json", json)
-                                if (json.type == true) {
-
-                                    await realmManager.updateExaminationPaper(value, json.data)
-                                }
-                            }   
-                        })
-                    }
-                });
             })
         }
     }

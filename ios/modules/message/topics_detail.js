@@ -16,6 +16,7 @@ import Storage from "../../../service/storage";
 import runtime from "../../../service/runtime";
 import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
+import paperManager from "../../../service/paper_manager"
 
 
 export default class TopicsDetail extends React.Component {
@@ -114,7 +115,11 @@ export default class TopicsDetail extends React.Component {
         const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
 
         if (isHavePaper == false) {
-            await this._downloadExam(item)
+            let isSuccess = await paperManager.downloadExam(item)
+
+            if (isSuccess == false) {
+                Alert.alert('下载失败，请稍后重试')
+            }
         }
         let user = realmManager.updateCurrentExamInfo(item)
 
@@ -129,50 +134,6 @@ export default class TopicsDetail extends React.Component {
             goBack(params.go_back_key);
         }, 1000)
     }
-
-    async _downloadExam(item) {
-
-        const json = await MessageService.downloadPaper({
-            paperId: item.id
-        });
-
-        if (json.type == false) {
-            Alert.alert('下载失败，请稍后重试')
-            return
-        }
-
-        const papers = await realmManager.createQuestion(json)
-        /////////////////// 佩奇 看这里 ////////////
-        let recordResponse = await MessageService.getSpecialRecordByPaperId(item.id)
-        /// 如果之前没有做过试题 数据
-        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-        await realmManager.createExaminationPaper({
-            id: item.id,
-            title: item.title,
-            questionPapers: papers,
-            year: item.year,
-            province: item.province,
-            version: item.version,
-            purchased: true,
-            price: parseFloat(item.price),
-        })
-        if (recordResponse.type == true && Object.keys(recordResponse.data) !== 0) {
-            await this._handleMemoryModels(recordResponse.data)
-        }
-    }
-
-    /**
-     * 这个是原来登录里面处理已有用户数据的代码
-     * @param {*} userInfo 
-     */
-    async _handleMemoryModels(userQuestionInfo) {
-        let keys = Object.keys(userQuestionInfo)
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i]
-            realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
-        }
-    }
-
 
     _exit() {
         const { navigate } = this.props.navigation;

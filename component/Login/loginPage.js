@@ -208,7 +208,6 @@ class LoginPage extends React.Component {
         });
         if (json.type == true) {
 
-            console.log('login page.js _downloadExam', json)
             const papers = await realmManager.createQuestion(json)
             const memoryModels = await realmManager.createMemoryModels(papers, item.id)
             console.log("login page ", memoryModels);
@@ -222,7 +221,6 @@ class LoginPage extends React.Component {
                 purchased: true,
                 price: parseFloat(item.price),
             })
-            console.log("_downloadExam", item)
         }
     }
 

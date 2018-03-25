@@ -122,7 +122,7 @@ export default class Detail extends Component {
 
     _handleImageURL(content) {
 
-        var re2 = /\/.*?\.(?:png|jpg)/gm;
+        var re2 = /\/.*?\.(?:png|jpg|gif)/gm;
         let suffixUrl = re2.exec(content)
         let sufUrl = suffixUrl[0]
 
@@ -393,7 +393,7 @@ export default class Detail extends Component {
 
     _filterTag(str) {
 
-        return str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n")
+        return str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n").replace(/<br/g, "\n\n")
     }
 
     _renderQuestion(str) {
@@ -464,11 +464,21 @@ export default class Detail extends Component {
                             <Image style={[styles.questionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
                         </TouchableOpacity>
                     )
-                } else {
+                }
+                if (content.search(/.\/(.*)gif/g) >= 0) {
+
+                    var re2 = /\".*?\"/gm;
+                    let urlArray = re2.exec(content)
+                    let url = urlArray[0].replace(/\"/g, "")
+                    console.log("url", url)
                     return (
-                        <Text key={index} style={[styles.questionText, styles.analysisTextInline, _afterSelectText()]}>{content}</Text>
+                        <Image style={[styles.questionImage, styles.gif]} resizeMode={'cover'} source={{ uri: url }} />                        
                     )
                 }
+
+                return (
+                    <Text key={index} style={[styles.questionText, styles.analysisTextInline, _afterSelectText()]}>{content}</Text>
+                )
             })
         }
         return (
@@ -639,5 +649,9 @@ var styles = StyleSheet.create({
         color: "#172434",
         fontSize: 16,
     },
+    gif: {
+        width: window.width - 30,
+        height: 200
+    }
 })
 
