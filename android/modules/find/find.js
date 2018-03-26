@@ -200,9 +200,13 @@ export default class Find extends Component {
         }
     }
 
-    routeToPayPage() {
-        const { navigate } = this.props.navigation;
-        navigate('Message', {})
+    routeToClassification() {
+        const { navigate, state } = this.props.navigation
+        navigate('Classification', {
+            callback:(data) => {
+                this._updateUI()
+            }
+        })
     }
 
     routeToNewDetail() {
@@ -276,7 +280,7 @@ export default class Find extends Component {
             option.series[0].data = this.state.info.pieArray
         }
         return (
-            <TouchableOpacity onPress={this.routeToPayPage.bind(this)} >
+            <TouchableOpacity onPress={this.routeToClassification.bind(this)} >
                 <View style={styles.titleContent}>
                     <Image style={styles.greenBlock} source={require("../../../Images/green_block.png")} />
                     <View style={styles.titleText}>
