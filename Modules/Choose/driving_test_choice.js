@@ -45,13 +45,7 @@ export default class DrivingTestChoice extends React.Component {
             system: "IOS",
             type: "driver",
         }).then(result => {
-            console.log(result)
-            // var papers = []
-            // that.cacheData = data.data
-            // console.log("list of topic js get paper data", data)
-            // var papers = that.getCurrentPaper()
-            // that.updateExamIfNeed(papers)
-            // console.log("papers", papers)
+            
             that.setState({
                 papers: result.data
             })
@@ -79,7 +73,6 @@ export default class DrivingTestChoice extends React.Component {
 
     async _chooseExam(item) {
 
-        console.log("item", item)
         const { navigate } = this.props.navigation;
 
         if (item == null) {

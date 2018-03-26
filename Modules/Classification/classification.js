@@ -55,7 +55,7 @@ export default class Classification extends React.Component {
     _select_classification(item) {
 
         const { state, navigate } = this.props.navigation;
-        console.log("item", item)
+        console.log("classification key", state.key)
         navigate(item.item.navigate, {
             go_back_key: state.key,
         })

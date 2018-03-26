@@ -28,9 +28,12 @@ export default class Message extends Component {
         }
 
         const { state, navigate } = this.props.navigation;
+        
+        console.log("message.js ", state.key)
+        console.log("message.js state.params.go_back_key", state.params.go_back_key)
         navigate('TopicsDetail', {
             section: section,
-            go_back_key: state.key,
+            go_back_key: state.params.go_back_key,
             callback: state.params.callback
         })
     }

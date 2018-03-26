@@ -86,7 +86,7 @@ export default class MultipleOptionForm extends React.Component {
 
     _renderOption(selection, option, status, isSelected) {
 
-        if (option.lenght == 0) {
+        if (option.length == 0) {
             return null
         }
         return (

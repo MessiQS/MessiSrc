@@ -87,6 +87,8 @@ export default class Analysis extends React.Component {
 
                     let expr = /\/(.*)_(.*)x(.*)_/;
                     let size = url.match(expr)
+
+
                     let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
                     const { width, height } = OptionController.setStyleForAnalysis(styleFromCulti)
                     return (

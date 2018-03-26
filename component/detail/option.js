@@ -31,8 +31,6 @@ export default class Option extends React.Component {
         that.props.select(option);
     }
 
-
-
     _afterSelectText() {
 
         const { status, selection } = this.props
@@ -131,8 +129,12 @@ export default class Option extends React.Component {
                 let attrObj = OptionController.getAttr(str)
                 let expr = /\/(.*)_(.*)x(.*)_/;
                 let size = url.match(expr)
-                let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
-                return (<Image style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />)
+                if (Array.isArray(size) && size.length !== 0) {
+
+                    let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
+                    return (<Image style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />)
+                }
+                return (<Image style={[styles.optionImage]} resizeMode={'contain'} source={{ uri: url }} />)
             }
             //文字与图嵌套
             let optionArray = [],
@@ -162,11 +164,21 @@ export default class Option extends React.Component {
 
                     let expr = /\/(.*)_(.*)x(.*)_/;
                     let size = url.match(expr)
-                    let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
 
-                    return (
-                        <Image key={index} style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
-                    )
+                    // let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
+
+                    // return (
+                    //     <Image key={index} style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />
+                    // )
+
+                    if (Array.isArray(size) && size.length !== 0) {
+
+                        let { width, height } = OptionController.setStyle(attrObj, styleObj, size, scale)
+                        return (<Image key={index}  style={[styles.optionImage, { width, height }]} resizeMode={'contain'} source={{ uri: url }} />)
+                    }
+                    return (<Image key={index}  style={[styles.optionImage]} resizeMode={'contain'} source={{ uri: url }} />)
+
+
                 } else {
                     return (
                         <Text key={index} style={[styles.detailOptionText, this._afterSelectText()]}>{content}</Text>

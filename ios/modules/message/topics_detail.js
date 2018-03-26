@@ -131,7 +131,9 @@ export default class TopicsDetail extends React.Component {
 
             const { state, goBack } = this.props.navigation;
             const params = state.params || {};
+            console.log("topics detail ", params.go_back_key)
             goBack(params.go_back_key);
+            
         }, 1000)
     }
 

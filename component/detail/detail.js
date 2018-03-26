@@ -120,15 +120,6 @@ export default class Detail extends Component {
         console.log(this._memoryModel)
     }
 
-    _handleImageURL(content) {
-
-        var re2 = /\/.*?\.(?:png|jpg|gif)/gm;
-        let suffixUrl = re2.exec(content)
-        let sufUrl = suffixUrl[0]
-
-        return imageWebURL + sufUrl
-    }
-
     nextQuestion() {
 
         this._memoryModel = this._getMemoryModel()
@@ -340,7 +331,6 @@ export default class Detail extends Component {
             }
             records.push(record)
         })
-        console.log("detail.js _sendUpdateInfoCache ", records)
 
         var param = {
             user_id: user.userId,
@@ -361,7 +351,6 @@ export default class Detail extends Component {
             param.wrong = "1"
         }
 
-        console.log("detail.js _sendUpdateInfoCache param", param)
 
         Http.post('api/getUpdateInfoCache', param).then(res => {
             console.log("api/getUpdateInfoCache", res)
@@ -439,7 +428,6 @@ export default class Detail extends Component {
                 splits.splice(index, 1 + count, ...result)
                 count++
             })
-            console.log(splits)
             return splits.map((content, index) => {
                 if (content.search(/.\/(.*)png/g) >= 0 || content.search(/.\/(.*)jpg/g) >= 0) {
                     let url = OptionController._handleImageURL(content)
@@ -449,8 +437,17 @@ export default class Detail extends Component {
 
                     let expr = /\/(.*)_(.*)x(.*)_/;
                     let size = url.match(expr)
-                    let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
-                    const { width, height } = OptionController.setStyleForAnalysis(styleFromCulti)
+
+                    let width = window.width - 40
+                    let height = 200
+                    if (Array.isArray(size) && size.length !== 0) {
+
+                        let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
+                        let size = OptionController.setStyleForAnalysis(styleFromCulti)
+                        width = size.width
+                        height = size.height
+                    }
+
                     /// 当图片宽度小于屏幕的0.7倍，不可点击放大
                     let disabled = width < (window.width * 0.7) ? true : false
 
@@ -470,9 +467,15 @@ export default class Detail extends Component {
                     var re2 = /\".*?\"/gm;
                     let urlArray = re2.exec(content)
                     let url = urlArray[0].replace(/\"/g, "")
-                    console.log("url", url)
                     return (
-                        <Image style={[styles.questionImage, styles.gif]} resizeMode={'cover'} source={{ uri: url }} />                        
+                        <TouchableOpacity key={index} disabled={false} onPress={() => {
+                            this.selectedImageURL = url
+                            this.setState({
+                                showImageDetail: true
+                            })
+                        }}>
+                            <Image style={[styles.questionImage, styles.gif]} resizeMode={'cover'} source={{ uri: url }} />                        
+                        </TouchableOpacity>
                     )
                 }
 
@@ -535,8 +538,6 @@ export default class Detail extends Component {
 
     renderImageDetail() {
 
-        let url = "https://shuatiapp.cn/images/7ec08470a0be5b70/normal_700x457_137618c5cb793ae.png"
-        console.log("showImageDetail", this.state.showImageDetail)
         return (
             <Modal visible={this.state.showImageDetail} transparent={true} onRequestClose={() => { }}>
                 <ImageViewer imageUrls={[{ url: this.selectedImageURL }]} onClick={() => {
@@ -650,7 +651,7 @@ var styles = StyleSheet.create({
         fontSize: 16,
     },
     gif: {
-        width: window.width - 30,
+        width: window.width - 40,
         height: 200
     }
 })

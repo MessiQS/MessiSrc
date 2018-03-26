@@ -16,7 +16,14 @@ export default class OptionController {
     static _handleImageURL(content) {
         var re2 = /\/.*?\.(?:png|jpg)/gm;
         let suffixUrl = re2.exec(content)
-        return imageWebURL + suffixUrl
+        let sufUrl = suffixUrl[0]
+        if (sufUrl.indexOf("shuatiapp.cn") >= 0) {
+            if (sufUrl.indexOf("https:") == -1) {
+                return "https:" + sufUrl
+            }
+            return sufUrl
+        }
+        return imageWebURL + sufUrl
     }
 
     //获取属性中的wdith 和 height
