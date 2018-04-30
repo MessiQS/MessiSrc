@@ -79,7 +79,7 @@ MemoryRecordModel.schema = {
     properties: {
         time: { type: 'int', default: new Date().getTime() },        /// 选择时间，初始化为 0
         isRight: { type: 'bool', default: true },                    /// 是否正确
-        select: {type: 'string', default: ""}                        /// 所选的答案 'A,B,C,D'
+        select: { type: 'string', default: "" }                        /// 所选的答案 'A,B,C,D'
     }
 }
 
@@ -95,7 +95,7 @@ MemoryModel.schema = {
         id: 'string',
         questionPaper: 'QuestionPaper',                                 /// 题目
         weighting: { type: 'float', default: 0 },                       /// 加权分数, 初始化为 0
-        appearedSeveralTime: { type: 'int', default: 0 },               /// 出现次数, 初始化为 0 毫秒级
+        appearedServeralTime: { type: 'int', default: 0 },               /// 出现次数, 初始化为 0 毫秒级
         lastBySelectedTime: { type: 'int', default: 0 },                /// 上一次被选择时间，初始化为 0 毫秒级
         firstBySelectedTime: { type: 'int', default: 0 },               /// 首次选择的时间
         records: { type: 'list', objectType: 'MemoryRecordModel' },     /// 答题记录
@@ -120,5 +120,18 @@ Schedule.schema = {
 
 export default new Realm({
     schema: [QuestionPaper, User, ExaminationPaper,
-        MemoryModel, Schedule, MemoryRecordModel]
+        MemoryModel, Schedule, MemoryRecordModel],
+    schemaVersion: 1,
+    migration: function (oldRealm, newRealm) {
+        // 只有在 schemaVersion 提升为 1 的时候才应用此变化
+        if (oldRealm.schemaVersion < 1) {
+            var oldObjects = oldRealm.objects('MemoryModel');
+            var newObjects = newRealm.objects('MemoryModel');
+
+            // 遍历所有对象，然后设置新架构中的 `appearedServeralTime` 属性
+            for (var i = 0; i < oldObjects.length; i++) {
+                newObjects[i].appearedServeralTime = oldObjects[i].appearedSeveralTime;
+            }
+        }
+    }
 });

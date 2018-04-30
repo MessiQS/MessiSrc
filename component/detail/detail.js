@@ -171,7 +171,7 @@ export default class Detail extends Component {
         let itemStatus = ItemStatus.NORMAL
         var isRight = false
         if (option == this._memoryModel.questionPaper.answer) {
-            score = 7 - this._memoryModel.appearedSeveralTime
+            score = 7 - this._memoryModel.appearedServeralTime
             score = Math.max(1, score)
             itemStatus = ItemStatus.RIGHT
             isRight = true
@@ -290,7 +290,7 @@ export default class Detail extends Component {
         var isRight = false
         if (sortedSelection == answer.toString()) {
             isRight = true
-            score = 7 - this._memoryModel.appearedSeveralTime
+            score = 7 - this._memoryModel.appearedServeralTime
             score = Math.max(1, score)
         }
         var record = {

@@ -199,10 +199,10 @@ class RealmManager {
             try {
                 realm.write(() => {
                     model.weighting = newWeighting
-                    if (model.appearedSeveralTime == 0) {
+                    if (model.appearedServeralTime == 0) {
                         model.firstBySelectedTime = time.getTime()
                     }
-                    model.appearedSeveralTime += 1
+                    model.appearedServeralTime += 1
                     model.lastBySelectedTime = time.getTime()
                     model.records.push(record)
                     resolve(model)
@@ -314,7 +314,7 @@ class RealmManager {
 
                 realm.write(() => {
                     memoryModel.weighting = questionData.weighted
-                    memoryModel.appearedSeveralTime = record.length
+                    memoryModel.appearedServeralTime = record.length
                     memoryModel.lastBySelectedTime = questionData.lastDateTime
                     memoryModel.firstBySelectedTime = questionData.firstDateTime
                     memoryModel.records = record
@@ -414,7 +414,7 @@ class RealmManager {
         let user = this.getCurrentUser()
         if (category == "new") {
             let models = realm.objects('MemoryModel')
-                .filtered("appearedSeveralTime=0 && examId=$0", user.currentExamId)
+                .filtered("appearedServeralTime=0 && examId=$0", user.currentExamId)
                 .sorted('lastBySelectedTime', false)
 
             if (models.length == 0) {
@@ -426,7 +426,7 @@ class RealmManager {
         if (category == "wrong") {
 
             let models = realm.objects('MemoryModel')
-                .filtered("weighting<7 && appearedSeveralTime>0 && examId=$0", user.currentExamId)
+                .filtered("weighting<7 && appearedServeralTime>0 && examId=$0", user.currentExamId)
                 .sorted('lastBySelectedTime', false)
 
             if (models.length == 0) {
@@ -439,14 +439,14 @@ class RealmManager {
 
     getNewQuestionCount() {
 
-        let models = realm.objects('MemoryModel').filtered('appearedSeveralTime=0')
+        let models = realm.objects('MemoryModel').filtered('appearedServeralTime=0')
 
         return models.length
     }
 
     getWrongQuestionCount() {
 
-        let models = realm.objects('MemoryModel').filtered('appearedSeveralTime>0 && weighting<7')
+        let models = realm.objects('MemoryModel').filtered('appearedServeralTime>0 && weighting<7')
 
         return models.length
     }
@@ -464,8 +464,8 @@ class RealmManager {
         var timeStamp = parseInt(new Date().setHours(0, 0, 0, 0))
         console.log("timeStamp", timeStamp)
         
-        var finishedModels = models.filtered('weighting>=7 && appearedSeveralTime > 0')
-        var unfishedModels = models.filtered('weighting<7 && appearedSeveralTime > 0')
+        var finishedModels = models.filtered('weighting>=7 && appearedServeralTime > 0')
+        var unfishedModels = models.filtered('weighting<7 && appearedServeralTime > 0')
         var x = finishedModels.length
         var y = unfishedModels.length
 
@@ -514,7 +514,7 @@ class RealmManager {
         })
 
         object.newQuestionCount = a.length
-        object.wrongQuestionCount = models.filtered('weighting<7 && appearedSeveralTime > 0').length
+        object.wrongQuestionCount = models.filtered('weighting<7 && appearedServeralTime > 0').length
         object.newLastSelectDate = "暂无数据"
         object.wrongLastSelectDate = "暂无数据"
 
