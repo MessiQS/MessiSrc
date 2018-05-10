@@ -117,7 +117,7 @@ export default class Detail extends Component {
             D_Status: ItemStatus.NORMAL,
             showImageDetail: false,
         }
-        console.log(this._memoryModel)
+        // console.log(this._memoryModel)
     }
 
     nextQuestion() {
