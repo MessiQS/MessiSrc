@@ -47,8 +47,12 @@ export default class MainCategory extends Component {
 
     routeToNextView(item) {
         console.log("routeToNextView", item)
-        const { navigate } = this.props.navigation;
-        navigate('SecondCategory', item)
+        const { state, navigate } = this.props.navigation;
+        navigate('SecondCategory', {
+            secondType: item.secondType,
+            content: item.content,
+            go_back_key: state.key,
+        })
     }
 }
 
