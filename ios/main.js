@@ -3,17 +3,14 @@
  * https://github.com/facebook/react-native
  * @flow
  */
+import React from 'react'
 
-import React, { Component } from 'react'
 import {
-    AppRegistry,
-    StyleSheet,
-    Text,
     TouchableOpacity,
     View,
     Image
 } from 'react-native'
-import { TabNavigator, StackNavigator } from "react-navigation"
+import {  StackNavigator } from "react-navigation"
 
 import Mine from './modules/mine/mine'
 import SoftwareAgreement from './modules/mine/software_agreement'
@@ -45,6 +42,12 @@ import runtime from "../service/runtime"
 
 import Classification from "../Modules/Classification/classification"
 import DrivingTestChoice from "../Modules/Choose/driving_test_choice"
+
+
+import MainCategory from "../component/category/main.category"
+import SecondCategory from "../component/category/second.category"
+import ThirdCategory from "../component/category/third.category"
+
 
 let bookIcon = require('../Images/book.png')
 let questionIcon = require('../Images/question.png')
@@ -216,6 +219,21 @@ const Messi = StackNavigator({
     },
     DrivingTestChoice: {
         screen:DrivingTestChoice, 
+        navigationOptions: TabOptions({
+            title: '选择题库'
+        })
+    },
+    MainCategory: {
+        screen:MainCategory,
+        navigationOptions: TabOptions({
+            title: '选择题库'
+        })
+    },
+    SecondCategory: {
+        screen:SecondCategory
+    },
+    ThirdCategory: {
+        screen:ThirdCategory,
         navigationOptions: TabOptions({
             title: '选择题库'
         })
