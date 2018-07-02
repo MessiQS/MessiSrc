@@ -45,69 +45,14 @@ export default class ThirdCategory extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.isLockPushing = false
-        let params = {
-            sendType: this.props.navigation.state.params.title,
-            province: this.props.navigation.state.params.item
-        }
 
-        HTTP.get("api/getTitleByProvince", params)
-        .then(value => {
+        this.loadData()
 
-            console.log("value", value)
-            // if (value.type) {
-            //     let array = value.data.buyedInfo
-            //     realm.write(()=> {
-            //         user.examIds = JSON.stringify(array)
-            //     })
-            // }
+        this.state = ({
+            data: [],
+            loading: false,
         })
-        .catch(err => {
-
-        })
-        // const array = this.props.navigation.state.params.section.item.data
-        // array.sort((a, b) => {
-        //     if (a.title > b.title) {
-        //         return -1;
-        //     }
-        //     if (a.title < b.title) {
-        //         return 1;
-        //     }
-        //     // a 必须等于 b
-        //     return 0;
-        // })
-
-        const user = realmManager.getCurrentUser()
-
-        if (user) {
-            this.state = ({
-                loading: false,
-                user: user,
-            })
-        } else {
-
-            this.state = ({
-                loading: false,
-            })
-        }
-    }
-
-    async _buy(item) {
-
-        if (this._preventPushingMulitpleTimes()) {
-            return
-        }
-
-        const user = realmManager.getCurrentUser()
-        item.userId = user.userId
-        item.callback = () => {
-            let updaterUser = realmManager.getCurrentUser()
-            this.setState({
-                user: updaterUser
-            })
-        }
-        this.props.navigation.navigate('PayPage', item)
     }
 
     async _chooseExam(item) {
@@ -174,6 +119,57 @@ export default class ThirdCategory extends React.Component {
         return false;
     }
 
+
+    // MARK: - 
+    loadData() {
+        const that = this
+        let params = {
+            sendType: this.props.navigation.state.params.title,
+            province: this.props.navigation.state.params.item
+        }
+
+        HTTP.get("api/getTitleByProvince", params, true)
+        .then(value => {
+            if (value.type) {
+              
+                console.log("api/getTitleByProvince", value)
+                const array = value.data
+                array.sort((a, b) => {
+                    if (a.title > b.title) {
+                        return -1;
+                    }
+                    if (a.title < b.title) {
+                        return 1;
+                    }
+                    // a 必须等于 b
+                    return 0;
+                })
+
+                const user = realmManager.getCurrentUser()
+
+                if (user) {
+                    
+                    that.setState({
+                        data: array,
+                        loading: false,
+                        user: user,
+                    })
+
+                } else {
+
+                    that.setState({
+                        data: array,
+                        loading: false,
+                    })
+                }
+            }
+        })
+        .catch(err => {
+
+        })
+    }
+
+
     _renderProgress() {
         if (this.state.loading == true) {
             return (
@@ -187,8 +183,6 @@ export default class ThirdCategory extends React.Component {
     _renderHeader() {
         return (
             <View style={styles.listHeader}>
-                <Text style={styles.listTitle}>{this.state.data.length}套真题</Text>
-                <View style={styles.bottomLine}></View>
             </View>
         )
     }
@@ -197,21 +191,6 @@ export default class ThirdCategory extends React.Component {
 
         const { user } = this.state;
 
-        if (!user) {
-
-            return (
-                <View style={styles.itemView}>
-                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
-                    <TouchableOpacity onPress={() =>
-                        this._exit()
-                    }>
-                        <View style={styles.buyView}>
-                            <Text style={styles.buyText}>￥{item.price}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
         if (item.id == user.currentExamId) {
             return (
                 <View style={styles.itemView}>
@@ -224,29 +203,14 @@ export default class ThirdCategory extends React.Component {
         }
 
         const examIds = JSON.parse(user.examIds)
-        if (examIds.includes(item.id) || item.price == 0) {
-            return (
-                <View style={styles.itemView}>
-                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
-                    <TouchableOpacity onPress={() =>
-                        this._chooseExam(item)
-                    }>
-                        <View style={styles.buyView}>
-                            <Text style={styles.buyText}>选择</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
-
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
                 <TouchableOpacity onPress={() =>
-                    this._buy(item)
+                    this._chooseExam(item)
                 }>
                     <View style={styles.buyView}>
-                        <Text style={styles.buyText}>￥{item.price}</Text>
+                        <Text style={styles.buyText}>选择</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -270,7 +234,7 @@ export default class ThirdCategory extends React.Component {
 
 var styles = ({
     container: {
-        height: '100%'
+        height: '100%',
     },
     headerLeftView: {
         left: 10,
@@ -281,8 +245,8 @@ var styles = ({
     },
     listHeader: {
         marginTop: 4,
-        height: 34,
-        backgroundColor: 'white'
+        height: 20,
+        backgroundColor: '#F6F6F6'
     },
     listTitle: {
         marginTop: 10,
