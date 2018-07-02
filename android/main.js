@@ -243,7 +243,7 @@ export default () => (<Messi
     onNavigationStateChange={(prevState, currentState) => {
         const currentScreen = getCurrentRouteName(currentState);
         const prevScreen = getCurrentRouteName(prevState);
-        const uodateNameArray = ['TopicsDetail', 'Detail','DrivingTestChoice']
+        const uodateNameArray = ['ThirdCategory', 'Detail']
         if (currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0) {
             runtime.emit('find_update_state')
         }
