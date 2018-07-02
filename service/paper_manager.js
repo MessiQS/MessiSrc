@@ -1,5 +1,6 @@
 import realmManager from "../component/Realm/realmManager"
 import MessageService from "../service/message.service"
+import HTTP from "./http"
 
 class PaperManager {
 
@@ -42,21 +43,21 @@ class PaperManager {
             paperId: item.id
         });
 
-        console.log("paper manager download json", json)
+        console.log("MessageService.downloadPaper", json)
         if (json.type == false) {
             return false
         }
 
         const papers = await realmManager.createQuestion(json)
         let recordResponse = await MessageService.getSpecialRecordByPaperId(item.id)
-        const memoryModels = await realmManager.createMemoryModels(papers, item.id)
+        console.log("recordResponse", recordResponse)
         await realmManager.createExaminationPaper({
             id: item.id,
             title: item.title,
             questionPapers: papers,
-            year: item.year,
-            province: item.province,
-            version: item.version,
+            year: item.year || "",
+            province: item.province || "",
+            version: item.version || "1",
             purchased: true,
             price: parseFloat(item.price),
         })
@@ -72,10 +73,21 @@ class PaperManager {
      */
     async _handleMemoryModels(userQuestionInfo) {
         let keys = Object.keys(userQuestionInfo)
+        console.log("userQuestionInfo", userQuestionInfo)
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i]
             realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
         }
+    }
+
+    getMainCategory(callback) {
+
+        HTTP.get("api/getSecondType", {}).then(value => {
+            console.log("api/getSecondType", value)
+        })
+        .catch(error => {
+
+        })
     }
 }
 
