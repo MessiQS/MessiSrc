@@ -57,7 +57,7 @@ export default class ThirdCategory extends React.Component {
 
     async _chooseExam(item) {
 
-        const { navigate } = this.props.navigation;
+        const { state, goBack } = this.props.navigation;
 
         if (item == null) {
             return
@@ -68,13 +68,15 @@ export default class ThirdCategory extends React.Component {
 
         const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
 
-        if (isHavePaper == false) {
+        if (!isHavePaper) {
             let isSuccess = await paperManager.downloadExam(item)
 
-            if (isSuccess == false) {
+            if (!isSuccess) {
                 Alert.alert('下载失败，请稍后重试')
             }
         }
+        console.log(item)
+        // paperManager._handleMemoryModels()
         let user = realmManager.updateCurrentExamInfo(item)
 
         setTimeout(() => {
@@ -82,8 +84,6 @@ export default class ThirdCategory extends React.Component {
                 loading: false,
                 user: user,
             })
-
-            const { state, goBack } = this.props.navigation;
             const params = state.params || {};
             goBack(params.go_back_key);
         }, 1000)
@@ -129,44 +129,44 @@ export default class ThirdCategory extends React.Component {
         }
 
         HTTP.get("api/getTitleByProvince", params, true)
-        .then(value => {
-            if (value.type) {
-              
-                console.log("api/getTitleByProvince", value)
-                const array = value.data
-                array.sort((a, b) => {
-                    if (a.title > b.title) {
-                        return -1;
-                    }
-                    if (a.title < b.title) {
-                        return 1;
-                    }
-                    // a 必须等于 b
-                    return 0;
-                })
+            .then(value => {
+                if (value.type) {
 
-                const user = realmManager.getCurrentUser()
-
-                if (user) {
-                    
-                    that.setState({
-                        data: array,
-                        loading: false,
-                        user: user,
+                    console.log("api/getTitleByProvince", value)
+                    const array = value.data
+                    array.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (a.title < b.title) {
+                            return 1;
+                        }
+                        // a 必须等于 b
+                        return 0;
                     })
 
-                } else {
+                    const user = realmManager.getCurrentUser()
 
-                    that.setState({
-                        data: array,
-                        loading: false,
-                    })
+                    if (user) {
+
+                        that.setState({
+                            data: array,
+                            loading: false,
+                            user: user,
+                        })
+
+                    } else {
+
+                        that.setState({
+                            data: array,
+                            loading: false,
+                        })
+                    }
                 }
-            }
-        })
-        .catch(err => {
+            })
+            .catch(err => {
 
-        })
+            })
     }
 
 

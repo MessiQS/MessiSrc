@@ -83,14 +83,11 @@ class LoginPage extends React.Component {
         })
 
         password = MD5(password).toString();
-        console.log("account", account, "password", password)
         const loginResponse = await Http.post('api/login', {
             "account": account,
             "password": password
         })
 
-        console.log("loginPage.js loginResponse", loginResponse)
-        
         const { type, data } = loginResponse
         if (type) {
             //将账号和token存到本地存储
@@ -109,19 +106,15 @@ class LoginPage extends React.Component {
             }
             data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
             var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
-            console.log("loginPage.js examIdJson", examIdJson);
             var user = {
                 userId: data.user_id,
                 token: data.token,
                 examIds: examIdJson
             }
-            console.log("login page user ", user)
             await realmManager.createUser(user)
             let userInfo = await this._handleUserInfo(data.user_id)
-            console.log("loginPage.js userInfo", userInfo)
 
             if (userInfo.type == false) {
-                console.log("api/getUserQuestionInfo error", userInfo)
                 Alert('登录错误，请重试')
                 return 
             }
@@ -146,7 +139,6 @@ class LoginPage extends React.Component {
 
             // for (let item of paperInfo.data) {
 
-            console.log("api/ get single page info ", userInfo.data.lastPaperInfo)
             await that._downloadExam(userInfo.data.lastPaperInfo)
             //只存第一套的
             const paper_id = userInfo.data.lastPaperInfo['id'] || null
@@ -156,7 +148,6 @@ class LoginPage extends React.Component {
             }
 
             that._handleMemoryModels(userQuestionInfo);
-            console.log("loginpage.js _handleMemoryModels end")
             that.setState({
                 loading: false
             })
