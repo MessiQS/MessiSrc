@@ -252,9 +252,16 @@
             class jigsaw {
                 constructor({ el, onSuccess, onFail, onRefresh, width, height }) {
                     this.el = el
-                    this.onSuccess = onSuccess
-                    this.onFail = onFail
-                    this.onRefresh = onRefresh
+                    // this.onSuccess = onSuccess
+                    this.onSuccess = () => {
+                        window.postMessage('success')
+                    }
+                    this.onFail = () => {
+                        window.postMessage('fail')
+                    }
+                    this.onRefresh = () => {
+                        window.postMessage('refresh')
+                    }
                     this.width = width
                     this.height = height
                 }
@@ -359,7 +366,7 @@
                     document.addEventListener('touchmove', (event) => {
                         if (!isMouseDown) return false
                         const moveX = event.changedTouches[0].clientX - originX
-                        const moveY = event.changedTouches[0].clientY- originY
+                        const moveY = event.changedTouches[0].clientY - originY
                         if (moveX < 0 || moveX + 38 >= w) return false
                         this.slider.style.left = moveX + 'px'
                         var blockLeft = (w - 40 - 20) / (w - 40) * moveX

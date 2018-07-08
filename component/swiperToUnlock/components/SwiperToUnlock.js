@@ -9,7 +9,19 @@ export default class App extends Component {
     }
 
     onMessage = (e) => {
-        console.log(e.nativeEvent.data)
+        // console.log(e.nativeEvent)
+        const { data } = e.nativeEvent
+        switch (data) {
+            case 'success':
+                this.props.onSuccess && this.props.onSuccess()
+                break
+            case 'refresh':
+                this.props.onRefresh && this.props.onRefresh()
+                break
+            case 'fail':
+                this.props.onFail && this.props.onFail()
+                break
+        }
     }
 
     render() {

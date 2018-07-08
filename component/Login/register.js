@@ -26,9 +26,19 @@ class Register extends React.Component {
         super()
         this.state = {
             codeText: "获取验证码",
+            isUnlock: false,//是否解锁
         }
     }
-
+    unlock = () => {
+        this.setState({
+            isUnlock: true
+        })
+    }
+    onRefresh = () => {
+        this.setState({
+            isUnlock: false
+        })
+    }
     async _onPressButton() {
         let { account, password, phone, vericode } = this.state
         if (!account) {
@@ -74,7 +84,7 @@ class Register extends React.Component {
                 Alert.alert(data)
                 return
             }
-            
+
             const { navigate } = this.props.navigation
             if (type) {
                 //将账号和token存到本地存储
@@ -176,12 +186,15 @@ class Register extends React.Component {
             return
         }
 
-        let { account } = this.state
+        let { account, isUnlock } = this.state
         if (!account) {
             Alert.alert('请输入账号')
             return
         } else if (!AccountCheck.isValidPhoneNumber(account)) {
             Alert.alert('账号格式错误', '请输入11位手机号码')
+            return
+        } else if (!isUnlock) {
+            Alert.alert('请先完成滑动验证！')
             return
         }
 
@@ -283,7 +296,14 @@ class Register extends React.Component {
                 </View>
                 <View style={styles.bottomLineVertification}></View>
                 <View style={{ height: 6 }}></View>
-                <SwiperToUnlock width={280} height={180}/>
+
+                <SwiperToUnlock
+                    width={280}
+                    height={180}
+                    onSuccess={this.unlock}
+                    onRefresh={this.onRefresh}
+                />
+
                 <View style={{ height: 50 }}></View>
                 <TouchableOpacity onPress={this._onPressButton.bind(this)}>
                     <ImageBackground style={styles.registerButton} source={require('../../Images/register_button.png')}>
