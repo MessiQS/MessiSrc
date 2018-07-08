@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';
@@ -23,7 +22,7 @@ import realmManager from "../Realm/realmManager";
 import MessageService from "../../service/message.service";
 import Progress from "../../component/progress/progress"
 import { NavigationActions } from 'react-navigation'
-
+import SwiperToUnlock from '../swiperToUnlock'
 
 class LoginPage extends React.Component {
 
@@ -275,6 +274,9 @@ class LoginPage extends React.Component {
                 {inputObjectArraty.map(res => {
                     return (<LoginItem key={res.key} data={res}></LoginItem>)
                 })}
+                <View>
+                    <SwiperToUnlock />
+                </View>
                 <View style={styles.forgotButton}>
                     <Text onPress={() =>
                         navigate('FPStepOne',
