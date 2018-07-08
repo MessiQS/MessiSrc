@@ -76,7 +76,7 @@ const TabOptions = ({ title }) => {
         },
         headerStyle,
         color: '#172434',
-        gesturesEnabled: true,
+        gesturesEnabled: false,
         headerRight: navigation.state.params.headerRight || (<View></View>),
     })
 }

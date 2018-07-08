@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { WebView, View, StyleSheet } from 'react-native';
+import { WebView, View, StyleSheet, Text } from 'react-native';
 import injectJS from './injectJS'
 export default class App extends Component {
     componentWillReceiveProps(nextProps) {
@@ -8,18 +8,24 @@ export default class App extends Component {
         }
     }
 
+    onMessage = (e) => {
+        console.log(e.nativeEvent.data)
+    }
+
     render() {
         return (
-            <View style={{ flex: 1, height: 400 ,backgroundColor:'red'}}>
+            <View style={{ flex: 1, height: this.props.height || 400 }}>
                 <WebView
                     ref="canvas"
                     scrollEnabled={false}
                     injectedJavaScript={injectJS(this.props)}
                     style={{
-                        width: 500,
-                        // height: 400,
+                        width: this.props.width,
+                        height: this.props.height || 400,
                     }}
-                    source={require('./tpl.html')}
+                    // javaScriptEnabled={true}
+                    source={require('./unlock.html')}
+                    onMessage={this.onMessage}
                 />
             </View>
         );

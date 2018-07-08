@@ -18,6 +18,7 @@ import MD5 from 'crypto-js/md5'
 import realmManager from "../Realm/realmManager"
 import Storage from '../../service/storage'
 import { NavigationActions } from 'react-navigation'
+import SwiperToUnlock from '../swiperToUnlock'
 
 class Register extends React.Component {
 
@@ -281,7 +282,9 @@ class Register extends React.Component {
                     {this.renderGetCode()}
                 </View>
                 <View style={styles.bottomLineVertification}></View>
-                <View style={{ height: 56 }}></View>
+                <View style={{ height: 6 }}></View>
+                <SwiperToUnlock width={280} height={180}/>
+                <View style={{ height: 50 }}></View>
                 <TouchableOpacity onPress={this._onPressButton.bind(this)}>
                     <ImageBackground style={styles.registerButton} source={require('../../Images/register_button.png')}>
                         <Text style={styles.registerText}>注册</Text>

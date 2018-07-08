@@ -5,7 +5,7 @@ import Container from './components/Container'
 export default class App extends Component {
     render() {
         return (
-            <Container width={this.props.width}>
+            <Container>
                 <SwiperToUnlock {...this.props} />
             </Container>
         );
