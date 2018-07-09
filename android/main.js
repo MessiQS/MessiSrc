@@ -43,15 +43,11 @@ import LaunchPage from '../component/launchPage';
 import Classification from '../Modules/Classification/classification';
 import DrivingTestChoice from "../Modules/Choose/driving_test_choice";
 
+import MainCategory from "../component/category/main.category"
+import SecondCategory from "../component/category/second.category"
+import ThirdCategory from "../component/category/third.category"
 
 import runtime from "../service/runtime";
-
-let bookIcon = require('../Images/book.png');
-let questionIcon = require('../Images/question.png');
-let chartIcon = require('../Images/chart.png');
-let mineIcon = require('../Images/mine.png');
-let headImage = require('../Images/head.png');
-
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
         color: '#172434',
@@ -208,6 +204,21 @@ const Messi = StackNavigator({
     },
     DrivingTestChoice: {
         screen:DrivingTestChoice, 
+        navigationOptions: TabOptions({
+            title: '选择题库'
+        })
+    },
+    MainCategory: {
+        screen:MainCategory,
+        navigationOptions: TabOptions({
+            title: '选择题库'
+        })
+    },
+    SecondCategory: {
+        screen:SecondCategory
+    },
+    ThirdCategory: {
+        screen:ThirdCategory,
         navigationOptions: TabOptions({
             title: '选择题库'
         })
