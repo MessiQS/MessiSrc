@@ -104,7 +104,6 @@ export default class Find extends Component {
         this.isUpdateChart = false
 
         runtime.on('find_update_state', () => {
-            console.log("updateUI")
             this._updateUI()
         })
     }
@@ -117,9 +116,8 @@ export default class Find extends Component {
         setTimeout(() => {
             that.isUpdateChart = false
         }, 1000)
-        if (user && user.currentExamId) {
+        if (user && questionManager.getPaperId()) {
             let info = questionManager.getChartInfo()
-            console.log("info", info)
             that.setState({
                 currentExam: questionManager.getCurrentPaperTitle(),
                 currentExamDetail: "历年真题",
@@ -132,8 +130,8 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [0, 0, 0, 0, 0, 0]
-            info.beforeArray = [0, 0, 0, 0, 0, 0]
+            info.futureArray = [3, 3, 3, 3, 3, 3]
+            info.beforeArray = [3, 3, 3, 3, 3, 3]
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
@@ -531,7 +529,7 @@ const styles = {
     chartTitleContainer: {
         flexDirection: "column",
         backgroundColor: "#fff",
-        height: 75,
+        height: 78,
         zIndex: 100
     },
     chartTopContainer: {

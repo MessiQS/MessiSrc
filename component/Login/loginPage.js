@@ -194,7 +194,6 @@ class LoginPage extends React.Component {
 
             const papers = await realmManager.createQuestion(json)
             const memoryModels = await realmManager.createMemoryModels(papers, item.id)
-            console.log("login page ", memoryModels);
             await realmManager.createExaminationPaper({
                 id: item.id,
                 title: item.title,

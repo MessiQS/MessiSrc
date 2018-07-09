@@ -55,7 +55,6 @@ export default class Http {
             const condi = index === 0 ? '?' : '&';
             url = url + condi + res + '=' + query[res];
         });
-        console.log("query", query)
         return fetch(url, params)
             .then((res) => res.json())
             .catch(err => console.log(err))

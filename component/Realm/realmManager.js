@@ -72,11 +72,9 @@ class RealmManager {
                             questionPaper: value,
                             examId: examId,
                         })
-                        console.log("memoryModel", memoryModel)
                         array.push(memoryModel)
                     })
                     resolve(array)
-                    console.log("MemoryModel save success")
                 })
 
             } catch (e) {
@@ -290,7 +288,6 @@ class RealmManager {
                         for (let key in examData) {
                             if (model.examId == examData[key].paper_id &&
                                 model.questionPaper.question_number == examData[key].question_number) {
-                                console.log("examData[key], model", examData[key], model)
                                 await that._saveMemoryData(examData[key], model)
                             }
                         }
@@ -305,7 +302,6 @@ class RealmManager {
     }
 
     _saveMemoryData(questionData, memoryModel) {
-        console.log("realmManager.js questionData, memoryModel", questionData, memoryModel)
         return new Promise((resolve, reject) => {
             try {
                 let record = JSON.parse(questionData.record)
@@ -316,7 +312,6 @@ class RealmManager {
                     memoryModel.lastBySelectedTime = questionData.lastDateTime
                     memoryModel.firstBySelectedTime = questionData.firstDateTime
                     memoryModel.records = record
-                    console.log("save memory data", memoryModel)
                 })
             } catch (e) {
                 console.log("ExaminationPaper Error on creation", e)

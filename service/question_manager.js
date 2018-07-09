@@ -109,10 +109,8 @@ class QuestionManager {
 
     handleMemoryModels(paperId, memorys, callback) {
         const that = this
-        console.log("getSpecialRecordByPaperId paperId", paperId)
         that.getSpecialRecordByPaperId(paperId, function (success, data, error) {
-            console.log("getSpecialRecordByPaperId data", success, data, error)
-            if (success) {
+            if (success && data) {
                 console.log("getSpecialRecordByPaperId data", data)
                 let keys = Object.keys(data)
                 let key = keys[0]
@@ -175,11 +173,13 @@ class QuestionManager {
     }
 
     getCurrentPaperTitle() {
-        return this.currentMemoryModels[0].question.title || "暂无数据"
+        let current = this.getCurrentMemoryModels()
+        return current[0] ? current[0].question.title : "暂无数据"
     }
 
     getPaperId() {
-        return this.currentMemoryModels[0].examId
+        let current = this.getCurrentMemoryModels()
+        return current[0] ? current[0].examId : ""
     }
 
     getRandomMemoryModel(type) {

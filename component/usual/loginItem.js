@@ -5,7 +5,7 @@ import {
     View,
     TextInput
 } from 'react-native';
-// import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import styles from "./loginItemCss"
 export default class LoginItem extends Component {
 
@@ -18,10 +18,10 @@ export default class LoginItem extends Component {
         if(iconName){
             return(
                 <View style={styles.iconViewStyle}>
-                     {/*<Icon 
+                     <Icon 
                         name={iconName}
                         style={styles.icon}
-                    />*/}
+                    />
                 </View>
             )
         }
