@@ -8,7 +8,6 @@ import Http from '../service/http';
 import { NavigationActions } from 'react-navigation'
 import realmManager from "../component/Realm/realmManager"
 
-
 export default class LaunchPage extends React.Component {
     constructor(...props) {
         super();
@@ -25,33 +24,31 @@ export default class LaunchPage extends React.Component {
         }))
     });
 
-    componentDidMount() {
+    async componentDidMount() {
         const that = this
-        Storage.multiGet(['accountToken', 'account']).then(async({ accountToken, account } ) => {
-            if (accountToken && account) {
-                return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
-                    let route = 'Login';
-                    if (type) {
-                        route = 'Home'
-                    } else {
-                        realmManager.deleteAllRealmData()                
-                        Storage.clearAll()
-                    }
-                    const resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: route })
-                        ]
-                    })
-                    this.props.navigation.dispatch(resetAction)
+        const { accountToken, account } = await Storage.multiGet(['accountToken', 'account'])
+        if (accountToken && account) {
+            return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
+                let route = 'Login';
+                if (type) {
+                    route = 'Home'
+                } else {
+                    realmManager.deleteAllRealmData()
+                    Storage.clearAll()
+                }
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: route })
+                    ]
                 })
-            } else {
-
-                realmManager.deleteAllRealmData()
-                Storage.clearAll()
-                that.navigateToLogin()
-            }
-        })
+                this.props.navigation.dispatch(resetAction)
+            })
+        } else {
+            realmManager.deleteAllRealmData()
+            Storage.clearAll()
+            that.navigateToLogin()
+        }
     }
 
     navigateToLogin() {

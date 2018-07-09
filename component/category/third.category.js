@@ -73,16 +73,6 @@ export default class ThirdCategory extends React.Component {
                     // a 必须等于 b
                     return 0;
                 })
-
-                // let paperId = data[0].paper_id
-                // let paperIds = paperManager.getUnlockPaperIds()
-                // console.log("paperIds", paperIds, "paperId", paperId)
-                // let unlock = paperIds.includes(paperId)
-                // that.setData({
-                //     items: data,
-                //     selected_paper_id: item.paper_id,
-                //     unlock
-                // })
                 that.setState({
                     data
                 })
@@ -90,50 +80,7 @@ export default class ThirdCategory extends React.Component {
         })
     }
 
-    // async _chooseExam(item) {
-
-    //     const { navigate } = this.props.navigation;
-
-    //     if (item == null) {
-    //         return
-    //     }
-    //     this.setState({
-    //         loading: true,
-    //     })
-
-    //     // const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
-
-    //     // if (isHavePaper == false) {
-
-    //     realm.write(() => {
-    //         let paperModels = realm.objects("QuestionPaper")
-    //         let memoryModels = realm.objects("MemoryRecordModel")
-
-    //         realm.delete(paperModels)
-    //         realm.delete(memoryModels)
-    //     });
-    //         let isSuccess = await paperManager.downloadExam(item)
-
-    //         if (isSuccess == false) {
-    //             Alert.alert('下载失败，请稍后重试')
-    //         }
-    //     // }
-    //     let user = realmManager.updateCurrentExamInfo(item)
-
-    //     setTimeout(() => {
-    //         this.setState({
-    //             loading: false,
-    //             user: user,
-    //         })
-
-    //         const { state, goBack } = this.props.navigation;
-    //         const params = state.params || {};
-    //         goBack(params.go_back_key);
-    //     }, 1000)
-    // }
-
     _exit() {
-        const { navigate } = this.props.navigation;
         realmManager.deleteAllRealmData()
         let clearPromise = Storage.clearAll()
         const resetAction = NavigationActions.reset({

@@ -11,13 +11,12 @@ import MD5 from 'crypto-js/md5';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';
-import {SamsoButton} from '../usual/button';
+import { SamsoButton } from '../usual/button';
 import styles from "./loginPageCss";
 import realmManager from "../Realm/realmManager";
 import MessageService from "../../service/message.service";
 import Progress from "../../component/progress/progress"
 import { NavigationActions } from 'react-navigation'
-
 
 class LoginPage extends React.Component {
 
@@ -50,7 +49,7 @@ class LoginPage extends React.Component {
     async login() {
 
         if (this._preventPushingMulitpleTimes()) {
-            return 
+            return
         }
 
         let { account, password } = this.state;
@@ -71,20 +70,17 @@ class LoginPage extends React.Component {
             Alert.alert('密码格式错误', '请输入6-20位密码，不包含特殊字符');
             return;
         };
-        
+
         this.setState({
             loading: true
         })
 
         password = MD5(password).toString();
-        console.log("account", account, "password", password)
         const loginResponse = await Http.post('api/login', {
             "account": account,
             "password": password
         })
 
-        console.log("loginPage.js loginResponse", loginResponse)
-        
         const { type, data } = loginResponse
         if (type) {
             //将账号和token存到本地存储
@@ -99,39 +95,35 @@ class LoginPage extends React.Component {
 
             } catch (e) {
                 Alert('登录错误，请重试')
-                return 
+                return
             }
             data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
             var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
-            console.log("loginPage.js examIdJson", examIdJson);
             var user = {
                 userId: data.user_id,
                 token: data.token,
                 examIds: examIdJson
             }
-            console.log("login page user ", user)
             await realmManager.createUser(user)
             let userInfo = await this._handleUserInfo(data.user_id)
-            console.log("loginPage.js userInfo", userInfo)
 
             if (userInfo.type == false) {
-                console.log("api/getUserQuestionInfo error", userInfo)
                 Alert('登录错误，请重试')
-                return 
+                return
             }
-            
+
             if (Object.keys(userInfo.data.lastPaperInfo).length !== 0) {
 
                 let item = {
                     id: userInfo.data.lastPaperInfo.id,
-                    title: userInfo.data.lastPaperInfo.title 
+                    title: userInfo.data.lastPaperInfo.title
                 }
                 realmManager.updateCurrentExamInfo(item)
             }
 
             // let paperInfo = await that._handlePaperInfo(userInfo.data.userQuestionInfo)
             // console.log("login page paperInfo", paperInfo)
-            
+
             // if (paperInfo.type == false) {
             //     console.log("api/getSinglePaperInfo error", paperInfo);
             //     Alert('登录错误，请重试')
@@ -140,17 +132,15 @@ class LoginPage extends React.Component {
 
             // for (let item of paperInfo.data) {
 
-            console.log("api/ get single page info ", userInfo.data.lastPaperInfo)
             await that._downloadExam(userInfo.data.lastPaperInfo)
             //只存第一套的
             const paper_id = userInfo.data.lastPaperInfo['id'] || null
             let userQuestionInfo = {}
-            if(!!paper_id){
+            if (!!paper_id) {
                 userQuestionInfo[paper_id] = userInfo.data.userQuestionInfo[paper_id]
             }
 
             that._handleMemoryModels(userQuestionInfo);
-            console.log("loginpage.js _handleMemoryModels end")
             that.setState({
                 loading: false
             })
@@ -158,7 +148,7 @@ class LoginPage extends React.Component {
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
-                  NavigationActions.navigate({ routeName: 'Home' })                
+                    NavigationActions.navigate({ routeName: 'Home' })
                 ]
             })
             this.props.navigation.dispatch(resetAction)
@@ -179,7 +169,7 @@ class LoginPage extends React.Component {
         const that = this
         let value = await Http.get('api/getUserQuestionInfo', {
             user_id: userId,
-        },true)
+        }, true)
 
         return value
     }
@@ -190,7 +180,7 @@ class LoginPage extends React.Component {
         console.log("loginPage.js keys", keys)
         const value = await Http.get('api/getSinglePaperInfo', {
             paperId: keys
-        },true)
+        }, true)
 
         return value
     }
@@ -237,14 +227,14 @@ class LoginPage extends React.Component {
         if (this.isLockPushing == true) {
             return true
         }
-		this.isLockPushing = true
-		
+        this.isLockPushing = true
+
         setTimeout(() => {
             that.isLockPushing = false
-		}, 1000);
-		return false;
+        }, 1000);
+        return false;
     }
-    
+
     _renderProgress() {
         if (this.state.loading == true) {
             return (
@@ -254,7 +244,7 @@ class LoginPage extends React.Component {
             return null
         }
     }
- 
+
     render() {
         const { navigate } = this.props.navigation;
         const inputObjectArraty = [{
@@ -272,7 +262,7 @@ class LoginPage extends React.Component {
             key: 'loginPage1'
         }]
         return (
-            
+
             <View style={styles.container}>
                 {this._renderProgress()}
                 {inputObjectArraty.map(res => {
