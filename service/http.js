@@ -5,6 +5,10 @@ import { webURL } from "./constant";
 export default class Http {
 
     static async post(api, paramObj, hasToken) {
+        paramObj = {
+            ...paramObj, 
+            user_id: await Storage.getItem("userId")
+        }
         let url = webURL + api,
             body = ((obj) => {
                 let keyArray = Object.keys(obj),
@@ -51,6 +55,7 @@ export default class Http {
             const condi = index === 0 ? '?' : '&';
             url = url + condi + res + '=' + query[res];
         });
+        console.log("query", query)
         return fetch(url, params)
             .then((res) => res.json())
             .catch(err => console.log(err))

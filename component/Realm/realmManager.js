@@ -2,22 +2,22 @@
 
 import realm from './realm'
 import moment from "moment"
-import index from 'react-native-image-zoom-viewer';
 
 class RealmManager {
 
     createQuestion(json) {
-        console.log("realm manager json", json)
         return new Promise((resolve, reject) => {
             try {
                 realm.write(() => {
-                    let questions = []
+                    let questions = [], idArr = []
                     json.data.forEach(function (value, index) {
-
-                        let question = realm.create('QuestionPaper', value)
-                        questions.push(question)
+                        let { id } = value
+                        if (idArr.indexOf(id) < 0) {
+                            let question = realm.create('QuestionPaper', value)
+                            questions.push(question)
+                            idArr.push(id)
+                        }
                     })
-                    console.log("QuestionPaper save success")
                     resolve(questions)
                 })
             } catch (e) {
@@ -72,6 +72,7 @@ class RealmManager {
                             questionPaper: value,
                             examId: examId,
                         })
+                        console.log("memoryModel", memoryModel)
                         array.push(memoryModel)
                     })
                     resolve(array)
@@ -172,7 +173,7 @@ class RealmManager {
     }
 
     addUserExamId(examId) {
-        
+
         var user = this.getCurrentUser()
         let examIds = JSON.parse(user.examIds)
         examIds.push(examId)
@@ -193,7 +194,7 @@ class RealmManager {
     updateMemoryModel(model, record, newWeighting) {
 
         var time = new Date()
-        console.log(" time.getTime()",  time.getTime())
+        console.log(" time.getTime()", time.getTime())
 
         return new Promise((resolve, reject) => {
             try {
@@ -270,7 +271,7 @@ class RealmManager {
         }
     }
 
-    isHaveQuestionInfo(id){
+    isHaveQuestionInfo(id) {
         let examinationPaper = realm.objectForPrimaryKey('QuestionPaper', id)
         if (examinationPaper) {
             return true
@@ -280,15 +281,12 @@ class RealmManager {
     }
 
     saveMemoryModelsByExamData(examData, examId) {
-
-        console.log("save memory models by exam data ", examData, examId)
         const that = this
         return new Promise((resolve, reject) => {
             try {
                 var memoryModels = that.getMemoryModelsByExam(examId)
                 if (memoryModels) {
-                    memoryModels.forEach( async (model) => {
-                        
+                    memoryModels.forEach(async (model) => {
                         for (let key in examData) {
                             if (model.examId == examData[key].paper_id &&
                                 model.questionPaper.question_number == examData[key].question_number) {
@@ -463,7 +461,7 @@ class RealmManager {
 
         var timeStamp = parseInt(new Date().setHours(0, 0, 0, 0))
         console.log("timeStamp", timeStamp)
-        
+
         var finishedModels = models.filtered('weighting>=7 && appearedServeralTime > 0')
         var unfishedModels = models.filtered('weighting<7 && appearedServeralTime > 0')
         var x = finishedModels.length

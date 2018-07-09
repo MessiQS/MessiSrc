@@ -13,20 +13,18 @@ import {
     TouchableOpacity,
     ScrollView,
     Platform,
-    Button,
     Modal
 } from 'react-native';
 import realmManager from "../Realm/realmManager";
-import realm from '../Realm/realm';
 import OptionForm from "./optionForm";
 import MultipleOptionForm from './multiple_option_form';
 import Analysis from "./analysis";
 import QuestionFeedback from "./question_feedfack";
-import Http from '../../service/http';
 import runtime from '../../service/runtime';
-import { webURL, imageWebURL, DBChange } from "../../service/constant";
+import { DBChange } from "../../service/constant";
 import OptionController from './option.controller'
 import ImageViewer from 'react-native-image-zoom-viewer';
+import questionManager from "../../service/question_manager"
 
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
@@ -36,6 +34,28 @@ const ItemStatus = {
     SELECTED: 'selected',
     RIGHT: 'right',
     ERROR: 'error',
+}
+
+const example = {
+    question: {
+      id: "",
+      analysis: "受伤者无法自行下车，就说明伤者行动不便，这时应设法将其移出，以免汽车发生突发状况，造成二次伤害。",
+      answer: "A",
+      category: "判断",
+      created_at: "1521977933121",
+      option_A: "对",
+      option_B: "错",
+      option_C: "",
+      option_D: "",
+      province: "科目四",
+      question: "受伤者在车内无法自行下车时，可设法将其从车内移出，尽量避免二次受伤。",
+      question_material: "",
+      question_number: 7,
+      question_point: "单选",
+      subject: "subject",
+      title: "交通事故救护及常见危化品处置常识试题",
+      updated_at: "000",
+    }
 }
 
 export default class Detail extends Component {
@@ -87,28 +107,11 @@ export default class Detail extends Component {
         ),
     });
 
-    componentWillMount() {
-
-        var category = this.state.detail.questionPaper.category
-        if (this.state.detail.questionPaper.subject == "不定项" ||
-            this.state.detail.questionPaper.question.indexOf("不定项选择") !== -1 ||
-            this.state.detail.questionPaper.subject == "多选") {
-            category = category + "（多选）"
-        }
-
-        this.props.navigation.setParams({
-            headerTitle: category,
-            clickNextQuestion: this.nextQuestion.bind(this),
-            nextButtonDisable: true,
-        })
-    }
-
     constructor(props) {
         super(props);
-        this._memoryModel = this._getMemoryModel()
         this.selectedImageURL = null
         this.state = {
-            detail: this._memoryModel,
+            detail: example,
             isSelected: false,
             selectedOption: [],
             A_Status: ItemStatus.NORMAL,
@@ -117,31 +120,44 @@ export default class Detail extends Component {
             D_Status: ItemStatus.NORMAL,
             showImageDetail: false,
         }
-        // console.log(this._memoryModel)
+        // console.log(this.memoryModel)
+    }
+
+    componentDidMount() {
+        this.nextQuestion()
+    }
+
+    componentWillMount() {
+        this.props.navigation.setParams({
+            headerTitle: "",
+            clickNextQuestion: this.nextQuestion.bind(this),
+            nextButtonDisable: true,
+        })
     }
 
     nextQuestion() {
-
-        this._memoryModel = this._getMemoryModel()
-        if (this._memoryModel == null) {
-
-            this.props.navigation.goBack()
-
+        const that = this
+        let type = that.props.navigation.state.params.type
+        let value = questionManager.getRandomMemoryModel(type)
+        console.log("getRandomMemoryModel value", value)
+        that.memoryModel = value
+        if (that.memoryModel == null) {
+            that.props.navigation.goBack()
         } else {
-
-            var category = this._memoryModel.questionPaper.category
-            if (this._memoryModel.questionPaper.subject == "不定项" ||
-                this._memoryModel.questionPaper.question.indexOf("不定项选择") !== -1 ||
-                this.state.detail.questionPaper.subject.indexOf("多选") !== -1) {
-                category = category + "（多选）"
+            var headerTitle = that.memoryModel.question.category
+            console.log(that.memoryModel)
+            if (that.memoryModel.question.subject == "不定项" ||
+                that.memoryModel.question.question.indexOf("不定项选择") !== -1 ||
+                that.state.detail.question.subject.indexOf("多选") !== -1) {
+                headerTitle = category + "（多选）"
             }
-            this.props.navigation.setParams({
-                headerTitle: category,
+            that.props.navigation.setParams({
+                headerTitle,
                 nextButtonDisable: true,
             });
 
-            this.setState({
-                detail: this._memoryModel,
+            that.setState({
+                detail: that.memoryModel,
                 isSelected: false,
                 selectedOption: [],
                 A_Status: ItemStatus.NORMAL,
@@ -150,13 +166,6 @@ export default class Detail extends Component {
                 D_Status: ItemStatus.NORMAL,
             })
         }
-        console.log(this._memoryModel)
-    }
-
-    _getMemoryModel() {
-
-        var category = this.props.navigation.state.params.category
-        return realmManager.getCurrentMemoryModel(category);
     }
 
     getRandomInt(min, max) {
@@ -167,30 +176,15 @@ export default class Detail extends Component {
 
     async _select(option) {
 
-        let score = 0
-        let itemStatus = ItemStatus.NORMAL
-        var isRight = false
-        if (option == this._memoryModel.questionPaper.answer) {
-            score = 7 - this._memoryModel.appearedServeralTime
-            score = Math.max(1, score)
-            itemStatus = ItemStatus.RIGHT
-            isRight = true
+        questionManager.select(option, this.memoryModel)
+
+        var isRight = option == this.state.detail.question.answer ? true : false;
+        let itemStatus = ItemStatus.NORMAL;
+        if (isRight) {
+          itemStatus = ItemStatus.RIGHT;
         } else {
-            itemStatus = ItemStatus.ERROR
+          itemStatus = ItemStatus.ERROR;
         }
-        var record = {
-            select: option,
-            isRight: isRight
-        }
-
-        const newWeighting = this._memoryModel.weighting + score
-        let model = await realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
-
-        this._sendUpdateInfoCache(isRight, model)
-
-        setTimeout(() => {
-            runtime.emit(DBChange);
-        }, 1);
 
         if (option == "A") {
             this.setState({
@@ -284,13 +278,13 @@ export default class Detail extends Component {
         }
         var array = selectedOption
         var sortedSelection = array.sort().toString()
-        var answer = this._memoryModel.questionPaper.answer
+        var answer = this.memoryModel.question.answer
 
         let score = 0
         var isRight = false
         if (sortedSelection == answer.toString()) {
             isRight = true
-            score = 7 - this._memoryModel.appearedServeralTime
+            score = 7 - this.memoryModel.appearedServeralTime
             score = Math.max(1, score)
         }
         var record = {
@@ -298,8 +292,8 @@ export default class Detail extends Component {
             isRight: isRight
         }
 
-        const newWeighting = this._memoryModel.weighting + score
-        realmManager.updateMemoryModel(this._memoryModel, record, newWeighting)
+        const newWeighting = this.memoryModel.weighting + score
+        realmManager.updateMemoryModel(this.memoryModel, record, newWeighting)
             .then(model => {
                 setTimeout(function () {
                     runtime.emit(DBChange);
@@ -316,54 +310,10 @@ export default class Detail extends Component {
         });
     }
 
-    /// 更新服务端试卷信息
-    _sendUpdateInfoCache(isRight, model) {
-
-        var user = realmManager.getCurrentUser()
-
-        let records = []
-
-        model.records.forEach(value => {
-            let record = {
-                time: value.time,
-                isRight: value.isRight,
-                select: value.select
-            }
-            records.push(record)
-        })
-
-        var param = {
-            user_id: user.userId,
-            paper_id: user.currentExamId,
-            question_id: model.questionPaper.id,
-            question_number: model.questionPaper.question_number,
-            weighted: model.weighting,
-            lastDateTime: model.lastBySelectedTime,
-            record: JSON.stringify(records),
-            firstDateTime: model.firstBySelectedTime,
-        }
-
-        if (isRight == true) {
-            param.correct = "1"
-            param.wrong = "0"
-        } else {
-            param.correct = "0"
-            param.wrong = "1"
-        }
-
-
-        Http.post('api/getUpdateInfoCache', param).then(res => {
-            console.log("api/getUpdateInfoCache", res)
-        }).catch(err => {
-            console.log(err)
-        })
-    }
-
     _renderAnalysis() {
-
         if (this.state.isSelected) {
             return (
-                <Analysis detail={this.state.detail.questionPaper} />
+                <Analysis detail={this.state.detail.question} />
             );
         } else {
             return null;
@@ -381,7 +331,6 @@ export default class Detail extends Component {
     }
 
     _filterTag(str) {
-
         return str.replace(/<\/br>/g, "\n\n").replace(/<br\/>/g, "\n\n").replace(/<br/g, "\n\n")
     }
 
@@ -443,9 +392,9 @@ export default class Detail extends Component {
                     if (Array.isArray(size) && size.length !== 0) {
 
                         let styleFromCulti = OptionController.setStyle(attrObj, styleObj, size, scale)
-                        let size = OptionController.setStyleForAnalysis(styleFromCulti)
-                        width = size.width
-                        height = size.height
+                        let newSize = OptionController.setStyleForAnalysis(styleFromCulti)
+                        width = newSize.width
+                        height = newSize.height
                     }
 
                     /// 当图片宽度小于屏幕的0.7倍，不可点击放大
@@ -502,14 +451,14 @@ export default class Detail extends Component {
 
     _renderOptionForm() {
         const { detail, isSelected, selectedOption } = this.state
-
-        if (detail.questionPaper.subject == "不定项" ||
-            detail.questionPaper.question.indexOf("不定项选择") !== -1 ||
-            detail.questionPaper.subject.indexOf("多选") !== -1) {
-
+        console.log("detail", detail)
+        if (detail == null) {
+            return 
+        }
+        if (questionManager.isMultipleChoiceQuestion(detail.question)) {
             return (
                 <MultipleOptionForm
-                    detail={detail.questionPaper}
+                    detail={detail.question}
                     isSelected={isSelected}
                     selectedOption={selectedOption}
                     multipleSelect={this._multipleSelect.bind(this)}
@@ -524,7 +473,7 @@ export default class Detail extends Component {
 
             return (
                 <OptionForm
-                    detail={detail.questionPaper}
+                    detail={detail.question}
                     isSelected={isSelected}
                     selectedOption={selectedOption}
                     select={this._select.bind(this)}
@@ -554,12 +503,12 @@ export default class Detail extends Component {
         const { detail } = this.state
         let str = ""
         let str1 = ""
-        if (detail.questionPaper.category.indexOf("资料分析") !== -1 ||
-            detail.questionPaper.question_material !== "") {
-            str = detail.questionPaper.question_material
-            str1 = detail.questionPaper.question
+        if (detail.question.category.indexOf("资料分析") !== -1 ||
+            detail.question.question_material !== "") {
+            str = detail.question.question_material
+            str1 = detail.question.question
         } else {
-            str = detail.questionPaper.question
+            str = detail.question.question
             str1 = ""
         }
 

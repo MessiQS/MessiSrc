@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     Image,
     Text,
@@ -7,14 +7,9 @@ import {
     FlatList,
     Alert
 } from 'react-native';
-import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
 import Progress from '../../../component/progress/progress'
-import HTTP from "../../../service/http"
-import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
 import Storage from "../../../service/storage";
-import runtime from "../../../service/runtime";
-import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 import paperManager from "../../../service/paper_manager"
 
@@ -79,10 +74,6 @@ export default class TopicsDetail extends React.Component {
             })
         }
     }
-
-    // componentDidMount() {
-    //     runtime.on('updatePaperInfo', 
-    // }
 
     async _buy(item) {
 

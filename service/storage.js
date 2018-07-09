@@ -2,25 +2,25 @@ import { AsyncStorage, Alert } from 'react-native';
 export default class Storage {
     static getItem(key) {
         if (!key) {
-            Alert.alert('没有key');
+            console.log('没有key');
             return;
         }
         try {
             return AsyncStorage.getItem(key);
         } catch (error) {
-            Alert.alert(error)
+            console.log(error)
         }
     }
     static setItem({ key, value }) {
         if (!key) {
-            Alert.alert('没有key');
+            console.log('没有key');
             return;
         }
         try {
             return AsyncStorage.setItem(key, value);
         } catch (error) {
             return false;
-            Alert.alert(error)
+            console.log(error)
         }
     }
     static multiSet(argu){
@@ -49,13 +49,13 @@ export default class Storage {
     }
     static removeItem(key) {
         if (!key) {
-            Alert.alert('没有key');
+            console.log('没有key');
             return;
         }
         try {
             return AsyncStorage.removeItem(key);
         } catch (error) {
-            Alert.alert(error)
+            console.log(error)
             return false;
         }
     }
@@ -63,7 +63,7 @@ export default class Storage {
         try {
             return AsyncStorage.clear();
         } catch (error) {
-            Alert.alert(error)
+            console.log(error)
             return false;
         }
     }

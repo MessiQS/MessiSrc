@@ -7,14 +7,9 @@ import {
     FlatList,
     Alert
 } from 'react-native';
-import MessageService from "../../../service/message.service"
 import realmManager from "../../../component/Realm/realmManager"
 import Progress from '../../../component/progress/progress'
-import HTTP from "../../../service/http"
-import echartsMin from 'native-echarts/src/components/Echarts/echarts.min';
 import Storage from "../../../service/storage";
-import runtime from "../../../service/runtime";
-import { DBChange } from "../../../service/constant";
 import { NavigationActions } from 'react-navigation'
 import paperManager from "../../../service/paper_manager"
 
@@ -108,15 +103,17 @@ export default class TopicsDetail extends React.Component {
             loading: true,
         })
 
-        const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+        
 
-        if (isHavePaper == false) {
+        // const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+
+        // if (isHavePaper == false) {
             let isSuccess = await paperManager.downloadExam(item)
 
             if (isSuccess == false) {
                 Alert.alert('下载失败，请稍后重试')
             }
-        }
+        // }
         let user = realmManager.updateCurrentExamInfo(item)
 
         setTimeout(() => {

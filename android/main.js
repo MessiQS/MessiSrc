@@ -4,11 +4,15 @@
  * @flow
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
     View,
+    Image
 } from 'react-native';
-import { StackNavigator } from "react-navigation";
+import { TabNavigator, StackNavigator } from "react-navigation";
 
 import Mine from './modules/mine/mine';
 import SoftwareAgreement from './modules/mine/software_agreement';
@@ -39,9 +43,6 @@ import LaunchPage from '../component/launchPage';
 import Classification from '../Modules/Classification/classification';
 import DrivingTestChoice from "../Modules/Choose/driving_test_choice";
 
-import MainCategory from "../component/category/main.category"
-import SecondCategory from "../component/category/second.category"
-import ThirdCategory from "../component/category/third.category"
 
 import runtime from "../service/runtime";
 
@@ -210,21 +211,6 @@ const Messi = StackNavigator({
         navigationOptions: TabOptions({
             title: '选择题库'
         })
-    },
-    MainCategory: {
-        screen:MainCategory,
-        navigationOptions: TabOptions({
-            title: '选择题库'
-        })
-    },
-    SecondCategory: {
-        screen:SecondCategory
-    },
-    ThirdCategory: {
-        screen:ThirdCategory,
-        navigationOptions: TabOptions({
-            title: '选择题库'
-        })
     }
 })
 function getCurrentRouteName(navigationState) {
@@ -243,7 +229,7 @@ export default () => (<Messi
     onNavigationStateChange={(prevState, currentState) => {
         const currentScreen = getCurrentRouteName(currentState);
         const prevScreen = getCurrentRouteName(prevState);
-        const uodateNameArray = ['ThirdCategory', 'Detail']
+        const uodateNameArray = ['TopicsDetail', 'Detail','DrivingTestChoice']
         if (currentScreen === 'Home' && uodateNameArray.indexOf(prevScreen) >= 0) {
             runtime.emit('find_update_state')
         }

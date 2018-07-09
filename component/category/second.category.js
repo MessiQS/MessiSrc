@@ -49,7 +49,6 @@ export default class SecondCategory extends Component {
     }
     
     _renderItemView = (item) => {
-        console.log("item", item)
         const that = this
         let params = {
             item: item.item,
@@ -81,10 +80,13 @@ export default class SecondCategory extends Component {
 
     // MARK: - Private Function
     selectSecondCategory(item) {
-        console.log("selectSecondCategory item", item)
-        const { navigate } = this.props.navigation;
-        navigate('ThirdCategory', item)
-        
+        const { state, navigate } = this.props.navigation;
+        navigate('ThirdCategory', {
+            item: item.item,
+            title: item.title,
+            go_back_key: state.params.go_back_key,
+            callback: state.params.callback
+        })
     }
 }
 
@@ -101,7 +103,7 @@ var styles = StyleSheet.create({
         height: '100%',
     },
     sectionViewStyle: {
-        marginTop: 4,
+        marginTop: 20,
         height: 36,
         flexDirection: 'row',
         justifyContent: 'flex-start',

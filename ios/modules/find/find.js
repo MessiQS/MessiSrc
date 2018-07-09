@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react'
 import {
-    StyleSheet,
     ScrollView,
     TouchableOpacity,
     Text,
@@ -17,17 +16,16 @@ import {
 } from 'react-native'
 import Echarts from 'native-echarts'
 import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions'
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import moment from 'moment'
 import realmManager from "../../../component/Realm/realmManager"
 import Storage from "../../../service/storage"
-import realm from '../../../component/Realm/realm'
 import runtime from "../../../service/runtime"
 import AlertView from "../../../component/progress/alert"
-import { DBChange } from "../../../service/constant"
 import { NavigationActions } from 'react-navigation'
 import { Dimensions } from 'react-native'
-const {height, width} = Dimensions.get('window') 
+const { height, width } = Dimensions.get('window')
+import questionManager from "../../../service/question_manager"
+import paperManager from "../../../service/paper_manager"
 
 const chartArray = [1, 2]
 const header = {
@@ -65,10 +63,6 @@ var daysTransfer = {
     'Saturday': '周六'
 }
 
-var space = {
-    
-}
-
 export default class Find extends Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -99,48 +93,26 @@ export default class Find extends Component {
 
     constructor(props) {
         super(props)
-        this._prepareUI()
+        this.state = {
+            currentExam: "当前暂无题库信息",
+            currentExamDetail: "请选择题库",
+            info: {},
+            showAlert: false,
+            fadeInOpacity: new Animated.Value(1),
+        }
+    }
+
+    componentDidMount() {
+        this._updateUI()
         this.isUpdateChart = false
 
-        runtime.on('find_update_state',() => {
+        runtime.on('find_update_state', () => {
+            console.log("updateUI")
             this._updateUI()
         })
     }
 
-    _prepareUI() {
-
-        const user = realmManager.getCurrentUser()
-        if (user && user.currentExamId) {
-            let info = realmManager.getFindInfo(user.currentExamId)
-            this.state = {
-                currentExam: user.currentExamTitle,
-                currentExamDetail: "历年真题",
-                info: info,
-                showAlert: false,
-                fadeInOpacity: new Animated.Value(1),
-            }
-        } else {
-            let info = new Object()
-            info.newQuestionCount = "0"
-            info.wrongQuestionCount = "0"
-            info.newLastSelectDate = "暂无数据"
-            info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [0, 0, 0, 0, 0, 0]   
-            info.beforeArray = [0, 0, 0, 0, 0, 0]
-            info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
-            info.newAverage = 0
-            info.wrongAverage = 0
-            this.state = {
-                currentExam: "当前暂无题库信息",
-                currentExamDetail: "请选择题库",
-                info: info,
-                showAlert: false,
-                fadeInOpacity: new Animated.Value(1),                
-            }
-        }
-    }
-
-    _updateUI() {
+    async _updateUI() {
 
         const user = realmManager.getCurrentUser()
         const that = this
@@ -148,15 +120,14 @@ export default class Find extends Component {
         setTimeout(() => {
             that.isUpdateChart = false
         }, 1000)
-
         if (user && user.currentExamId) {
-            let info = realmManager.getFindInfo(user.currentExamId)
-            this.setState ({
-                currentExam: user.currentExamTitle,
+            let info = questionManager.getChartInfo()
+            console.log("info", info)
+            that.setState({
+                currentExam: questionManager.getCurrentPaperTitle(),
                 currentExamDetail: "历年真题",
-                fadeInOpacity: new Animated.Value(0.01),                
+                fadeInOpacity: new Animated.Value(0.01),
                 info: info,
-                
             })
         } else {
             let info = new Object()
@@ -169,10 +140,10 @@ export default class Find extends Component {
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
-            this.setState ({
+            this.setState({
                 currentExam: "当前暂无题库信息",
                 currentExamDetail: "请选择题库",
-                fadeInOpacity: new Animated.Value(0.01),                
+                fadeInOpacity: new Animated.Value(0.01),
                 info: info,
             })
         }
@@ -237,8 +208,9 @@ export default class Find extends Component {
 
     routeToClassification() {
         const { navigate, state } = this.props.navigation
-        navigate('Classification', {
-            callback:(data) => {
+        navigate('MainCategory', {
+            callback: (data) => {
+                console.log("call back update UI")
                 this._updateUI()
             }
         })
@@ -259,7 +231,7 @@ export default class Find extends Component {
         } else {
 
             const { navigate } = this.props.navigation
-            navigate('Detail', { category: "new" })
+            navigate('Detail', { type: "new" })
         }
     }
 
@@ -278,25 +250,20 @@ export default class Find extends Component {
         } else {
 
             const { navigate } = this.props.navigation
-            navigate('Detail', { category: "wrong" })
+            navigate('Detail', { type: "wrong" })
         }
     }
 
     _renderTopView() {
-
         let option = pieOption.option
-
         let option_json = JSON.stringify(option)
-        console.log("option_json.length", option_json.length)
-
-
         if (this.isUpdateChart) {
 
             option = {
                 ...option,
-                series:[{
+                series: [{
                     ...option.series[0],
-                    data:this.state.info.pieArray
+                    data: this.state.info.pieArray
                 }]
             }
 
@@ -350,13 +317,13 @@ export default class Find extends Component {
 
             newPaperOption = {
                 ...newPaperOption,
-                xAxis:[{
+                xAxis: [{
                     ...newPaperOption.xAxis[0],
-                    data:weekArray
+                    data: weekArray
                 }],
-                series:[{
+                series: [{
                     ...newPaperOption.series[0],
-                    data:this.state.info.beforeArray
+                    data: this.state.info.beforeArray
                 }]
             }
 
@@ -367,17 +334,17 @@ export default class Find extends Component {
         }
 
         /// 空数组，显示特殊化
-        if (this._isShowEmptyData()) {
+        // if (this._isShowEmptyData()) {
 
-            newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
-            newPaperOption.series[0].label.normal.show = false
-            newPaperOption.series[0].symbolSize = 0
+        //     newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
+        //     newPaperOption.series[0].label.normal.show = false
+        //     newPaperOption.series[0].symbolSize = 0
 
-        } else {
+        // } else {
 
-            newPaperOption.series[0].label.normal.show = true
-            newPaperOption.series[0].symbolSize = 6
-        }
+        //     newPaperOption.series[0].label.normal.show = true
+        //     newPaperOption.series[0].symbolSize = 6
+        // }
 
         return (
             <View style={styles.calendarView}>
@@ -397,7 +364,7 @@ export default class Find extends Component {
                         <Text style={styles.rightDetail}>剩余：{this.state.info.newQuestionCount}</Text>
                     </View>
                 </View>
-                <Animated.View style = {{
+                <Animated.View style={{
                     opacity: this.state.fadeInOpacity
                 }}>
                     <Echarts option={newPaperOption} height={width * 0.6} />
@@ -427,17 +394,17 @@ export default class Find extends Component {
             }
             weekArray.push(d)
         }
-        
+
         if (this.isUpdateChart) {
             newPaperOption = {
                 ...newPaperOption,
-                xAxis:[{
+                xAxis: [{
                     ...newPaperOption.xAxis[0],
-                    data:weekArray
+                    data: weekArray
                 }],
-                series:[{
+                series: [{
                     ...newPaperOption.series[0],
-                    data:this.state.info.futureArray
+                    data: this.state.info.futureArray
                 }]
             }
         } else {
@@ -445,18 +412,18 @@ export default class Find extends Component {
             newPaperOption.series[0].data = this.state.info.futureArray
         }
 
-        /// 空数组，显示特殊化
-        if (this._isShowEmptyData()) {
+        // /// 空数组，显示特殊化
+        // if (this._isShowEmptyData()) {
 
-            newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
-            newPaperOption.series[0].label.normal.show = false
-            newPaperOption.series[0].symbolSize = 0
+        //     newPaperOption.series[0].data = [3, 3, 3, 3, 3, 3]
+        //     newPaperOption.series[0].label.normal.show = false
+        //     newPaperOption.series[0].symbolSize = 0
 
-        } else {
+        // } else {
 
-            newPaperOption.series[0].label.normal.show = true
-            newPaperOption.series[0].symbolSize = 6
-        }
+        //     newPaperOption.series[0].label.normal.show = true
+        //     newPaperOption.series[0].symbolSize = 6
+        // }
 
         return (
             <View style={styles.calendarView}>
@@ -476,7 +443,7 @@ export default class Find extends Component {
                         <Text style={styles.rightDetail}>剩余：{this.state.info.wrongQuestionCount}</Text>
                     </View>
                 </View>
-                <Animated.View style = {{
+                <Animated.View style={{
                     opacity: this.state.fadeInOpacity
                 }}>
                     <Echarts option={newPaperOption} height={width * 0.6} />
@@ -512,7 +479,7 @@ const styles = {
         marginBottom: 5,
     },
     titleContent: {
-        marginTop: Math.min(Math.max((height - 64 - 78 - (2*304)) / 3, 3), 10),         
+        marginTop: Math.min(Math.max((height - 64 - 78 - (2 * 304)) / 3, 3), 10),
         flexDirection: "row",
         backgroundColor: "white",
         height: 78,
@@ -527,7 +494,7 @@ const styles = {
         width: '70%',
         height: '100%',
         backgroundColor: "#fff",
-        marginLeft: 10,        
+        marginLeft: 10,
     },
     h2: {
         fontSize: 16,
@@ -562,7 +529,7 @@ const styles = {
     calendarView: {
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop: Math.min(Math.max((height - 64 - 78 - (2*304)) / 3, 3), 10), 
+        marginTop: Math.min(Math.max((height - 64 - 78 - (2 * 304)) / 3, 3), 10),
     },
     chartTitleContainer: {
         flexDirection: "column",
@@ -600,7 +567,7 @@ const styles = {
         fontSize: 12,
         color: '#8E9091',
         backgroundColor: 'rgba(0,0,0,0)'
-        
+
     },
     rightTitle: {
         position: "absolute",
@@ -614,7 +581,7 @@ const styles = {
         right: 49,
         fontSize: 12,
         color: "#8E9091",
-        backgroundColor: 'rgba(0,0,0,0)'        
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     rightContainer: {
         flexDirection: "row",

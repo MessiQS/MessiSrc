@@ -48,13 +48,6 @@ import MainCategory from "../component/category/main.category"
 import SecondCategory from "../component/category/second.category"
 import ThirdCategory from "../component/category/third.category"
 
-
-let bookIcon = require('../Images/book.png')
-let questionIcon = require('../Images/question.png')
-let chartIcon = require('../Images/chart.png')
-let mineIcon = require('../Images/mine.png')
-let headImage = require('../Images/head.png')
-
 const TabOptions = ({ title }) => {
     const headerTitleStyle = {
         color: '#172434',

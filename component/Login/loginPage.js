@@ -2,18 +2,12 @@ import React from 'react';
 import {
     Alert,
     View,
-    Button,
-    TextInput,
-    TouchableOpacity,
     Text,
     ScrollView,
     Keyboard,
-    NativeModules,
-    Modal
 } from 'react-native';
 import Http from '../../service/http';
 import MD5 from 'crypto-js/md5';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AccountCheck from '../../service/accountCheck';
 import Storage from '../../service/storage';
 import { LoginItem } from '../usual/item';

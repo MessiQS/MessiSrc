@@ -5,15 +5,13 @@ import {
     View,
     TouchableOpacity,
     FlatList,
-    Alert
 } from 'react-native';
 import realmManager from "../../component/Realm/realmManager"
 import Progress from '../../component/progress/progress'
 import Storage from "../../service/storage";
 import { NavigationActions } from 'react-navigation'
 import paperManager from "../../service/paper_manager"
-import HTTP from "../../service/http"
-
+import questionManager from "../../service/question_manager"
 
 export default class ThirdCategory extends React.Component {
 
@@ -46,48 +44,93 @@ export default class ThirdCategory extends React.Component {
     constructor(props) {
         super(props)
         this.isLockPushing = false
-
-        this.loadData()
-
         this.state = ({
             data: [],
             loading: false,
         })
+
+        this.getExamsList()
+        // this.getExamsList(function(success, data, ))
     }
 
-    async _chooseExam(item) {
-
-        const { navigate } = this.props.navigation;
-
-        if (item == null) {
-            return
+    getExamsList(callback) {
+        const that = this
+        let params = {
+            sendType: this.props.navigation.state.params.title,
+            province: this.props.navigation.state.params.item
         }
-        this.setState({
-            loading: true,
-        })
+        paperManager.getFinalCategories(params, (success, data, error) => {
+            if (success) {
+                console.log("success, data", success, data)
 
-        const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+                data.sort((a, b) => {
+                    if (a.title > b.title) {
+                        return -1;
+                    }
+                    if (a.title < b.title) {
+                        return 1;
+                    }
+                    // a 必须等于 b
+                    return 0;
+                })
 
-        if (isHavePaper == false) {
-            let isSuccess = await paperManager.downloadExam(item)
-
-            if (isSuccess == false) {
-                Alert.alert('下载失败，请稍后重试')
+                // let paperId = data[0].paper_id
+                // let paperIds = paperManager.getUnlockPaperIds()
+                // console.log("paperIds", paperIds, "paperId", paperId)
+                // let unlock = paperIds.includes(paperId)
+                // that.setData({
+                //     items: data,
+                //     selected_paper_id: item.paper_id,
+                //     unlock
+                // })
+                that.setState({
+                    data
+                })
             }
-        }
-        let user = realmManager.updateCurrentExamInfo(item)
-
-        setTimeout(() => {
-            this.setState({
-                loading: false,
-                user: user,
-            })
-
-            const { state, goBack } = this.props.navigation;
-            const params = state.params || {};
-            goBack(params.go_back_key);
-        }, 1000)
+        })
     }
+
+    // async _chooseExam(item) {
+
+    //     const { navigate } = this.props.navigation;
+
+    //     if (item == null) {
+    //         return
+    //     }
+    //     this.setState({
+    //         loading: true,
+    //     })
+
+    //     // const isHavePaper = realmManager.isHaveExamiationPaper(item.id)
+
+    //     // if (isHavePaper == false) {
+
+    //     realm.write(() => {
+    //         let paperModels = realm.objects("QuestionPaper")
+    //         let memoryModels = realm.objects("MemoryRecordModel")
+
+    //         realm.delete(paperModels)
+    //         realm.delete(memoryModels)
+    //     });
+    //         let isSuccess = await paperManager.downloadExam(item)
+
+    //         if (isSuccess == false) {
+    //             Alert.alert('下载失败，请稍后重试')
+    //         }
+    //     // }
+    //     let user = realmManager.updateCurrentExamInfo(item)
+
+    //     setTimeout(() => {
+    //         this.setState({
+    //             loading: false,
+    //             user: user,
+    //         })
+
+    //         const { state, goBack } = this.props.navigation;
+    //         const params = state.params || {};
+    //         goBack(params.go_back_key);
+    //     }, 1000)
+    // }
 
     _exit() {
         const { navigate } = this.props.navigation;
@@ -119,56 +162,49 @@ export default class ThirdCategory extends React.Component {
         return false;
     }
 
-
-    // MARK: - 
-    loadData() {
+    chooseExam(item) {
         const that = this
-        let params = {
-            sendType: this.props.navigation.state.params.title,
-            province: this.props.navigation.state.params.item
+        if (item == null) {
+            return
         }
+        this.setState({
+            loading: true,
+        })
 
-        HTTP.get("api/getTitleByProvince", params, true)
-        .then(value => {
-            if (value.type) {
-              
-                console.log("api/getTitleByProvince", value)
-                const array = value.data
-                array.sort((a, b) => {
-                    if (a.title > b.title) {
-                        return -1;
-                    }
-                    if (a.title < b.title) {
-                        return 1;
-                    }
-                    // a 必须等于 b
-                    return 0;
-                })
+        paperManager.setCurrentPaperItem(item)
+        questionManager.downloadPaper(item.id, function (success, response, error) {
+            if (success) {
+                var array = Array();
+                for (let question of response) {
+                    var memoryModel = Object()
 
-                const user = realmManager.getCurrentUser()
+                    memoryModel.question = question;
+                    memoryModel.weighting = 0;
+                    memoryModel.appearedServeralTime = 0;
+                    memoryModel.lastBySelectedTime = 0;
+                    memoryModel.firstBySelectedTime = 0;
+                    memoryModel.records = [];
+                    memoryModel.examId = item.id;
 
-                if (user) {
-                    
-                    that.setState({
-                        data: array,
-                        loading: false,
-                        user: user,
-                    })
-
-                } else {
-
-                    that.setState({
-                        data: array,
-                        loading: false,
-                    })
+                    array.push(memoryModel);
                 }
+                questionManager.handleMemoryModels(item.id, array, function (success, data, error) {
+                    if (success) {
+                        that.setState({
+                            loading: false,
+                        })
+                        const { state, goBack } = that.props.navigation;
+                        const params = state.params || {};
+                        goBack(params.go_back_key);
+                        return
+                    }
+                    that.setState({
+                        loading: false,
+                    })
+                })
             }
         })
-        .catch(err => {
-
-        })
     }
-
 
     _renderProgress() {
         if (this.state.loading == true) {
@@ -188,32 +224,31 @@ export default class ThirdCategory extends React.Component {
     }
 
     _renderItem(item) {
-
-        const { user } = this.state;
-
-        if (item.id == user.currentExamId) {
-            return (
-                <View style={styles.itemView}>
-                    <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
-                    <View style={[styles.buyView, { borderColor: '#DDDDDD' }]}>
-                        <Text style={[styles.buyText, { color: "#ddd" }]}>选择</Text>
-                    </View>
-                </View>
-            )
-        }
-
-        const examIds = JSON.parse(user.examIds)
         return (
             <View style={styles.itemView}>
                 <Text style={styles.itemText} numberOfLines={1}>{item.title}</Text>
-                <TouchableOpacity onPress={() =>
-                    this._chooseExam(item)
-                }>
-                    <View style={styles.buyView}>
-                        <Text style={styles.buyText}>选择</Text>
-                    </View>
-                </TouchableOpacity>
+                {this._renderChooseButton(item)}
             </View>
+        )
+    }
+
+    _renderChooseButton(item) {
+
+        if (item.id == questionManager.getPaperId()) {
+            return (
+                <View style={[styles.buyView, { borderColor: '#DDDDDD' }]}>
+                    <Text style={[styles.buyText, { color: "#ddd" }]}>选择</Text>
+                </View>
+              )
+        }
+        return (
+            <TouchableOpacity onPress={() =>
+                this.chooseExam(item)
+            }>
+                <View style={styles.buyView}>
+                    <Text style={styles.buyText}>选择</Text>
+                </View>
+            </TouchableOpacity>
         )
     }
 

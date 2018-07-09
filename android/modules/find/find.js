@@ -201,8 +201,8 @@ export default class Find extends Component {
     }
 
     routeToClassification() {
-        const { navigate } = this.props.navigation
-        navigate('MainCategory', {
+        const { navigate, state } = this.props.navigation
+        navigate('Classification', {
             callback:(data) => {
                 this._updateUI()
             }

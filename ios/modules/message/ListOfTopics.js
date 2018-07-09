@@ -4,10 +4,8 @@ import {
     Text,
     View,
     TouchableOpacity,
-    ScrollView,
     FlatList
 } from 'react-native'
-import DictStyle from './dictStyle'
 import MessageService from "../../../service/message.service"
 import realmManager from '../../../component/Realm/realmManager'
 import PropTypes from 'prop-types'

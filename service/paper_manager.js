@@ -1,9 +1,18 @@
 import realmManager from "../component/Realm/realmManager"
 import MessageService from "../service/message.service"
 import HTTP from "./http"
+import Storage from "../service/storage"
 
 class PaperManager {
 
+    getFinalCategories(paramDic, callback) {
+        HTTP.get("api/getTitleByProvince", paramDic, true).then(function (res) {
+            console.log("api/getTitleByProvince", res)
+            callback(res.type, res.data, null)
+        }).catch(error => {
+            console.log("api/getTitleByProvince error", error)
+        })
+    }
 
     async updateExamIfNeed(papers) {
         let exams = realmManager.getAllExams()
@@ -12,12 +21,9 @@ class PaperManager {
             exams.forEach(exam => {
                 /// 遍历所有试卷信息
                 papers.forEach(provinceInfo => {
-
                     if (exam.province == provinceInfo.province) {
-
                         provinceInfo.data.forEach(async value => {
                             if (value.id == exam.id && value.version != exam.version) {
-
                                 console.log("province info", value)
                                 const json = await MessageService.downloadPaper({
                                     paperId: value.id
@@ -25,7 +31,6 @@ class PaperManager {
 
                                 console.log("list of topic js json", json)
                                 if (json.type == true) {
-
                                     await realmManager.updateExaminationPaper(value, json.data)
                                 }
                             }
@@ -88,6 +93,51 @@ class PaperManager {
         .catch(error => {
 
         })
+    }
+
+    getPaperId() {
+        let paper = this.getCurrentPaperItem()
+        if (paper) {
+            return paper.id
+        }
+        return ""
+    }
+
+    getCurrentPaperItem() {
+        let currentPaperItem = {}
+        try {
+            var value = Storage.getItem('currentPaperItem')
+            if (value) {
+                // Do something with return value
+                currentPaperItem = JSON.parse(value)
+            }
+        } catch (e) {
+            // Do something when catch error
+        }
+        return currentPaperItem
+    }
+
+    getUnlockPaperIds() {
+        let unlockPapers = []
+        try {
+            var value = Storage.getItem('UnlockPaper')///  wx.getStorageSync('UnlockPaper')
+            if (!!value) {
+                // Do something with return value
+                unlockPapers = value
+            }
+        } catch (e) {
+
+        }
+        console.log("UnlockPaper", unlockPapers)
+        return unlockPapers
+    }
+
+    setCurrentPaperItem(item) {
+        try {
+            Storage.setItem({key: 'currentPaperItem', value: JSON.stringify(item)})
+        } catch (e) {
+
+        }
     }
 }
 
