@@ -31,9 +31,9 @@ export default class QuestionFeedback extends React.Component {
         var user = realmManager.getCurrentUser()
         let detail = this.props.detail
         let params = {
-            title: detail.questionPaper.title,
-            id:detail.questionPaper.id,
-            question_number: detail.questionPaper.question_number.toString(),
+            title: detail.question.title,
+            id:detail.question.id,
+            question_number: detail.question.question_number.toString(),
             user_id: user.userId,
         }
 
