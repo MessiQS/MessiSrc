@@ -149,7 +149,7 @@ export default class Detail extends Component {
             if (that.memoryModel.question.subject == "不定项" ||
                 that.memoryModel.question.question.indexOf("不定项选择") !== -1 ||
                 that.state.detail.question.subject.indexOf("多选") !== -1) {
-                headerTitle = category + "（多选）"
+                headerTitle = that.memoryModel.question.category + "（多选）"
             }
             that.props.navigation.setParams({
                 headerTitle,
