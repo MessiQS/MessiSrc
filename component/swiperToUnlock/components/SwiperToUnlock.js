@@ -35,8 +35,8 @@ export default class App extends Component {
                         width: this.props.width,
                         height: this.props.height || 400,
                     }}
-                    // javaScriptEnabled={true}
                     source={require('./unlock.html')}
+                    // source={{uri:'file:///android_asset/unlock.html'}}
                     onMessage={this.onMessage}
                 />
             </View>
