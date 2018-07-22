@@ -6,8 +6,6 @@
 //题库
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    Text,
     View
 } from 'react-native';
 import ListOfTopics from './ListOfTopics'
@@ -15,7 +13,6 @@ import ListOfTopics from './ListOfTopics'
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 export default class Message extends Component {
-
     constructor(props) {
         super(props);
         this.isLockPushing = false

@@ -7,13 +7,11 @@ WeChat.registerApp('wx8f1006588bd45d9b');
 export default class WeChatController {
     static async login() {
         const isWechat = await WeChat.isWXAppInstalled()
-        console.log(isWechat)
-        let { code } = isWechat && await WeChat.sendAuthRequest('snsapi_userinfo', '123')
-        console.log(code)
-        let loginInfo = await HTTP.post('api/wxlogin',{
+        let { code } = isWechat && await WeChat.sendAuthRequest('snsapi_userinfo')
+        let loginInfo = await HTTP.post('api/appWxLogin', {
             code,
         })
-        console.log(loginInfo)
+        return loginInfo
     }
     static async goToWx() {
         const isWechat = await WeChat.isWXAppInstalled()
