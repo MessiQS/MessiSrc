@@ -105,7 +105,7 @@ var styles = StyleSheet.create({
     marginTop: 156,
   },
   wechatLoginButton: {
-    width: 327,
+    width: width-48,
     height: 40,
     borderColor: 'white',
     borderRadius: 4,
