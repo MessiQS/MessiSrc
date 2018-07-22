@@ -29,7 +29,7 @@ export default class LaunchPage extends React.Component {
         const { accountToken, account } = await Storage.multiGet(['accountToken', 'account'])
         if (accountToken && account) {
             return Http.post('api/checkToken', { accountToken, account }).then(({ type, data }) => {
-                let route = 'Login';
+                let route = 'LoginWechat';
                 if (type) {
                     route = 'Home'
                 } else {
@@ -55,7 +55,7 @@ export default class LaunchPage extends React.Component {
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-                NavigationActions.navigate({ routeName: "Login" })
+                NavigationActions.navigate({ routeName: "LoginWechat" })
             ]
         })
         this.props.navigation.dispatch(resetAction)

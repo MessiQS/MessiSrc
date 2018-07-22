@@ -139,13 +139,11 @@ export default class Detail extends Component {
         const that = this
         let type = that.props.navigation.state.params.type
         let value = questionManager.getRandomMemoryModel(type)
-        console.log("getRandomMemoryModel value", value)
         that.memoryModel = value
         if (that.memoryModel == null) {
             that.props.navigation.goBack()
         } else {
             var headerTitle = that.memoryModel.question.category
-            console.log(that.memoryModel)
             if (that.memoryModel.question.subject == "不定项" ||
                 that.memoryModel.question.question.indexOf("不定项选择") !== -1 ||
                 that.state.detail.question.subject.indexOf("多选") !== -1) {

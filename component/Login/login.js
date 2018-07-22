@@ -3,15 +3,12 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Alert,
 	TouchableOpacity,
 	ImageBackground,
 	Image
 } from 'react-native';
 import Button from 'apsl-react-native-button';
-import Register from './register';
 import Storage from '../../service/storage';
-import realmManager from '../../component/Realm/realmManager';
 import Http from "../../service/http";
 import MD5 from 'crypto-js/md5';
 
@@ -117,7 +114,7 @@ export default class Login extends Component {
 						</Button>
 					</View>
 					<TouchableOpacity onPress={this._skip.bind(this)} style={styles.skipContainer}>
-							<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
+						<Image source={require('../../Images/arrow_skip.png')} style={styles.skip} />
 					</TouchableOpacity>
 				</ImageBackground>
 			</View>
