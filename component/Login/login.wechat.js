@@ -35,8 +35,8 @@ export default class LoginWechat extends Component {
     var account = "test"
     var password = MD5("messi2101").toString();
     Http.post('api/freeRegistration', {
-      account: account,
-      password: password
+      account,
+      password
     }, true).then(value => {
 
       if (value.type == true) {
