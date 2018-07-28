@@ -109,6 +109,7 @@ export default class LoginWechat extends Component {
       try {
         await Storage.multiSet([
           ['accountToken', data.token],
+          ['account',data.account],
           ['userId', data.user_id]
         ]);
         Keyboard.dismiss()
