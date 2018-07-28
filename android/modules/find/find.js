@@ -569,7 +569,6 @@ const styles = {
 		position: "absolute",
 		top: 8,
 		right: 15,
-		fontSize: 13,
 	},
 	rightDetail: {
 		position: "absolute",
