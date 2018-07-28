@@ -3,16 +3,13 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Alert,
 	TouchableOpacity,
 	ImageBackground,
 	Image,
 	Keyboard
 } from 'react-native';
 import Button from 'apsl-react-native-button';
-import Register from './register';
 import Storage from '../../service/storage';
-import realmManager from '../../component/Realm/realmManager';
 import Http from "../../service/http";
 import MD5 from 'crypto-js/md5';
 import WeChat from '../wechat'

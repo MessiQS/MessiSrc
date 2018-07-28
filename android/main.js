@@ -27,6 +27,8 @@ import TopicsDetail from "./modules/message/topics_detail"
 import Register from '../component/Login/register';
 import Login from '../component/Login/login';
 import LoginPage from '../component/Login/loginPage';
+import LoginWechat from "../component/Login/login.wechat"
+
 import AccountInfo from '../component/Account/accountInfo';
 import ModifyPasswordPage from '../component/Account/modifyPasswordPage';
 //cps changePhoneNumber
@@ -222,6 +224,9 @@ const Messi = StackNavigator({
         navigationOptions: TabOptions({
             title: '选择题库'
         })
+    },
+    LoginWechat: {
+        screen:LoginWechat,
     }
 })
 function getCurrentRouteName(navigationState) {
