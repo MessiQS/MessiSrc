@@ -25,6 +25,7 @@ import { NavigationActions } from 'react-navigation'
 import { Dimensions } from 'react-native'
 const { height, width } = Dimensions.get('window')
 import questionManager from "../../../service/question_manager"
+
 const header = {
     header: {
         flexDirection: "row",
@@ -104,6 +105,7 @@ export default class Find extends Component {
         this.isUpdateChart = false
 
         runtime.on('find_update_state', () => {
+            console.log("updateUI")
             this._updateUI()
         })
     }
@@ -116,8 +118,9 @@ export default class Find extends Component {
         setTimeout(() => {
             that.isUpdateChart = false
         }, 1000)
-        if (user && questionManager.getPaperId()) {
+        if (user && user.currentExamId) {
             let info = questionManager.getChartInfo()
+            console.log("info", info)
             that.setState({
                 currentExam: questionManager.getCurrentPaperTitle(),
                 currentExamDetail: "历年真题",
@@ -130,8 +133,8 @@ export default class Find extends Component {
             info.wrongQuestionCount = "0"
             info.newLastSelectDate = "暂无数据"
             info.wrongLastSelectDate = "暂无数据"
-            info.futureArray = [3, 3, 3, 3, 3, 3]
-            info.beforeArray = [3, 3, 3, 3, 3, 3]
+            info.futureArray = [0, 0, 0, 0, 0, 0]
+            info.beforeArray = [0, 0, 0, 0, 0, 0]
             info.pieArray = [{ value: 1 }, { value: 1 }, { value: 1 }]
             info.newAverage = 0
             info.wrongAverage = 0
@@ -251,9 +254,7 @@ export default class Find extends Component {
 
     _renderTopView() {
         let option = pieOption.option
-        let option_json = JSON.stringify(option)
         if (this.isUpdateChart) {
-
             option = {
                 ...option,
                 series: [{
@@ -261,7 +262,6 @@ export default class Find extends Component {
                     data: this.state.info.pieArray
                 }]
             }
-
         } else {
             option.series[0].data = this.state.info.pieArray
         }
@@ -529,7 +529,7 @@ const styles = {
     chartTitleContainer: {
         flexDirection: "column",
         backgroundColor: "#fff",
-        height: 78,
+        height: 75,
         zIndex: 100
     },
     chartTopContainer: {
