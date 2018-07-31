@@ -5,11 +5,14 @@ import {
   TouchableHighlight,
   Animated,
   Modal,
-  Easing
+  Easing,
+  Dimensions
 } from 'react-native';
 import { styles } from "./action.sheet.styles"
 import Item from "./action.item"
 import PropTypes from 'prop-types';
+
+const { height, width } = Dimensions.get('window')
 
 export default class ActionSheet extends React.Component {
 
@@ -17,7 +20,18 @@ export default class ActionSheet extends React.Component {
     super(props);
     this.state = {
       fadeInOpacity: 0.3,
+      animatedValue: new Animated.Value(0),
     }
+
+    this.actionSheetAnimated = Animated.timing(
+      this.state.animatedValue,
+      {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.in,
+      }
+    );
+    this.moveBottom
   }
 
   static propTypes = {
@@ -26,13 +40,21 @@ export default class ActionSheet extends React.Component {
     cancelHandler: PropTypes.func,
   }
 
-  showAnimation = () => {
-    console.log("showAnimation")
-    const that = this
-  }
-
-  hideAnimation = () => {
-    console.log("hideAnimation")
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.visible == true) {
+      this.moveBottom = this.state.animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-height, 0]
+      });
+    } else {
+      this.moveBottom = this.state.animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -height]
+      });
+    }
+    nextState.animatedValue.setValue(0);
+    this.actionSheetAnimated.start();
+    return true
   }
 
   render() {
@@ -47,30 +69,33 @@ export default class ActionSheet extends React.Component {
         transparent={true}
         animationType="fade" >
         <TouchableHighlight style={styles.maskBackground} onPress={() => {
-          console.log("touchWildToHide", params.touchWildToHide)
           if (params.touchWildToHide) {
             cancelHandler()
           }
         }} >
           <View />
         </TouchableHighlight>
-        <View style={styles.titleView}>
-          <Text style={styles.title}>{params.title}</Text>
-        </View>
-        {
-          params.items.map((result, index) => (
-            that.renderItem(result, index)
-          ))
-        }
-        <View>
-          <TouchableHighlight
-            style={styles.cancel}
-            onPressOut={() => { cancelHandler() }}
-            underlayColor="#EFEDE7"
-          >
-            <Text style={styles.cancelText}>{cancel}</Text>
-          </TouchableHighlight>
-        </View>
+        <Animated.View style={{ position: "absolute", width: "100%", bottom: this.moveBottom }}>
+          {
+            params.title == null ? null : <View style={styles.titleView}>
+              <Text style={styles.title}>{params.title}</Text>
+            </View>
+          }
+          {
+            params.items.map((result, index) => (
+              that.renderItem(result, index)
+            ))
+          }
+          <View>
+            <TouchableHighlight
+              style={styles.cancel}
+              onPressOut={() => { cancelHandler() }}
+              underlayColor="#EFEDE7"
+            >
+              <Text style={styles.cancelText}>{cancel}</Text>
+            </TouchableHighlight>
+          </View>
+        </Animated.View>
       </Modal>
     )
   }
@@ -82,8 +107,7 @@ export default class ActionSheet extends React.Component {
         text={result.text}
         type={result.type}
         handler={result.handler}
-        index={index}
-        hideAnimation={this.hideAnimation.bind(this)} />
+        index={index}/>
     )
   }
 }

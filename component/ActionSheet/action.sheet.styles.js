@@ -9,6 +9,7 @@ export const styles = {
     paddingHorizontal: 19,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFF',
   },
   title: {
     fontSize: 14,
