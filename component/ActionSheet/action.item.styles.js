@@ -9,6 +9,6 @@ export var styles = {
     backgroundColor: '#FFF',
   },
   text: {
-    fontSize: 14,
+    fontSize: 17,
   }
 }
