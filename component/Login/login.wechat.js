@@ -114,7 +114,7 @@ export default class LoginWechat extends Component {
         ]);
         Keyboard.dismiss()
       } catch (e) {
-        Alert.alert('登录错误，请重试1')
+        Alert.alert('登录错误，请重试')
         return
       }
       data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []

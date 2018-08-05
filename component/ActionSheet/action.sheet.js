@@ -68,6 +68,7 @@ export default class ActionSheet extends React.Component {
     return (
       <Modal visible={visible}
         transparent={true}
+        onRequestClose={() => {}}
         animationType="fade" >
         <TouchableHighlight style={styles.maskBackground} onPress={() => {
           if (params.touchWildToHide) {
@@ -102,12 +103,16 @@ export default class ActionSheet extends React.Component {
   }
 
   renderItem(result, index) {
+    const { cancelHandler } = this.props
     return (
       <Item
         key={index}
         text={result.text}
         type={result.type}
-        handler={result.handler}
+        handler={(data) => {
+          cancelHandler()
+          result.handler(data)
+        }}
         index={index} />
     )
   }

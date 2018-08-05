@@ -24,42 +24,11 @@ import { Dimensions } from 'react-native'
 const { height, width } = Dimensions.get('window')
 import questionManager from "../../../service/question_manager"
 import ActionSheet from "../../../component/ActionSheet/action.sheet"
-
-
-const header = {
-  header: {
-    flexDirection: "row",
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    paddingLeft: 35,
-    flex: 7,
-    color: "#172434",
-  },
-  icon: {
-    marginRight: 20,
-  },
-  magnifier: {
-    width: 18,
-    height: 18,
-  },
-  more: {
-    width: 22,
-    height: 44,
-    resizeMode: 'contain',
-  }
-}
-var daysTransfer = {
-  'Sunday': '周日',
-  'Monday': '周一',
-  'Tuesday': '周二',
-  'Wednesday': '周三',
-  'Thursday': '周四',
-  'Friday': '周五',
-  'Saturday': '周六'
-}
+import Mine from '../mine/mine'
+import styles, { header, daysTransfer } from './styles'
+import { handleFeedback, handleAccount } from './actionSheet'
+import MessageService from '../../../service/message.service';
+import { appVersion } from "../../../service/constant";
 
 export default class Find extends Component {
 
@@ -102,16 +71,37 @@ export default class Find extends Component {
 
     this.params = {
       items: [
-        { text: "账号信息", type: "Normal", handler: this.itemButtonClick },
-        { text: "版本更新", type: "Normal", handler: this.itemButtonClick },
-        { text: "问题反馈", type: "Normal", handler: this.itemButtonClick },
-        { text: "退出登录", type: "HighLight", handler: this.itemButtonClick },
+        { text: "账号信息", type: "Normal", handler: () => handleAccount(props) },
+        { text: "版本更新", type: "Normal", handler: () => this.handleUpdate() },
+        { text: "问题反馈", type: "Normal", handler: () => handleFeedback(props) },
+        { text: "退出登录", type: "HighLight", handler: Mine.outLoginButtonClick.bind(this) },
       ],
       cancel: "取消",
       touchWildToHide: true,  /// 点击灰色阴影是否消失弹窗
     }
   }
 
+  async handleUpdate() {
+    let versionInfoResponse = await MessageService.getUpdateInfo(appVersion);
+    if (versionInfoResponse.type) {
+      this.setState({
+        showVersionInfo: true,
+        versionInfo: versionInfoResponse.data
+      })
+      return true
+    } else {
+      this.setState({
+        showVersionAlert: true,
+        alertInfo: versionInfoResponse.data
+      })
+      this.timeout = setTimeout(() => {
+        this.timeout = null
+        this.setState({
+          showVersionAlert: false,
+        })
+      }, 18000)
+    }
+  }
   /// index 从0-3
   itemButtonClick = (index) => {
     this.setState({
@@ -139,7 +129,6 @@ export default class Find extends Component {
     }, 1000)
     if (user && user.currentExamId) {
       let info = questionManager.getChartInfo()
-      console.log("info", info)
       that.setState({
         currentExam: questionManager.getCurrentPaperTitle(),
         currentExamDetail: "历年真题",
@@ -436,7 +425,8 @@ export default class Find extends Component {
 
     return (
       <View style={styles.container}>
-        {this.state.showAlert == true ? <AlertView content="当前没有可刷题目" /> : null}
+        {this.state.showAlert == true && <AlertView content="当前没有可刷题目" />}
+        {this.state.showVersionAlert && <AlertView content={this.state.alertInfo} />}
         <ScrollView>
           {this._renderTopView()}
           {this._renderGetChatNewPaper()}
@@ -444,164 +434,5 @@ export default class Find extends Component {
         </ScrollView>
       </View>
     )
-  }
-}
-
-const styles = {
-  container: {
-    backgroundColor: '#F6F6F6',
-    width: '100%',
-    height: '100%'
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  titleContent: {
-    marginTop: Math.min(Math.max((height - 64 - 78 - (2 * 304)) / 3, 3), 10),
-    flexDirection: "row",
-    backgroundColor: "white",
-    height: 78,
-  },
-  arrow: {
-    position: 'absolute',
-    resizeMode: 'contain',
-    right: 18.8,
-    width: 7.4,
-  },
-  titleText: {
-    width: '70%',
-    height: '100%',
-    backgroundColor: "#fff",
-    marginLeft: 10,
-  },
-  h2: {
-    fontSize: 16,
-    lineHeight: 25,
-    color: "#172434",
-  },
-  examTitle: {
-    width: width - 235,
-    marginTop: 17,
-  },
-  choosePaperButton: {
-    position: 'absolute',
-    right: 15,
-    top: 24,
-  },
-  examDetail: {
-
-  },
-  p: {
-    marginTop: 5,
-    fontSize: 12,
-    lineHeight: 20,
-    color: "#8E9091"
-  },
-  circleChart: {
-    position: 'absolute',
-    top: 10,
-    right: 40,
-    width: 60,
-    height: 60,
-  },
-  titleIcon: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    justifyContent: 'center'
-  },
-  calendarView: {
-    position: 'relative',
-    backgroundColor: '#fff',
-    marginTop: Math.min(Math.max((height - 64 - 78 - (2 * 304)) / 3, 3), 10),
-  },
-  chartTitleContainer: {
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    height: 75,
-    zIndex: 100
-  },
-  chartTopContainer: {
-    flexDirection: "row",
-    height: 48,
-  },
-  chartBottomContainer: {
-    flexDirection: "row",
-    width: "100%",
-    zIndex: 100,
-  },
-  h4: {
-    marginTop: 12,
-    marginLeft: 10,
-    fontSize: 16,
-    fontWeight: "400",
-    color: "#172434"
-  },
-  psmall: {
-    marginTop: 14,
-    marginLeft: 35,
-    fontSize: 12,
-    color: "#8E9091",
-    backgroundColor: 'rgba(0,0,0,0)'
-  },
-  average: {
-    position: 'absolute',
-    top: 14,
-    left: 175,
-    fontSize: 12,
-    color: '#8E9091',
-    backgroundColor: 'rgba(0,0,0,0)'
-  },
-  rightTitle: {
-    position: "absolute",
-    top: 8,
-    right: 15,
-    fontSize: 13,
-  },
-  rightDetail: {
-    position: "absolute",
-    top: 14,
-    right: 49,
-    fontSize: 12,
-    color: "#8E9091",
-    backgroundColor: 'rgba(0,0,0,0)'
-  },
-  rightContainer: {
-    flexDirection: "row",
-    height: 68,
-    width: '100%',
-    position: "absolute",
-  },
-  button: {
-    paddingVertical: 7,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-  },
-  greenBlock: {
-    marginLeft: 10,
-    marginTop: 31.5,
-    width: 15,
-    height: 15,
-  },
-  redBlock: {
-    marginLeft: 10,
-    marginTop: 14,
-    width: 15,
-    height: 15,
-  },
-  blueBlock: {
-    marginLeft: 10,
-    marginTop: 10,
-    width: 15,
-    height: 15,
-  },
-  separator: {
-    marginRight: 10,
-    marginLeft: 10,
-    height: 1,
-    backgroundColor: '#7A8FAC',
-    zIndex: 9,
-    opacity: 0.1,
   }
 }

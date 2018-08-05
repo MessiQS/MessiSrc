@@ -97,8 +97,7 @@ class Mine extends Component {
     };
 
     //退出登录
-    outLoginButtonClick() {
-
+    static outLoginButtonClick() {
         const that = this
         Alert.alert(
             '确定退出吗?',
@@ -106,20 +105,16 @@ class Mine extends Component {
             [
                 {
                     text: '确定', onPress: async () => {
-                        console.log("_outloginAction")
                         const { navigate } = that.props.navigation;
                         await realmManager.deleteAllRealmData()
                         await Storage.clearAll()
                         const resetAction = NavigationActions.reset({
                             index: 0,
                             actions: [
-                                NavigationActions.navigate({ routeName: 'Login' })
+                                NavigationActions.navigate({ routeName: 'LoginWechat' })
                             ]
                         })
-                        // clearPromise.then(res => {
                         that.props.navigation.dispatch(resetAction)
-                        //    }
-                        // )
                     }
                 },
                 { text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
