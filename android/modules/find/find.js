@@ -127,7 +127,7 @@ export default class Find extends Component {
     setTimeout(() => {
       that.isUpdateChart = false
     }, 1000)
-    if (user && user.currentExamId) {
+    if (questionManager.hasQuestions()) {
       let info = questionManager.getChartInfo()
       that.setState({
         currentExam: questionManager.getCurrentPaperTitle(),
