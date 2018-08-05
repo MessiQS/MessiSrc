@@ -99,7 +99,7 @@ export default class Find extends Component {
         this.setState({
           showVersionAlert: false,
         })
-      }, 18000)
+      }, 3000)
     }
   }
   /// index 从0-3
