@@ -16,12 +16,10 @@ import Mine from './modules/mine/mine'
 import SoftwareAgreement from './modules/mine/software_agreement'
 import Feedback from './modules/mine/feedback'
 import Find from './modules/find/find'
-// import Message from './modules/message/message'//选题
 import Account from '../component/MineMenu/account'
 import Update from '../component/MineMenu/update'
 import Request from '../component/MineMenu/request'
 import Detail from '../component/detail/detail'
-import TopicsDetail from "./modules/message/topics_detail"
 import Register from '../component/Login/register'
 import Login from '../component/Login/login'
 import LoginPage from '../component/Login/loginPage'
@@ -40,9 +38,6 @@ import FPStepThree from '../component/forgetPassword/stepThree'
 import LaunchPage from '../component/launchPage'
 
 import runtime from "../service/runtime"
-
-import Classification from "../Modules/Classification/classification"
-import DrivingTestChoice from "../Modules/Choose/driving_test_choice"
 
 
 import MainCategory from "../component/category/main.category"
@@ -184,9 +179,6 @@ const Messi = StackNavigator({
             title: '忘记密码'
         })
     },
-    TopicsDetail: {
-        screen: TopicsDetail
-    },
     SoftwareAgreement: {
         screen: SoftwareAgreement,
         navigationOptions: TabOptions({
@@ -197,12 +189,6 @@ const Messi = StackNavigator({
         screen: Feedback,
         navigationOptions: TabOptions({
             title: '问题反馈'
-        })
-    },
-    Classification: {
-        screen:Classification,
-        navigationOptions: TabOptions({
-            title: '选择考试'
         })
     },
     DrivingTestChoice: {

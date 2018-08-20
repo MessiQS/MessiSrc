@@ -6,11 +6,7 @@
 
 import React, { Component } from 'react';
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
-    Image
 } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
 
@@ -23,7 +19,6 @@ import Account from '../component/MineMenu/account';
 import Update from '../component/MineMenu/update';
 import Request from '../component/MineMenu/request';
 import Detail from '../component/detail/detail';
-import TopicsDetail from "./modules/message/topics_detail"
 import Register from '../component/Login/register';
 import Login from '../component/Login/login';
 import LoginPage from '../component/Login/loginPage';
@@ -42,8 +37,6 @@ import FPStepThree from '../component/forgetPassword/stepThree';
 // import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage';
 
-import Classification from '../Modules/Classification/classification';
-import DrivingTestChoice from "../Modules/Choose/driving_test_choice";
 
 import MainCategory from "../component/category/main.category"
 import SecondCategory from "../component/category/second.category"
@@ -178,14 +171,6 @@ const Messi = StackNavigator({
             title: '忘记密码'
         })
     },
-    // PayPage: {
-    //     screen: PayPage,
-    // },
-    TopicsDetail: {
-        screen: TopicsDetail,
-        navigationOptions: TabOptions({
-        })
-    },
     SoftwareAgreement: {
         screen: SoftwareAgreement,
         navigationOptions: TabOptions({
@@ -196,12 +181,6 @@ const Messi = StackNavigator({
         screen: Feedback,
         navigationOptions: TabOptions({
             title: '问题反馈'
-        })
-    },
-    Classification: {
-        screen:Classification,
-        navigationOptions: TabOptions({
-            title: '选择考试'
         })
     },
     DrivingTestChoice: {
