@@ -71,7 +71,7 @@ export default class Find extends Component {
 
     this.params = {
       items: [
-        { text: "账号信息", type: "Normal", handler: () => handleAccount(props) },
+        // { text: "账号信息", type: "Normal", handler: () => handleAccount(props) },
         { text: "版本更新", type: "Normal", handler: () => this.handleUpdate() },
         { text: "问题反馈", type: "Normal", handler: () => handleFeedback(props) },
         { text: "退出登录", type: "HighLight", handler: Mine.outLoginButtonClick.bind(this) },
