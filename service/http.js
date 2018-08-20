@@ -51,6 +51,7 @@ export default class Http {
             params['headers'] = myHeaders
         };
         const keyArray = Object.keys(query);
+        console.log("query", query)
         keyArray.forEach((res, index) => {
             const condi = index === 0 ? '?' : '&';
             url = url + condi + res + '=' + query[res];

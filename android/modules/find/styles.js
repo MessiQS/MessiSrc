@@ -83,7 +83,7 @@ export default styles = {
     chartBottomContainer: {
         flexDirection: "row",
         width: "100%",
-        zIndex: 1000,
+        zIndex: 100,
     },
     h4: {
         marginTop: 12,
@@ -93,15 +93,15 @@ export default styles = {
         color: "#172434"
     },
     psmall: {
-        marginTop: 12,
+        marginTop: 14,
         marginLeft: 35,
         fontSize: 12,
         color: "#8E9091",
-        backgroundColor: 'rgba(0,0,0,0)',
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     average: {
         position: 'absolute',
-        top: 12,
+        top: 14,
         left: 175,
         fontSize: 12,
         color: '#8E9091',
@@ -114,7 +114,7 @@ export default styles = {
     },
     rightDetail: {
         position: "absolute",
-        top: 12,
+        top: 14,
         right: 49,
         fontSize: 12,
         color: "#8E9091",
