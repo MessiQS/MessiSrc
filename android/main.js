@@ -18,7 +18,7 @@ import Mine from './modules/mine/mine';
 import SoftwareAgreement from './modules/mine/software_agreement';
 import Feedback from './modules/mine/feedback';
 import Find from './modules/find/find';
-import Message from './modules/message/message';//选题
+// import Message from './modules/message/message';//选题
 import Account from '../component/MineMenu/account';
 import Update from '../component/MineMenu/update';
 import Request from '../component/MineMenu/request';
@@ -27,7 +27,7 @@ import TopicsDetail from "./modules/message/topics_detail"
 import Register from '../component/Login/register';
 import Login from '../component/Login/login';
 import LoginPage from '../component/Login/loginPage';
-import LoginWechat from "../component/Login/login.wechat"
+// import LoginWechat from "../component/Login/login.wechat"
 
 import AccountInfo from '../component/Account/accountInfo';
 import ModifyPasswordPage from '../component/Account/modifyPasswordPage';
@@ -39,7 +39,7 @@ import CPStepThree from '../component/changePhoneNumber/stepThree';
 import FPStepOne from '../component/forgetPassword/stepOne';
 import FPStepTwo from '../component/forgetPassword/stepTwo';
 import FPStepThree from '../component/forgetPassword/stepThree';
-import PayPage from '../component/pay/payPage'
+// import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage';
 
 import Classification from '../Modules/Classification/classification';
@@ -101,14 +101,14 @@ const Messi = StackNavigator({
     Account: {
         screen: Account,
     },
-    //题库页面
-    Message: {
-        screen: Message,
-        navigationOptions: TabOptions({
-            title: '题库选择'
-        }),
-        mood: "modal",
-    },
+    // //题库页面
+    // Message: {
+    //     screen: Message,
+    //     navigationOptions: TabOptions({
+    //         title: '题库选择'
+    //     }),
+    //     mood: "modal",
+    // },
     Request: {
         screen: Request,
     },
@@ -178,9 +178,9 @@ const Messi = StackNavigator({
             title: '忘记密码'
         })
     },
-    PayPage: {
-        screen: PayPage,
-    },
+    // PayPage: {
+    //     screen: PayPage,
+    // },
     TopicsDetail: {
         screen: TopicsDetail,
         navigationOptions: TabOptions({
@@ -225,9 +225,9 @@ const Messi = StackNavigator({
             title: '选择题库'
         })
     },
-    LoginWechat: {
-        screen:LoginWechat,
-    }
+    // LoginWechat: {
+    //     screen:LoginWechat,
+    // }
 })
 function getCurrentRouteName(navigationState) {
     if (!navigationState) {

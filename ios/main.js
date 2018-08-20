@@ -16,7 +16,7 @@ import Mine from './modules/mine/mine'
 import SoftwareAgreement from './modules/mine/software_agreement'
 import Feedback from './modules/mine/feedback'
 import Find from './modules/find/find'
-import Message from './modules/message/message'//选题
+// import Message from './modules/message/message'//选题
 import Account from '../component/MineMenu/account'
 import Update from '../component/MineMenu/update'
 import Request from '../component/MineMenu/request'
@@ -37,7 +37,6 @@ import CPStepThree from '../component/changePhoneNumber/stepThree'
 import FPStepOne from '../component/forgetPassword/stepOne'
 import FPStepTwo from '../component/forgetPassword/stepTwo'
 import FPStepThree from '../component/forgetPassword/stepThree'
-import PayPage from '../component/pay/payPage'
 import LaunchPage from '../component/launchPage'
 
 import runtime from "../service/runtime"
@@ -108,14 +107,14 @@ const Messi = StackNavigator({
     Account: {
         screen: Account,
     },
-    //题库页面
-    Message: {
-        screen: Message,
-        navigationOptions: TabOptions({
-            title: '题库选择'
-        }),
-        mood:"modal",        
-    },
+    // //题库页面
+    // Message: {
+    //     screen: Message,
+    //     navigationOptions: TabOptions({
+    //         title: '题库选择'
+    //     }),
+    //     mood:"modal",        
+    // },
     Request: {
         screen: Request,
     },
@@ -183,12 +182,6 @@ const Messi = StackNavigator({
         screen: FPStepThree,
         navigationOptions: TabOptions({
             title: '忘记密码'
-        })
-    },
-    PayPage: {
-        screen: PayPage,
-        navigationOptions: TabOptions({
-            title: '支付结算'
         })
     },
     TopicsDetail: {

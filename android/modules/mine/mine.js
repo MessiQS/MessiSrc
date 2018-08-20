@@ -12,21 +12,17 @@ import {
     TouchableOpacity,
     ImageBackground,
     ScrollView,
-    Vibration,
     Linking,
     Alert
 } from 'react-native';
-import AccountInfo from '../../../component/Account/accountInfo';
 import Storage from '../../../service/storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import realmManager from "../../../component/Realm/realmManager"
 import { NavigationActions } from 'react-navigation'
 import * as Progress from 'react-native-progress';
-import main from '../../main';
 import MessageService from '../../../service/message.service';
 import { appVersion } from "../../../service/constant";
 import AlertView from '../../../component/progress/alert'
-var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (source) => {
     return {

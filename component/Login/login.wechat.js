@@ -12,11 +12,10 @@ import {
 import Storage from '../../service/storage';
 import Http from "../../service/http";
 import MD5 from 'crypto-js/md5';
-import WeChat from '../wechat'
+import WeChat from "../wechat/index"
 import realmManager from "../../component/Realm/realmManager"
 import MessageService from "../../service/message.service";
 import { NavigationActions } from 'react-navigation'
-import Progress from '../../component/progress/progress'
 
 const { height, width } = Dimensions.get('window')
 
@@ -30,9 +29,6 @@ export default class LoginWechat extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      loading: false
-    }
   }
 
   // 预览APP
@@ -89,22 +85,22 @@ export default class LoginWechat extends Component {
   }
 
   async _handleMemoryModels(userQuestionInfo) {
-    let keys = Object.keys(userQuestionInfo)
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i]
-      realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
-    }
+		let keys = Object.keys(userQuestionInfo)
+		for (let i = 0; i < keys.length; i++) {
+			let key = keys[i]
+			realmManager.saveMemoryModelsByExamData(userQuestionInfo[key], key);
+		}
   }
+  
+	async _handleUserInfo(userId) {
+		const that = this
+		let value = await Http.get('api/getUserQuestionInfo', {
+			user_id: userId,
+		}, true)
 
-  async _handleUserInfo(userId) {
-    const that = this
-    let value = await Http.get('api/getUserQuestionInfo', {
-      user_id: userId,
-    }, true)
-
-    return value
+		return value
   }
-
+  
   wechatLoginButtonClick = async () => {
     const loginInfo = await WeChat.login()
     const { type, data } = loginInfo
@@ -113,7 +109,7 @@ export default class LoginWechat extends Component {
       try {
         await Storage.multiSet([
           ['accountToken', data.token],
-          ['account', data.account],
+          ['account',data.account],
           ['userId', data.user_id]
         ]);
         Keyboard.dismiss()
@@ -121,9 +117,6 @@ export default class LoginWechat extends Component {
         Alert.alert('登录错误，请重试')
         return
       }
-      this.setState({
-        loading: true
-      })
       data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
       var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
       var user = {
@@ -134,12 +127,9 @@ export default class LoginWechat extends Component {
       await realmManager.createUser(user)
       let userInfo = await this._handleUserInfo(data.user_id)
 
-      if (!userInfo.type) {
-        Alert.alert('登录错误，请重试');
-        this.setState({
-          loading: false
-        })
-        return
+      if (!userInfo.type) { 
+        Alert.alert('登录错误，请重试'); 
+        return 
       }
 
       if (Object.keys(userInfo.data.lastPaperInfo).length !== 0) {
@@ -157,9 +147,6 @@ export default class LoginWechat extends Component {
         userQuestionInfo[paper_id] = userInfo.data.userQuestionInfo[paper_id]
       }
       this._handleMemoryModels(userQuestionInfo);
-      this.setState({
-        loading: false
-      })
       const resetAction = NavigationActions.reset({
         index: 0,
         actions: [
@@ -187,7 +174,6 @@ export default class LoginWechat extends Component {
   render() {
     return (
       <ImageBackground style={styles.backgroundImage} source={require('../../Images/login_wechat_background.png')}>
-        {this.state.loading && <Progress />}
         <ImageBackground style={styles.logo} source={require('../../Images/wechat_logo.png')} resizeMode="contain"></ImageBackground>
         <TouchableOpacity onPress={this.wechatLoginButtonClick}>
           <View style={styles.wechatLoginButton}>

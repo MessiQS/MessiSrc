@@ -12,7 +12,6 @@ import Button from 'apsl-react-native-button';
 import Storage from '../../service/storage';
 import Http from "../../service/http";
 import MD5 from 'crypto-js/md5';
-import WeChat from '../wechat'
 import MessageService from "../../service/message.service";
 import { NavigationActions } from 'react-navigation'
 
@@ -120,61 +119,62 @@ export default class Login extends Component {
 	}
 
 	async _navigateToLoginPage() {
-		const loginInfo = await WeChat.login()
-		const { type, data } = loginInfo
-		if (type) {
-			//将账号和token存到本地存储
-			try {
-				await Storage.multiSet([
-					['accountToken', data.token],
-					['userId', data.user_id]
-				]);
-				Keyboard.dismiss()
-			} catch (e) {
-				Alert.alert('登录错误，请重试1')
-				return
-			}
-			data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
-			var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
-			var user = {
-				userId: data.user_id,
-				token: data.token,
-				examIds: examIdJson
-			}
-			await realmManager.createUser(user)
-			let userInfo = await this._handleUserInfo(data.user_id)
-			console.log(userInfo)
-			if (!userInfo.type) { Alert.alert('登录错误，请重试'); return }
-			if (Object.keys(userInfo.data.lastPaperInfo).length !== 0) {
-				let item = {
-					id: userInfo.data.lastPaperInfo.id,
-					title: userInfo.data.lastPaperInfo.title
-				}
-				realmManager.updateCurrentExamInfo(item)
-			}
-			await this._downloadExam(userInfo.data.lastPaperInfo)
-			//只存第一套的
-			const paper_id = userInfo.data.lastPaperInfo['id'] || null
-			let userQuestionInfo = {}
-			if (!!paper_id) {
-				userQuestionInfo[paper_id] = userInfo.data.userQuestionInfo[paper_id]
-			}
-			this._handleMemoryModels(userQuestionInfo);
-			const resetAction = NavigationActions.reset({
-				index: 0,
-				actions: [
-					NavigationActions.navigate({ routeName: 'Home' })
-				]
-			})
-			this.props.navigation.dispatch(resetAction)
-		} else {
-			Alert.alert(data);
-		}
-		// const { navigate } = this.props.navigation;
-		// if (this._preventPushingMulitpleTimes()) {
-		// 	return 
+
+    // const { type, data } = loginInfo
+    // console.log("type, data", type, data)
+		// if (type) {
+		// 	//将账号和token存到本地存储
+		// 	try {
+		// 		await Storage.multiSet([
+		// 			['accountToken', data.token],
+		// 			['userId', data.user_id]
+		// 		]);
+		// 		Keyboard.dismiss()
+		// 	} catch (e) {
+		// 		Alert.alert('登录错误，请重试1')
+		// 		return
+		// 	}
+		// 	data.userInfo.buyedInfo = !!data.userInfo.buyedInfo ? JSON.stringify(data.userInfo.buyedInfo) : []
+		// 	var examIdJson = JSON.stringify(data.userInfo.buyedInfo)
+		// 	var user = {
+		// 		userId: data.user_id,
+		// 		token: data.token,
+		// 		examIds: examIdJson
+		// 	}
+		// 	await realmManager.createUser(user)
+		// 	let userInfo = await this._handleUserInfo(data.user_id)
+		// 	console.log(userInfo)
+		// 	if (!userInfo.type) { Alert.alert('登录错误，请重试'); return }
+		// 	if (Object.keys(userInfo.data.lastPaperInfo).length !== 0) {
+		// 		let item = {
+		// 			id: userInfo.data.lastPaperInfo.id,
+		// 			title: userInfo.data.lastPaperInfo.title
+		// 		}
+		// 		realmManager.updateCurrentExamInfo(item)
+		// 	}
+		// 	await this._downloadExam(userInfo.data.lastPaperInfo)
+		// 	//只存第一套的
+		// 	const paper_id = userInfo.data.lastPaperInfo['id'] || null
+		// 	let userQuestionInfo = {}
+		// 	if (!!paper_id) {
+		// 		userQuestionInfo[paper_id] = userInfo.data.userQuestionInfo[paper_id]
+		// 	}
+		// 	this._handleMemoryModels(userQuestionInfo);
+		// 	const resetAction = NavigationActions.reset({
+		// 		index: 0,
+		// 		actions: [
+		// 			NavigationActions.navigate({ routeName: 'Home' })
+		// 		]
+		// 	})
+		// 	this.props.navigation.dispatch(resetAction)
+		// } else {
+		// 	Alert.alert(data);
 		// }
-		// navigate('LoginPage', { name: 'LoginPage' })
+		const { navigate } = this.props.navigation;
+		if (this._preventPushingMulitpleTimes()) {
+			return 
+		}
+		navigate('LoginPage', { name: 'LoginPage' })
 	}
 
 	_navigateToRegister() {
@@ -189,9 +189,7 @@ export default class Login extends Component {
 	_renderHeader() {
 		return (
 			<View style={styles.headerView}>
-				{/* <Text style={styles.year}>2018</Text> */}
 				<Text style={styles.appName}>刷题</Text>
-				{/* <Image style={styles.logo} source={require('../../Images/logo.png')} />				 */}
 			</View>
 		)
 	}

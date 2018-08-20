@@ -27,7 +27,7 @@ import MessageService from '../../../service/message.service';
 import AlertView from '../../../component/progress/alert';
 import { appVersion } from "../../../service/constant";
 
-var Pingpp = require('pingpp-react-native');
+// var Pingpp = require('pingpp-react-native');
 
 const createLeftIcon = (source) => {
     return {
@@ -92,21 +92,27 @@ class Mine extends Component {
 
     //退出登录
     outLoginButtonClick() {
+      this.outLogin()
+    }
 
-        const that = this
+    static outLoginAction() {
+      this.outLogin()
+    }
+
+    outLogin() {
+      const that = this
         Alert.alert(
             '确定退出吗?',
             '',
             [
               {text: '确定', onPress: async () => {
-                console.log("_outloginAction")
                 const { navigate } = that.props.navigation;
                 await realmManager.deleteAllRealmData()
                 await Storage.clearAll()
                 const resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
-                        NavigationActions.navigate({ routeName: 'Login' })
+                        NavigationActions.navigate({ routeName: 'LoginWechat' })
                     ]
                 })
                 that.props.navigation.dispatch(resetAction)
