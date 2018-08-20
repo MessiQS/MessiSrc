@@ -191,12 +191,7 @@ const Messi = StackNavigator({
             title: '问题反馈'
         })
     },
-    DrivingTestChoice: {
-        screen:DrivingTestChoice, 
-        navigationOptions: TabOptions({
-            title: '选择题库'
-        })
-    },
+
     MainCategory: {
         screen:MainCategory,
         navigationOptions: TabOptions({
