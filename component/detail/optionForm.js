@@ -80,7 +80,7 @@ export default class OptionForm extends React.Component {
         return (
             <View style={styles.content}>
                 <View style={styles.answerTitleView}>
-                    {that._showTitle()}
+                    {detail.ignoreWarning == true ? null : that._showTitle()}
                 </View>
                 {that._renderOption("A", detail.option_A, A_Status, isSelected)}
                 {that._renderOption("B", detail.option_B, B_Status, isSelected)}

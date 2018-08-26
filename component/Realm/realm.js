@@ -28,6 +28,7 @@ QuestionPaper.schema = {
         title: 'string',                                         /// 试卷名称 "2004年国家(A卷)《行测》真题"
         question_point: { type: 'string', optional: true },      /// 考点 '历史类' '语义分析' "对应关系,同一关系"
         question_material: { type: 'string', optional: true },   /// 材料
+        ignoreWarning: 'bool',                                   /// 是否忽略 正常 错误 选项提示
     }
 }
 
@@ -121,7 +122,7 @@ Schedule.schema = {
 export default new Realm({
     schema: [QuestionPaper, User, ExaminationPaper,
         MemoryModel, Schedule, MemoryRecordModel],
-    schemaVersion: 1,
+    schemaVersion: 2,
     migration: function (oldRealm, newRealm) {
         // 只有在 schemaVersion 提升为 1 的时候才应用此变化
         if (oldRealm.schemaVersion < 1) {
