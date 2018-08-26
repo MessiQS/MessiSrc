@@ -17,6 +17,11 @@ export default class WeChatController {
     const isWechat = await WeChat.isWXAppInstalled()
     isWechat && WeChat.openWXApp()
   }
+
+  static async isWXAppInstalled() {
+    return WeChat.isWXAppInstalled()
+  }
+  
   static share() {
     WeChat.isWXAppInstalled()
       .then((isInstalled) => {

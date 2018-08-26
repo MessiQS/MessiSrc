@@ -47,7 +47,6 @@ export default class MainCategory extends Component {
   }
 
   _renderSectionView = (item) => {
-    console.log("_renderSectionView item", item)
     return (
       <View style={styles.section}>
         <Text style={styles.title}>{item.item.type}</Text>

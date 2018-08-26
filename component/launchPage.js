@@ -6,7 +6,7 @@ import Storage from '../service/storage';
 import Http from '../service/http';
 import { NavigationActions } from 'react-navigation'
 import realmManager from "../component/Realm/realmManager"
-var WeChat = require('react-native-wechat');
+import WeChat from './wechat'
 
 
 export default class LaunchPage extends React.Component {

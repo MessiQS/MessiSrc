@@ -449,7 +449,6 @@ export default class Detail extends Component {
 
     _renderOptionForm() {
         const { detail, isSelected, selectedOption } = this.state
-        console.log("detail", detail)
         if (detail == null) {
             return 
         }
