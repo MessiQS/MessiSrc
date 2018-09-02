@@ -73,7 +73,7 @@ export default styles = {
     chartTitleContainer: {
         flexDirection: "column",
         backgroundColor: "#fff",
-        height: 75,
+        height: 85,
         zIndex: 100
     },
     chartTopContainer: {

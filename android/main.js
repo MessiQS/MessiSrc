@@ -21,7 +21,7 @@ import Detail from '../component/detail/detail';
 import Register from '../component/Login/register';
 import Login from '../component/Login/login';
 import LoginPage from '../component/Login/loginPage';
-// import LoginWechat from "../component/Login/login.wechat"
+import LoginWechat from "../component/Login/login.wechat"
 
 import AccountInfo from '../component/Account/accountInfo';
 import ModifyPasswordPage from '../component/Account/modifyPasswordPage';
@@ -197,9 +197,9 @@ const Messi = StackNavigator({
             title: '选择题库'
         })
     },
-    // LoginWechat: {
-    //     screen:LoginWechat,
-    // }
+    LoginWechat: {
+        screen:LoginWechat,
+    }
 })
 function getCurrentRouteName(navigationState) {
     if (!navigationState) {
