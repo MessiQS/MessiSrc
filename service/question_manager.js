@@ -25,6 +25,11 @@ class QuestionManager {
         })
     }
 
+    clearData() {
+      this.currentMemoryModels = []
+      this.currentMemoryModelsIndex = 0
+    }
+
     hasQuestions() {
         var memorys = this.getCurrentMemoryModels()
         if (Array.isArray(memorys) && memorys.length === 0) {

@@ -159,7 +159,18 @@ export default class Find extends Component {
         info: info,
       })
     } else {
-      let info = new Object()
+      this.resetEchartData()
+    }
+
+    Animated.timing(this.state.fadeInOpacity, {
+      toValue: 0.001, // 目标值
+      duration: 200, // 动画时间
+      easing: Easing.ease, // 缓动函数
+    }).start(() => this.showAnimate())
+  }
+
+  resetEchartData() {
+    let info = new Object()
       info.newQuestionCount = "0"
       info.wrongQuestionCount = "0"
       info.newLastSelectDate = "暂无数据"
@@ -175,13 +186,6 @@ export default class Find extends Component {
         fadeInOpacity: new Animated.Value(0.01),
         info: info,
       })
-    }
-
-    Animated.timing(this.state.fadeInOpacity, {
-      toValue: 0.001, // 目标值
-      duration: 200, // 动画时间
-      easing: Easing.ease, // 缓动函数
-    }).start(() => this.showAnimate())
   }
 
   showAnimate() {
@@ -218,7 +222,7 @@ export default class Find extends Component {
       });
     }, 1)
   }
-
+  
   routeToMine() {
     const { navigate } = this.props.navigation
     const user = realmManager.getCurrentUser()
@@ -256,12 +260,14 @@ export default class Find extends Component {
             let routeName = isWechat ? "LoginWechat" : "Login"
             await realmManager.deleteAllRealmData()
             await Storage.clearAll()
+            questionManager.clearData()
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
                     NavigationActions.navigate({ routeName })
                 ]
             })
+
             that.props.navigation.dispatch(resetAction)
           }},
           {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -628,7 +634,6 @@ const styles = {
     position: "absolute",
     top: 8,
     right: 15,
-    fontSize: 13,
   },
   rightDetail: {
     position: "absolute",

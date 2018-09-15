@@ -212,6 +212,7 @@ export default class Find extends Component {
             let routeName = isWechat ? "LoginWechat" : "Login"
             await realmManager.deleteAllRealmData()
             await Storage.clearAll()
+            questionManager.clearData()
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
