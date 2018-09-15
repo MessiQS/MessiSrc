@@ -254,7 +254,7 @@ var styles = StyleSheet.create({
 		marginTop: 12
 	},
 	buttonContainer: {
-		flex: 2,
+		flex: 5,
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',

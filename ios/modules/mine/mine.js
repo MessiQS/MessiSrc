@@ -92,14 +92,17 @@ class Mine extends Component {
 
     //退出登录
     outLoginButtonClick() {
+      console.log("outLoginButtonClick")
+
       this.outLogin()
     }
 
     static outLoginAction() {
+      console.log("outLoginAction")
       this.outLogin()
     }
 
-    outLogin() {
+    static outLogin = () => {
       const that = this
         Alert.alert(
             '确定退出吗?',

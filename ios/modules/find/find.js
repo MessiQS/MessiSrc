@@ -13,6 +13,7 @@ import {
   View,
   Animated,
   Easing,
+  Alert
 } from 'react-native'
 import Echarts from 'native-echarts'
 import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions'
@@ -23,13 +24,11 @@ import runtime from "../../../service/runtime"
 import AlertView from "../../../component/progress/alert"
 import { NavigationActions } from 'react-navigation'
 import { Dimensions } from 'react-native'
-const { height, width } = Dimensions.get('window')
 import questionManager from "../../../service/question_manager"
-import Mine from '../mine/mine'
 import ActionSheet from "../../../component/ActionSheet/action.sheet"
 import { handleFeedback, handleAccount } from './actionSheet'
-
 var WeChat = require('react-native-wechat');
+const { height, width } = Dimensions.get('window')
 
 const header = {
   header: {
@@ -101,7 +100,7 @@ export default class Find extends Component {
     this.params = {
       items: [
         { text: "问题反馈", type: "Normal", handler: () => handleFeedback(props) },
-        { text: "退出登录", type: "HighLight", handler: Mine.outLoginAction.bind(this) },
+        { text: "退出登录", type: "HighLight", handler: () => this.outLogin()},
       ],
       cancel: "取消",
       touchWildToHide: true,  /// 点击灰色阴影是否消失弹窗
@@ -239,6 +238,37 @@ export default class Find extends Component {
         this.props.navigation.dispatch(resetAction)
       })
     }
+  }
+
+  outLogin = () => {
+    this.setState({
+      actionSheetVisable: false
+    })
+    const that = this
+
+    setTimeout(function() {
+      Alert.alert(
+        '确定退出吗?',
+        '',
+        [
+          {text: '确定', onPress: async () => {
+            const isWechat = await WeChat.isWXAppInstalled()
+            let routeName = isWechat ? "LoginWechat" : "Login"
+            await realmManager.deleteAllRealmData()
+            await Storage.clearAll()
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName })
+                ]
+            })
+            that.props.navigation.dispatch(resetAction)
+          }},
+          {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        ],
+        { cancelable: true }
+    )
+    }, 500)
   }
 
   routeToClassification() {
@@ -387,7 +417,7 @@ export default class Find extends Component {
           <View style={styles.separator} />
           <View style={styles.chartBottomContainer}>
             <Text style={styles.psmall}>最后刷题日：{this.state.info.newLastSelectDate}</Text>
-            <Text style={styles.average}>平均値：{this.state.info.newAverage}</Text>
+            <Text style={styles.average}>平均：{this.state.info.newAverage}</Text>
             <Text style={styles.rightDetail}>剩余：{this.state.info.newQuestionCount}</Text>
           </View>
         </View>
@@ -455,7 +485,7 @@ export default class Find extends Component {
           <View style={styles.separator} />
           <View style={styles.chartBottomContainer}>
             <Text style={styles.psmall}>最后刷题日：{this.state.info.wrongLastSelectDate}</Text>
-            <Text style={styles.average}>平均値：{this.state.info.wrongAverage}</Text>
+            <Text style={styles.average}>平均：{this.state.info.wrongAverage}</Text>
             <Text style={styles.rightDetail}>剩余：{this.state.info.wrongQuestionCount}</Text>
           </View>
         </View>
