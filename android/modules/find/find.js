@@ -13,19 +13,21 @@ import {
   View,
   Animated,
   Easing,
+  Alert
 } from 'react-native'
 import Echarts from 'native-echarts'
 import { newPaper, pieOption, rememberPaper } from '../../../component/Home/chartOptions'
 import moment from 'moment'
 import realmManager from "../../../component/Realm/realmManager"
+import Storage from "../../../service/storage"
 import runtime from "../../../service/runtime"
 import AlertView from "../../../component/progress/alert"
+import { NavigationActions } from 'react-navigation'
 import { Dimensions } from 'react-native'
 import questionManager from "../../../service/question_manager"
 import ActionSheet from "../../../component/ActionSheet/action.sheet"
-import Mine from '../mine/mine'
-import styles, { header, daysTransfer } from './styles'
 import { handleFeedback, handleAccount } from './actionSheet'
+//安卓独有
 import MessageService from '../../../service/message.service';
 import { appVersion } from "../../../service/constant";
 
