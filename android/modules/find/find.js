@@ -27,6 +27,7 @@ import { Dimensions } from 'react-native'
 import questionManager from "../../../service/question_manager"
 import ActionSheet from "../../../component/ActionSheet/action.sheet"
 import { handleFeedback, handleAccount } from './actionSheet'
+import styles, { header, daysTransfer } from './styles'
 //安卓独有
 import MessageService from '../../../service/message.service';
 import { appVersion } from "../../../service/constant";
@@ -204,29 +205,31 @@ export default class Find extends Component {
     })
     const that = this
 
-    setTimeout(function() {
+    setTimeout(function () {
       Alert.alert(
         '确定退出吗?',
         '',
         [
-          {text: '确定', onPress: async () => {
-            const isWechat = await WeChat.isWXAppInstalled()
-            let routeName = isWechat ? "LoginWechat" : "Login"
-            await realmManager.deleteAllRealmData()
-            await Storage.clearAll()
-            questionManager.clearData()
-            const resetAction = NavigationActions.reset({
+          {
+            text: '确定', onPress: async () => {
+              const isWechat = await WeChat.isWXAppInstalled()
+              let routeName = isWechat ? "LoginWechat" : "Login"
+              await realmManager.deleteAllRealmData()
+              await Storage.clearAll()
+              questionManager.clearData()
+              const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
-                    NavigationActions.navigate({ routeName })
+                  NavigationActions.navigate({ routeName })
                 ]
-            })
-            that.props.navigation.dispatch(resetAction)
-          }},
-          {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+              })
+              that.props.navigation.dispatch(resetAction)
+            }
+          },
+          { text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
         ],
         { cancelable: true }
-    )
+      )
     }, 500)
   }
 
